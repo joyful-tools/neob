@@ -1,0 +1,185 @@
+import { AnimatePresence, motion, type Transition } from 'motion/react';
+import * as React from 'react';
+import { useEffect, useId, useState } from 'react';
+
+import { cn } from '@/lib/utilities';
+
+import { Button } from './button';
+
+import type { ButtonProperties } from './button';
+import type { ReactNode } from 'react';
+
+interface ConfirmButtonProperties {
+	children: ReactNode;
+	title: string;
+	description?: string;
+	confirmLabel: string;
+	cancelLabel?: string;
+	onConfirm: () => Promise<void> | void;
+	variant?: ButtonProperties['variant'];
+	size?: ButtonProperties['size'];
+	confirmVariant?: ButtonProperties['variant'];
+	className?: string;
+	disabled?: boolean;
+}
+
+const springCritical: Transition = {
+	type: 'spring',
+	stiffness: 550,
+	damping: 35,
+};
+
+const springClose: Transition = {
+	type: 'spring',
+	stiffness: 700,
+	damping: 40,
+};
+
+export function ConfirmButton({
+	children,
+	title,
+	description,
+	confirmLabel,
+	cancelLabel = 'Cancel',
+	onConfirm,
+	variant = 'subtle',
+	size = 'sm',
+	confirmVariant = 'danger',
+	className,
+	disabled = false,
+}: ConfirmButtonProperties) {
+	const [containerElement, setContainerElement] = useState<HTMLDivElement | undefined>();
+	const [confirmButtonElement, setConfirmButtonElement] = useState<HTMLButtonElement | undefined>();
+	const [open, setOpen] = useState(false);
+	const [isConfirming, setIsConfirming] = useState(false);
+	const titleId = useId();
+	const descriptionId = useId();
+	const layoutId = useId();
+
+	useEffect(() => {
+		if (!open) return;
+
+		confirmButtonElement?.focus();
+
+		function handlePointerDown(event: PointerEvent) {
+			if (!(event.target instanceof Node)) {
+				return;
+			}
+
+			if (!containerElement?.contains(event.target)) {
+				setOpen(false);
+			}
+		}
+
+		function handleKeyDown(event: KeyboardEvent) {
+			if (event.key === 'Escape') {
+				setOpen(false);
+			}
+		}
+
+		document.addEventListener('pointerdown', handlePointerDown);
+		document.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			document.removeEventListener('pointerdown', handlePointerDown);
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [confirmButtonElement, containerElement, open]);
+
+	async function handleConfirm() {
+		setIsConfirming(true);
+		try {
+			await onConfirm();
+			setOpen(false);
+		} finally {
+			setIsConfirming(false);
+		}
+	}
+
+	return (
+		<div ref={(element) => setContainerElement(element ?? undefined)} className="relative inline-flex items-center justify-center">
+			<AnimatePresence initial={false}>
+				{open ? (
+					<motion.div
+						key="popover"
+						layoutId={layoutId}
+						role="dialog"
+						aria-modal="false"
+						aria-labelledby={titleId}
+						aria-describedby={description ? descriptionId : undefined}
+						transition={springCritical}
+						style={{ borderRadius: 12 }}
+						className={cn(
+							`
+								absolute z-20 flex min-w-56 flex-col
+								items-center rounded-xl border-2 border-black bg-white p-3
+								text-black shadow-brutal dark:border-white dark:bg-black dark:text-white
+							`,
+							'origin-center',
+						)}
+					>
+						<motion.div
+							initial={{ opacity: 0, scale: 0.95 }}
+							animate={{ opacity: 1, scale: 1 }}
+							exit={{ opacity: 0, scale: 0.95 }}
+							transition={{ duration: 0.15 }}
+							className="flex w-full flex-col items-center"
+						>
+							<p id={titleId} className="text-center text-sm font-bold text-black dark:text-white">
+								{title}
+							</p>
+							{description && (
+								<p id={descriptionId} className="mt-1 text-center text-xs/relaxed text-black/60 dark:text-white/60">
+									{description}
+								</p>
+							)}
+							<div className="mt-3 flex w-full items-center justify-center gap-1.5">
+								<Button
+									type="button"
+									variant="subtle"
+									size="sm"
+									disabled={isConfirming}
+									onClick={() => setOpen(false)}
+									className="h-7 px-3"
+								>
+									{cancelLabel}
+								</Button>
+								<Button
+									ref={(element) => setConfirmButtonElement(element ?? undefined)}
+									type="button"
+									variant={confirmVariant}
+									size="sm"
+									onClick={() => void handleConfirm()}
+									isLoading={isConfirming}
+									className="h-7 px-3"
+								>
+									{confirmLabel}
+								</Button>
+							</div>
+						</motion.div>
+					</motion.div>
+				) : (
+					<motion.div
+						key="trigger"
+						layoutId={layoutId}
+						transition={springClose}
+						className="inline-flex items-center justify-center border-2 border-transparent"
+						style={{ borderRadius: 8 }}
+					>
+						<Button type="button" variant={variant} size={size} className={className} disabled={disabled} onClick={() => setOpen(true)}>
+							<motion.span
+								initial={{ opacity: 0, scale: 0.8 }}
+								animate={{ opacity: 1, scale: 1 }}
+								exit={{ opacity: 0, scale: 0.8 }}
+								transition={{ duration: 0.15 }}
+								className="inline-flex items-center gap-2"
+							>
+								{children}
+							</motion.span>
+						</Button>
+					</motion.div>
+				)}
+			</AnimatePresence>
+		</div>
+	);
+}

@@ -1,0 +1,232 @@
+{
+	"name": "neob",
+	"version": "1.0.0",
+	"type": "module",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
+		},
+		"./button": {
+			"types": "./dist/button.d.ts",
+			"import": "./dist/button.js",
+			"require": "./dist/button.cjs"
+		},
+		"./card": {
+			"types": "./dist/card.d.ts",
+			"import": "./dist/card.js",
+			"require": "./dist/card.cjs"
+		},
+		"./dialog": {
+			"types": "./dist/dialog.d.ts",
+			"import": "./dist/dialog.js",
+			"require": "./dist/dialog.cjs"
+		},
+		"./alert-dialog": {
+			"types": "./dist/alert-dialog.d.ts",
+			"import": "./dist/alert-dialog.js",
+			"require": "./dist/alert-dialog.cjs"
+		},
+		"./input": {
+			"types": "./dist/input.d.ts",
+			"import": "./dist/input.js",
+			"require": "./dist/input.cjs"
+		},
+		"./label": {
+			"types": "./dist/label.d.ts",
+			"import": "./dist/label.js",
+			"require": "./dist/label.cjs"
+		},
+		"./otp-field": {
+			"types": "./dist/otp-field.d.ts",
+			"import": "./dist/otp-field.js",
+			"require": "./dist/otp-field.cjs"
+		},
+		"./popover": {
+			"types": "./dist/popover.d.ts",
+			"import": "./dist/popover.js",
+			"require": "./dist/popover.cjs"
+		},
+		"./radio-group": {
+			"types": "./dist/radio-group.d.ts",
+			"import": "./dist/radio-group.js",
+			"require": "./dist/radio-group.cjs"
+		},
+		"./spinner": {
+			"types": "./dist/spinner.d.ts",
+			"import": "./dist/spinner.js",
+			"require": "./dist/spinner.cjs"
+		},
+		"./toast": {
+			"types": "./dist/toast.d.ts",
+			"import": "./dist/toast.js",
+			"require": "./dist/toast.cjs"
+		},
+		"./toaster": {
+			"types": "./dist/toaster.d.ts",
+			"import": "./dist/toaster.js",
+			"require": "./dist/toaster.cjs"
+		},
+		"./toggle": {
+			"types": "./dist/toggle.d.ts",
+			"import": "./dist/toggle.js",
+			"require": "./dist/toggle.cjs"
+		},
+		"./animated-number": {
+			"types": "./dist/animated-number.d.ts",
+			"import": "./dist/animated-number.js",
+			"require": "./dist/animated-number.cjs"
+		},
+		"./grid-background": {
+			"types": "./dist/grid-background.d.ts",
+			"import": "./dist/grid-background.js",
+			"require": "./dist/grid-background.cjs"
+		},
+		"./tooltip": {
+			"types": "./dist/tooltip.d.ts",
+			"import": "./dist/tooltip.js",
+			"require": "./dist/tooltip.cjs"
+		},
+		"./dropdown-menu": {
+			"types": "./dist/dropdown-menu.d.ts",
+			"import": "./dist/dropdown-menu.js",
+			"require": "./dist/dropdown-menu.cjs"
+		},
+		"./progress": {
+			"types": "./dist/progress.d.ts",
+			"import": "./dist/progress.js",
+			"require": "./dist/progress.cjs"
+		},
+		"./skeleton": {
+			"types": "./dist/skeleton.d.ts",
+			"import": "./dist/skeleton.js",
+			"require": "./dist/skeleton.cjs"
+		},
+		"./collapsible": {
+			"types": "./dist/collapsible.d.ts",
+			"import": "./dist/collapsible.js",
+			"require": "./dist/collapsible.cjs"
+		},
+		"./resizable-panel": {
+			"types": "./dist/resizable-panel.d.ts",
+			"import": "./dist/resizable-panel.js",
+			"require": "./dist/resizable-panel.cjs"
+		},
+		"./border-beam": {
+			"types": "./dist/border-beam.d.ts",
+			"import": "./dist/border-beam.js",
+			"require": "./dist/border-beam.cjs"
+		},
+		"./confirm-dialog": {
+			"types": "./dist/confirm-dialog.d.ts",
+			"import": "./dist/confirm-dialog.js",
+			"require": "./dist/confirm-dialog.cjs"
+		},
+		"./confirm-button": {
+			"types": "./dist/confirm-button.d.ts",
+			"import": "./dist/confirm-button.js",
+			"require": "./dist/confirm-button.cjs"
+		},
+		"./split-button": {
+			"types": "./dist/split-button.d.ts",
+			"import": "./dist/split-button.js",
+			"require": "./dist/split-button.cjs"
+		},
+		"./numeric-slider": {
+			"types": "./dist/numeric-slider.d.ts",
+			"import": "./dist/numeric-slider.js",
+			"require": "./dist/numeric-slider.cjs"
+		},
+		"./inline-confirm-group": {
+			"types": "./dist/inline-confirm-group.d.ts",
+			"import": "./dist/inline-confirm-group.js",
+			"require": "./dist/inline-confirm-group.cjs"
+		},
+		"./loading-bars": {
+			"types": "./dist/loading-bars.d.ts",
+			"import": "./dist/loading-bars.js",
+			"require": "./dist/loading-bars.cjs"
+		},
+		"./pill": {
+			"types": "./dist/pill.d.ts",
+			"import": "./dist/pill.js",
+			"require": "./dist/pill.cjs"
+		},
+		"./global-dialog-backdrop": {
+			"types": "./dist/global-dialog-backdrop.d.ts",
+			"import": "./dist/global-dialog-backdrop.js",
+			"require": "./dist/global-dialog-backdrop.cjs"
+		},
+		"./dialog-stack": {
+			"types": "./dist/dialog-stack.d.ts",
+			"import": "./dist/dialog-stack.js",
+			"require": "./dist/dialog-stack.cjs"
+		},
+		"./dist/index.css": "./dist/index.css"
+	},
+	"files": [
+		"dist"
+	],
+	"sideEffects": [
+		"**/*.css"
+	],
+	"scripts": {
+		"build": "vite build",
+		"format": "prettier --write . && eslint --fix .",
+		"typecheck": "tsc --noEmit",
+		"lint": "prettier --check . && eslint .",
+		"storybook": "storybook dev -p 6006",
+		"build-storybook": "storybook build",
+		"prepare": "husky"
+	},
+	"peerDependencies": {
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0"
+	},
+	"devDependencies": {
+		"@base-ui/react": "^1.3.0",
+		"@eslint/js": "^9.39.2",
+		"@phosphor-icons/react": "^2.1.10",
+		"@storybook/addon-a11y": "^10.1.10",
+		"@storybook/addon-docs": "^10.1.10",
+		"@storybook/react-vite": "^10.1.10",
+		"@tailwindcss/vite": "^4.1.18",
+		"@types/react": "^19.2.8",
+		"@types/react-dom": "^19.2.3",
+		"@vitejs/plugin-react": "^5.1.2",
+		"class-variance-authority": "^0.7.1",
+		"clsx": "^2.1.1",
+		"eslint": "^9.39.2",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-import-resolver-typescript": "^4.4.4",
+		"eslint-plugin-better-tailwindcss": "^4.0.0-prettier.1",
+		"eslint-plugin-import-x": "^4.16.1",
+		"eslint-plugin-react-compiler": "^19.1.0-rc.2",
+		"eslint-plugin-react-hooks": "^7.0.0",
+		"eslint-plugin-react-refresh": "^0.4.26",
+		"eslint-plugin-storybook": "^10.1.10",
+		"eslint-plugin-unicorn": "^62.0.0",
+		"eslint-plugin-unused-imports": "^4.3.0",
+		"globals": "^16.5.0",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.2.7",
+		"lucide-react": "^0.525.0",
+		"motion": "^12.26.1",
+		"prettier": "^3.7.4",
+		"react": "^19.2.3",
+		"react-dom": "^19.2.3",
+		"react-router-dom": "^7.12.0",
+		"sonner": "^2.0.7",
+		"storybook": "^10.1.10",
+		"tailwind-merge": "^3.4.0",
+		"tailwindcss": "^4.1.18",
+		"typescript": "^5.9.3",
+		"typescript-eslint": "^8.50.1",
+		"vite": "^6.0.0",
+		"vite-plugin-dts": "^4.5.0"
+	}
+}

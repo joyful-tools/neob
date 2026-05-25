@@ -1,0 +1,174 @@
+import { cva } from 'class-variance-authority';
+
+export const buttonVariants = cva(
+	`
+		neo-focus-ring relative isolate inline-flex cursor-pointer items-center
+		justify-center gap-2 rounded-lg border-2 border-black text-sm font-bold
+		whitespace-nowrap outline-hidden transition-all duration-25 ease-linear
+		after:absolute after:inset-0 after:-bottom-1 after:z-[-1]
+		after:transition-transform after:duration-25 after:ease-linear
+		after:content-['']
+		disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none
+	`,
+	{
+		variants: {
+			variant: {
+				default: `
+					bg-primary-foreground text-primary shadow-brutal-sm
+					hover:-translate-y-0.5 hover:shadow-brutal
+					hover:after:translate-y-0.5
+					active:translate-y-0.5 active:shadow-brutal-inset
+				`,
+				accent: `
+					bg-orange text-primary shadow-brutal-sm
+					hover:-translate-y-0.5 hover:bg-orange/90 hover:shadow-brutal
+					hover:after:translate-y-0.5
+					active:translate-y-0.5 active:shadow-brutal-inset
+				`,
+				danger: `
+					bg-red text-primary shadow-brutal-sm
+					hover:-translate-y-0.5 hover:bg-red/90 hover:shadow-brutal
+					hover:after:translate-y-0.5
+					active:translate-y-0.5 active:shadow-brutal-inset
+				`,
+				subtle: `
+					bg-primary-foreground text-primary
+					hover:-translate-y-0.5 hover:bg-muted hover:shadow-brutal-sm
+					hover:after:translate-y-0.5
+					active:translate-y-0.5 active:shadow-brutal-inset
+				`,
+				ghost: `
+					border-transparent
+					hover:border-black hover:bg-muted
+					active:translate-y-0.5 active:border-black active:bg-muted
+					active:shadow-brutal-inset
+				`,
+				link: `
+					border-transparent underline-slide text-primary transition-none
+					[transition:background-size_0.3s]
+				`,
+				// Dark variants for use on dark backgrounds (player pages)
+				'dark-default': `
+					border-black bg-zinc text-white shadow-brutal-sm
+					hover:-translate-y-0.5 hover:shadow-brutal
+					hover:after:translate-y-0.5
+					active:translate-y-0.5 active:shadow-brutal-inset
+				`,
+				'dark-accent': `
+					border-4 border-black bg-orange text-white shadow-brutal
+					hover:-translate-y-1 hover:shadow-brutal-lg
+					hover:after:translate-y-1
+					active:translate-y-1 active:shadow-brutal-inset
+				`,
+				'dark-subtle': `
+					border-black bg-black text-white
+					hover:-translate-y-0.5 hover:bg-zinc/80 hover:shadow-brutal-sm
+					hover:after:translate-y-0.5
+					active:translate-y-0.5 active:shadow-brutal-inset
+				`,
+				'dark-ghost': `
+					border-transparent text-white
+					hover:border-black hover:bg-zinc/80
+					active:translate-y-0.5 active:border-black active:bg-zinc/80
+					active:shadow-brutal-inset
+				`,
+			},
+			size: {
+				default: 'h-10 px-4 py-2',
+				sm: 'h-8 rounded-md px-3 py-1 text-xs',
+				lg: 'h-12 rounded-xl px-8 py-3 text-base',
+				xl: 'h-14 rounded-xl px-8 py-4 text-xl font-black uppercase',
+				icon: 'size-10 p-0',
+			},
+		},
+		compoundVariants: [
+			{
+				variant: ['default', 'accent', 'danger'],
+				size: 'lg',
+				class: `
+					shadow-brutal
+					hover:-translate-y-1 hover:shadow-brutal-lg
+					hover:after:translate-y-1
+					active:translate-y-1 active:shadow-brutal-inset
+				`,
+			},
+			{
+				variant: 'subtle',
+				size: 'lg',
+				class: `
+					hover:-translate-y-1 hover:shadow-brutal
+					hover:after:translate-y-1
+					active:translate-y-1 active:shadow-brutal-inset
+				`,
+			},
+			{
+				variant: 'dark-default',
+				size: 'lg',
+				class: `
+					shadow-brutal
+					hover:-translate-y-1 hover:shadow-brutal-lg
+					hover:after:translate-y-1
+					active:translate-y-1 active:shadow-brutal-inset
+				`,
+			},
+			{
+				variant: 'dark-accent',
+				size: 'lg',
+				class: `
+					shadow-brutal
+					hover:-translate-y-1 hover:shadow-brutal-lg
+					hover:after:translate-y-1
+					active:translate-y-1 active:shadow-brutal-inset
+				`,
+			},
+			{
+				variant: ['default', 'accent', 'danger'],
+				size: 'xl',
+				class: `
+					shadow-brutal
+					hover:-translate-y-1 hover:shadow-brutal-lg
+					hover:after:translate-y-1
+					active:translate-y-1 active:shadow-brutal-inset
+				`,
+			},
+			{
+				variant: 'subtle',
+				size: 'xl',
+				class: `
+					hover:-translate-y-1 hover:shadow-brutal
+					hover:after:translate-y-1
+					active:translate-y-1 active:shadow-brutal-inset
+				`,
+			},
+			{
+				variant: 'dark-default',
+				size: 'xl',
+				class: `
+					shadow-brutal
+					hover:-translate-y-1 hover:shadow-brutal-lg
+					hover:after:translate-y-1
+					active:translate-y-1 active:shadow-brutal-inset
+				`,
+			},
+			{
+				variant: 'dark-accent',
+				size: 'xl',
+				class: `
+					shadow-brutal
+					hover:-translate-y-1 hover:shadow-brutal-lg
+					hover:after:translate-y-1
+					active:translate-y-1 active:shadow-brutal-inset
+				`,
+			},
+			// Link variant should have no padding/height - it's inline text
+			{
+				variant: 'link',
+				class: 'h-auto p-0',
+			},
+		],
+		defaultVariants: {
+			variant: 'default',
+			size: 'default',
+		},
+	},
+);
