@@ -30,7 +30,7 @@ const CHECKBOX_ROOT_CLASSES = `
 // ============================================================================
 
 export interface CheckboxProperties extends React.ComponentPropsWithoutRef<typeof BaseCheckbox.Root> {
-	readonly ref?: React.Ref<HTMLButtonElement>;
+	readonly ref?: React.Ref<HTMLElement>;
 	readonly label?: React.ReactNode;
 	readonly description?: React.ReactNode;
 	readonly controlFirst?: boolean;
@@ -38,7 +38,7 @@ export interface CheckboxProperties extends React.ComponentPropsWithoutRef<typeo
 }
 
 export interface CheckboxItemProperties extends React.ComponentPropsWithoutRef<typeof BaseCheckbox.Root> {
-	readonly ref?: React.Ref<HTMLButtonElement>;
+	readonly ref?: React.Ref<HTMLElement>;
 	readonly label: React.ReactNode;
 }
 
@@ -60,8 +60,12 @@ export interface CheckboxGroupProperties extends React.ComponentPropsWithoutRef<
 export function Checkbox({ label, description, controlFirst = true, error, className, ref, ...properties }: CheckboxProperties) {
 	const checkboxControl = (
 		<BaseCheckbox.Root ref={ref} className={cn(CHECKBOX_ROOT_CLASSES, error && 'border-red dark:border-red', className)} {...properties}>
-			<BaseCheckbox.Indicator className="flex items-center justify-center text-current" keepMounted>
-				{(state) => (state.indeterminate ? <Minus className="size-3.5 stroke-3" /> : <Check className="size-3.5 stroke-3" />)}
+			<BaseCheckbox.Indicator
+				className="flex items-center justify-center text-current data-indeterminate:[&>svg:first-child]:hidden data-unchecked:[&>svg:first-child]:hidden data-indeterminate:[&>svg:last-child]:block"
+				keepMounted
+			>
+				<Check className="size-3.5 stroke-3" />
+				<Minus className="hidden size-3.5 stroke-3" />
 			</BaseCheckbox.Indicator>
 		</BaseCheckbox.Root>
 	);

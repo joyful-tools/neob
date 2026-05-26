@@ -41,7 +41,7 @@ export const WithLabel: Story = {
 
 export const Indeterminate: Story = {
 	args: {
-		checked: 'indeterminate',
+		indeterminate: true,
 		label: 'Parent Category Selection',
 		description: 'Some sub-categories are checked.',
 	},
@@ -57,10 +57,18 @@ export const Disabled: Story = {
 };
 
 export const ValidationError: Story = {
-	args: {
-		label: 'Subscribe to newsletter',
-		description: 'Required option.',
-		error: 'Please accept the newsletter subscription.',
+	render: () => {
+		const [checked, setChecked] = React.useState(false);
+
+		return (
+			<Checkbox
+				checked={checked}
+				onCheckedChange={setChecked}
+				label="Subscribe to newsletter"
+				description="Required option."
+				error={checked ? undefined : 'Please accept the newsletter subscription.'}
+			/>
+		);
 	},
 };
 

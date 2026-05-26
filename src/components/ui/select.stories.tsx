@@ -20,7 +20,7 @@ export const Default = {
 		const [val, setVal] = React.useState('apple');
 		return (
 			<div className="w-64">
-				<Select value={val} onValueChange={setVal}>
+				<Select value={val} onValueChange={(value) => setVal(value ?? '')}>
 					<SelectTrigger>
 						<SelectValue placeholder="Select a fruit" />
 					</SelectTrigger>

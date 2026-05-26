@@ -1,0 +1,9 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "neob-storybook",
+	"compatibility_date": "2026-05-26",
+	"assets": {
+		"directory": "./storybook-static",
+		"not_found_handling": "single-page-application",
+	},
+}
