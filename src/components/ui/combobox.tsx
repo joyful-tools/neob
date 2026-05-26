@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
 
-import { Field } from './field';
+import { InputWrapper } from './input';
 
 // ============================================================================
 // Types & Context
@@ -86,7 +86,7 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 
 	if (label || description || errorText || labelTooltip) {
 		return (
-			<Field
+			<InputWrapper
 				label={label}
 				required={required}
 				labelTooltip={labelTooltip}
@@ -95,7 +95,7 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 				className={containerClassName}
 			>
 				{comboboxControl}
-			</Field>
+			</InputWrapper>
 		);
 	}
 
@@ -133,7 +133,7 @@ function Content({
 	}, [multiple, sideOffset]);
 
 	return (
-		<BaseCombobox.Portal>
+		<BaseCombobox.Portal keepMounted>
 			<BaseCombobox.Positioner
 				align={align}
 				sideOffset={resolvedSideOffset}
@@ -187,7 +187,7 @@ function TriggerValue({
 				ref={ref}
 				className={cn(
 					getInputStyles(size, hasError),
-					'relative flex items-center shadow-brutal-sm transition-all duration-300 ease-spring hover:-translate-y-0.5 hover:shadow-brutal active:translate-y-0 active:shadow-brutal-inset',
+					'relative flex items-center shadow-brutal-sm transition-all duration-300 ease-spring hover:-translate-y-0.5 hover:shadow-brutal active:translate-y-0 active:shadow-brutal-inset aria-expanded:translate-y-0 aria-expanded:hover:translate-y-0',
 					iconStyles.padding,
 					className,
 				)}

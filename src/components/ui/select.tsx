@@ -30,7 +30,7 @@ export function SelectTrigger({
 		<BaseSelect.Trigger
 			ref={ref}
 			className={cn(
-				`flex h-10 w-full cursor-pointer items-center justify-between rounded-lg border-2 border-black bg-white px-4 py-2 text-base font-bold text-black shadow-brutal-sm transition-all duration-300 ease-spring select-none hover:-translate-y-0.5 hover:shadow-brutal focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:outline-hidden active:translate-y-0 active:shadow-brutal-inset disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-brutal-sm dark:bg-zinc dark:text-white dark:focus-visible:ring-white`,
+				`flex h-10 w-full cursor-pointer items-center justify-between rounded-lg border-2 border-black bg-white px-4 py-2 text-base font-bold text-black shadow-brutal-sm transition-all duration-300 ease-spring select-none hover:-translate-y-0.5 hover:shadow-brutal focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:outline-hidden active:translate-y-0 active:shadow-brutal-inset disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-brutal-sm aria-expanded:translate-y-0 aria-expanded:hover:translate-y-0 dark:bg-zinc dark:text-white dark:focus-visible:ring-white`,
 				className,
 			)}
 			{...properties}

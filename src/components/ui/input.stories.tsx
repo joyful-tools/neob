@@ -1,24 +1,23 @@
 import * as React from 'react';
 
-import { Field, Fieldset } from './field';
-import { Input } from './input';
+import { Input, Fieldset, InputWrapper } from './input';
 import { InputArea } from './input-area';
 import { RadioGroup, RadioGroupItem } from './radio-group';
 
-import type { FieldProperties, FieldsetProperties } from './field';
+import type { InputProperties, FieldsetProperties } from './input';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
-	title: 'Inputs/Field',
-	component: Field,
+	title: 'Inputs/Input',
+	component: Input,
 	parameters: {
 		layout: 'centered',
 	},
 	tags: ['autodocs'],
-} satisfies Meta<typeof Field>;
+} satisfies Meta<typeof Input>;
 
 export default meta;
-type StoryProps = Omit<FieldProperties, 'children'> & { children?: React.ReactNode };
+type StoryProps = Omit<InputProperties, 'children'> & { children?: React.ReactNode };
 type Story = StoryObj<StoryProps>;
 
 export const DefaultInput: Story = {
@@ -29,7 +28,7 @@ export const DefaultInput: Story = {
 	),
 };
 
-export const RequiredField: Story = {
+export const RequiredInput: Story = {
 	render: () => (
 		<div className="w-80">
 			<Input label="Email Address" required={true} type="email" placeholder="you@example.com" />
@@ -37,7 +36,7 @@ export const RequiredField: Story = {
 	),
 };
 
-export const OptionalField: Story = {
+export const OptionalInput: Story = {
 	render: () => (
 		<div className="w-80">
 			<Input label="Phone Number" required={false} type="tel" placeholder="+1 (555) 000-0000" />
@@ -71,7 +70,7 @@ export const WithLabelTooltip: Story = {
 	),
 };
 
-export const DisabledField: Story = {
+export const DisabledInput: Story = {
 	render: () => (
 		<div className="w-80">
 			<Input
@@ -97,7 +96,7 @@ export const WithInputArea: Story = {
 	),
 };
 
-export const GroupFieldset: StoryObj<Omit<FieldsetProperties, 'children'> & { children?: React.ReactNode }> = {
+export const GroupedControls: StoryObj<Omit<FieldsetProperties, 'children'> & { children?: React.ReactNode }> = {
 	render: () => (
 		<div className="w-80">
 			<Fieldset
@@ -127,11 +126,11 @@ export const GroupFieldset: StoryObj<Omit<FieldsetProperties, 'children'> & { ch
 export const CustomComposition: Story = {
 	render: () => (
 		<div className="w-80">
-			<Field label="Custom Selection Wrapper" description="Use Field directly to wrap custom controls.">
+			<InputWrapper label="Custom Selection Wrapper" description="Use Input directly to wrap custom controls.">
 				<div className="rounded-lg border-2 border-dashed border-black/20 p-4 text-center text-sm font-bold text-muted-foreground dark:border-white/20">
 					[Custom Component Here]
 				</div>
-			</Field>
+			</InputWrapper>
 		</div>
 	),
 };

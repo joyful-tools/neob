@@ -7,8 +7,10 @@ export const buttonVariants = cva(
 		whitespace-nowrap outline-hidden transition-all duration-25 ease-linear
 		after:absolute after:inset-0 after:-bottom-1 after:z-[-1]
 		after:transition-transform after:duration-25 after:ease-linear
-		after:content-['']
-		disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none
+		after:content-[''] disabled:pointer-events-none
+		disabled:opacity-50 disabled:shadow-none
+		aria-expanded:translate-y-0
+		aria-expanded:after:translate-y-0 aria-expanded:hover:translate-y-0 aria-expanded:hover:after:translate-y-0
 	`,
 	{
 		variants: {

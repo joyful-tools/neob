@@ -25,11 +25,28 @@ export function SplitButton({
 	const containerReference = React.useRef<HTMLDivElement>(null);
 	const [width, setWidth] = React.useState(0);
 
-	React.useEffect(() => {
-		if (containerReference.current) {
-			// Offset width calculation is done after render. We also handle resizing triggers if width changes.
-			setWidth(containerReference.current.offsetWidth);
+	React.useLayoutEffect(() => {
+		const element = containerReference.current;
+
+		if (!element) {
+			return;
 		}
+
+		const updateWidth = () => {
+			setWidth(element.offsetWidth);
+		};
+
+		updateWidth();
+
+		const resizeObserver = new ResizeObserver(() => {
+			updateWidth();
+		});
+
+		resizeObserver.observe(element);
+
+		return () => {
+			resizeObserver.disconnect();
+		};
 	}, []);
 
 	return (

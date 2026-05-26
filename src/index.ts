@@ -36,8 +36,8 @@ export {
 	AlertDialogCancel,
 } from './components/ui/alert-dialog';
 
-export { Input } from './components/ui/input';
-export type { InputProperties } from './components/ui/input';
+export { InputArea } from './components/ui/input-area';
+export type { InputAreaProperties } from './components/ui/input-area';
 export { InputGroup } from './components/ui/input-group';
 export type {
 	InputGroupRootProps,
@@ -121,10 +121,6 @@ export type { PillProperties } from './components/ui/pill';
 export { GlobalDialogBackdrop } from './components/ui/global-dialog-backdrop';
 export { useDialogStackPresence, closeTopDialog } from './components/ui/dialog-stack';
 
-// New Fundamental Components
-export { InputArea } from './components/ui/input-area';
-export type { InputAreaProperties } from './components/ui/input-area';
-
 export { useInputAreaAutoResize } from './hooks/use-input-area-auto-resize';
 export type { UseInputAreaAutoResizeOptions } from './hooks/use-input-area-auto-resize';
 
@@ -134,8 +130,8 @@ export type { SensitiveInputProperties } from './components/ui/sensitive-input';
 export { Checkbox, CheckboxItem, CheckboxGroup } from './components/ui/checkbox';
 export type { CheckboxProperties, CheckboxItemProperties, CheckboxGroupProperties } from './components/ui/checkbox';
 
-export { Field, Fieldset } from './components/ui/field';
-export type { FieldProperties, FieldsetProperties } from './components/ui/field';
+export { Input, InputWrapper, Fieldset, TextInput } from './components/ui/input';
+export type { InputProperties, InputWrapperProperties, FieldsetProperties, TextInputProperties } from './components/ui/input';
 
 export { Switch } from './components/ui/switch';
 export type { SwitchProperties } from './components/ui/switch';

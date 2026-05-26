@@ -228,37 +228,37 @@ const databases: DatabaseItem[] = [
 	{ value: 'supabase', label: 'Supabase' },
 	{ value: 'planetscale', label: 'PlanetScale' },
 	{ value: 'fauna', label: 'Fauna' },
-	{ value: 'd1', label: 'Cloudflare D1' },
+	{ value: 'surrealdb', label: 'SurrealDB' },
 	{ value: 'turso', label: 'Turso' },
 ];
 
-type BotItem = {
+type WorkspaceAppItem = {
 	value: string;
 	label: string;
-	author: string;
+	vendor: string;
 };
 
-const bots: BotItem[] = [
-	{ value: 'googlebot', label: 'Googlebot', author: 'Google' },
-	{ value: 'bingbot', label: 'Bingbot', author: 'Microsoft' },
-	{ value: 'yandexbot', label: 'YandexBot', author: 'Yandex' },
-	{ value: 'duckduckbot', label: 'DuckDuckBot', author: 'DuckDuckGo' },
-	{ value: 'baiduspider', label: 'Baiduspider', author: 'Baidu' },
-	{ value: 'slurp', label: 'Yahoo Slurp', author: 'Yahoo' },
-	{ value: 'applebot', label: 'Applebot', author: 'Apple' },
-	{ value: 'facebookbot', label: 'Facebookbot', author: 'Meta' },
-	{ value: 'twitterbot', label: 'Twitterbot', author: 'X' },
-	{ value: 'linkedinbot', label: 'LinkedInBot', author: 'LinkedIn' },
-	{ value: 'pinterestbot', label: 'Pinterest', author: 'Pinterest' },
-	{ value: 'discordbot', label: 'Discordbot', author: 'Discord' },
-	{ value: 'slackbot', label: 'Slackbot', author: 'Slack' },
-	{ value: 'telegrambot', label: 'TelegramBot', author: 'Telegram' },
-	{ value: 'whatsapp', label: 'WhatsApp', author: 'Meta' },
-	{ value: 'semrushbot', label: 'SemrushBot', author: 'Semrush' },
-	{ value: 'ahrefsbot', label: 'AhrefsBot', author: 'Ahrefs' },
-	{ value: 'mj12bot', label: 'MJ12bot', author: 'Majestic' },
-	{ value: 'dotbot', label: 'DotBot', author: 'Moz' },
-	{ value: 'petalbot', label: 'PetalBot', author: 'Huawei' },
+const workspaceApps: WorkspaceAppItem[] = [
+	{ value: 'notion', label: 'Notion', vendor: 'Notion' },
+	{ value: 'linear', label: 'Linear', vendor: 'Linear' },
+	{ value: 'figma', label: 'Figma', vendor: 'Figma' },
+	{ value: 'slack', label: 'Slack', vendor: 'Slack' },
+	{ value: 'discord', label: 'Discord', vendor: 'Discord' },
+	{ value: 'miro', label: 'Miro', vendor: 'Miro' },
+	{ value: 'loom', label: 'Loom', vendor: 'Atlassian' },
+	{ value: 'raycast', label: 'Raycast', vendor: 'Raycast' },
+	{ value: 'framer', label: 'Framer', vendor: 'Framer' },
+	{ value: 'jira', label: 'Jira', vendor: 'Atlassian' },
+	{ value: 'github', label: 'GitHub', vendor: 'GitHub' },
+	{ value: 'gitlab', label: 'GitLab', vendor: 'GitLab' },
+	{ value: 'airtable', label: 'Airtable', vendor: 'Airtable' },
+	{ value: 'zapier', label: 'Zapier', vendor: 'Zapier' },
+	{ value: 'dropbox', label: 'Dropbox', vendor: 'Dropbox' },
+	{ value: 'todoist', label: 'Todoist', vendor: 'Doist' },
+	{ value: 'canva', label: 'Canva', vendor: 'Canva' },
+	{ value: 'clickup', label: 'ClickUp', vendor: 'ClickUp' },
+	{ value: 'trello', label: 'Trello', vendor: 'Atlassian' },
+	{ value: 'zoom', label: 'Zoom', vendor: 'Zoom' },
 ];
 
 // ============================================================================
@@ -372,31 +372,31 @@ export const Grouped = {
 
 export const Multiple = {
 	render: () => {
-		const [value, setValue] = React.useState<BotItem[]>([]);
+		const [value, setValue] = React.useState<WorkspaceAppItem[]>([]);
 
 		return (
 			<div className="w-[400px]">
 				<Combobox
 					value={value}
 					onValueChange={setValue}
-					items={bots}
-					isItemEqualToValue={(bot: BotItem, selected: BotItem) => bot.value === selected.value}
+					items={workspaceApps}
+					isItemEqualToValue={(app: WorkspaceAppItem, selected: WorkspaceAppItem) => app.value === selected.value}
 					multiple
 				>
 					<ComboboxTriggerMultipleWithInput
 						className="w-full"
-						placeholder="Select bots"
-						renderItem={(selected: BotItem) => <ComboboxChip key={selected.value}>{selected.label}</ComboboxChip>}
+						placeholder="Select apps"
+						renderItem={(selected: WorkspaceAppItem) => <ComboboxChip key={selected.value}>{selected.label}</ComboboxChip>}
 						inputSide="right"
 					/>
 					<ComboboxContent className="max-h-[200px] overflow-y-auto">
 						<ComboboxEmpty />
 						<ComboboxList>
-							{(item: BotItem) => (
+							{(item: WorkspaceAppItem) => (
 								<ComboboxItem key={item.value} value={item}>
 									<div className="flex gap-2">
 										<Text>{item.label}</Text>
-										<Text variant="secondary">{item.author}</Text>
+										<Text variant="secondary">{item.vendor}</Text>
 									</div>
 								</ComboboxItem>
 							)}
@@ -488,7 +488,7 @@ export const DisabledItems = {
 				reason: 'Coming soon',
 			},
 			{ value: 'redis', label: 'Redis' },
-			{ value: 'd1', label: 'Cloudflare D1' },
+			{ value: 'firebase-rt', label: 'Firebase Realtime Database' },
 		];
 
 		const [value, setValue] = React.useState<DatabaseItemWithDisabled | null>(null);

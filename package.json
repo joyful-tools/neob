@@ -186,11 +186,6 @@
 			"import": "./dist/checkbox.js",
 			"require": "./dist/checkbox.cjs"
 		},
-		"./field": {
-			"types": "./dist/field.d.ts",
-			"import": "./dist/field.js",
-			"require": "./dist/field.cjs"
-		},
 		"./switch": {
 			"types": "./dist/switch.d.ts",
 			"import": "./dist/switch.js",

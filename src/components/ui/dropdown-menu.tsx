@@ -84,7 +84,7 @@ function DropdownMenuContent({ children, className, align = 'end', sideOffset, r
 	);
 
 	return (
-		<Menu.Portal>
+		<Menu.Portal keepMounted>
 			<Menu.Positioner align={align} sideOffset={resolvedSideOffset} className="z-100" anchor={context?.anchorElement}>
 				<Menu.Popup
 					ref={ref}
