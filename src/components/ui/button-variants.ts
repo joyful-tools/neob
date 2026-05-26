@@ -47,7 +47,7 @@ export const buttonVariants = cva(
 				`,
 				link: `
 					border-transparent underline-slide text-primary transition-none
-					[transition:background-size_0.3s]
+					[transition:background-size_0.3s,color_0.3s] hover:text-orange
 				`,
 				// Dark variants for use on dark backgrounds (player pages)
 				'dark-default': `

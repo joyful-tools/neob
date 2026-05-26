@@ -40,7 +40,7 @@ Always apply these custom brutalist classes when building layouts:
 - `shadow-brutal-sm` - 2px solid black drop shadow (ideal for tags/buttons).
 - `shadow-brutal-lg` - 8px solid black drop shadow (ideal for hover states).
 - `shadow-brutal-inset` - Inset shadow for active button states.
-- `shadow-brutal-inset-sm` - Inset shadow for inputs/progress tracks.
+- `shadow-brutal-inset-sm` - Inset shadow for inputs/meter tracks.
 - `neo-focus-ring` - Focus-visible border-offset outline animation.
 - `underline-slide` - Hover slide-out underline effect for link items.
 

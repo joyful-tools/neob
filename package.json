@@ -101,10 +101,10 @@
 			"import": "./dist/dropdown-menu.js",
 			"require": "./dist/dropdown-menu.cjs"
 		},
-		"./progress": {
-			"types": "./dist/progress.d.ts",
-			"import": "./dist/progress.js",
-			"require": "./dist/progress.cjs"
+		"./meter": {
+			"types": "./dist/meter.d.ts",
+			"import": "./dist/meter.js",
+			"require": "./dist/meter.cjs"
 		},
 		"./skeleton": {
 			"types": "./dist/skeleton.d.ts",
@@ -211,6 +211,16 @@
 			"import": "./dist/table.js",
 			"require": "./dist/table.cjs"
 		},
+		"./pagination": {
+			"types": "./dist/pagination.d.ts",
+			"import": "./dist/pagination.js",
+			"require": "./dist/pagination.cjs"
+		},
+		"./date-picker": {
+			"types": "./dist/date-picker.d.ts",
+			"import": "./dist/date-picker.js",
+			"require": "./dist/date-picker.cjs"
+		},
 		"./dist/index.css": "./dist/index.css"
 	},
 	"files": [
@@ -264,6 +274,7 @@
 		"motion": "^12.26.1",
 		"prettier": "^3.7.4",
 		"react": "^19.2.3",
+		"react-day-picker": "^10.0.1",
 		"react-dom": "^19.2.3",
 		"react-router-dom": "^7.12.0",
 		"sonner": "^2.0.7",

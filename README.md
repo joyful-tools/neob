@@ -115,6 +115,6 @@ export function MyComponent() {
 
 - **Layout:** `Card`, `GridBackground`, `ResizablePanel`
 - **Actions:** `Button`, `Toggle`
-- **Feedback:** `Spinner`, `Progress`, `Skeleton`, `ListSkeleton`, `BorderBeam`
+- **Feedback:** `Spinner`, `Meter`, `Skeleton`, `ListSkeleton`, `BorderBeam`
 - **Inputs:** `Input`, `Label`, `OTPFieldRoot`, `OTPFieldInput`, `RadioGroup`, `RadioGroupItem`
 - **Overlays:** `Dialog`, `AlertDialog`, `Popover`, `Tooltip`, `DropdownMenu`, `toast`, `Toaster`

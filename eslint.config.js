@@ -14,7 +14,17 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig(
-	{ ignores: ['dist', 'storybook-static', '.storybook', 'vite.config.ts', 'eslint.config.js', 'lint-staged.config.js'] },
+	{
+		ignores: [
+			'dist',
+			'storybook-static',
+			'.storybook',
+			'vite.config.ts',
+			'eslint.config.js',
+			'lint-staged.config.js',
+			'raw_pagination.tsx',
+		],
+	},
 
 	js.configs.recommended,
 

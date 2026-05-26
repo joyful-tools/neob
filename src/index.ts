@@ -86,8 +86,8 @@ export {
 	DropdownMenuTrigger,
 } from './components/ui/dropdown-menu';
 
-export { Progress } from './components/ui/progress';
-export type { ProgressProperties } from './components/ui/progress';
+export { Meter } from './components/ui/meter';
+export type { MeterProperties } from './components/ui/meter';
 
 export { Skeleton, ListSkeleton } from './components/ui/skeleton';
 export type { SkeletonProperties, ListSkeletonProperties } from './components/ui/skeleton';
@@ -152,3 +152,16 @@ export type {
 	TableHeadProperties,
 	TableCellProperties,
 } from './components/ui/table';
+
+export { DatePicker } from './components/ui/date-picker';
+export type { DatePickerProps } from './components/ui/date-picker';
+
+export { Pagination, PaginationInfo, PaginationPageSize, PaginationControls, PaginationSeparator } from './components/ui/pagination';
+export type {
+	PaginationProps,
+	PaginationInfoProps,
+	PaginationPageSizeProps,
+	PaginationControlsProps,
+	PaginationSeparatorProps,
+	PaginationLabels,
+} from './components/ui/pagination';
