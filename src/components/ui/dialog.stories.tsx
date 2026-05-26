@@ -73,34 +73,3 @@ export const ComposedModal: Story = {
 		);
 	},
 };
-
-export const ConfirmDelete: Story = {
-	render: () => {
-		const [open, setOpen] = useState(false);
-		return (
-			<>
-				<Button variant="danger" onClick={() => setOpen(true)}>
-					Delete Item
-				</Button>
-				<Dialog open={open} onOpenChange={setOpen}>
-					<DialogContent>
-						<DialogHeader>
-							<DialogTitle>Delete Item?</DialogTitle>
-							<DialogDescription>
-								This action cannot be undone. This will permanently delete your item and all associated data.
-							</DialogDescription>
-						</DialogHeader>
-						<DialogFooter>
-							<Button variant="subtle" onClick={() => setOpen(false)}>
-								Cancel
-							</Button>
-							<Button variant="danger" onClick={() => setOpen(false)}>
-								Delete
-							</Button>
-						</DialogFooter>
-					</DialogContent>
-				</Dialog>
-			</>
-		);
-	},
-};

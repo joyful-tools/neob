@@ -8,6 +8,7 @@ import { cn } from '@/lib/utilities';
 
 import { Button } from './button';
 import { useDialogStackPresence } from './dialog-stack';
+import { Input } from './input';
 
 export interface ConfirmDialogProperties {
 	open: boolean;
@@ -111,7 +112,7 @@ export function ConfirmDialog({
 													</Button>{' '}
 													to confirm:
 												</p>
-												<input
+												<Input
 													type="text"
 													value={typedConfirmation}
 													onChange={(event) => setTypedConfirmation(event.target.value)}
@@ -123,9 +124,7 @@ export function ConfirmDialog({
 													disabled={isConfirming}
 													placeholder={resourceName}
 													autoComplete="off"
-													className={cn(
-														`h-10 w-full rounded-md border-2 border-black bg-white px-3 text-sm text-black shadow-brutal-inset-sm transition-all placeholder:text-black/40 focus:ring-2 focus:ring-orange focus:outline-none dark:bg-zinc dark:text-white`,
-													)}
+													className="h-10 rounded-md px-3 text-sm shadow-brutal-inset-sm"
 												/>
 											</div>
 										)}
