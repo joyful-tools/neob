@@ -110,11 +110,7 @@ export function ConfirmButton({
 						transition={springCritical}
 						style={{ borderRadius: 12 }}
 						className={cn(
-							`
-								absolute z-20 flex min-w-56 flex-col
-								items-center rounded-xl border-2 border-black bg-white p-3
-								text-black shadow-brutal dark:border-white dark:bg-black dark:text-white
-							`,
+							`absolute z-20 flex min-w-56 flex-col items-center rounded-xl border-2 border-black bg-white p-3 text-black shadow-brutal dark:bg-zinc dark:text-white`,
 							'origin-center',
 						)}
 					>

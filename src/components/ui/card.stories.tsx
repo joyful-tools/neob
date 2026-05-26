@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './card';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
-	title: 'Components/Card',
+	title: 'Surfaces/Card',
 	component: Card,
 	parameters: {
 		layout: 'centered',

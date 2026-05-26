@@ -20,7 +20,7 @@ const OVERLAY_CLASS_NAME = `
 
 const CONTENT_CLASS_NAME = `
 	relative grid w-full max-w-[calc(100vw-2rem)] gap-4 rounded-xl
-	border-4 border-black bg-white p-6
+	border-4 border-black bg-white dark:bg-zinc p-6 dark:text-white
 	sm:max-w-lg
 `;
 
@@ -140,11 +140,7 @@ export function AlertDialogContent({ className, children, ref, onAnimationEnd, .
 			{open && (
 				<AlertDialogPrimitive.Portal keepMounted>
 					<AlertDialogPrimitive.Backdrop className={OVERLAY_CLASS_NAME} />
-					<div
-						className="
-							fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4
-						"
-					>
+					<div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4">
 						<AlertDialogPrimitive.Popup
 							ref={ref}
 							render={
@@ -171,18 +167,7 @@ AlertDialogContent.displayName = 'AlertDialogContent';
 
 /** Alert dialog header for title and description. */
 export function AlertDialogHeader({ className, ...properties }: React.HTMLAttributes<HTMLDivElement>) {
-	return (
-		<div
-			className={cn(
-				`
-					flex flex-col space-y-2 text-center
-					sm:text-left
-				`,
-				className,
-			)}
-			{...properties}
-		/>
-	);
+	return <div className={cn(`flex flex-col space-y-2 text-center sm:text-left`, className)} {...properties} />;
 }
 AlertDialogHeader.displayName = 'AlertDialogHeader';
 
@@ -200,7 +185,13 @@ AlertDialogTitle.displayName = 'AlertDialogTitle';
 
 /** Alert dialog description text. */
 export function AlertDialogDescription({ className, ref, ...properties }: AlertDialogDescriptionProperties) {
-	return <AlertDialogPrimitive.Description ref={ref} className={cn('text-base font-medium text-black', className)} {...properties} />;
+	return (
+		<AlertDialogPrimitive.Description
+			ref={ref}
+			className={cn('text-base font-medium text-black dark:text-white/80', className)}
+			{...properties}
+		/>
+	);
 }
 AlertDialogDescription.displayName = 'AlertDialogDescription';
 
@@ -215,14 +206,7 @@ export function AlertDialogCancel({ className, ref, ...properties }: AlertDialog
 	return (
 		<AlertDialogPrimitive.Close
 			ref={ref}
-			className={cn(
-				buttonVariants({ variant: 'subtle' }),
-				`
-					mt-2
-					sm:mt-0
-				`,
-				className,
-			)}
+			className={cn(buttonVariants({ variant: 'subtle' }), `mt-2 sm:mt-0`, className)}
 			{...properties}
 		/>
 	);

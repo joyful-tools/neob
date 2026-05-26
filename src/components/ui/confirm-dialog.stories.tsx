@@ -8,7 +8,7 @@ import { GlobalDialogBackdrop } from './global-dialog-backdrop';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
-	title: 'Components/ConfirmDialog',
+	title: 'Surfaces/ConfirmDialog',
 	component: ConfirmDialog,
 	parameters: {
 		layout: 'centered',

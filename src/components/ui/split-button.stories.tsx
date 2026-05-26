@@ -8,7 +8,7 @@ import { Toaster } from './toaster';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
-	title: 'Components/SplitButton',
+	title: 'Inputs/SplitButton',
 	component: SplitButton,
 	parameters: {
 		layout: 'centered',

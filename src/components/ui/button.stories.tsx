@@ -1,11 +1,13 @@
+import { Envelope, ArrowRight, Plus } from '@phosphor-icons/react';
 import * as React from 'react';
 
 import { Button } from './button';
+import { Spinner } from './spinner';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
-	title: 'Components/Button',
+	title: 'Inputs/Button',
 	component: Button,
 	parameters: {
 		layout: 'centered',
@@ -102,8 +104,47 @@ export const Icon: Story = {
 
 export const Disabled: Story = {
 	args: {
-		children: 'Disabled',
+		children: (
+			<>
+				<Spinner size="sm" />
+				Disabled
+			</>
+		),
 		disabled: true,
+	},
+};
+
+export const WithPrefixIcon: Story = {
+	args: {
+		children: (
+			<>
+				<Envelope className="size-4" />
+				Email Login
+			</>
+		),
+	},
+};
+
+export const WithSuffixIcon: Story = {
+	args: {
+		children: (
+			<>
+				Next Step
+				<ArrowRight className="size-4" />
+			</>
+		),
+	},
+};
+
+export const WithBothIcons: Story = {
+	args: {
+		children: (
+			<>
+				<Plus className="size-4" />
+				Add Item
+				<ArrowRight className="size-4" />
+			</>
+		),
 	},
 };
 

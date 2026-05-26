@@ -90,10 +90,7 @@ function DropdownMenuContent({ children, className, align = 'end', sideOffset, r
 					ref={ref}
 					render={<motion.div variants={popoverVariants} initial="hidden" animate="visible" exit="exit" transition={springSnappy} />}
 					className={cn(
-						`
-							min-w-40 overflow-hidden rounded-xl border-2 border-black bg-white p-1.5
-							shadow-brutal outline-hidden select-none
-						`,
+						`min-w-40 overflow-hidden rounded-xl border-2 border-black bg-white p-1.5 shadow-sm outline-hidden select-none dark:bg-zinc dark:text-white`,
 						className,
 					)}
 					{...properties}
@@ -123,13 +120,7 @@ function DropdownMenuItem({ children, className, disabled, onSelect, ref, 'aria-
 			onClick={onSelect}
 			aria-current={ariaCurrent}
 			className={cn(
-				`
-					relative flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2
-					text-sm font-bold text-black outline-hidden transition-all
-					select-none
-					focus:bg-orange focus:text-black
-					data-disabled:pointer-events-none data-disabled:opacity-50
-				`,
+				`relative flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-bold text-black outline-hidden transition-all select-none focus:bg-orange focus:text-black data-disabled:pointer-events-none data-disabled:opacity-50 dark:text-white`,
 				className,
 			)}
 		>

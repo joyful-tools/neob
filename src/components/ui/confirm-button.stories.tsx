@@ -3,7 +3,7 @@ import { ConfirmButton } from './confirm-button';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
-	title: 'Components/ConfirmButton',
+	title: 'Inputs/ConfirmButton',
 	component: ConfirmButton,
 	parameters: {
 		layout: 'centered',

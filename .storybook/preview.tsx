@@ -26,30 +26,36 @@ const preview: Preview = {
 		},
 		layout: 'fullscreen',
 	},
+	globalTypes: {
+		theme: {
+			description: 'Global theme for components',
+			defaultValue: 'light',
+			toolbar: {
+				title: 'Theme',
+				icon: 'circlehollow',
+				items: [
+					{ value: 'light', icon: 'circlehollow', title: 'Light' },
+					{ value: 'dark', icon: 'circle', title: 'Dark' },
+				],
+				showName: true,
+			},
+		},
+	},
 	decorators: [
 		(Story, context) => {
-			const selectedBackground = context.globals.backgrounds?.value;
+			const theme = context.globals.theme || 'light';
 
 			React.useEffect(() => {
 				const htmlElement = document.documentElement;
-				// Synchronize dark class based on the selected Storybook background color
-				if (selectedBackground === '#121212') {
-					htmlElement.classList.add('dark');
-					document.body.style.backgroundColor = '#121212';
-					document.body.style.color = '#ffffff';
-				} else {
-					htmlElement.classList.remove('dark');
-					document.body.style.backgroundColor = '#ffffff';
-					document.body.style.color = '#000000';
-				}
-			}, [selectedBackground]);
+				htmlElement.classList.toggle('dark', theme === 'dark');
+			}, [theme]);
 
 			const isCentered = context.parameters.layout === 'centered';
 
 			return (
 				<MemoryRouter>
 					<div
-						className={`p-8 min-h-screen bg-background text-foreground transition-colors duration-200 ${
+						className={`bg-background text-foreground min-h-screen p-8 transition-colors duration-200 ${
 							isCentered ? 'flex items-center justify-center' : ''
 						}`}
 					>

@@ -5,7 +5,7 @@ import { Toaster } from './toaster';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
-	title: 'Components/Toast',
+	title: 'Feedback/Toast',
 	parameters: {
 		layout: 'centered',
 	},

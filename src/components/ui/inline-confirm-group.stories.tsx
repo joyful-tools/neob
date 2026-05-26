@@ -6,7 +6,7 @@ import { InlineConfirmGroup } from './inline-confirm-group';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
-	title: 'Components/InlineConfirmGroup',
+	title: 'Inputs/InlineConfirmGroup',
 	component: InlineConfirmGroup,
 	parameters: {
 		layout: 'centered',
@@ -43,14 +43,14 @@ const RealWorldList = () => {
 	};
 
 	return (
-		<div className="w-[450px] rounded-xl border-4 border-black bg-white p-6 text-black shadow-brutal dark:border-white dark:bg-black dark:text-white">
-			<h3 className="mb-4 border-b-2 border-black pb-2 font-display text-lg font-bold dark:border-white">Project Directory Files</h3>
+		<div className="w-[450px] rounded-xl border-4 border-black bg-white p-6 text-black shadow-brutal dark:bg-zinc dark:text-white">
+			<h3 className="mb-4 border-b-2 border-black pb-2 font-display text-lg font-bold">Project Directory Files</h3>
 			<p className="mb-4 text-xs text-muted-foreground">
 				Click the ghost trash icon, then confirm by clicking the trash again (the cancel button will spawn directly under your mouse).
 			</p>
 			<ul className="space-y-3">
 				{files.map((file) => (
-					<li key={file.id} className="flex items-center justify-between rounded-lg border-2 border-black bg-zinc/5 p-3 dark:border-white">
+					<li key={file.id} className="flex items-center justify-between rounded-lg border-2 border-black bg-zinc/5 p-3">
 						<div>
 							<p className="font-mono text-sm font-bold">{file.name}</p>
 							<p className="text-xs text-black/60 dark:text-white/60">{file.size}</p>

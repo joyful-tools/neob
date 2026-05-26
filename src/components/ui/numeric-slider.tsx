@@ -100,11 +100,7 @@ export function NumericSlider({ onChange, className }: NumericSliderProperties) 
 			onPointerDown={handlePointerDown}
 			style={{ touchAction: 'none' }}
 			className={cn(
-				`
-					flex size-8 cursor-ns-resize items-center justify-center text-black/40
-					transition-all duration-75 select-none hover:scale-110 hover:text-black
-					dark:text-white/40 dark:hover:text-white
-				`,
+				`flex size-8 cursor-ns-resize items-center justify-center text-black/40 transition-all duration-75 select-none hover:scale-110 hover:text-black dark:text-white/40 dark:hover:text-white`,
 				pointerLockActive && 'scale-110 text-orange dark:text-orange',
 				className,
 			)}

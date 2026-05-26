@@ -1,5 +1,5 @@
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
-import { X } from 'lucide-react';
+import { X } from '@phosphor-icons/react';
 import { AnimatePresence, motion } from 'motion/react';
 import { createContext, useCallback, useContext, useRef, useState } from 'react';
 
@@ -20,8 +20,8 @@ const OVERLAY_CLASS_NAME = `
 
 const CONTENT_CLASS_NAME = `
 	relative grid w-full max-w-[calc(100vw-2rem)] gap-4 rounded-xl
-	border-4 border-black bg-white p-6 shadow-brutal
-	sm:max-w-lg dark:border-white dark:bg-black dark:text-white
+	border-4 border-black bg-white dark:bg-zinc p-6 shadow-brutal
+	sm:max-w-lg dark:text-white
 `;
 
 const MOTION_VARIANTS = {
@@ -113,7 +113,7 @@ export function Dialog({
 			<DialogContext.Provider value={{ open, isComposed: true }}>
 				<DialogPrimitive.Root open={open} onOpenChange={handleOpenChange} actionsRef={actionsReference} {...properties}>
 					<DialogContent className={cn('gap-0 p-0', className)}>
-						<DialogHeader className="border-b-2 border-black px-6 py-4 dark:border-white" hideClose={hideClose}>
+						<DialogHeader className="border-b-2 border-black px-6 py-4" hideClose={hideClose}>
 							<DialogTitle>{title}</DialogTitle>
 						</DialogHeader>
 						{children}
@@ -144,11 +144,7 @@ export function DialogContent({ className, children, ref, onAnimationEnd, ...pro
 			{open && (
 				<DialogPrimitive.Portal keepMounted>
 					<DialogPrimitive.Backdrop className={OVERLAY_CLASS_NAME} />
-					<div
-						className="
-							fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4
-						"
-					>
+					<div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4">
 						<DialogPrimitive.Popup
 							ref={ref}
 							render={
@@ -182,14 +178,7 @@ export function DialogHeader({
 }: React.HTMLAttributes<HTMLDivElement> & { readonly hideClose?: boolean }) {
 	return (
 		<div className={cn('flex flex-row items-start justify-between gap-4', className)} {...properties}>
-			<div
-				className="
-					flex flex-1 flex-col space-y-1.5 text-center
-					sm:text-left
-				"
-			>
-				{children}
-			</div>
+			<div className="flex flex-1 flex-col space-y-1.5 text-center sm:text-left">{children}</div>
 			{!hideClose && (
 				<DialogPrimitive.Close className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }), '-mt-3 -mr-3 shrink-0')}>
 					<X className="size-4" />
@@ -224,11 +213,7 @@ export function DialogFooter({ className, ...properties }: React.HTMLAttributes<
 	const { isComposed } = useContext(DialogContext);
 	return (
 		<div
-			className={cn(
-				'flex flex-col-reverse gap-2 sm:flex-row sm:justify-end',
-				isComposed && 'border-t-2 border-black px-6 py-4 dark:border-white',
-				className,
-			)}
+			className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', isComposed && 'border-t-2 border-black px-6 py-4', className)}
 			{...properties}
 		/>
 	);

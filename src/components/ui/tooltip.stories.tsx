@@ -6,7 +6,7 @@ import { Tooltip, TooltipProvider } from './tooltip';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
-	title: 'Components/Tooltip',
+	title: 'Feedback/Tooltip',
 	component: Tooltip,
 	parameters: {
 		layout: 'centered',

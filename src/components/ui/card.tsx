@@ -7,10 +7,7 @@ export function Card({ className, ref, ...properties }: React.HTMLAttributes<HTM
 		<div
 			ref={ref}
 			className={cn(
-				`
-					rounded-xl border-2 border-black bg-white text-card-foreground
-					shadow-brutal transition-all duration-75 ease-out
-				`,
+				`rounded-xl border-2 border-black bg-white text-card-foreground shadow-brutal transition-all duration-75 ease-out dark:bg-zinc`,
 				className,
 			)}
 			{...properties}

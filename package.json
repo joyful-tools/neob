@@ -36,6 +36,11 @@
 			"import": "./dist/input.js",
 			"require": "./dist/input.cjs"
 		},
+		"./input-group": {
+			"types": "./dist/input-group.d.ts",
+			"import": "./dist/input-group.js",
+			"require": "./dist/input-group.cjs"
+		},
 		"./label": {
 			"types": "./dist/label.d.ts",
 			"import": "./dist/label.js",
@@ -166,6 +171,51 @@
 			"import": "./dist/dialog-stack.js",
 			"require": "./dist/dialog-stack.cjs"
 		},
+		"./input-area": {
+			"types": "./dist/input-area.d.ts",
+			"import": "./dist/input-area.js",
+			"require": "./dist/input-area.cjs"
+		},
+		"./sensitive-input": {
+			"types": "./dist/sensitive-input.d.ts",
+			"import": "./dist/sensitive-input.js",
+			"require": "./dist/sensitive-input.cjs"
+		},
+		"./checkbox": {
+			"types": "./dist/checkbox.d.ts",
+			"import": "./dist/checkbox.js",
+			"require": "./dist/checkbox.cjs"
+		},
+		"./field": {
+			"types": "./dist/field.d.ts",
+			"import": "./dist/field.js",
+			"require": "./dist/field.cjs"
+		},
+		"./switch": {
+			"types": "./dist/switch.d.ts",
+			"import": "./dist/switch.js",
+			"require": "./dist/switch.cjs"
+		},
+		"./select": {
+			"types": "./dist/select.d.ts",
+			"import": "./dist/select.js",
+			"require": "./dist/select.cjs"
+		},
+		"./combobox": {
+			"types": "./dist/combobox.d.ts",
+			"import": "./dist/combobox.js",
+			"require": "./dist/combobox.cjs"
+		},
+		"./tabs": {
+			"types": "./dist/tabs.d.ts",
+			"import": "./dist/tabs.js",
+			"require": "./dist/tabs.cjs"
+		},
+		"./table": {
+			"types": "./dist/table.d.ts",
+			"import": "./dist/table.js",
+			"require": "./dist/table.cjs"
+		},
 		"./dist/index.css": "./dist/index.css"
 	},
 	"files": [
@@ -214,7 +264,6 @@
 		"globals": "^16.5.0",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.2.7",
-		"lucide-react": "^0.525.0",
 		"motion": "^12.26.1",
 		"prettier": "^3.7.4",
 		"react": "^19.2.3",

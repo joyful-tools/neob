@@ -1,4 +1,4 @@
-import { Loader2 } from 'lucide-react';
+import { CircleNotch } from '@phosphor-icons/react';
 import { motion, useTime, useTransform } from 'motion/react';
 import * as React from 'react';
 
@@ -36,7 +36,7 @@ export function Spinner({ className, size = 'md' }: SpinnerProperties) {
 			style={{ rotate }}
 			className={cn(SIZE_CLASSES[size], className)}
 		>
-			<Loader2 className="size-full text-orange" />
+			<CircleNotch className="size-full" />
 		</motion.div>
 	);
 }

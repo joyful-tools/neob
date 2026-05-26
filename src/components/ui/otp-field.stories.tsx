@@ -6,7 +6,7 @@ import { OTPFieldRoot, OTPFieldInput } from './otp-field';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
-	title: 'Components/OTPField',
+	title: 'Inputs/OTPField',
 	component: OTPFieldRoot,
 	parameters: {
 		layout: 'centered',

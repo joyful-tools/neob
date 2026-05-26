@@ -20,7 +20,7 @@ export function ListSkeleton({ itemCount = 4, className, showLeadingIcon = true,
 	return (
 		<div className={cn('flex flex-col gap-3', className)} {...properties}>
 			{Array.from({ length: itemCount }, (_, index) => (
-				<div key={index} className="flex items-center gap-4 rounded-xl border-2 border-black bg-white p-4 shadow-brutal-sm">
+				<div key={index} className="flex items-center gap-4 rounded-xl border-2 border-black bg-white p-4 shadow-brutal-sm dark:bg-zinc">
 					{showLeadingIcon ? <Skeleton className="size-10 shrink-0 rounded-full" /> : null}
 					<div className="flex min-w-0 flex-1 flex-col gap-2">
 						<Skeleton className="h-4 w-1/3" />

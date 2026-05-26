@@ -1,6 +1,6 @@
 import { Radio } from '@base-ui/react/radio';
 import { RadioGroup as RadioGroupPrimitive } from '@base-ui/react/radio-group';
-import { Check } from 'lucide-react';
+import { Check } from '@phosphor-icons/react';
 import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
@@ -10,14 +10,15 @@ import { cn } from '@/lib/utilities';
 // ============================================================================
 
 const RADIO_ITEM_CLASS_NAME = `
-	aspect-square size-4 shrink-0 cursor-pointer rounded-full border
-	border-primary shadow-sm ring-0 ring-transparent ring-offset-0
+	aspect-square size-5 shrink-0 cursor-pointer rounded-full border-2
+	border-black bg-white shadow-brutal-sm ring-0 ring-transparent ring-offset-0
 	transition-all duration-300 ease-spring
 	focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2
 	focus-visible:outline-hidden
 	disabled:cursor-not-allowed disabled:opacity-50
-	data-[checked]:bg-primary
-	data-[checked]:text-primary-foreground
+	data-[checked]:bg-black data-[checked]:text-white
+	dark:bg-zinc dark:data-[checked]:bg-white
+	dark:data-[checked]:text-black
 `;
 
 // ============================================================================

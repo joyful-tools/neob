@@ -131,10 +131,7 @@ export function Tooltip({ children, content, side = 'top', delayDuration, classN
 								role="tooltip"
 								render={<motion.div variants={tooltipVariants} initial="hidden" animate="visible" exit="exit" transition={springSnappy} />}
 								className={cn(
-									`
-										rounded-lg border-2 border-black bg-white px-3 py-1.5 text-xs
-										font-bold text-black shadow-brutal-sm select-none
-									`,
+									`rounded-full border-2 border-black bg-white px-4 py-1.5 text-xs font-bold text-black shadow-sm select-none dark:bg-zinc dark:text-white`,
 									className,
 								)}
 							>

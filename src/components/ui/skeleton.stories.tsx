@@ -5,7 +5,7 @@ import { Skeleton, ListSkeleton } from './skeleton';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
-	title: 'Components/Skeleton',
+	title: 'Feedback/Skeleton',
 	component: Skeleton,
 	parameters: {
 		layout: 'centered',

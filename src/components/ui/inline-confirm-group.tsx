@@ -121,10 +121,7 @@ export function InlineConfirmGroup({ itemName, onConfirm, onCancel, className, i
 						transition={springCritical}
 						style={{ borderRadius: 8 }}
 						className={cn(
-							`
-								flex shrink-0 items-center gap-1.5 rounded-lg border-2 border-black
-								bg-white p-1 shadow-brutal-sm dark:border-white dark:bg-black
-							`,
+							`flex shrink-0 items-center gap-1.5 rounded-lg border-2 border-black bg-white p-1 shadow-brutal-sm dark:border-white dark:bg-black`,
 							className,
 						)}
 						onClick={(event) => event.stopPropagation()}
@@ -143,12 +140,7 @@ export function InlineConfirmGroup({ itemName, onConfirm, onCancel, className, i
 								tabIndex={0}
 								disabled={!isClickable || isLoading}
 								onClick={handleConfirmClick}
-								className="
-									flex size-7 cursor-pointer items-center justify-center rounded-md
-									border border-black bg-red/10 text-red transition-all
-									hover:bg-red hover:text-white disabled:pointer-events-none disabled:opacity-50
-									dark:border-white dark:bg-red/20
-								"
+								className="flex size-7 cursor-pointer items-center justify-center rounded-md border border-black bg-red/10 text-red transition-all hover:bg-red hover:text-white disabled:pointer-events-none disabled:opacity-50 dark:border-white dark:bg-red/20"
 								aria-label={`Confirm delete ${itemName}`}
 							>
 								{isLoading ? <Spinner size="sm" className="size-4" /> : <Trash className="size-4" />}
@@ -159,13 +151,7 @@ export function InlineConfirmGroup({ itemName, onConfirm, onCancel, className, i
 								tabIndex={0}
 								disabled={isLoading}
 								onClick={handleCancelClick}
-								className="
-									flex size-7 cursor-pointer items-center justify-center rounded-md
-									border border-black bg-zinc/10 text-black transition-all
-									hover:bg-black hover:text-white disabled:pointer-events-none disabled:opacity-50
-									dark:border-white dark:bg-zinc/20 dark:text-white
-									dark:hover:bg-white dark:hover:text-black
-								"
+								className="flex size-7 cursor-pointer items-center justify-center rounded-md border border-black bg-zinc/10 text-black transition-all hover:bg-black hover:text-white disabled:pointer-events-none disabled:opacity-50 dark:border-white dark:bg-zinc/20 dark:text-white dark:hover:bg-white dark:hover:text-black"
 								aria-label={`Cancel delete ${itemName}`}
 							>
 								<X className="size-4" />
@@ -186,12 +172,7 @@ export function InlineConfirmGroup({ itemName, onConfirm, onCancel, className, i
 								event.stopPropagation();
 								setOpen(true);
 							}}
-							className="
-								flex size-9 cursor-pointer items-center justify-center rounded-md
-								border-2 border-transparent text-black transition-all
-								hover:border-black hover:bg-muted active:translate-y-0.5
-								dark:text-white dark:hover:border-white dark:hover:bg-zinc
-							"
+							className="flex size-9 cursor-pointer items-center justify-center rounded-md border-2 border-transparent text-black transition-all hover:border-black hover:bg-muted active:translate-y-0.5 dark:text-white dark:hover:border-white dark:hover:bg-zinc"
 							aria-label={`Delete ${itemName}`}
 						>
 							<motion.span

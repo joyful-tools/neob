@@ -37,6 +37,15 @@ export {
 } from './components/ui/alert-dialog';
 
 export { Input } from './components/ui/input';
+export type { InputProperties } from './components/ui/input';
+export { InputGroup } from './components/ui/input-group';
+export type {
+	InputGroupRootProps,
+	InputGroupInputProps,
+	InputGroupAddonProps,
+	InputGroupButtonProps,
+	InputGroupSuffixProps,
+} from './components/ui/input-group';
 
 export { Label, labelVariants } from './components/ui/label';
 
@@ -111,3 +120,39 @@ export type { PillProperties } from './components/ui/pill';
 
 export { GlobalDialogBackdrop } from './components/ui/global-dialog-backdrop';
 export { useDialogStackPresence, closeTopDialog } from './components/ui/dialog-stack';
+
+// New Fundamental Components
+export { InputArea } from './components/ui/input-area';
+export type { InputAreaProperties } from './components/ui/input-area';
+
+export { useInputAreaAutoResize } from './hooks/use-input-area-auto-resize';
+export type { UseInputAreaAutoResizeOptions } from './hooks/use-input-area-auto-resize';
+
+export { SensitiveInput } from './components/ui/sensitive-input';
+export type { SensitiveInputProperties } from './components/ui/sensitive-input';
+
+export { Checkbox, CheckboxItem, CheckboxGroup } from './components/ui/checkbox';
+export type { CheckboxProperties, CheckboxItemProperties, CheckboxGroupProperties } from './components/ui/checkbox';
+
+export { Field, Fieldset } from './components/ui/field';
+export type { FieldProperties, FieldsetProperties } from './components/ui/field';
+
+export { Switch } from './components/ui/switch';
+export type { SwitchProperties } from './components/ui/switch';
+
+export { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup, SelectGroupLabel } from './components/ui/select';
+
+export { Combobox, ComboboxInput, ComboboxContent, ComboboxItem, ComboboxGroup, ComboboxGroupLabel } from './components/ui/combobox';
+
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './components/ui/tabs';
+
+export { TableContainer, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell } from './components/ui/table';
+export type {
+	TableProperties,
+	TableHeaderProperties,
+	TableBodyProperties,
+	TableFooterProperties,
+	TableRowProperties,
+	TableHeadProperties,
+	TableCellProperties,
+} from './components/ui/table';

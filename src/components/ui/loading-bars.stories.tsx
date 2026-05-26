@@ -3,7 +3,7 @@ import { LoadingBars } from './loading-bars';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
-	title: 'Components/LoadingBars',
+	title: 'Feedback/LoadingBars',
 	component: LoadingBars,
 	parameters: {
 		layout: 'centered',

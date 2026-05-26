@@ -48,6 +48,34 @@ Always apply these custom brutalist classes when building layouts:
 
 ## Component API & Usage Cheatsheet
 
+### Form Input Architecture
+
+All input components (`Input`, `InputArea`, `SensitiveInput`, `InputGroup`) support an **opt-in wrapper** pattern:
+
+- Pass `label`, `description`, `error`, `required`, `labelTooltip`, `controlFirst`, `hideLabel` directly as props.
+- If any wrapper prop is provided, the component automatically wraps itself in a `Field` layout.
+- If no wrapper prop is provided, the component renders **only** the raw control (no wrapping div).
+- Use `containerClassName` to style the `Field` wrapper; use `className` for the raw control.
+- Use `Field` / `Fieldset` directly only for custom form compositions (e.g., wrapping Select, Combobox, or groups).
+
+```tsx
+import { Input, InputArea, SensitiveInput, InputGroup, Field, Fieldset } from 'neob';
+
+// Self-contained labeled input (no manual Field wrapper needed)
+<Input label="Username" description="Choose a handle" placeholder="johndoe" />
+
+// Self-contained labeled textarea
+<InputArea label="Bio" description="Tell us about yourself" autoResize />
+
+// Raw input without wrapper (for custom form libraries)
+<Input placeholder="Bare input" />
+
+// Field for custom compositions
+<Field label="Custom Control">
+  <SomeCustomComponent />
+</Field>
+```
+
 ### 1. Button
 
 Variants: `default`, `accent`, `danger`, `subtle`, `ghost`, `link`, `dark-default`, `dark-accent`, `dark-subtle`, `dark-ghost`.

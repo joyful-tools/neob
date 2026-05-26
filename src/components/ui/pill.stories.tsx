@@ -5,7 +5,7 @@ import { Pill } from './pill';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
-	title: 'Components/Pill',
+	title: 'Data Display/Pill',
 	component: Pill,
 	parameters: {
 		layout: 'centered',

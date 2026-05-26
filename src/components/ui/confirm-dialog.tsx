@@ -1,5 +1,5 @@
 import { AlertDialog as AlertDialogPrimitive } from '@base-ui/react/alert-dialog';
-import { Check, Copy } from 'lucide-react';
+import { Check, Copy } from '@phosphor-icons/react';
 import { AnimatePresence, motion, type Transition } from 'motion/react';
 import { useState, type ReactNode } from 'react';
 
@@ -76,25 +76,16 @@ export function ConfirmDialog({
 				<AlertDialogPrimitive.Portal keepMounted>
 					<AnimatePresence onExitComplete={onExitComplete}>
 						{show && (
-							<div
-								className="
-									fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4
-								"
-							>
+							<div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4">
 								<AlertDialogPrimitive.Popup
 									render={
 										<motion.div variants={modalContentVariants} initial="hidden" animate="visible" exit="exit" transition={springSnappy} />
 									}
 									className={cn(
-										`
-											relative grid w-full max-w-[calc(100vw-2rem)] gap-4 rounded-xl
-											border-4 border-black bg-white p-6 shadow-brutal
-											sm:max-w-lg dark:border-white dark:bg-black
-											dark:text-white
-										`,
+										`relative grid w-full max-w-[calc(100vw-2rem)] gap-4 rounded-xl border-4 border-black bg-white p-6 shadow-brutal sm:max-w-lg dark:bg-zinc dark:text-white`,
 									)}
 								>
-									<div className="border-b-2 border-black pb-3 dark:border-white">
+									<div className="border-b-2 border-black pb-3">
 										<AlertDialogPrimitive.Title className="font-display text-xl font-bold tracking-tight text-black dark:text-white">
 											{title}
 										</AlertDialogPrimitive.Title>
@@ -133,18 +124,13 @@ export function ConfirmDialog({
 													placeholder={resourceName}
 													autoComplete="off"
 													className={cn(
-														`
-															h-10 w-full rounded-md border-2 border-black bg-white px-3
-															text-sm text-black shadow-brutal-inset-sm transition-all
-															placeholder:text-black/40 focus:ring-2 focus:ring-orange focus:outline-none
-															dark:border-white dark:bg-zinc dark:text-white
-														`,
+														`h-10 w-full rounded-md border-2 border-black bg-white px-3 text-sm text-black shadow-brutal-inset-sm transition-all placeholder:text-black/40 focus:ring-2 focus:ring-orange focus:outline-none dark:bg-zinc dark:text-white`,
 													)}
 												/>
 											</div>
 										)}
 									</div>
-									<div className="flex flex-col-reverse gap-2 border-t-2 border-black pt-3 sm:flex-row sm:justify-end dark:border-white">
+									<div className="flex flex-col-reverse gap-2 border-t-2 border-black pt-3 sm:flex-row sm:justify-end">
 										<Button type="button" variant="subtle" onClick={() => handleOpenChange(false)} disabled={isConfirming}>
 											{cancelLabel}
 										</Button>

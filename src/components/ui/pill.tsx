@@ -9,7 +9,7 @@ const pillVariants = cva(
 	`
 		inline-flex items-center justify-center border-2 border-black
 		leading-none font-bold tracking-wide transition-all
-		select-none dark:border-white
+		select-none
 	`,
 	{
 		variants: {
@@ -34,7 +34,7 @@ const pillVariants = cva(
 				pink: 'bg-pink text-black',
 				yellow: 'bg-yellow text-black',
 				zinc: 'bg-zinc text-white',
-				white: 'bg-white text-black',
+				white: 'bg-white text-black dark:bg-zinc dark:text-white',
 			},
 		},
 		defaultVariants: {
