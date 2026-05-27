@@ -1,106 +1,220 @@
 import { Select as BaseSelect } from '@base-ui/react/select';
-import { CaretDown, Check } from '@phosphor-icons/react';
+import { CaretUpDown, Check } from '@phosphor-icons/react';
 import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
 
-// ============================================================================
-// Components
-// ============================================================================
+import { buttonVariants } from './button';
+import { InputWrapper } from './input';
+import { Skeleton } from './skeleton';
 
-/**
- * Root Select component.
- * Wraps Base UI Select.Root.
- */
-export const Select = BaseSelect.Root;
-
-/**
- * SelectTrigger component.
- * The button that opens the select list.
- */
-export function SelectTrigger({
-	className,
-	ref,
-	children,
-	...properties
-}: React.ComponentPropsWithoutRef<typeof BaseSelect.Trigger> & {
-	readonly ref?: React.Ref<HTMLButtonElement>;
-}) {
-	return (
-		<BaseSelect.Trigger
-			ref={ref}
-			className={cn(
-				`flex h-10 w-full cursor-pointer items-center justify-between rounded-lg border-2 border-black bg-white px-4 py-2 text-base font-bold text-black shadow-brutal-sm transition-all duration-300 ease-spring select-none hover:-translate-y-0.5 hover:shadow-brutal focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:outline-hidden active:translate-y-0 active:shadow-brutal-inset disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-brutal-sm aria-expanded:translate-y-0 aria-expanded:hover:translate-y-0 dark:bg-zinc dark:text-white dark:focus-visible:ring-white`,
-				className,
-			)}
-			{...properties}
-		>
-			<span className="truncate">{children}</span>
-			<BaseSelect.Icon className="ml-2 shrink-0 opacity-70">
-				<CaretDown className="size-4 stroke-3" />
-			</BaseSelect.Icon>
-		</BaseSelect.Trigger>
-	);
+/** Shape for items that carry extra metadata (disabled state). */
+export interface SelectItemDescriptor {
+	/** Display label for the option. */
+	label: React.ReactNode;
+	/** When `true`, the option cannot be selected. */
+	disabled?: boolean;
 }
-SelectTrigger.displayName = 'SelectTrigger';
 
-/**
- * SelectValue component.
- * Displays the selected value or placeholder text.
- */
-export const SelectValue = BaseSelect.Value;
+/** Value type accepted by the `items` object-map prop. */
+export type SelectItemValue = React.ReactNode | SelectItemDescriptor;
 
-/**
- * SelectContent component.
- * The popup overlay panel listing all options.
- */
-export function SelectContent({
-	className,
-	ref,
-	children,
-	...properties
-}: React.ComponentPropsWithoutRef<typeof BaseSelect.Popup> & {
-	readonly ref?: React.Ref<HTMLDivElement>;
-}) {
-	return (
-		<BaseSelect.Portal>
-			<BaseSelect.Positioner side="bottom" align="start" sideOffset={6} className="z-50">
-				<BaseSelect.Popup
-					ref={ref}
-					className={cn(
-						`w-(--select-trigger-width) min-w-[200px] animate-popover-in overflow-hidden rounded-xl border-4 border-black bg-white p-2 text-black shadow-brutal data-closed:animate-popover-out dark:bg-zinc dark:text-white`,
-						className,
-					)}
-					{...properties}
-				>
-					<div className="flex max-h-60 flex-col gap-1 overflow-y-auto pr-1">{children}</div>
-				</BaseSelect.Popup>
-			</BaseSelect.Positioner>
-		</BaseSelect.Portal>
-	);
+export interface SelectProps<T = unknown, Multiple extends boolean | undefined = false> extends Omit<
+	BaseSelect.Root.Props<T, Multiple>,
+	'items'
+> {
+	multiple?: Multiple;
+	renderValue?: (value: Multiple extends true ? T[] : T) => React.ReactNode;
+	className?: string;
+	size?: 'default' | 'sm' | 'lg' | 'xl';
+	label?: React.ReactNode;
+	hideLabel?: boolean;
+	placeholder?: string;
+	loading?: boolean;
+	labelTooltip?: React.ReactNode;
+	description?: React.ReactNode;
+	error?: string;
+	container?: HTMLElement | null | React.RefObject<HTMLElement | null>;
+	containerClassName?: string;
+	items?: Record<string, SelectItemValue> | ReadonlyArray<{ label: React.ReactNode; value: T }>;
 }
-SelectContent.displayName = 'SelectContent';
 
-/**
- * SelectItem component.
- * An individual option inside the SelectContent popup.
- */
-export function SelectItem({
-	className,
-	ref,
+function isItemDescriptor(value: SelectItemValue): value is SelectItemDescriptor {
+	if (value && typeof value === 'object' && !Array.isArray(value) && !(value instanceof Promise)) {
+		if ('$$typeof' in value) {
+			return false;
+		}
+		if ('label' in value) {
+			return value.label !== undefined && value.label !== null;
+		}
+	}
+	return false;
+}
+
+function normalizeItems<T>(
+	items: Record<string, SelectItemValue> | ReadonlyArray<{ label: React.ReactNode; value: T }>,
+): ReadonlyArray<{ label: React.ReactNode; value: T }> {
+	if (Array.isArray(items)) {
+		return items;
+	}
+	return Object.entries(items).map(([key, entry]) => {
+		const label = isItemDescriptor(entry) ? entry.label : entry;
+		// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+		const value = key as unknown as T;
+		return {
+			value,
+			label,
+		};
+	});
+}
+
+function renderOptionsFromItems<T>(
+	items: Record<string, SelectItemValue> | ReadonlyArray<{ label: React.ReactNode; value: T }>,
+): React.ReactNode {
+	const normalizedItems = normalizeItems(items);
+	const disabledLookup = new Map<string, { disabled?: boolean }>();
+	if (!Array.isArray(items)) {
+		for (const [key, entry] of Object.entries(items)) {
+			if (isItemDescriptor(entry)) {
+				disabledLookup.set(key, { disabled: entry.disabled });
+			}
+		}
+	}
+
+	return normalizedItems
+		.filter((item) => item.value !== null)
+		.map((item, index) => {
+			const key = typeof item.value === 'string' ? item.value : `option-${index}`;
+			const meta = typeof item.value === 'string' ? disabledLookup.get(item.value) : undefined;
+
+			return (
+				<Option key={key} value={item.value} disabled={meta?.disabled}>
+					{item.label}
+				</Option>
+			);
+		});
+}
+
+export function Select<T = unknown, Multiple extends boolean | undefined = false>({
 	children,
-	...properties
-}: React.ComponentPropsWithoutRef<typeof BaseSelect.Item> & {
-	readonly ref?: React.Ref<HTMLDivElement>;
-}) {
+	className,
+	renderValue,
+	label,
+	hideLabel,
+	placeholder,
+	loading,
+	size = 'default',
+	labelTooltip,
+	description,
+	error,
+	required,
+	container,
+	containerClassName,
+	...props
+}: SelectProps<T, Multiple>) {
+	const normalizedItems = props.items ? normalizeItems(props.items) : undefined;
+	const renderedChildren = children || (props.items ? renderOptionsFromItems(props.items) : null);
+
+	const valueChildrenFn = renderValue
+		? (value: unknown) => {
+				const placeholderNode = placeholder == null ? null : <span className="text-muted-foreground">{placeholder}</span>;
+
+				if (value == null || value === '') {
+					return placeholderNode;
+				}
+
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/consistent-type-assertions
+				const rendered = renderValue(value as any);
+
+				if (rendered == null) {
+					return placeholderNode;
+				}
+
+				return rendered;
+			}
+		: undefined;
+
+	const { items: _items, ...baseProps } = props;
+
+	const selectControl = (
+		<BaseSelect.Root {...baseProps} items={normalizedItems} disabled={loading || props.disabled}>
+			<BaseSelect.Trigger
+				className={cn(
+					buttonVariants({ size }),
+					'w-full justify-between bg-white font-bold text-black dark:bg-zinc dark:text-white',
+					'hover:-translate-y-0.5 hover:shadow-brutal active:translate-y-0 active:shadow-brutal-inset',
+					'focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 dark:focus-visible:ring-white',
+					props.disabled && 'cursor-not-allowed opacity-50 hover:translate-y-0 hover:shadow-brutal-sm',
+					error && 'border-red focus-visible:ring-red dark:border-red dark:focus-visible:ring-red',
+					className,
+				)}
+			>
+				{loading ? (
+					<Skeleton className="h-4 w-24" />
+				) : (
+					<BaseSelect.Value placeholder={placeholder} className="min-w-0 truncate data-placeholder:text-muted-foreground">
+						{valueChildrenFn}
+					</BaseSelect.Value>
+				)}
+				<BaseSelect.Icon className="ml-2 flex shrink-0 items-center opacity-70">
+					<CaretUpDown className="size-4" />
+				</BaseSelect.Icon>
+			</BaseSelect.Trigger>
+			<BaseSelect.Portal container={container}>
+				<BaseSelect.Positioner side="bottom" align="start" sideOffset={6} className="z-50">
+					<BaseSelect.Popup
+						className={cn(
+							'flex flex-col overflow-hidden rounded-xl border-2 border-black bg-white p-2 text-black shadow-sm dark:bg-zinc dark:text-white',
+							'max-h-[min(300px,var(--available-height))] min-w-[calc(var(--anchor-width)+4px)]',
+							containerClassName,
+						)}
+					>
+						<BaseSelect.List className="flex min-h-0 flex-1 scroll-py-2 flex-col gap-1 overflow-y-auto overscroll-none">
+							{renderedChildren}
+						</BaseSelect.List>
+					</BaseSelect.Popup>
+				</BaseSelect.Positioner>
+			</BaseSelect.Portal>
+		</BaseSelect.Root>
+	);
+
+	if (label || description || error || labelTooltip) {
+		return (
+			<InputWrapper
+				label={label}
+				description={description}
+				error={error}
+				required={required}
+				labelTooltip={labelTooltip}
+				hideLabel={hideLabel}
+				className={containerClassName}
+			>
+				{selectControl}
+			</InputWrapper>
+		);
+	}
+
+	return selectControl;
+}
+
+export interface SelectOptionProps<T = unknown> {
+	children: React.ReactNode;
+	value: T;
+	disabled?: boolean;
+	className?: string;
+}
+
+function Option<T>({ children, value, disabled, className }: SelectOptionProps<T>) {
 	return (
 		<BaseSelect.Item
-			ref={ref}
+			value={value}
+			disabled={disabled}
 			className={cn(
-				`relative flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-1.5 text-sm font-bold text-black outline-hidden transition-colors select-none data-disabled:pointer-events-none data-disabled:opacity-50 data-highlighted:bg-black data-highlighted:text-white dark:text-white dark:data-highlighted:bg-white dark:data-highlighted:text-black`,
+				'relative flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-1.5 text-sm font-bold text-black outline-hidden transition-colors select-none',
+				'data-disabled:pointer-events-none data-disabled:opacity-50',
+				'data-highlighted:bg-black data-highlighted:text-white dark:text-white dark:data-highlighted:bg-white dark:data-highlighted:text-black',
 				className,
 			)}
-			{...properties}
 		>
 			<BaseSelect.ItemText className="truncate">{children}</BaseSelect.ItemText>
 			<BaseSelect.ItemIndicator className="ml-2 shrink-0">
@@ -109,31 +223,52 @@ export function SelectItem({
 		</BaseSelect.Item>
 	);
 }
-SelectItem.displayName = 'SelectItem';
+Option.displayName = 'Select.Option';
 
-/**
- * SelectGroup component.
- * Standard container to partition select items.
- */
-export const SelectGroup = BaseSelect.Group;
+export interface SelectGroupProps {
+	children: React.ReactNode;
+	className?: string;
+	ref?: React.Ref<HTMLDivElement>;
+}
 
-/**
- * SelectGroupLabel component.
- * The title/header shown above select groups.
- */
-export function SelectGroupLabel({
-	className,
-	ref,
-	...properties
-}: React.ComponentPropsWithoutRef<typeof BaseSelect.GroupLabel> & {
-	readonly ref?: React.Ref<HTMLDivElement>;
-}) {
+function Group({ children, className, ref }: SelectGroupProps) {
+	return (
+		<BaseSelect.Group ref={ref} className={cn(className)}>
+			{children}
+		</BaseSelect.Group>
+	);
+}
+Group.displayName = 'Select.Group';
+
+export interface SelectGroupLabelProps {
+	children: React.ReactNode;
+	className?: string;
+	ref?: React.Ref<HTMLDivElement>;
+}
+
+function GroupLabel({ children, className, ref }: SelectGroupLabelProps) {
 	return (
 		<BaseSelect.GroupLabel
 			ref={ref}
-			className={cn(`px-3 py-1.5 text-xs font-black tracking-wider text-muted-foreground uppercase`, className)}
-			{...properties}
-		/>
+			className={cn('px-3.5 py-1.5 text-xs font-black tracking-wider text-muted-foreground uppercase', className)}
+		>
+			{children}
+		</BaseSelect.GroupLabel>
 	);
 }
-SelectGroupLabel.displayName = 'SelectGroupLabel';
+GroupLabel.displayName = 'Select.GroupLabel';
+
+export interface SelectSeparatorProps {
+	className?: string;
+	ref?: React.Ref<HTMLDivElement>;
+}
+
+function Separator({ className, ref }: SelectSeparatorProps) {
+	return <BaseSelect.Separator ref={ref} className={cn('-mx-1 my-1 h-px bg-black/10 dark:bg-white/10', className)} />;
+}
+Separator.displayName = 'Select.Separator';
+
+Select.Option = Option;
+Select.Group = Group;
+Select.GroupLabel = GroupLabel;
+Select.Separator = Separator;

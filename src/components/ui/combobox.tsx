@@ -5,6 +5,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utilities';
 
 import { InputWrapper } from './input';
+import { useTransformOrigin } from '../../hooks/use-transform-origin';
 
 // ============================================================================
 // Types & Context
@@ -51,6 +52,19 @@ function getInputStyles(size: ComboboxSize, hasError: boolean) {
 // Components
 // ============================================================================
 
+export interface ComboboxProps<Value = unknown, Multiple extends boolean | undefined = false> extends BaseCombobox.Root.Props<
+	Value,
+	Multiple
+> {
+	readonly label?: React.ReactNode;
+	readonly required?: boolean;
+	readonly labelTooltip?: React.ReactNode;
+	readonly description?: React.ReactNode;
+	readonly error?: string;
+	readonly size?: ComboboxSize;
+	readonly containerClassName?: string;
+}
+
 /**
  * Root Combobox component.
  * Wraps Base UI Combobox.Root and integrates with Field wrapper.
@@ -65,17 +79,8 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 	size = 'base',
 	containerClassName,
 	...props
-}: BaseCombobox.Root.Props<Value, Multiple> & {
-	readonly label?: React.ReactNode;
-	readonly required?: boolean;
-	readonly labelTooltip?: React.ReactNode;
-	readonly description?: React.ReactNode;
-	readonly error?: string | { message: React.ReactNode; match?: boolean };
-	readonly size?: ComboboxSize;
-	readonly containerClassName?: string;
-}) {
+}: ComboboxProps<Value, Multiple>) {
 	const hasError = Boolean(error);
-	const errorText = typeof error === 'string' ? error : error && 'message' in error ? String(error.message) : undefined;
 	const [anchorElement, setAnchorElement] = React.useState<HTMLDivElement | null>(null);
 
 	const comboboxControl = (
@@ -84,14 +89,14 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 		</ComboboxContext.Provider>
 	);
 
-	if (label || description || errorText || labelTooltip) {
+	if (label || description || error || labelTooltip) {
 		return (
 			<InputWrapper
 				label={label}
 				required={required}
 				labelTooltip={labelTooltip}
 				description={description}
-				error={errorText}
+				error={error}
 				className={containerClassName}
 			>
 				{comboboxControl}
@@ -102,6 +107,15 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 	return comboboxControl;
 }
 Root.displayName = 'Combobox.Root';
+
+export interface ComboboxContentProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Popup> {
+	readonly align?: BaseCombobox.Positioner.Props['align'];
+	readonly alignOffset?: BaseCombobox.Positioner.Props['alignOffset'];
+	readonly side?: BaseCombobox.Positioner.Props['side'];
+	readonly sideOffset?: BaseCombobox.Positioner.Props['sideOffset'];
+	readonly container?: HTMLElement | null | React.RefObject<HTMLElement | null>;
+	readonly ref?: React.Ref<HTMLDivElement>;
+}
 
 /**
  * Content component.
@@ -114,14 +128,13 @@ function Content({
 	sideOffset = 8,
 	alignOffset,
 	side = 'bottom',
+	container,
+	ref,
 	...properties
-}: React.ComponentPropsWithoutRef<typeof BaseCombobox.Popup> & {
-	readonly align?: BaseCombobox.Positioner.Props['align'];
-	readonly alignOffset?: BaseCombobox.Positioner.Props['alignOffset'];
-	readonly side?: BaseCombobox.Positioner.Props['side'];
-	readonly sideOffset?: BaseCombobox.Positioner.Props['sideOffset'];
-}) {
+}: ComboboxContentProps) {
 	const { multiple, anchorElement } = React.useContext(ComboboxContext);
+	const transformOriginRef = useTransformOrigin(anchorElement, ref);
+
 	const resolvedSideOffset = React.useMemo(() => {
 		const extraOffset = multiple ? 6 : 0;
 
@@ -131,9 +144,8 @@ function Content({
 
 		return (sideOffset ?? 8) + extraOffset;
 	}, [multiple, sideOffset]);
-
 	return (
-		<BaseCombobox.Portal keepMounted>
+		<BaseCombobox.Portal container={container}>
 			<BaseCombobox.Positioner
 				align={align}
 				sideOffset={resolvedSideOffset}
@@ -143,8 +155,11 @@ function Content({
 				className="z-50"
 			>
 				<BaseCombobox.Popup
+					ref={ref}
 					className={cn(
 						`flex max-h-[min(var(--available-height),24rem)] min-w-(--anchor-width) animate-popover-in flex-col overflow-hidden rounded-xl border-2 border-black bg-white px-0 py-1.5 text-black shadow-sm outline-hidden select-none data-closed:animate-popover-out dark:bg-zinc dark:text-white`,
+						`origin-(--transform-origin)`,
+						`data-[side=bottom]:[--tw-enter-translate-y:-0.5rem] data-[side=left]:[--tw-enter-translate-x:0.5rem] data-[side=right]:[--tw-enter-translate-x:-0.5rem] data-[side=top]:[--tw-enter-translate-y:0.5rem]`,
 						className,
 					)}
 					{...properties}
@@ -165,61 +180,50 @@ const triggerValueIconStyles: Record<ComboboxSize, { padding: string; iconSize: 
 	lg: { padding: 'pr-12', iconSize: 18, iconRight: 'right-3' },
 };
 
+export interface ComboboxTriggerValueProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Trigger> {
+	readonly placeholder?: string;
+	readonly ref?: React.Ref<HTMLButtonElement>;
+}
+
 /**
  * TriggerValue component.
  * Dropdown trigger button displaying the selected value.
  */
-function TriggerValue({
-	className,
-	ref,
-	placeholder,
-	...props
-}: React.ComponentPropsWithoutRef<typeof BaseCombobox.Trigger> & {
-	readonly ref?: React.Ref<HTMLButtonElement>;
-	readonly placeholder?: string;
-}) {
-	const { size, hasError, anchorRef } = React.useContext(ComboboxContext);
+function TriggerValue({ className, ref, placeholder, ...props }: ComboboxTriggerValueProps) {
+	const { size, hasError } = React.useContext(ComboboxContext);
 	const iconStyles = triggerValueIconStyles[size];
 
 	return (
-		<div ref={anchorRef} className="inline-flex w-full">
-			<BaseCombobox.Trigger
-				ref={ref}
-				className={cn(
-					getInputStyles(size, hasError),
-					'relative flex items-center shadow-brutal-sm transition-all duration-300 ease-spring hover:-translate-y-0.5 hover:shadow-brutal active:translate-y-0 active:shadow-brutal-inset aria-expanded:translate-y-0 aria-expanded:hover:translate-y-0',
-					iconStyles.padding,
-					className,
-				)}
-				{...props}
+		<BaseCombobox.Trigger
+			ref={ref}
+			className={cn(
+				getInputStyles(size, hasError),
+				'relative flex items-center shadow-brutal-sm transition-all duration-300 ease-spring hover:-translate-y-0.5 hover:shadow-brutal active:translate-y-0 active:shadow-brutal-inset aria-expanded:translate-y-0 aria-expanded:hover:translate-y-0',
+				iconStyles.padding,
+				className,
+			)}
+			{...props}
+		>
+			<BaseCombobox.Value placeholder={placeholder} />
+			<BaseCombobox.Icon
+				className={cn('absolute top-1/2 flex -translate-y-1/2 items-center text-black/60 dark:text-white/60', iconStyles.iconRight)}
 			>
-				<BaseCombobox.Value placeholder={placeholder} />
-				<BaseCombobox.Icon
-					className={cn('absolute top-1/2 flex -translate-y-1/2 items-center text-black/60 dark:text-white/60', iconStyles.iconRight)}
-				>
-					<CaretDown size={iconStyles.iconSize} className="fill-current" />
-				</BaseCombobox.Icon>
-			</BaseCombobox.Trigger>
-		</div>
+				<CaretDown size={iconStyles.iconSize} className="fill-current" />
+			</BaseCombobox.Icon>
+		</BaseCombobox.Trigger>
 	);
 }
 TriggerValue.displayName = 'Combobox.TriggerValue';
 
-function Trigger({
-	children,
-	ref,
-	...props
-}: React.ComponentPropsWithoutRef<typeof BaseCombobox.Trigger> & {
+export interface ComboboxTriggerProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Trigger> {
 	readonly ref?: React.Ref<HTMLButtonElement>;
-}) {
-	const { anchorRef } = React.useContext(ComboboxContext);
+}
 
+function Trigger({ children, ref, ...props }: ComboboxTriggerProps) {
 	return (
-		<div ref={anchorRef} className="inline-flex w-full">
-			<BaseCombobox.Trigger ref={ref} {...props}>
-				{children}
-			</BaseCombobox.Trigger>
-		</div>
+		<BaseCombobox.Trigger ref={ref} {...props}>
+			{children}
+		</BaseCombobox.Trigger>
 	);
 }
 Trigger.displayName = 'Combobox.Trigger';
@@ -252,6 +256,12 @@ const triggerInputIconStyles: Record<ComboboxSize, { padding: string; iconSize: 
 	},
 };
 
+export interface ComboboxTriggerInputProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Input> {
+	readonly ref?: React.Ref<HTMLInputElement>;
+	readonly clearLabel?: string;
+	readonly showOptionsLabel?: string;
+}
+
 /**
  * TriggerInput component.
  * Text input control that opens the dropdown and filters options.
@@ -263,19 +273,12 @@ function TriggerInput({
 	clearLabel = 'Clear selection',
 	showOptionsLabel = 'Show options',
 	...props
-}: React.ComponentPropsWithoutRef<typeof BaseCombobox.Input> & {
-	readonly ref?: React.Ref<HTMLInputElement>;
-	readonly clearLabel?: string;
-	readonly showOptionsLabel?: string;
-}) {
-	const { size, hasError, anchorRef } = React.useContext(ComboboxContext);
+}: ComboboxTriggerInputProps) {
+	const { size, hasError } = React.useContext(ComboboxContext);
 	const iconStyles = triggerInputIconStyles[size];
 
 	return (
-		<div
-			ref={anchorRef}
-			className={cn('relative inline-block w-full max-w-xs has-disabled:cursor-not-allowed has-disabled:opacity-50', className)}
-		>
+		<div className={cn('relative inline-block w-full max-w-xs has-disabled:cursor-not-allowed has-disabled:opacity-50', className)}>
 			<BaseCombobox.Input
 				ref={ref}
 				placeholder={placeholder}
@@ -326,6 +329,14 @@ function getChipsContainerStyles(size: ComboboxSize, hasError: boolean) {
 	);
 }
 
+export interface ComboboxTriggerMultipleWithInputProps<ValueType> {
+	readonly placeholder?: string;
+	readonly renderItem: (value: ValueType) => React.ReactNode;
+	readonly className?: string;
+	readonly inputSide?: 'right' | 'top';
+	readonly value?: ValueType[];
+}
+
 /**
  * TriggerMultipleWithInput component.
  * Multi-select control with inline chips and input field.
@@ -336,66 +347,65 @@ function TriggerMultipleWithInput<ValueType>({
 	className,
 	inputSide = 'right',
 	value: controlledValue,
-}: {
-	readonly placeholder?: string;
-	readonly renderItem: (value: ValueType) => React.ReactNode;
-	readonly className?: string;
-	readonly inputSide?: 'right' | 'top';
-	readonly value?: ValueType[];
-}) {
-	const { size, hasError, anchorRef } = React.useContext(ComboboxContext);
+}: ComboboxTriggerMultipleWithInputProps<ValueType>) {
+	const { size, hasError } = React.useContext(ComboboxContext);
 	const chipsToRender = controlledValue;
 
+	const sizeToMinHeight: Record<ComboboxSize, string> = {
+		xs: 'min-h-5',
+		sm: 'min-h-6.5',
+		base: 'min-h-9',
+		lg: 'min-h-10',
+	};
+
 	return (
-		<div ref={anchorRef} className="w-full">
-			<BaseCombobox.Chips
-				className={cn(
-					getChipsContainerStyles(size, hasError),
-					'h-auto data-disabled:cursor-not-allowed data-disabled:opacity-50',
-					className,
-				)}
-			>
-				{inputSide === 'top' && (
+		<BaseCombobox.Chips
+			className={cn(
+				getChipsContainerStyles(size, hasError),
+				'h-auto data-disabled:cursor-not-allowed data-disabled:opacity-50',
+				sizeToMinHeight[size],
+				className,
+			)}
+		>
+			{inputSide === 'top' && (
+				<BaseCombobox.Input
+					placeholder={placeholder}
+					className="w-full border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black focus:outline-hidden dark:text-white"
+				/>
+			)}
+			<div className="flex flex-1 flex-wrap items-center gap-1">
+				{chipsToRender !== undefined && chipsToRender.length > 0 && chipsToRender.map((item) => renderItem(item))}
+				<BaseCombobox.Value>
+					{(internalValue: ValueType[]) => {
+						if (chipsToRender !== undefined) return null;
+						return <React.Fragment>{internalValue.map((item) => renderItem(item))}</React.Fragment>;
+					}}
+				</BaseCombobox.Value>
+				{inputSide === 'right' && (
 					<BaseCombobox.Input
 						placeholder={placeholder}
-						className="w-full border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black focus:outline-hidden dark:text-white"
+						className="min-w-[80px] flex-1 border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black focus:outline-hidden dark:text-white"
 					/>
 				)}
-				<div className="flex flex-1 flex-wrap items-center gap-1">
-					{chipsToRender !== undefined && chipsToRender.length > 0 && chipsToRender.map((item) => renderItem(item))}
-					<BaseCombobox.Value>
-						{(internalValue: ValueType[]) => {
-							if (chipsToRender !== undefined) return null;
-							return <React.Fragment>{internalValue.map((item) => renderItem(item))}</React.Fragment>;
-						}}
-					</BaseCombobox.Value>
-					{inputSide === 'right' && (
-						<BaseCombobox.Input
-							placeholder={placeholder}
-							className="min-w-[80px] flex-1 border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black focus:outline-hidden dark:text-white"
-						/>
-					)}
-				</div>
-			</BaseCombobox.Chips>
-		</div>
+			</div>
+		</BaseCombobox.Chips>
 	);
 }
 TriggerMultipleWithInput.displayName = 'Combobox.TriggerMultipleWithInput';
+
+export interface ComboboxChipProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Chip> {
+	readonly removeLabel?: string;
+	readonly ref?: React.Ref<HTMLDivElement>;
+}
 
 /**
  * Chip component.
  * Selected item visual chip tag.
  */
-function Chip({
-	removeLabel = 'Remove',
-	className,
-	children,
-	...props
-}: React.ComponentPropsWithoutRef<typeof BaseCombobox.Chip> & {
-	readonly removeLabel?: string;
-}) {
+function Chip({ removeLabel = 'Remove', className, children, ref, ...props }: ComboboxChipProps) {
 	return (
 		<BaseCombobox.Chip
+			ref={ref}
 			className={cn(
 				'flex h-6 items-center gap-1.5 rounded-md border border-black bg-muted pr-[3px] pl-2 text-xs font-bold text-black shadow-brutal-sm dark:border-white dark:bg-zinc dark:text-white',
 				className,
@@ -414,18 +424,15 @@ function Chip({
 }
 Chip.displayName = 'Combobox.Chip';
 
+export interface ComboboxItemProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Item> {
+	readonly ref?: React.Ref<HTMLDivElement>;
+}
+
 /**
  * Item component.
  * Individual option inside the dropdown popup list.
  */
-function Item({
-	children,
-	className,
-	ref,
-	...props
-}: React.ComponentPropsWithoutRef<typeof BaseCombobox.Item> & {
-	readonly ref?: React.Ref<HTMLDivElement>;
-}) {
+function Item({ children, className, ref, ...props }: ComboboxItemProps) {
 	return (
 		<BaseCombobox.Item
 			ref={ref}
@@ -446,13 +453,18 @@ function Item({
 }
 Item.displayName = 'Combobox.Item';
 
+export interface ComboboxEmptyProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Empty> {
+	readonly ref?: React.Ref<HTMLDivElement>;
+}
+
 /**
  * Empty component.
  * Rendered when no results match the filter.
  */
-function Empty({ className, children, ...props }: React.ComponentPropsWithoutRef<typeof BaseCombobox.Empty>) {
+function Empty({ className, children, ref, ...props }: ComboboxEmptyProps) {
 	return (
 		<BaseCombobox.Empty
+			ref={ref}
 			className={cn('mx-1.5 px-3 py-2 text-sm font-medium text-muted-foreground empty:m-0 empty:p-0', className)}
 			{...props}
 		>
@@ -462,17 +474,15 @@ function Empty({ className, children, ...props }: React.ComponentPropsWithoutRef
 }
 Empty.displayName = 'Combobox.Empty';
 
+export interface ComboboxInputProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Input> {
+	readonly ref?: React.Ref<HTMLInputElement>;
+}
+
 /**
  * Input component.
  * Search input placed inside the dropdown popup.
  */
-function Input({
-	className,
-	ref,
-	...props
-}: React.ComponentPropsWithoutRef<typeof BaseCombobox.Input> & {
-	readonly ref?: React.Ref<HTMLInputElement>;
-}) {
+function Input({ className, ref, ...props }: ComboboxInputProps) {
 	return (
 		<BaseCombobox.Input
 			ref={ref}
@@ -486,18 +496,15 @@ function Input({
 }
 Input.displayName = 'Combobox.Input';
 
+export interface ComboboxListProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.List> {
+	readonly ref?: React.Ref<HTMLDivElement>;
+}
+
 /**
  * List component.
  * Scrollable list container inside the dropdown popup.
  */
-function List({
-	className,
-	children,
-	ref,
-	...props
-}: React.ComponentPropsWithoutRef<typeof BaseCombobox.List> & {
-	readonly ref?: React.Ref<HTMLDivElement>;
-}) {
+function List({ className, children, ref, ...props }: ComboboxListProps) {
 	return (
 		<BaseCombobox.List
 			ref={ref}
@@ -510,17 +517,15 @@ function List({
 }
 List.displayName = 'Combobox.List';
 
+export interface ComboboxGroupProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Group> {
+	readonly ref?: React.Ref<HTMLDivElement>;
+}
+
 /**
  * Group component.
  * Category group container.
  */
-function Group({
-	className,
-	ref,
-	...props
-}: React.ComponentPropsWithoutRef<typeof BaseCombobox.Group> & {
-	readonly ref?: React.Ref<HTMLDivElement>;
-}) {
+function Group({ className, ref, ...props }: ComboboxGroupProps) {
 	return (
 		<BaseCombobox.Group
 			ref={ref}
@@ -531,17 +536,15 @@ function Group({
 }
 Group.displayName = 'Combobox.Group';
 
+export interface ComboboxGroupLabelProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.GroupLabel> {
+	readonly ref?: React.Ref<HTMLDivElement>;
+}
+
 /**
  * GroupLabel component.
  * Category label header.
  */
-function GroupLabel({
-	className,
-	ref,
-	...props
-}: React.ComponentPropsWithoutRef<typeof BaseCombobox.GroupLabel> & {
-	readonly ref?: React.Ref<HTMLDivElement>;
-}) {
+function GroupLabel({ className, ref, ...props }: ComboboxGroupLabelProps) {
 	return (
 		<BaseCombobox.GroupLabel
 			ref={ref}
@@ -557,27 +560,11 @@ GroupLabel.displayName = 'Combobox.GroupLabel';
 // ============================================================================
 
 export interface ComboboxComponent {
-	<Value, Multiple extends boolean | undefined = false>(
-		props: BaseCombobox.Root.Props<Value, Multiple> & {
-			readonly label?: React.ReactNode;
-			readonly required?: boolean;
-			readonly labelTooltip?: React.ReactNode;
-			readonly description?: React.ReactNode;
-			readonly error?: string | { message: React.ReactNode; match?: boolean };
-			readonly size?: ComboboxSize;
-			readonly containerClassName?: string;
-		},
-	): React.JSX.Element;
+	<Value, Multiple extends boolean | undefined = false>(props: ComboboxProps<Value, Multiple>): React.JSX.Element;
 	Content: typeof Content;
 	TriggerValue: typeof TriggerValue;
 	TriggerInput: typeof TriggerInput;
-	TriggerMultipleWithInput: <ValueType>(props: {
-		readonly placeholder?: string;
-		readonly renderItem: (value: ValueType) => React.ReactNode;
-		readonly className?: string;
-		readonly inputSide?: 'right' | 'top';
-		readonly value?: ValueType[];
-	}) => React.JSX.Element;
+	TriggerMultipleWithInput: <ValueType>(props: ComboboxTriggerMultipleWithInputProps<ValueType>) => React.JSX.Element;
 	Chip: typeof Chip;
 	Item: typeof Item;
 	Input: typeof Input;
@@ -608,16 +595,3 @@ export const Combobox: ComboboxComponent = Object.assign(Root, {
 	Value: BaseCombobox.Value,
 	Icon: BaseCombobox.Icon,
 });
-
-export {
-	Content as ComboboxContent,
-	TriggerInput as ComboboxInput,
-	Item as ComboboxItem,
-	Group as ComboboxGroup,
-	GroupLabel as ComboboxGroupLabel,
-	TriggerValue as ComboboxTriggerValue,
-	TriggerMultipleWithInput as ComboboxTriggerMultipleWithInput,
-	Chip as ComboboxChip,
-	Empty as ComboboxEmpty,
-	List as ComboboxList,
-};

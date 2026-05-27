@@ -37,7 +37,7 @@ export function SensitiveInput({
 			<Input type={isVisible ? 'text' : 'password'} className={cn('pr-12', className)} ref={ref} {...properties} />
 			<button
 				type="button"
-				className="absolute top-1/2 right-2 flex size-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent text-muted-foreground transition-colors hover:text-black focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:hover:text-white dark:focus-visible:ring-white"
+				className="absolute top-1/2 right-2 flex size-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent text-muted-foreground transition-colors select-none hover:text-black focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:hover:text-white dark:focus-visible:ring-white"
 				onClick={toggleVisibility}
 				disabled={properties.disabled}
 			>

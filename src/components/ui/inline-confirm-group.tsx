@@ -1,5 +1,5 @@
 import { Trash, X } from '@phosphor-icons/react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, motion, Transition } from 'motion/react';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState, useId } from 'react';
 
@@ -15,30 +15,18 @@ export interface InlineConfirmGroupProperties {
 	readonly isLoading?: boolean;
 }
 
-const springCritical = {
+const spring: Transition = {
 	type: 'spring',
-	stiffness: 550,
-	damping: 35,
-} as const;
+	stiffness: 700,
+	damping: 40,
+};
 
 export function InlineConfirmGroup({ itemName, onConfirm, onCancel, className, isLoading = false }: InlineConfirmGroupProperties) {
 	const [open, setOpen] = useState(false);
-	const [isClickable, setIsClickable] = useState(false);
 	const containerReference = useRef<HTMLDivElement>(null);
 	const confirmButtonReference = useRef<HTMLButtonElement>(null);
 	const cancelButtonReference = useRef<HTMLButtonElement>(null);
 	const layoutId = useId();
-
-	// Throttle clickability of confirm to protect against accidental double click
-	useEffect(() => {
-		if (!open) return;
-		const timer = setTimeout(() => {
-			setIsClickable(true);
-		}, 300);
-		return () => {
-			clearTimeout(timer);
-		};
-	}, [open]);
 
 	// Auto-focus cancel button on mount so the user has immediate focus there
 	useEffect(() => {
@@ -49,7 +37,6 @@ export function InlineConfirmGroup({ itemName, onConfirm, onCancel, className, i
 			if (!(event.target instanceof Node)) return;
 			if (!containerReference.current?.contains(event.target)) {
 				setOpen(false);
-				setIsClickable(false);
 				onCancel?.();
 			}
 		}
@@ -93,11 +80,10 @@ export function InlineConfirmGroup({ itemName, onConfirm, onCancel, className, i
 	const handleConfirmClick = useCallback(
 		(event: React.MouseEvent) => {
 			event.stopPropagation();
-			if (!isClickable) return;
 			onConfirm();
 			setOpen(false);
 		},
-		[onConfirm, isClickable],
+		[onConfirm],
 	);
 
 	const handleCancelClick = useCallback(
@@ -116,74 +102,61 @@ export function InlineConfirmGroup({ itemName, onConfirm, onCancel, className, i
 					<motion.div
 						key="group"
 						layoutId={layoutId}
+						layoutDependency={open}
 						role="group"
 						aria-label={`Delete confirmation for ${itemName}`}
-						transition={springCritical}
-						style={{ borderRadius: 8 }}
+						transition={spring}
+						style={{ borderRadius: 8, transformOrigin: 'right' }}
 						className={cn(
-							`flex shrink-0 items-center gap-1.5 rounded-lg border-2 border-black bg-white p-1 shadow-brutal-sm dark:border-white dark:bg-black`,
+							`flex shrink-0 origin-right items-center gap-1.5 rounded-lg border-2 border-black bg-white p-1 shadow-brutal-sm dark:border-white dark:bg-black`,
 							className,
 						)}
 						onClick={(event) => event.stopPropagation()}
 						onKeyDown={handleKeyDown}
 					>
-						<motion.div
-							initial={{ opacity: 0, scale: 0.9 }}
-							animate={{ opacity: 1, scale: 1 }}
-							exit={{ opacity: 0, scale: 0.9 }}
-							transition={{ duration: 0.15 }}
-							className="flex items-center gap-1.5"
+						<button
+							ref={confirmButtonReference}
+							type="button"
+							tabIndex={0}
+							disabled={isLoading}
+							onClick={handleConfirmClick}
+							className="flex size-7 cursor-pointer items-center justify-center rounded-md border border-black bg-red/10 text-red transition-all select-none hover:bg-red hover:text-white disabled:pointer-events-none disabled:opacity-50 dark:border-white dark:bg-red/20"
+							aria-label={`Confirm delete ${itemName}`}
 						>
-							<button
-								ref={confirmButtonReference}
-								type="button"
-								tabIndex={0}
-								disabled={!isClickable || isLoading}
-								onClick={handleConfirmClick}
-								className="flex size-7 cursor-pointer items-center justify-center rounded-md border border-black bg-red/10 text-red transition-all hover:bg-red hover:text-white disabled:pointer-events-none disabled:opacity-50 dark:border-white dark:bg-red/20"
-								aria-label={`Confirm delete ${itemName}`}
-							>
-								{isLoading ? <Spinner size="sm" className="size-4" /> : <Trash className="size-4" />}
-							</button>
-							<button
-								ref={cancelButtonReference}
-								type="button"
-								tabIndex={0}
-								disabled={isLoading}
-								onClick={handleCancelClick}
-								className="flex size-7 cursor-pointer items-center justify-center rounded-md border border-black bg-zinc/10 text-black transition-all hover:bg-black hover:text-white disabled:pointer-events-none disabled:opacity-50 dark:border-white dark:bg-zinc/20 dark:text-white dark:hover:bg-white dark:hover:text-black"
-								aria-label={`Cancel delete ${itemName}`}
-							>
-								<X className="size-4" />
-							</button>
-						</motion.div>
+							<Trash className="size-4" />
+						</button>
+						<button
+							ref={cancelButtonReference}
+							type="button"
+							tabIndex={0}
+							disabled={isLoading}
+							onClick={handleCancelClick}
+							className="flex size-7 cursor-pointer items-center justify-center rounded-md border border-black bg-zinc/10 text-black transition-all select-none hover:bg-black hover:text-white disabled:pointer-events-none disabled:opacity-50 dark:border-white dark:bg-zinc/20 dark:text-white dark:hover:bg-white dark:hover:text-black"
+							aria-label={`Cancel delete ${itemName}`}
+						>
+							<X className="size-4" />
+						</button>
 					</motion.div>
 				) : (
 					<motion.div
 						key="trigger"
 						layoutId={layoutId}
-						transition={springCritical}
-						style={{ borderRadius: 8 }}
-						className="inline-flex items-center justify-center border-2 border-transparent"
+						layoutDependency={open}
+						transition={spring}
+						style={{ borderRadius: 8, transformOrigin: 'right' }}
+						className="inline-flex origin-right items-center justify-center border-2 border-transparent"
 					>
 						<button
 							type="button"
+							disabled={isLoading}
 							onClick={(event) => {
 								event.stopPropagation();
 								setOpen(true);
 							}}
-							className="flex size-9 cursor-pointer items-center justify-center rounded-md border-2 border-transparent text-black transition-all hover:border-black hover:bg-muted active:translate-y-0.5 dark:text-white dark:hover:border-white dark:hover:bg-zinc"
+							className="flex size-9 cursor-pointer items-center justify-center rounded-md border-2 border-transparent text-black transition-all select-none hover:border-black hover:bg-muted active:translate-y-0.5 disabled:pointer-events-none disabled:opacity-50 dark:text-white dark:hover:border-white dark:hover:bg-zinc"
 							aria-label={`Delete ${itemName}`}
 						>
-							<motion.span
-								initial={{ opacity: 0, scale: 0.8 }}
-								animate={{ opacity: 1, scale: 1 }}
-								exit={{ opacity: 0, scale: 0.8 }}
-								transition={{ duration: 0.15 }}
-								className="flex items-center justify-center"
-							>
-								<Trash className="size-5" />
-							</motion.span>
+							{isLoading ? <Spinner size="sm" className="size-5" /> : <Trash className="size-5" />}
 						</button>
 					</motion.div>
 				)}

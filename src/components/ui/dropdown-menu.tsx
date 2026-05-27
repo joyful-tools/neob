@@ -1,8 +1,9 @@
 import { Menu } from '@base-ui/react/menu';
-import { motion, type Transition } from 'motion/react';
 import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
+
+import { useTransformOrigin } from '../../hooks/use-transform-origin';
 
 const DropdownMenuContext = React.createContext<{
 	readonly anchorRef: React.RefCallback<HTMLDivElement | null>;
@@ -58,20 +59,9 @@ interface DropdownMenuContentProperties extends React.HTMLAttributes<HTMLDivElem
 	readonly ref?: React.Ref<HTMLDivElement>;
 }
 
-const springSnappy: Transition = {
-	type: 'spring',
-	stiffness: 500,
-	damping: 30,
-};
-
-const popoverVariants = {
-	hidden: { opacity: 0, scale: 0.95, y: -4 },
-	visible: { opacity: 1, scale: 1, y: 0 },
-	exit: { opacity: 0, scale: 0.95, y: -4 },
-};
-
 function DropdownMenuContent({ children, className, align = 'end', sideOffset, ref, ...properties }: DropdownMenuContentProperties) {
 	const context = React.useContext(DropdownMenuContext);
+	const transformOriginRef = useTransformOrigin(context?.anchorElement || null, ref);
 
 	const resolvedSideOffset = React.useCallback(
 		(data: { side: string }) => {
@@ -87,10 +77,12 @@ function DropdownMenuContent({ children, className, align = 'end', sideOffset, r
 		<Menu.Portal keepMounted>
 			<Menu.Positioner align={align} sideOffset={resolvedSideOffset} className="z-100" anchor={context?.anchorElement}>
 				<Menu.Popup
-					ref={ref}
-					render={<motion.div variants={popoverVariants} initial="hidden" animate="visible" exit="exit" transition={springSnappy} />}
+					ref={transformOriginRef}
 					className={cn(
 						`min-w-40 overflow-hidden rounded-xl border-2 border-black bg-white p-1.5 shadow-sm outline-hidden select-none dark:bg-zinc dark:text-white`,
+						`animate-popover-in data-closed:animate-popover-out`,
+						`origin-(--transform-origin)`,
+						`data-[side=bottom]:[--tw-enter-translate-y:-0.5rem] data-[side=left]:[--tw-enter-translate-x:0.5rem] data-[side=right]:[--tw-enter-translate-x:-0.5rem] data-[side=top]:[--tw-enter-translate-y:0.5rem]`,
 						className,
 					)}
 					{...properties}

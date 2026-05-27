@@ -23,7 +23,7 @@ interface ConfirmButtonProperties {
 	disabled?: boolean;
 }
 
-const springCritical: Transition = {
+const springOpen: Transition = {
 	type: 'spring',
 	stiffness: 550,
 	damping: 35,
@@ -103,75 +103,54 @@ export function ConfirmButton({
 					<motion.div
 						key="popover"
 						layoutId={layoutId}
+						layoutDependency={open}
 						role="dialog"
 						aria-modal="false"
 						aria-labelledby={titleId}
 						aria-describedby={description ? descriptionId : undefined}
-						transition={springCritical}
+						transition={springOpen}
 						style={{ borderRadius: 12 }}
 						className={cn(
 							`absolute z-20 flex min-w-56 flex-col items-center rounded-xl border-2 border-black bg-white p-3 text-black shadow-brutal dark:bg-zinc dark:text-white`,
 							'origin-center',
 						)}
 					>
-						<motion.div
-							initial={{ opacity: 0, scale: 0.95 }}
-							animate={{ opacity: 1, scale: 1 }}
-							exit={{ opacity: 0, scale: 0.95 }}
-							transition={{ duration: 0.15 }}
-							className="flex w-full flex-col items-center"
-						>
-							<p id={titleId} className="text-center text-sm font-bold text-black dark:text-white">
-								{title}
+						<p id={titleId} className="text-center text-sm font-bold text-black dark:text-white">
+							{title}
+						</p>
+						{description && (
+							<p id={descriptionId} className="mt-1 text-center text-xs/relaxed text-black/60 dark:text-white/60">
+								{description}
 							</p>
-							{description && (
-								<p id={descriptionId} className="mt-1 text-center text-xs/relaxed text-black/60 dark:text-white/60">
-									{description}
-								</p>
-							)}
-							<div className="mt-3 flex w-full items-center justify-center gap-1.5">
-								<Button
-									type="button"
-									variant="subtle"
-									size="sm"
-									disabled={isConfirming}
-									onClick={() => setOpen(false)}
-									className="h-7 px-3"
-								>
-									{cancelLabel}
-								</Button>
-								<Button
-									ref={(element) => setConfirmButtonElement(element ?? undefined)}
-									type="button"
-									variant={confirmVariant}
-									size="sm"
-									onClick={() => void handleConfirm()}
-									isLoading={isConfirming}
-									className="h-7 px-3"
-								>
-									{confirmLabel}
-								</Button>
-							</div>
-						</motion.div>
+						)}
+						<div className="mt-3 flex w-full items-center justify-center gap-1.5">
+							<Button type="button" variant="subtle" size="sm" disabled={isConfirming} onClick={() => setOpen(false)} className="h-7 px-3">
+								{cancelLabel}
+							</Button>
+							<Button
+								ref={(element) => setConfirmButtonElement(element ?? undefined)}
+								type="button"
+								variant={confirmVariant}
+								size="sm"
+								onClick={() => void handleConfirm()}
+								isLoading={isConfirming}
+								className="h-7 px-3"
+							>
+								{confirmLabel}
+							</Button>
+						</div>
 					</motion.div>
 				) : (
 					<motion.div
 						key="trigger"
 						layoutId={layoutId}
+						layoutDependency={open}
 						transition={springClose}
 						className="inline-flex items-center justify-center border-2 border-transparent"
 						style={{ borderRadius: 8 }}
 					>
 						<Button type="button" variant={variant} size={size} className={className} disabled={disabled} onClick={() => setOpen(true)}>
-							<motion.span
-								initial={{ opacity: 0, scale: 0.8 }}
-								animate={{ opacity: 1, scale: 1 }}
-								exit={{ opacity: 0, scale: 0.8 }}
-								transition={{ duration: 0.15 }}
-								className="inline-flex items-center gap-2"
-							>
-								{children}
-							</motion.span>
+							{children}
 						</Button>
 					</motion.div>
 				)}

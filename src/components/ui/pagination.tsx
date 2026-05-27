@@ -4,7 +4,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utilities';
 
 import { Button } from './button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
+import { Select } from './select';
 
 const DEFAULT_PAGE_SIZE_OPTIONS = [25, 50, 100, 250] as const;
 
@@ -131,21 +131,20 @@ function PaginationPageSize({
 	return (
 		<div data-slot="pagination-page-size" className={cn('flex items-center gap-2 select-none', className)}>
 			{label && <span className="text-sm font-bold text-black dark:text-white">{label}</span>}
-			<div className="w-[85px]">
-				<Select value={String(value)} onValueChange={(v) => onChange(Number(v))}>
-					<SelectTrigger
-						aria-label={labels.pageSize}
-						className="h-8 border-2 border-black px-2.5 text-xs font-black shadow-brutal-sm hover:translate-y-0 hover:shadow-brutal-sm dark:border-black"
-					>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent className="w-[85px] min-w-0 border-2 p-1 dark:border-black">
-						{options.map((size) => (
-							<SelectItem key={size} value={String(size)} className="px-2 py-1 text-xs">
-								{size}
-							</SelectItem>
-						))}
-					</SelectContent>
+			<div className="p-1">
+				<Select
+					value={String(value)}
+					onValueChange={(v) => onChange(Number(v))}
+					aria-label={labels.pageSize}
+					size="sm"
+					className="h-8 border-2 border-black px-2.5 text-xs font-black shadow-brutal-sm hover:translate-y-0 hover:shadow-brutal-sm dark:border-black [&_svg]:size-3"
+					containerClassName="p-1"
+				>
+					{options.map((size) => (
+						<Select.Option key={size} value={String(size)} className="px-2 py-1 text-xs">
+							{size}
+						</Select.Option>
+					))}
 				</Select>
 			</div>
 		</div>
@@ -229,23 +228,19 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 									setEditingPage(num);
 								}}
 								disabled={maxPage <= 1}
+								aria-label={labels.pageNumber}
+								size="sm"
+								className={cn(
+									'h-8 justify-center gap-1 rounded-none border-2 border-black px-2 text-xs font-black shadow-brutal-sm hover:translate-y-0 hover:shadow-brutal-sm active:translate-y-0 active:shadow-brutal-sm disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000] dark:border-black dark:bg-zinc dark:text-white [&_svg]:size-3',
+									maxPage <= 1 && '[&_svg]:opacity-30 [&>span]:opacity-30',
+								)}
+								containerClassName="w-[72px] min-w-0 border-2 p-1 dark:border-black"
 							>
-								<SelectTrigger
-									aria-label={labels.pageNumber}
-									className={cn(
-										'h-8 justify-center gap-1 rounded-none border-2 border-black px-2 text-xs font-black shadow-brutal-sm hover:translate-y-0 hover:shadow-brutal-sm active:translate-y-0 active:shadow-brutal-sm disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000] dark:border-black dark:bg-zinc dark:text-white',
-										maxPage <= 1 && '[&_svg]:opacity-30 [&>span]:opacity-30',
-									)}
-								>
-									<SelectValue />
-								</SelectTrigger>
-								<SelectContent className="w-[72px] min-w-0 border-2 p-1 dark:border-black">
-									{Array.from({ length: maxPage }, (_, i) => i + 1).map((p) => (
-										<SelectItem key={p} value={String(p)} className="px-2 py-1 text-xs">
-											{p}
-										</SelectItem>
-									))}
-								</SelectContent>
+								{Array.from({ length: maxPage }, (_, i) => i + 1).map((p) => (
+									<Select.Option key={p} value={String(p)} className="px-2 py-1 text-xs">
+										{p}
+									</Select.Option>
+								))}
 							</Select>
 						</div>
 					) : (

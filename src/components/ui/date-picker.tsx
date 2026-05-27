@@ -340,7 +340,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 						type="button"
 						onClick={() => setView(view === 'months' ? 'days' : 'months')}
 						className={cn(
-							'cursor-pointer rounded-sm px-1.5 py-0.5 transition-colors hover:bg-black/10 focus-visible:ring-2 focus-visible:ring-black focus-visible:outline-hidden dark:hover:bg-white/10 dark:focus-visible:ring-white',
+							'cursor-pointer rounded-sm px-1.5 py-0.5 transition-colors select-none hover:bg-black/10 focus-visible:ring-2 focus-visible:ring-black focus-visible:outline-hidden dark:hover:bg-white/10 dark:focus-visible:ring-white',
 							view === 'months' && 'bg-black/5 dark:bg-white/10',
 						)}
 					>
@@ -354,7 +354,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 							setView(view === 'years' ? 'days' : 'years');
 						}}
 						className={cn(
-							'cursor-pointer rounded-sm px-1.5 py-0.5 transition-colors hover:bg-black/10 focus-visible:ring-2 focus-visible:ring-black focus-visible:outline-hidden dark:hover:bg-white/10 dark:focus-visible:ring-white',
+							'cursor-pointer rounded-sm px-1.5 py-0.5 transition-colors select-none hover:bg-black/10 focus-visible:ring-2 focus-visible:ring-black focus-visible:outline-hidden dark:hover:bg-white/10 dark:focus-visible:ring-white',
 							view === 'years' && 'bg-black/5 dark:bg-white/10',
 						)}
 					>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Select, SelectContent, SelectGroup, SelectGroupLabel, SelectItem, SelectTrigger, SelectValue } from './select';
+import { Select } from './select';
 
 import type { Meta } from '@storybook/react-vite';
 
@@ -20,16 +20,11 @@ export const Default = {
 		const [val, setVal] = React.useState('apple');
 		return (
 			<div className="w-64">
-				<Select value={val} onValueChange={(value) => setVal(value ?? '')}>
-					<SelectTrigger>
-						<SelectValue placeholder="Select a fruit" />
-					</SelectTrigger>
-					<SelectContent>
-						<SelectItem value="apple">Apple</SelectItem>
-						<SelectItem value="banana">Banana</SelectItem>
-						<SelectItem value="blueberry">Blueberry</SelectItem>
-						<SelectItem value="strawberry">Strawberry</SelectItem>
-					</SelectContent>
+				<Select value={val} onValueChange={(value) => setVal(value ?? '')} placeholder="Select a fruit">
+					<Select.Option value="apple">Apple</Select.Option>
+					<Select.Option value="banana">Banana</Select.Option>
+					<Select.Option value="blueberry">Blueberry</Select.Option>
+					<Select.Option value="strawberry">Strawberry</Select.Option>
 				</Select>
 			</div>
 		);
@@ -40,14 +35,52 @@ export const Disabled = {
 	render: () => {
 		return (
 			<div className="w-64">
-				<Select defaultValue="banana" disabled>
-					<SelectTrigger>
-						<SelectValue placeholder="Select a fruit" />
-					</SelectTrigger>
-					<SelectContent>
-						<SelectItem value="apple">Apple</SelectItem>
-						<SelectItem value="banana">Banana</SelectItem>
-					</SelectContent>
+				<Select defaultValue="banana" disabled placeholder="Select a fruit">
+					<Select.Option value="apple">Apple</Select.Option>
+					<Select.Option value="banana">Banana</Select.Option>
+				</Select>
+			</div>
+		);
+	},
+};
+
+export const ItemsProp = {
+	render: () => {
+		const [val, setVal] = React.useState('apple');
+		return (
+			<div className="w-64">
+				<Select
+					value={val}
+					onValueChange={(value) => setVal(value ?? '')}
+					placeholder="Select a fruit"
+					items={{
+						apple: 'Apple',
+						banana: 'Banana',
+						blueberry: { label: 'Blueberry', disabled: true },
+						strawberry: 'Strawberry',
+					}}
+				/>
+			</div>
+		);
+	},
+};
+
+export const Labeled = {
+	render: () => {
+		const [val, setVal] = React.useState('apple');
+		return (
+			<div className="w-64">
+				<Select
+					value={val}
+					onValueChange={(value) => setVal(value ?? '')}
+					label="Fruit Selection"
+					description="Choose your favorite fruit from the list."
+					placeholder="Select a fruit"
+				>
+					<Select.Option value="apple">Apple</Select.Option>
+					<Select.Option value="banana">Banana</Select.Option>
+					<Select.Option value="blueberry">Blueberry</Select.Option>
+					<Select.Option value="strawberry">Strawberry</Select.Option>
 				</Select>
 			</div>
 		);
@@ -58,23 +91,18 @@ export const Groups = {
 	render: () => {
 		return (
 			<div className="w-64">
-				<Select defaultValue="light">
-					<SelectTrigger>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						<SelectGroup>
-							<SelectGroupLabel>System Theme</SelectGroupLabel>
-							<SelectItem value="system">Follow System</SelectItem>
-						</SelectGroup>
-						<hr className="my-1 border-black/10 dark:border-white/10" />
-						<SelectGroup>
-							<SelectGroupLabel>Custom Themes</SelectGroupLabel>
-							<SelectItem value="light">Light Theme</SelectItem>
-							<SelectItem value="dark">Dark Theme</SelectItem>
-							<SelectItem value="brutal">Brutal Gold Theme</SelectItem>
-						</SelectGroup>
-					</SelectContent>
+				<Select defaultValue="light" placeholder="Select a theme">
+					<Select.Group>
+						<Select.GroupLabel>System Theme</Select.GroupLabel>
+						<Select.Option value="system">Follow System</Select.Option>
+					</Select.Group>
+					<Select.Separator />
+					<Select.Group>
+						<Select.GroupLabel>Custom Themes</Select.GroupLabel>
+						<Select.Option value="light">Light Theme</Select.Option>
+						<Select.Option value="dark">Dark Theme</Select.Option>
+						<Select.Option value="brutal">Brutal Gold Theme</Select.Option>
+					</Select.Group>
 				</Select>
 			</div>
 		);

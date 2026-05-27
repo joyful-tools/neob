@@ -64,7 +64,7 @@ export function InputWrapper({
 							<Tooltip content={labelTooltip} side="top">
 								<button
 									type="button"
-									className="cursor-pointer text-muted-foreground transition-colors hover:text-black focus:outline-hidden dark:hover:text-white"
+									className="cursor-pointer text-muted-foreground transition-colors select-none hover:text-black focus:outline-hidden dark:hover:text-white"
 								>
 									<Info className="size-4" />
 									<span className="sr-only">Information</span>

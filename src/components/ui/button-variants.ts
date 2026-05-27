@@ -2,9 +2,10 @@ import { cva } from 'class-variance-authority';
 
 export const buttonVariants = cva(
 	`
-		neo-focus-ring relative isolate inline-flex cursor-pointer items-center
-		justify-center gap-2 rounded-lg border-2 border-black text-sm font-bold
-		whitespace-nowrap outline-hidden transition-all duration-25 ease-linear
+		neo-focus-ring
+		relative isolate inline-flex cursor-pointer items-center justify-center
+		gap-2 rounded-lg border-2 border-black text-sm font-bold whitespace-nowrap
+		outline-hidden transition-all duration-25 ease-linear select-none
 		after:absolute after:inset-0 after:-bottom-1 after:z-[-1]
 		after:transition-transform after:duration-25 after:ease-linear
 		after:content-[''] disabled:pointer-events-none

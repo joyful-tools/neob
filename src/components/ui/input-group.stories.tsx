@@ -84,14 +84,14 @@ export const Clearable: Story = {
 	},
 };
 
-export const NumericSliderStory: Story = {
+export const Numeric: Story = {
 	render: (args) => {
 		const [value, setValue] = React.useState(50);
 		return (
 			<div className="w-80">
 				<InputGroup {...args}>
-					<InputGroup.Input type="number" placeholder="Age" value={value} onChange={(event) => setValue(Number(event.target.value))} />
-					<InputGroup.Addon align="end">
+					<InputGroup.Input type="number" placeholder="Volume" value={value} onChange={(event) => setValue(Number(event.target.value))} />
+					<InputGroup.Addon align="end" className="-me-2">
 						<NumericSlider onChange={(delta) => setValue((previous) => Math.round((previous + delta) * 100) / 100)} />
 					</InputGroup.Addon>
 				</InputGroup>

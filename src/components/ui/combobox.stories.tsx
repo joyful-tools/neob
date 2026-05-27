@@ -4,19 +4,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utilities';
 
 import { Button } from './button';
-import {
-	Combobox,
-	ComboboxContent,
-	ComboboxEmpty,
-	ComboboxGroup,
-	ComboboxGroupLabel,
-	ComboboxItem,
-	ComboboxInput,
-	ComboboxList,
-	ComboboxTriggerValue,
-	ComboboxTriggerMultipleWithInput,
-	ComboboxChip,
-} from './combobox';
+import { Combobox } from './combobox';
 
 import type { Meta } from '@storybook/react-vite';
 
@@ -272,17 +260,17 @@ export const Default = {
 		return (
 			<div className="w-[300px]">
 				<Combobox value={value} onValueChange={(v) => setValue(v)} items={fruits}>
-					<ComboboxInput placeholder="Please select" />
-					<ComboboxContent>
-						<ComboboxEmpty />
-						<ComboboxList>
+					<Combobox.TriggerInput placeholder="Please select" />
+					<Combobox.Content>
+						<Combobox.Empty />
+						<Combobox.List>
 							{(item: string) => (
-								<ComboboxItem key={item} value={item}>
+								<Combobox.Item key={item} value={item}>
 									{item}
-								</ComboboxItem>
+								</Combobox.Item>
 							)}
-						</ComboboxList>
-					</ComboboxContent>
+						</Combobox.List>
+					</Combobox.Content>
 				</Combobox>
 			</div>
 		);
@@ -296,18 +284,18 @@ export const SearchableInside = {
 		return (
 			<div className="size-[300px]">
 				<Combobox value={value} onValueChange={(v) => setValue(v)} items={languages}>
-					<ComboboxTriggerValue className="w-[200px]" />
-					<ComboboxContent>
+					<Combobox.TriggerValue className="w-[200px]" />
+					<Combobox.Content>
 						<Combobox.Input placeholder="Search languages" />
-						<ComboboxEmpty />
-						<ComboboxList>
+						<Combobox.Empty />
+						<Combobox.List>
 							{(item: Language) => (
-								<ComboboxItem key={item.value} value={item}>
+								<Combobox.Item key={item.value} value={item}>
 									{item.emoji} {item.label}
-								</ComboboxItem>
+								</Combobox.Item>
 							)}
-						</ComboboxList>
-					</ComboboxContent>
+						</Combobox.List>
+					</Combobox.Content>
 				</Combobox>
 			</div>
 		);
@@ -321,18 +309,18 @@ export const SearchableSelect = {
 		return (
 			<div className="size-[300px]">
 				<Combobox value={value} onValueChange={(v) => setValue(v)} items={languages}>
-					<ComboboxTriggerValue className="w-[200px]" placeholder="Select a language" />
-					<ComboboxContent>
+					<Combobox.TriggerValue className="w-[200px]" placeholder="Select a language" />
+					<Combobox.Content>
 						<Combobox.Input placeholder="Search languages" />
-						<ComboboxEmpty />
-						<ComboboxList>
+						<Combobox.Empty />
+						<Combobox.List>
 							{(item: Language) => (
-								<ComboboxItem key={item.value} value={item}>
+								<Combobox.Item key={item.value} value={item}>
 									{item.emoji} {item.label}
-								</ComboboxItem>
+								</Combobox.Item>
 							)}
-						</ComboboxList>
-					</ComboboxContent>
+						</Combobox.List>
+					</Combobox.Content>
 				</Combobox>
 			</div>
 		);
@@ -346,24 +334,24 @@ export const Grouped = {
 		return (
 			<div className="size-[300px]">
 				<Combobox value={value} onValueChange={(v) => setValue(v)} items={servers}>
-					<ComboboxInput className="w-[200px]" placeholder="Select server" />
-					<ComboboxContent>
-						<ComboboxEmpty />
-						<ComboboxList>
+					<Combobox.TriggerInput className="w-[200px]" placeholder="Select server" />
+					<Combobox.Content>
+						<Combobox.Empty />
+						<Combobox.List>
 							{(group: ServerLocationGroup) => (
-								<ComboboxGroup key={group.value} items={group.items}>
-									<ComboboxGroupLabel>{group.value}</ComboboxGroupLabel>
+								<Combobox.Group key={group.value} items={group.items}>
+									<Combobox.GroupLabel>{group.value}</Combobox.GroupLabel>
 									<Combobox.Collection>
 										{(item: ServerLocation) => (
-											<ComboboxItem key={item.value} value={item}>
+											<Combobox.Item key={item.value} value={item}>
 												{item.label}
-											</ComboboxItem>
+											</Combobox.Item>
 										)}
 									</Combobox.Collection>
-								</ComboboxGroup>
+								</Combobox.Group>
 							)}
-						</ComboboxList>
-					</ComboboxContent>
+						</Combobox.List>
+					</Combobox.Content>
 				</Combobox>
 			</div>
 		);
@@ -383,25 +371,25 @@ export const Multiple = {
 					isItemEqualToValue={(app: WorkspaceAppItem, selected: WorkspaceAppItem) => app.value === selected.value}
 					multiple
 				>
-					<ComboboxTriggerMultipleWithInput
+					<Combobox.TriggerMultipleWithInput
 						className="w-full"
 						placeholder="Select apps"
-						renderItem={(selected: WorkspaceAppItem) => <ComboboxChip key={selected.value}>{selected.label}</ComboboxChip>}
+						renderItem={(selected: WorkspaceAppItem) => <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>}
 						inputSide="right"
 					/>
-					<ComboboxContent className="max-h-[200px] overflow-y-auto">
-						<ComboboxEmpty />
-						<ComboboxList>
+					<Combobox.Content className="max-h-[200px] overflow-y-auto">
+						<Combobox.Empty />
+						<Combobox.List>
 							{(item: WorkspaceAppItem) => (
-								<ComboboxItem key={item.value} value={item}>
+								<Combobox.Item key={item.value} value={item}>
 									<div className="flex gap-2">
 										<Text>{item.label}</Text>
 										<Text variant="secondary">{item.vendor}</Text>
 									</div>
-								</ComboboxItem>
+								</Combobox.Item>
 							)}
-						</ComboboxList>
-					</ComboboxContent>
+						</Combobox.List>
+					</Combobox.Content>
 				</Combobox>
 			</div>
 		);
@@ -415,17 +403,17 @@ export const WithField = {
 		return (
 			<div className="w-80">
 				<Combobox items={databases} value={value} onValueChange={setValue} label="Database" description="Select your preferred database">
-					<ComboboxInput placeholder="Select database" />
-					<ComboboxContent>
-						<ComboboxEmpty />
-						<ComboboxList>
+					<Combobox.TriggerInput placeholder="Select database" />
+					<Combobox.Content>
+						<Combobox.Empty />
+						<Combobox.List>
 							{(item: DatabaseItem) => (
-								<ComboboxItem key={item.value} value={item}>
+								<Combobox.Item key={item.value} value={item}>
 									{item.label}
-								</ComboboxItem>
+								</Combobox.Item>
 							)}
-						</ComboboxList>
-					</ComboboxContent>
+						</Combobox.List>
+					</Combobox.Content>
 				</Combobox>
 			</div>
 		);
@@ -437,32 +425,32 @@ export const Disabled = {
 		return (
 			<div className="flex w-[500px] flex-wrap items-start gap-4">
 				<Combobox value="Apple" items={fruits} disabled>
-					<ComboboxInput className="w-[200px]" placeholder="Select fruit" />
-					<ComboboxContent>
-						<ComboboxEmpty />
-						<ComboboxList>
+					<Combobox.TriggerInput className="w-[200px]" placeholder="Select fruit" />
+					<Combobox.Content>
+						<Combobox.Empty />
+						<Combobox.List>
 							{(item: string) => (
-								<ComboboxItem key={item} value={item}>
+								<Combobox.Item key={item} value={item}>
 									{item}
-								</ComboboxItem>
+								</Combobox.Item>
 							)}
-						</ComboboxList>
-					</ComboboxContent>
+						</Combobox.List>
+					</Combobox.Content>
 				</Combobox>
 
 				<Combobox value={languages[0]} items={languages} disabled>
-					<ComboboxTriggerValue className="w-[200px]" />
-					<ComboboxContent>
+					<Combobox.TriggerValue className="w-[200px]" />
+					<Combobox.Content>
 						<Combobox.Input placeholder="Search" />
-						<ComboboxEmpty />
-						<ComboboxList>
+						<Combobox.Empty />
+						<Combobox.List>
 							{(item: Language) => (
-								<ComboboxItem key={item.value} value={item}>
+								<Combobox.Item key={item.value} value={item}>
 									{item.emoji} {item.label}
-								</ComboboxItem>
+								</Combobox.Item>
 							)}
-						</ComboboxList>
-					</ComboboxContent>
+						</Combobox.List>
+					</Combobox.Content>
 				</Combobox>
 			</div>
 		);
@@ -496,12 +484,12 @@ export const DisabledItems = {
 		return (
 			<div className="h-[300px] w-80">
 				<Combobox value={value} onValueChange={setValue} items={items}>
-					<ComboboxInput placeholder="Select database" />
-					<ComboboxContent>
-						<ComboboxEmpty />
-						<ComboboxList>
+					<Combobox.TriggerInput placeholder="Select database" />
+					<Combobox.Content>
+						<Combobox.Empty />
+						<Combobox.List>
 							{(item: DatabaseItemWithDisabled) => (
-								<ComboboxItem key={item.value} value={item} disabled={item.disabled}>
+								<Combobox.Item key={item.value} value={item} disabled={item.disabled}>
 									<span>
 										{item.label}
 										{item.reason && (
@@ -511,10 +499,10 @@ export const DisabledItems = {
 											</Text>
 										)}
 									</span>
-								</ComboboxItem>
+								</Combobox.Item>
 							)}
-						</ComboboxList>
-					</ComboboxContent>
+						</Combobox.List>
+					</Combobox.Content>
 				</Combobox>
 			</div>
 		);
@@ -527,24 +515,18 @@ export const Error = {
 
 		return (
 			<div className="w-80">
-				<Combobox
-					items={databases}
-					value={value}
-					onValueChange={setValue}
-					label="Database"
-					error={{ message: 'Please select a database', match: true }}
-				>
-					<ComboboxInput placeholder="Select database" />
-					<ComboboxContent>
-						<ComboboxEmpty />
-						<ComboboxList>
+				<Combobox items={databases} value={value} onValueChange={setValue} label="Database" error="Please select a database">
+					<Combobox.TriggerInput placeholder="Select database" />
+					<Combobox.Content>
+						<Combobox.Empty />
+						<Combobox.List>
 							{(item: DatabaseItem) => (
-								<ComboboxItem key={item.value} value={item}>
+								<Combobox.Item key={item.value} value={item}>
 									{item.label}
-								</ComboboxItem>
+								</Combobox.Item>
 							)}
-						</ComboboxList>
-					</ComboboxContent>
+						</Combobox.List>
+					</Combobox.Content>
 				</Combobox>
 			</div>
 		);
@@ -559,30 +541,30 @@ export const Sizes = {
 		return (
 			<div className="flex w-[500px] flex-wrap items-center gap-4">
 				<Combobox size="sm" value={smValue} onValueChange={(v) => setSmValue(v)} items={fruits.slice(0, 8)}>
-					<ComboboxInput placeholder="Small (sm)" />
-					<ComboboxContent>
-						<ComboboxEmpty />
-						<ComboboxList>
+					<Combobox.TriggerInput placeholder="Small (sm)" />
+					<Combobox.Content>
+						<Combobox.Empty />
+						<Combobox.List>
 							{(item: string) => (
-								<ComboboxItem key={item} value={item}>
+								<Combobox.Item key={item} value={item}>
 									{item}
-								</ComboboxItem>
+								</Combobox.Item>
 							)}
-						</ComboboxList>
-					</ComboboxContent>
+						</Combobox.List>
+					</Combobox.Content>
 				</Combobox>
 				<Combobox size="base" value={baseValue} onValueChange={(v) => setBaseValue(v)} items={fruits.slice(0, 8)}>
-					<ComboboxInput placeholder="Base (default)" />
-					<ComboboxContent>
-						<ComboboxEmpty />
-						<ComboboxList>
+					<Combobox.TriggerInput placeholder="Base (default)" />
+					<Combobox.Content>
+						<Combobox.Empty />
+						<Combobox.List>
 							{(item: string) => (
-								<ComboboxItem key={item} value={item}>
+								<Combobox.Item key={item} value={item}>
 									{item}
-								</ComboboxItem>
+								</Combobox.Item>
 							)}
-						</ComboboxList>
-					</ComboboxContent>
+						</Combobox.List>
+					</Combobox.Content>
 				</Combobox>
 			</div>
 		);
@@ -597,32 +579,32 @@ export const SizesSearchableInside = {
 		return (
 			<div className="flex h-[300px] w-[500px] flex-wrap items-center gap-4">
 				<Combobox size="sm" value={smValue} onValueChange={(v) => setSmValue(v)} items={languages}>
-					<ComboboxTriggerValue className="w-[160px]" />
-					<ComboboxContent>
+					<Combobox.TriggerValue className="w-[160px]" />
+					<Combobox.Content>
 						<Combobox.Input placeholder="Search" />
-						<ComboboxEmpty />
-						<ComboboxList>
+						<Combobox.Empty />
+						<Combobox.List>
 							{(item: Language) => (
-								<ComboboxItem key={item.value} value={item}>
+								<Combobox.Item key={item.value} value={item}>
 									{item.emoji} {item.label}
-								</ComboboxItem>
+								</Combobox.Item>
 							)}
-						</ComboboxList>
-					</ComboboxContent>
+						</Combobox.List>
+					</Combobox.Content>
 				</Combobox>
 				<Combobox size="base" value={baseValue} onValueChange={(v) => setBaseValue(v)} items={languages}>
-					<ComboboxTriggerValue className="w-[180px]" />
-					<ComboboxContent>
+					<Combobox.TriggerValue className="w-[180px]" />
+					<Combobox.Content>
 						<Combobox.Input placeholder="Search" />
-						<ComboboxEmpty />
-						<ComboboxList>
+						<Combobox.Empty />
+						<Combobox.List>
 							{(item: Language) => (
-								<ComboboxItem key={item.value} value={item}>
+								<Combobox.Item key={item.value} value={item}>
 									{item.emoji} {item.label}
-								</ComboboxItem>
+								</Combobox.Item>
 							)}
-						</ComboboxList>
-					</ComboboxContent>
+						</Combobox.List>
+					</Combobox.Content>
 				</Combobox>
 			</div>
 		);
@@ -650,17 +632,17 @@ export const CustomTrigger = {
 						</Combobox.Value>
 						<CaretUpDown size={14} className="shrink-0 text-black/60 dark:text-white/60" />
 					</Combobox.Trigger>
-					<ComboboxContent>
+					<Combobox.Content>
 						<Combobox.Input placeholder="Search languages" />
-						<ComboboxEmpty />
-						<ComboboxList>
+						<Combobox.Empty />
+						<Combobox.List>
 							{(item: Language) => (
-								<ComboboxItem key={item.value} value={item}>
+								<Combobox.Item key={item.value} value={item}>
 									{item.emoji} {item.label}
-								</ComboboxItem>
+								</Combobox.Item>
 							)}
-						</ComboboxList>
-					</ComboboxContent>
+						</Combobox.List>
+					</Combobox.Content>
 				</Combobox>
 			</div>
 		);

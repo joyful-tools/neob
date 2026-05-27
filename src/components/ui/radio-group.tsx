@@ -52,7 +52,7 @@ RadioGroup.displayName = 'RadioGroup';
 export function RadioGroupItem({ className, ref, ...properties }: RadioGroupItemProperties) {
 	return (
 		<Radio.Root ref={ref} className={cn(RADIO_ITEM_CLASS_NAME, className)} nativeButton render={<button type="button" />} {...properties}>
-			<Radio.Indicator className="flex items-center justify-center text-current" keepMounted>
+			<Radio.Indicator className="flex items-center justify-center text-current select-none" keepMounted>
 				<Check className="size-3" />
 			</Radio.Indicator>
 		</Radio.Root>

@@ -123,6 +123,7 @@ export { useDialogStackPresence, closeTopDialog } from './components/ui/dialog-s
 
 export { useInputAreaAutoResize } from './hooks/use-input-area-auto-resize';
 export type { UseInputAreaAutoResizeOptions } from './hooks/use-input-area-auto-resize';
+export { useTransformOrigin } from './hooks/use-transform-origin';
 
 export { SensitiveInput } from './components/ui/sensitive-input';
 export type { SensitiveInputProperties } from './components/ui/sensitive-input';
@@ -136,9 +137,11 @@ export type { InputProperties, InputWrapperProperties, FieldsetProperties, TextI
 export { Switch } from './components/ui/switch';
 export type { SwitchProperties } from './components/ui/switch';
 
-export { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup, SelectGroupLabel } from './components/ui/select';
+export { Select } from './components/ui/select';
+export type { SelectProps, SelectOptionProps } from './components/ui/select';
 
-export { Combobox, ComboboxInput, ComboboxContent, ComboboxItem, ComboboxGroup, ComboboxGroupLabel } from './components/ui/combobox';
+export { Combobox } from './components/ui/combobox';
+export type { ComboboxProps, ComboboxSize } from './components/ui/combobox';
 
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './components/ui/tabs';
 

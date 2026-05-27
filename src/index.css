@@ -10,16 +10,19 @@
 			@slot;
 		}
 	}
+
 	@media not all and (hover: hover) and (pointer: fine) {
 		@slot;
 	}
 }
+
 @custom-variant group-hover-always {
 	@media (hover: hover) and (pointer: fine) {
 		.group:hover & {
 			@slot;
 		}
 	}
+
 	@media not all and (hover: hover) and (pointer: fine) {
 		@slot;
 	}
@@ -87,11 +90,11 @@
 	--color-green-dark: color-mix(in srgb, var(--color-green) 80%, black);
 
 	--animate-overlay-in: overlay-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-	--animate-overlay-out: overlay-out 0.1s ease-in forwards;
+	--animate-overlay-out: overlay-out 0.05s ease-in forwards;
 	--animate-modal-in: modal-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-	--animate-modal-out: modal-out 0.1s ease-in forwards;
+	--animate-modal-out: modal-out 0.05s ease-in forwards;
 	--animate-popover-in: popover-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-	--animate-popover-out: popover-out 0.1s ease-in forwards;
+	--animate-popover-out: popover-out 0.05s ease-in forwards;
 
 	--ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
@@ -99,14 +102,17 @@
 		from {
 			opacity: 0;
 		}
+
 		to {
 			opacity: 1;
 		}
 	}
+
 	@keyframes overlay-out {
 		from {
 			opacity: 1;
 		}
+
 		to {
 			opacity: 0;
 		}
@@ -117,16 +123,19 @@
 			opacity: 0;
 			transform: scale(0.95) translateY(10px);
 		}
+
 		to {
 			opacity: 1;
 			transform: scale(1) translateY(0);
 		}
 	}
+
 	@keyframes modal-out {
 		from {
 			opacity: 1;
 			transform: scale(1) translateY(0);
 		}
+
 		to {
 			opacity: 0;
 			transform: scale(0.95) translateY(10px);
@@ -138,16 +147,19 @@
 			opacity: 0;
 			transform: translate3d(var(--tw-enter-translate-x, 0), var(--tw-enter-translate-y, 0), 0) scale(0.95);
 		}
+
 		to {
 			opacity: 1;
 			transform: translate3d(0, 0, 0) scale(1);
 		}
 	}
+
 	@keyframes popover-out {
 		from {
 			opacity: 1;
 			transform: scale(1);
 		}
+
 		to {
 			opacity: 0;
 			transform: scale(0.95);
@@ -309,6 +321,7 @@
 	from {
 		--border-beam-angle: 0deg;
 	}
+
 	to {
 		--border-beam-angle: 360deg;
 	}
@@ -326,6 +339,7 @@ input::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
+
 input[type='number'] {
 	-moz-appearance: textfield;
 }

@@ -3,6 +3,8 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
 
+import { useTransformOrigin } from '../../hooks/use-transform-origin';
+
 // ============================================================================
 // Constants
 // ============================================================================
@@ -126,6 +128,7 @@ export function PopoverContent({
 	...properties
 }: PopoverContentProperties) {
 	const context = React.useContext(PopoverContext);
+	const transformOriginRef = useTransformOrigin(context?.anchorElement || null, ref);
 
 	const resolvedSideOffset = React.useCallback(
 		(data: { side: string }) => {
@@ -141,7 +144,7 @@ export function PopoverContent({
 		<PopoverPrimitive.Portal>
 			<PopoverPrimitive.Positioner sideOffset={resolvedSideOffset} align={align} side={side} anchor={context?.anchorElement}>
 				<PopoverPrimitive.Popup
-					ref={ref}
+					ref={transformOriginRef}
 					className={cn(POPOVER_CONTENT_CLASS_NAME, className)}
 					initialFocus={onOpenAutoFocus ? false : undefined}
 					{...properties}
