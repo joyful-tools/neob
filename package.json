@@ -236,7 +236,9 @@
 		"lint": "prettier --check . && eslint .",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
-		"check": "bun run lint && bun run typecheck && bun run build-storybook",
+		"test-storybook": "test-storybook --url http://127.0.0.1:6006 --maxWorkers=2",
+		"check-storybook": "bun run build-storybook && bunx http-server storybook-static --port 6006 --silent & bunx wait-on tcp:127.0.0.1:6006 && bun run test-storybook",
+		"check": "bun run lint && bun run typecheck && bun run check-storybook",
 		"deploy-storybook": "wrangler deploy",
 		"prepare": "husky"
 	},
@@ -250,7 +252,10 @@
 		"@phosphor-icons/react": "^2.1.10",
 		"@storybook/addon-a11y": "^10.1.10",
 		"@storybook/addon-docs": "^10.1.10",
+		"@storybook/addon-interactions": "^8.6.14",
 		"@storybook/react-vite": "^10.1.10",
+		"@storybook/test": "^8.6.15",
+		"@storybook/test-runner": "^0.23.0",
 		"@tailwindcss/vite": "^4.1.18",
 		"@types/react": "^19.2.8",
 		"@types/react-dom": "^19.2.3",
@@ -270,6 +275,7 @@
 		"eslint-plugin-unused-imports": "^4.3.0",
 		"globals": "^16.5.0",
 		"husky": "^9.1.7",
+		"http-server": "^14.1.1",
 		"lint-staged": "^16.2.7",
 		"motion": "^12.26.1",
 		"prettier": "^3.7.4",
@@ -285,6 +291,7 @@
 		"typescript-eslint": "^8.50.1",
 		"vite": "^6.0.0",
 		"vite-plugin-dts": "^4.5.0",
+		"wait-on": "^8.0.3",
 		"wrangler": "^4.21.0"
 	}
 }

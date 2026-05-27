@@ -68,10 +68,19 @@ export function Switch({
 	ref,
 	...properties
 }: SwitchProperties) {
+	const descriptionId = React.useId();
+	const errorId = React.useId();
+	const hasDescription = Boolean(description);
+	const hasError = Boolean(error);
+
+	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
+
 	const switchControl = (
 		<BaseSwitch.Root
 			ref={ref}
 			className={cn(SWITCH_ROOT_CLASSES, VARIANT_ROOT_CLASSES[variant], error && 'border-red dark:border-red', className)}
+			aria-describedby={describedBy}
+			aria-invalid={hasError ? true : undefined}
 			{...properties}
 		>
 			<BaseSwitch.Thumb className={SWITCH_THUMB_CLASSES} />
@@ -94,10 +103,18 @@ export function Switch({
 				<span className="mt-0.5">{switchControl}</span>
 				<div className="flex flex-col gap-0.5">
 					<span className="text-base/tight font-bold text-black dark:text-white">{label}</span>
-					{description && <span className="text-xs/normal text-muted-foreground">{description}</span>}
+					{description && (
+						<span id={descriptionId} className="text-xs/normal text-muted-foreground">
+							{description}
+						</span>
+					)}
 				</div>
 			</label>
-			{error && <span className="pl-14 text-xs font-bold text-red dark:text-red">{error}</span>}
+			{error && (
+				<span id={errorId} className="pl-14 text-xs font-bold text-red dark:text-red">
+					{error}
+				</span>
+			)}
 		</div>
 	);
 }

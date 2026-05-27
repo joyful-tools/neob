@@ -1,3 +1,4 @@
+import { expect, userEvent, within } from '@storybook/test';
 import * as React from 'react';
 
 import { Checkbox } from './checkbox';
@@ -61,14 +62,35 @@ export const ValidationError: Story = {
 		const [checked, setChecked] = React.useState(false);
 
 		return (
-			<Checkbox
-				checked={checked}
-				onCheckedChange={setChecked}
-				label="Subscribe to newsletter"
-				description="Required option."
-				error={checked ? undefined : 'Please accept the newsletter subscription.'}
-			/>
+			<div className="min-h-[72px] w-80">
+				<Checkbox
+					checked={checked}
+					onCheckedChange={setChecked}
+					label="Subscribe to newsletter"
+					description="Required option."
+					error={checked ? undefined : 'Please accept the newsletter subscription.'}
+				/>
+			</div>
 		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const checkbox = canvas.getByRole('checkbox');
+
+		// Error should be visible initially because checked is false
+		await expect(canvas.getByText('Please accept the newsletter subscription.')).toBeInTheDocument();
+
+		// Click checkbox to check it
+		await userEvent.click(checkbox);
+
+		// Checked should be true, error should disappear
+		await expect(canvas.queryByText('Please accept the newsletter subscription.')).not.toBeInTheDocument();
+
+		// Click checkbox again to uncheck it
+		await userEvent.click(checkbox);
+
+		// Checked should be false, error should reappear
+		await expect(canvas.getByText('Please accept the newsletter subscription.')).toBeInTheDocument();
 	},
 };
 

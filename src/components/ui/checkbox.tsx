@@ -58,8 +58,21 @@ export interface CheckboxGroupProperties extends React.ComponentPropsWithoutRef<
  * Can be used standalone or with a label and helper states.
  */
 function CheckboxRoot({ label, description, controlFirst = true, error, className, ref, ...properties }: CheckboxProperties) {
+	const descriptionId = React.useId();
+	const errorId = React.useId();
+	const hasDescription = Boolean(description);
+	const hasError = Boolean(error);
+
+	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
+
 	const checkboxControl = (
-		<BaseCheckbox.Root ref={ref} className={cn(CHECKBOX_ROOT_CLASSES, error && 'border-red dark:border-red', className)} {...properties}>
+		<BaseCheckbox.Root
+			ref={ref}
+			className={cn(CHECKBOX_ROOT_CLASSES, error && 'border-red dark:border-red', className)}
+			aria-describedby={describedBy}
+			aria-invalid={hasError ? true : undefined}
+			{...properties}
+		>
 			<BaseCheckbox.Indicator
 				className="flex items-center justify-center text-current data-indeterminate:[&>svg:first-child]:hidden data-unchecked:[&>svg:first-child]:hidden data-indeterminate:[&>svg:last-child]:block"
 				keepMounted
@@ -86,10 +99,18 @@ function CheckboxRoot({ label, description, controlFirst = true, error, classNam
 				<span className="mt-0.5">{checkboxControl}</span>
 				<div className="flex flex-col gap-0.5">
 					<span className="text-base/tight font-bold text-black dark:text-white">{label}</span>
-					{description && <span className="text-xs/normal text-muted-foreground">{description}</span>}
+					{description && (
+						<span id={descriptionId} className="text-xs/normal text-muted-foreground">
+							{description}
+						</span>
+					)}
 				</div>
 			</label>
-			{error && <span className="pl-8 text-xs font-bold text-red dark:text-red">{error}</span>}
+			{error && (
+				<span id={errorId} className="pl-8 text-xs font-bold text-red dark:text-red">
+					{error}
+				</span>
+			)}
 		</div>
 	);
 }
@@ -111,14 +132,29 @@ CheckboxItem.displayName = 'Checkbox.Item';
  * Groups multiple CheckboxItems inside an accessible fieldset.
  */
 function CheckboxGroup({ legend, description, error, controlFirst = true, className, children, ...properties }: CheckboxGroupProperties) {
+	const descriptionId = React.useId();
+	const errorId = React.useId();
+	const hasDescription = Boolean(description);
+	const hasError = Boolean(error);
+
+	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
+
 	return (
 		<CheckboxGroupContext.Provider value={{ controlFirst }}>
-			<BaseCheckboxGroup {...properties}>
+			<BaseCheckboxGroup {...properties} aria-describedby={describedBy} aria-invalid={hasError ? true : undefined}>
 				<fieldset className={cn('m-0 flex flex-col gap-4 border-0 p-0', className)}>
 					{legend && <legend className="font-display text-lg font-bold text-black dark:text-white">{legend}</legend>}
-					{description && <p className="-mt-2 text-xs text-muted-foreground">{description}</p>}
+					{description && (
+						<p id={descriptionId} className="-mt-2 text-xs text-muted-foreground">
+							{description}
+						</p>
+					)}
 					<div className="flex flex-col gap-3">{children}</div>
-					{error && <p className="text-xs font-bold text-red dark:text-red">{error}</p>}
+					{error && (
+						<p id={errorId} className="text-xs font-bold text-red dark:text-red">
+							{error}
+						</p>
+					)}
 				</fieldset>
 			</BaseCheckboxGroup>
 		</CheckboxGroupContext.Provider>

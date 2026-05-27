@@ -1,3 +1,4 @@
+import { expect, userEvent, within } from '@storybook/test';
 import * as React from 'react';
 
 import { Switch } from './switch';
@@ -71,11 +72,34 @@ export const ValidationError: Story = {
 		const [checked, setChecked] = React.useState(false);
 		const error = checked ? undefined : 'You must agree to the privacy policy.';
 
-		return <Switch {...arguments_} checked={checked} onCheckedChange={setChecked} error={error} />;
+		return (
+			<div className="min-h-[76px] w-80">
+				<Switch {...arguments_} checked={checked} onCheckedChange={setChecked} error={error} />
+			</div>
+		);
 	},
 	args: {
 		label: 'Agree to privacy policy',
 		description: 'Required choice to register.',
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const toggle = canvas.getByLabelText('Agree to privacy policy');
+
+		// Error should be visible initially because checked is false
+		await expect(canvas.getByText('You must agree to the privacy policy.')).toBeInTheDocument();
+
+		// Click the switch to check it
+		await userEvent.click(toggle);
+
+		// Error should disappear
+		await expect(canvas.queryByText('You must agree to the privacy policy.')).not.toBeInTheDocument();
+
+		// Click the switch again to uncheck it
+		await userEvent.click(toggle);
+
+		// Error should reappear
+		await expect(canvas.getByText('You must agree to the privacy policy.')).toBeInTheDocument();
 	},
 };
 

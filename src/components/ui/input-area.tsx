@@ -49,6 +49,13 @@ export function InputArea({
 
 	const autoResizeRef = useInputAreaAutoResize(autoResizeOptions);
 
+	const descriptionId = React.useId();
+	const errorId = React.useId();
+	const hasDescription = Boolean(description);
+	const hasError = Boolean(error);
+
+	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
+
 	const textarea = (
 		<textarea
 			required={required}
@@ -58,6 +65,8 @@ export function InputArea({
 				className,
 			)}
 			ref={ref}
+			aria-describedby={describedBy}
+			aria-invalid={hasError ? true : undefined}
 			{...properties}
 		/>
 	);
@@ -80,6 +89,8 @@ export function InputArea({
 				labelTooltip={labelTooltip}
 				controlFirst={controlFirst}
 				hideLabel={hideLabel}
+				descriptionId={descriptionId}
+				errorId={errorId}
 				className={containerClassName}
 			>
 				{control}

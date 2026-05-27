@@ -18,6 +18,8 @@ const ComboboxContext = React.createContext<{
 	readonly multiple: boolean;
 	readonly anchorRef: React.RefCallback<HTMLDivElement | null>;
 	readonly anchorElement: HTMLDivElement | null;
+	readonly describedBy?: string;
+	readonly ariaInvalid?: boolean;
 }>({
 	size: 'base',
 	hasError: false,
@@ -39,7 +41,7 @@ function getInputStyles(size: ComboboxSize, hasError: boolean) {
 	};
 
 	return cn(
-		`flex w-full min-w-[200px] items-center justify-between bg-white font-bold text-black transition-all duration-300 ease-spring select-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
+		`flex w-full items-center justify-between bg-white font-bold text-black transition-all duration-300 ease-spring select-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
 		hasError
 			? 'border-red focus-visible:ring-red dark:border-red dark:focus-visible:ring-red'
 			: 'border-black focus-visible:ring-black dark:border-black dark:focus-visible:ring-white',
@@ -82,8 +84,24 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 	const hasError = Boolean(error);
 	const [anchorElement, setAnchorElement] = React.useState<HTMLDivElement | null>(null);
 
+	const descriptionId = React.useId();
+	const errorId = React.useId();
+	const hasDescription = Boolean(description);
+
+	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
+
 	const comboboxControl = (
-		<ComboboxContext.Provider value={{ size, hasError, multiple: Boolean(props.multiple), anchorRef: setAnchorElement, anchorElement }}>
+		<ComboboxContext.Provider
+			value={{
+				size,
+				hasError,
+				multiple: Boolean(props.multiple),
+				anchorRef: setAnchorElement,
+				anchorElement,
+				describedBy,
+				ariaInvalid: hasError,
+			}}
+		>
 			<BaseCombobox.Root {...props}>{children}</BaseCombobox.Root>
 		</ComboboxContext.Provider>
 	);
@@ -96,6 +114,8 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 				labelTooltip={labelTooltip}
 				description={description}
 				error={error}
+				descriptionId={descriptionId}
+				errorId={errorId}
 				className={containerClassName}
 			>
 				{comboboxControl}
@@ -155,7 +175,7 @@ function Content({
 				<BaseCombobox.Popup
 					ref={ref}
 					className={cn(
-						`flex max-h-[min(var(--available-height),24rem)] min-w-(--anchor-width) animate-popover-in flex-col overflow-hidden rounded-xl border-2 border-black bg-white px-0 py-1.5 text-black shadow-sm outline-hidden select-none data-closed:animate-popover-out dark:bg-zinc dark:text-white`,
+						`flex max-h-[min(var(--available-height),24rem)] w-[max(var(--anchor-width),150px)] min-w-0 animate-popover-in flex-col overflow-hidden rounded-xl border-2 border-black bg-white px-0 py-1.5 text-black shadow-sm outline-hidden select-none data-closed:animate-popover-out dark:bg-zinc dark:text-white`,
 						`origin-(--transform-origin)`,
 						`data-[side=bottom]:[--tw-enter-translate-y:-0.5rem] data-[side=left]:[--tw-enter-translate-x:0.5rem] data-[side=right]:[--tw-enter-translate-x:-0.5rem] data-[side=top]:[--tw-enter-translate-y:0.5rem]`,
 						className,
@@ -188,27 +208,30 @@ export interface ComboboxTriggerValueProps extends React.ComponentPropsWithoutRe
  * Dropdown trigger button displaying the selected value.
  */
 function TriggerValue({ className, ref, placeholder, ...props }: ComboboxTriggerValueProps) {
-	const { size, hasError } = React.useContext(ComboboxContext);
+	const { size, hasError, describedBy, ariaInvalid, anchorRef } = React.useContext(ComboboxContext);
 	const iconStyles = triggerValueIconStyles[size];
 
 	return (
-		<BaseCombobox.Trigger
-			ref={ref}
-			className={cn(
-				getInputStyles(size, hasError),
-				'relative flex items-center shadow-brutal-sm transition-all duration-300 ease-spring hover:-translate-y-0.5 hover:shadow-brutal active:translate-y-0 active:shadow-brutal-inset aria-expanded:translate-y-0 aria-expanded:hover:translate-y-0',
-				iconStyles.padding,
-				className,
-			)}
-			{...props}
-		>
-			<BaseCombobox.Value placeholder={placeholder} />
-			<BaseCombobox.Icon
-				className={cn('absolute top-1/2 flex -translate-y-1/2 items-center text-black/60 dark:text-white/60', iconStyles.iconRight)}
+		<div ref={anchorRef} className={cn('inline-flex', className)}>
+			<BaseCombobox.Trigger
+				ref={ref}
+				className={cn(
+					getInputStyles(size, hasError),
+					'relative flex w-full items-center overflow-hidden shadow-brutal-sm transition-all duration-300 ease-spring hover:-translate-y-0.5 hover:shadow-brutal active:translate-y-0 active:shadow-brutal-inset disabled:hover:translate-y-0 disabled:hover:shadow-brutal-sm',
+					iconStyles.padding,
+				)}
+				aria-describedby={describedBy}
+				aria-invalid={ariaInvalid ? true : undefined}
+				{...props}
 			>
-				<CaretDown size={iconStyles.iconSize} className="fill-current" />
-			</BaseCombobox.Icon>
-		</BaseCombobox.Trigger>
+				<BaseCombobox.Value placeholder={placeholder} />
+				<BaseCombobox.Icon
+					className={cn('absolute top-1/2 flex -translate-y-1/2 items-center text-black/60 dark:text-white/60', iconStyles.iconRight)}
+				>
+					<CaretDown size={iconStyles.iconSize} className="fill-current" />
+				</BaseCombobox.Icon>
+			</BaseCombobox.Trigger>
+		</div>
 	);
 }
 TriggerValue.displayName = 'Combobox.TriggerValue';
@@ -272,15 +295,17 @@ function TriggerInput({
 	showOptionsLabel = 'Show options',
 	...props
 }: ComboboxTriggerInputProps) {
-	const { size, hasError } = React.useContext(ComboboxContext);
+	const { size, hasError, describedBy, ariaInvalid, anchorRef } = React.useContext(ComboboxContext);
 	const iconStyles = triggerInputIconStyles[size];
 
 	return (
-		<div className={cn('relative inline-block w-full max-w-xs has-disabled:cursor-not-allowed has-disabled:opacity-50', className)}>
+		<div ref={anchorRef} className={cn('relative inline-block', className)}>
 			<BaseCombobox.Input
 				ref={ref}
 				placeholder={placeholder}
 				className={cn(getInputStyles(size, hasError), 'w-full shadow-brutal-inset', iconStyles.padding)}
+				aria-describedby={describedBy}
+				aria-invalid={ariaInvalid ? true : undefined}
 				{...props}
 			/>
 
@@ -297,7 +322,7 @@ function TriggerInput({
 			<BaseCombobox.Trigger
 				aria-label={showOptionsLabel}
 				className={cn(
-					'absolute top-1/2 m-0 flex -translate-y-1/2 cursor-pointer items-center justify-center border-0 bg-transparent p-0 text-black/60 hover:text-black focus:outline-hidden dark:text-white/60 dark:hover:text-white',
+					'absolute top-1/2 m-0 flex -translate-y-1/2 cursor-pointer items-center justify-center border-0 bg-transparent p-0 text-black/60 hover:text-black focus:outline-hidden disabled:pointer-events-none dark:text-white/60 dark:hover:text-white',
 					iconStyles.caretRight,
 				)}
 			>
@@ -319,7 +344,7 @@ function getChipsContainerStyles(size: ComboboxSize, hasError: boolean) {
 	};
 
 	return cn(
-		`flex w-full min-w-[200px] flex-col gap-1 bg-white font-bold text-black shadow-brutal-inset transition-all duration-300 ease-spring select-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
+		`flex w-full flex-col gap-1 bg-white font-bold text-black shadow-brutal-inset transition-all duration-300 ease-spring select-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
 		hasError
 			? 'border-red focus-within:ring-red dark:border-red dark:focus-within:ring-red'
 			: 'border-black focus-within:ring-black dark:border-black dark:focus-within:ring-white',
@@ -346,7 +371,7 @@ function TriggerMultipleWithInput<ValueType>({
 	inputSide = 'right',
 	value: controlledValue,
 }: ComboboxTriggerMultipleWithInputProps<ValueType>) {
-	const { size, hasError } = React.useContext(ComboboxContext);
+	const { size, hasError, describedBy, ariaInvalid } = React.useContext(ComboboxContext);
 	const chipsToRender = controlledValue;
 
 	const sizeToMinHeight: Record<ComboboxSize, string> = {
@@ -364,11 +389,15 @@ function TriggerMultipleWithInput<ValueType>({
 				sizeToMinHeight[size],
 				className,
 			)}
+			aria-describedby={describedBy}
+			aria-invalid={ariaInvalid ? true : undefined}
 		>
 			{inputSide === 'top' && (
 				<BaseCombobox.Input
 					placeholder={placeholder}
 					className="w-full border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black focus:outline-hidden dark:text-white"
+					aria-describedby={describedBy}
+					aria-invalid={ariaInvalid ? true : undefined}
 				/>
 			)}
 			<div className="flex flex-1 flex-wrap items-center gap-1">
@@ -383,6 +412,8 @@ function TriggerMultipleWithInput<ValueType>({
 					<BaseCombobox.Input
 						placeholder={placeholder}
 						className="min-w-[80px] flex-1 border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black focus:outline-hidden dark:text-white"
+						aria-describedby={describedBy}
+						aria-invalid={ariaInvalid ? true : undefined}
 					/>
 				)}
 			</div>
@@ -413,7 +444,7 @@ function Chip({ removeLabel = 'Remove', className, children, ref, ...props }: Co
 			<span className="truncate">{children}</span>
 			<BaseCombobox.ChipRemove
 				aria-label={removeLabel}
-				className="flex cursor-pointer rounded-sm border-0 bg-transparent p-0.5 hover:bg-black/10 dark:hover:bg-white/10"
+				className="flex cursor-pointer rounded-sm border-0 bg-transparent p-0.5 hover:bg-black/10 data-disabled:pointer-events-none dark:hover:bg-white/10"
 			>
 				<X size={10} className="stroke-3" />
 			</BaseCombobox.ChipRemove>
@@ -485,7 +516,7 @@ function Input({ className, ref, ...props }: ComboboxInputProps) {
 		<BaseCombobox.Input
 			ref={ref}
 			className={cn(
-				'mx-1.5 my-1 flex h-9 w-[calc(100%-12px)] shrink-0 overflow-hidden rounded-md border-2 border-black bg-white px-3 py-1.5 text-sm font-medium shadow-brutal-inset focus:outline-hidden dark:bg-zinc dark:text-white',
+				'mx-1.5 my-1 flex h-9 min-w-0 self-stretch overflow-hidden rounded-md border-2 border-black bg-white px-3 py-1.5 text-sm font-medium shadow-brutal-inset focus:outline-hidden dark:bg-zinc dark:text-white',
 				className,
 			)}
 			{...props}

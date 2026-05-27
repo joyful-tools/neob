@@ -32,9 +32,23 @@ export function SensitiveInput({
 		setIsVisible((prev) => !prev);
 	}
 
+	const descriptionId = React.useId();
+	const errorId = React.useId();
+	const hasDescription = Boolean(description);
+	const hasError = Boolean(error);
+
+	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
+
 	const rawControl = (
 		<div className="relative w-full">
-			<Input type={isVisible ? 'text' : 'password'} className={cn('pr-12', className)} ref={ref} {...properties} />
+			<Input
+				type={isVisible ? 'text' : 'password'}
+				className={cn('pr-12', className)}
+				ref={ref}
+				aria-describedby={describedBy}
+				aria-invalid={hasError ? true : undefined}
+				{...properties}
+			/>
 			<button
 				type="button"
 				className="absolute top-1/2 right-2 flex size-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent text-muted-foreground transition-colors select-none hover:text-black focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:hover:text-white dark:focus-visible:ring-white"
@@ -57,6 +71,8 @@ export function SensitiveInput({
 				labelTooltip={labelTooltip}
 				controlFirst={controlFirst}
 				hideLabel={hideLabel}
+				descriptionId={descriptionId}
+				errorId={errorId}
 				className={containerClassName}
 			>
 				{rawControl}

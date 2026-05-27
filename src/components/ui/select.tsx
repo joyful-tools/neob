@@ -136,6 +136,13 @@ export function Select<T = unknown, Multiple extends boolean | undefined = false
 
 	const { items: _items, ...baseProps } = props;
 
+	const descriptionId = React.useId();
+	const errorId = React.useId();
+	const hasDescription = Boolean(description);
+	const hasError = Boolean(error);
+
+	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
+
 	const selectControl = (
 		<BaseSelect.Root {...baseProps} items={normalizedItems} disabled={loading || props.disabled}>
 			<BaseSelect.Trigger
@@ -148,6 +155,8 @@ export function Select<T = unknown, Multiple extends boolean | undefined = false
 					error && 'border-red focus-visible:ring-red dark:border-red dark:focus-visible:ring-red',
 					className,
 				)}
+				aria-describedby={describedBy}
+				aria-invalid={hasError ? true : undefined}
 			>
 				{loading ? (
 					<Skeleton className="h-4 w-24" />
@@ -187,6 +196,8 @@ export function Select<T = unknown, Multiple extends boolean | undefined = false
 				required={required}
 				labelTooltip={labelTooltip}
 				hideLabel={hideLabel}
+				descriptionId={descriptionId}
+				errorId={errorId}
 				className={containerClassName}
 			>
 				{selectControl}

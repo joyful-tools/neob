@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Lint, typecheck, and build Storybook
+      - name: Lint, typecheck, and validate Storybook interactions and accessibility
         run: bun run check
 
   preview:

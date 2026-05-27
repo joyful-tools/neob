@@ -16,6 +16,8 @@ export interface InputWrapperProperties extends React.ComponentPropsWithoutRef<t
 	readonly controlFirst?: boolean;
 	readonly hideLabel?: boolean;
 	readonly children: React.ReactNode;
+	readonly descriptionId?: string;
+	readonly errorId?: string;
 }
 
 export interface FieldsetProperties extends React.ComponentPropsWithoutRef<typeof BaseFieldset.Root> {
@@ -47,6 +49,8 @@ function InputWrapper({
 	hideLabel = false,
 	className,
 	children,
+	descriptionId,
+	errorId,
 	...properties
 }: InputWrapperProperties) {
 	const showOptional = required === false;
@@ -78,11 +82,15 @@ function InputWrapper({
 			<div className="w-full">{children}</div>
 
 			{error ? (
-				<BaseField.Error className="text-xs/normal font-bold text-red dark:text-red" render={<span />}>
+				<BaseField.Error id={errorId} className="text-xs/normal font-bold text-red dark:text-red" render={<span />}>
 					{error}
 				</BaseField.Error>
 			) : (
-				description && <BaseField.Description className="text-xs/normal text-muted-foreground">{description}</BaseField.Description>
+				description && (
+					<BaseField.Description id={descriptionId} className="text-xs/normal text-muted-foreground">
+						{description}
+					</BaseField.Description>
+				)
 			)}
 		</BaseField.Root>
 	);
@@ -90,17 +98,37 @@ function InputWrapper({
 InputWrapper.displayName = 'Input.Wrapper';
 
 function Fieldset({ legend, description, error, className, children, ...properties }: FieldsetProperties) {
+	const descriptionId = React.useId();
+	const errorId = React.useId();
+	const hasDescription = Boolean(description);
+	const hasError = Boolean(error);
+
+	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
+
 	return (
-		<BaseFieldset.Root className={cn('m-0 flex w-full flex-col gap-4 border-0 p-0', className)} {...properties}>
+		<BaseFieldset.Root
+			className={cn('m-0 flex w-full flex-col gap-4 border-0 p-0', className)}
+			aria-describedby={describedBy}
+			aria-invalid={hasError ? true : undefined}
+			{...properties}
+		>
 			{legend && (
 				<BaseFieldset.Legend className="m-0 p-0 font-display text-lg font-bold text-black dark:text-white">{legend}</BaseFieldset.Legend>
 			)}
 
-			{description && <p className="-mt-2 text-xs text-muted-foreground">{description}</p>}
+			{description && (
+				<p id={descriptionId} className="-mt-2 text-xs text-muted-foreground">
+					{description}
+				</p>
+			)}
 
 			<div className="flex flex-col gap-3">{children}</div>
 
-			{error && <p className="text-xs font-bold text-red dark:text-red">{error}</p>}
+			{error && (
+				<p id={errorId} className="text-xs font-bold text-red dark:text-red">
+					{error}
+				</p>
+			)}
 		</BaseFieldset.Root>
 	);
 }
@@ -121,6 +149,13 @@ function InputRoot({
 	containerClassName,
 	...properties
 }: InputProperties) {
+	const descriptionId = React.useId();
+	const errorId = React.useId();
+	const hasDescription = Boolean(description);
+	const hasError = Boolean(error);
+
+	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
+
 	const rawInput = (
 		<input
 			type={type}
@@ -134,6 +169,8 @@ function InputRoot({
 				className,
 			)}
 			ref={ref}
+			aria-describedby={describedBy}
+			aria-invalid={hasError ? true : undefined}
 			{...properties}
 		/>
 	);
@@ -148,6 +185,8 @@ function InputRoot({
 				labelTooltip={labelTooltip}
 				controlFirst={controlFirst}
 				hideLabel={hideLabel}
+				descriptionId={descriptionId}
+				errorId={errorId}
 				className={containerClassName}
 			>
 				{rawInput}

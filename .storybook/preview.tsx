@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/react-vite';
 import * as React from 'react';
+import { Controls, Description, Primary, Stories, Subtitle, Title } from '@storybook/addon-docs/blocks';
 import { MemoryRouter } from 'react-router-dom';
 import '../src/index.css';
 
@@ -23,6 +24,21 @@ const preview: Preview = {
 				color: /(background|color)$/i,
 				date: /Date$/i,
 			},
+		},
+		a11y: {
+			test: 'error',
+		},
+		docs: {
+			page: () => (
+				<>
+					<Title />
+					<Subtitle />
+					<Description />
+					<Primary />
+					<Controls />
+					<Stories includePrimary={false} />
+				</>
+			),
 		},
 		layout: 'fullscreen',
 	},
@@ -51,13 +67,14 @@ const preview: Preview = {
 			}, [theme]);
 
 			const isCentered = context.parameters.layout === 'centered';
+			const isDocs = context.viewMode === 'docs';
 
 			return (
 				<MemoryRouter>
 					<div
-						className={`bg-background text-foreground min-h-screen p-8 transition-colors duration-200 ${
-							isCentered ? 'flex items-center justify-center' : ''
-						}`}
+						className={`bg-background text-foreground transition-colors duration-200 ${
+							isDocs ? 'p-4' : 'min-h-screen p-8'
+						} ${isCentered ? 'flex items-center justify-center' : ''}`}
 					>
 						<Story />
 					</div>

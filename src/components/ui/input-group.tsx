@@ -14,6 +14,8 @@ interface InputGroupContextValue {
 	error?: boolean;
 	inputId: string;
 	inputRef: React.RefObject<HTMLInputElement | null>;
+	describedBy?: string;
+	ariaInvalid?: boolean;
 }
 
 const InputGroupContext = React.createContext<InputGroupContextValue | null>(null);
@@ -58,8 +60,13 @@ export function InputGroup({
 	const inputId = properties.id ?? generatedId;
 	const inputRef = React.useRef<HTMLInputElement | null>(null);
 
+	const descriptionId = React.useId();
+	const errorId = React.useId();
+	const hasDescription = Boolean(description);
 	const hasError = !!error;
 	const errorMessage = typeof error === 'string' ? error : undefined;
+
+	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
 
 	const contextValue = React.useMemo(
 		() => ({
@@ -68,8 +75,10 @@ export function InputGroup({
 			error: hasError,
 			inputId,
 			inputRef,
+			describedBy,
+			ariaInvalid: hasError,
 		}),
-		[size, disabled, hasError, inputId],
+		[size, disabled, hasError, inputId, describedBy],
 	);
 
 	const handleContainerClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -112,6 +121,8 @@ export function InputGroup({
 				labelTooltip={labelTooltip}
 				controlFirst={controlFirst}
 				hideLabel={hideLabel}
+				descriptionId={descriptionId}
+				errorId={errorId}
 				className={containerClassName}
 			>
 				{rawControl}
@@ -127,7 +138,7 @@ export interface InputGroupInputProps extends Omit<React.ComponentProps<'input'>
 }
 
 function InputGroupInput({ className, type = 'text', ref, onBlur, ...properties }: InputGroupInputProps) {
-	const { inputId, disabled, inputRef } = useInputGroup();
+	const { inputId, disabled, inputRef, describedBy, ariaInvalid } = useInputGroup();
 
 	const handleRef = React.useCallback(
 		(node: HTMLInputElement | null) => {
@@ -150,6 +161,8 @@ function InputGroupInput({ className, type = 'text', ref, onBlur, ...properties 
 			type={type}
 			disabled={disabled}
 			ref={handleRef}
+			aria-describedby={describedBy}
+			aria-invalid={ariaInvalid ? true : undefined}
 			onBlur={(event) => {
 				event.target.scrollLeft = 0;
 				onBlur?.(event);
