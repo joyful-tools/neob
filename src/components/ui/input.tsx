@@ -82,7 +82,7 @@ function InputWrapper({
 			<div className="w-full">{children}</div>
 
 			{error ? (
-				<BaseField.Error id={errorId} className="text-xs/normal font-bold text-red dark:text-red" render={<span />}>
+				<BaseField.Error id={errorId} className="text-xs/normal font-bold text-red-dark dark:text-red-light" render={<span />}>
 					{error}
 				</BaseField.Error>
 			) : (
@@ -125,7 +125,7 @@ function Fieldset({ legend, description, error, className, children, ...properti
 			<div className="flex flex-col gap-3">{children}</div>
 
 			{error && (
-				<p id={errorId} className="text-xs font-bold text-red dark:text-red">
+				<p id={errorId} className="text-xs font-bold text-red-dark dark:text-red-light">
 					{error}
 				</p>
 			)}

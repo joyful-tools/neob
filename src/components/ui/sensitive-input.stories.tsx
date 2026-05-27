@@ -26,18 +26,21 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
+		'aria-label': 'Password input',
 		placeholder: 'Enter password...',
 	},
 };
 
 export const WithValue: Story = {
 	args: {
+		'aria-label': 'Password input with value',
 		defaultValue: 'my-super-secret-password',
 	},
 };
 
 export const Disabled: Story = {
 	args: {
+		'aria-label': 'Disabled password input',
 		defaultValue: 'secure-token',
 		disabled: true,
 	},

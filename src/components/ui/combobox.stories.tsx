@@ -283,7 +283,7 @@ export const SearchableInside = {
 
 		return (
 			<div className="size-[300px]">
-				<Combobox value={value} onValueChange={(v) => setValue(v)} items={languages}>
+				<Combobox aria-label="Language selection" value={value} onValueChange={(v) => setValue(v)} items={languages}>
 					<Combobox.TriggerValue className="w-[200px]" />
 					<Combobox.Content>
 						<Combobox.Input placeholder="Search languages" />
@@ -308,7 +308,7 @@ export const SearchableSelect = {
 
 		return (
 			<div className="size-[300px]">
-				<Combobox value={value} onValueChange={(v) => setValue(v)} items={languages}>
+				<Combobox aria-label="Select a language" value={value} onValueChange={(v) => setValue(v)} items={languages}>
 					<Combobox.TriggerValue className="w-[200px]" placeholder="Select a language" />
 					<Combobox.Content>
 						<Combobox.Input placeholder="Search languages" />
@@ -438,7 +438,7 @@ export const Disabled = {
 					</Combobox.Content>
 				</Combobox>
 
-				<Combobox value={languages[0]} items={languages} disabled>
+				<Combobox aria-label="Disabled language selection" value={languages[0]} items={languages} disabled>
 					<Combobox.TriggerValue className="w-[200px]" />
 					<Combobox.Content>
 						<Combobox.Input placeholder="Search" />
@@ -578,7 +578,7 @@ export const SizesSearchableInside = {
 
 		return (
 			<div className="flex h-[300px] w-[500px] flex-wrap items-center gap-4">
-				<Combobox size="sm" value={smValue} onValueChange={(v) => setSmValue(v)} items={languages}>
+				<Combobox aria-label="Small language selection" size="sm" value={smValue} onValueChange={(v) => setSmValue(v)} items={languages}>
 					<Combobox.TriggerValue className="w-[160px]" />
 					<Combobox.Content>
 						<Combobox.Input placeholder="Search" />
@@ -592,7 +592,13 @@ export const SizesSearchableInside = {
 						</Combobox.List>
 					</Combobox.Content>
 				</Combobox>
-				<Combobox size="base" value={baseValue} onValueChange={(v) => setBaseValue(v)} items={languages}>
+				<Combobox
+					aria-label="Base language selection"
+					size="base"
+					value={baseValue}
+					onValueChange={(v) => setBaseValue(v)}
+					items={languages}
+				>
 					<Combobox.TriggerValue className="w-[180px]" />
 					<Combobox.Content>
 						<Combobox.Input placeholder="Search" />
@@ -617,7 +623,7 @@ export const CustomTrigger = {
 
 		return (
 			<div className="size-[300px]">
-				<Combobox value={value} onValueChange={(v) => setValue(v)} items={languages}>
+				<Combobox aria-label="Custom language selection" value={value} onValueChange={(v) => setValue(v)} items={languages}>
 					<Combobox.Trigger
 						render={
 							<Button

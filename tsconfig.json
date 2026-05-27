@@ -8,6 +8,8 @@
 
 		/* Bundler mode */
 		"moduleResolution": "bundler",
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
 		"allowImportingTsExtensions": true,
 		"resolveJsonModule": true,
 		"isolatedModules": true,
@@ -26,5 +28,5 @@
 			"@/*": ["./src/*"]
 		}
 	},
-	"include": ["src", ".storybook"]
+	"include": ["src", ".storybook/**/*.ts", ".storybook/**/*.tsx", "vitest.config.ts", "vitest.workspace.ts"]
 }

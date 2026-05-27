@@ -20,7 +20,7 @@ export const Default = {
 		const [val, setVal] = React.useState('apple');
 		return (
 			<div className="w-64">
-				<Select value={val} onValueChange={(value) => setVal(value ?? '')} placeholder="Select a fruit">
+				<Select value={val} onValueChange={(value) => setVal(value ?? '')} placeholder="Select a fruit" aria-label="Fruit selection">
 					<Select.Option value="apple">Apple</Select.Option>
 					<Select.Option value="banana">Banana</Select.Option>
 					<Select.Option value="blueberry">Blueberry</Select.Option>
@@ -35,7 +35,7 @@ export const Disabled = {
 	render: () => {
 		return (
 			<div className="w-64">
-				<Select defaultValue="banana" disabled placeholder="Select a fruit">
+				<Select defaultValue="banana" disabled placeholder="Select a fruit" aria-label="Disabled fruit selection">
 					<Select.Option value="apple">Apple</Select.Option>
 					<Select.Option value="banana">Banana</Select.Option>
 				</Select>
@@ -53,6 +53,7 @@ export const ItemsProp = {
 					value={val}
 					onValueChange={(value) => setVal(value ?? '')}
 					placeholder="Select a fruit"
+					aria-label="Fruit selection items"
 					items={{
 						apple: 'Apple',
 						banana: 'Banana',
@@ -91,7 +92,7 @@ export const Groups = {
 	render: () => {
 		return (
 			<div className="w-64">
-				<Select defaultValue="light" placeholder="Select a theme">
+				<Select defaultValue="light" placeholder="Select a theme" aria-label="Theme selection">
 					<Select.Group>
 						<Select.GroupLabel>System Theme</Select.GroupLabel>
 						<Select.Option value="system">Follow System</Select.Option>

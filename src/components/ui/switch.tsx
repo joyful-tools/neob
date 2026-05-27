@@ -111,7 +111,7 @@ export function Switch({
 				</div>
 			</label>
 			{error && (
-				<span id={errorId} className="pl-14 text-xs font-bold text-red dark:text-red">
+				<span id={errorId} className="pl-14 text-xs font-bold text-red-dark dark:text-red-light">
 					{error}
 				</span>
 			)}

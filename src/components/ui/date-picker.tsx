@@ -205,7 +205,8 @@ export function DatePicker(fullProps: DatePickerProps) {
 				month_caption: 'hidden',
 				month_grid: 'w-full border-collapse space-y-1 flex-1',
 				weekdays: 'flex justify-between w-full',
-				weekday: 'text-xs font-black tracking-wider text-muted-foreground w-9 h-9 flex items-center justify-center uppercase',
+				weekday:
+					'text-xs font-black tracking-wider text-muted-foreground dark:text-white/80 w-9 h-9 flex items-center justify-center uppercase',
 				weeks: 'space-y-1 mt-1 flex-1 flex flex-col justify-between',
 				week: 'flex w-full mt-1 justify-between',
 				day: 'h-9 w-9 p-0 relative flex items-center justify-center',
@@ -220,7 +221,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 					'rounded-lg bg-orange/20 dark:bg-orange/15 [&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-black dark:[&_button]:border-black',
 				range_middle:
 					'bg-orange/20 dark:bg-orange/15 [&_button]:border-transparent [&_button]:rounded-none [&_button]:bg-transparent dark:[&_button]:bg-transparent [&_button]:text-black dark:[&_button]:text-white',
-				outside: 'text-muted-foreground opacity-50',
+				outside: 'text-black/65 dark:text-white/65 opacity-100',
 				disabled: 'text-muted-foreground opacity-30 cursor-not-allowed pointer-events-none',
 				...classNames,
 			},
@@ -362,10 +363,24 @@ export function DatePicker(fullProps: DatePickerProps) {
 					</button>
 				</div>
 				<div className="z-10 flex items-center gap-1">
-					<Button type="button" variant="subtle" size="icon" onClick={handlePrevClick} className="size-7 rounded-md">
+					<Button
+						type="button"
+						variant="subtle"
+						size="icon"
+						onClick={handlePrevClick}
+						aria-label={view === 'days' ? 'Previous month' : view === 'months' ? 'Previous year' : 'Previous years'}
+						className="size-7 rounded-md"
+					>
 						<CaretLeft size={14} />
 					</Button>
-					<Button type="button" variant="subtle" size="icon" onClick={handleNextClick} className="size-7 rounded-md">
+					<Button
+						type="button"
+						variant="subtle"
+						size="icon"
+						onClick={handleNextClick}
+						aria-label={view === 'days' ? 'Next month' : view === 'months' ? 'Next year' : 'Next years'}
+						className="size-7 rounded-md"
+					>
 						<CaretRight size={14} />
 					</Button>
 				</div>

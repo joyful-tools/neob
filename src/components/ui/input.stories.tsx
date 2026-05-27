@@ -23,7 +23,15 @@ type Story = StoryObj<StoryProps>;
 export const DefaultInput: Story = {
 	render: () => (
 		<div className="w-80">
-			<Input label="Username" description="Choose a unique public handle." placeholder="e.g. johndoe" />
+			<div className="flex flex-col gap-2">
+				<label htmlFor="username-input" className="text-sm font-bold text-black dark:text-white">
+					Username
+				</label>
+				<Input id="username-input" aria-describedby="username-input-description" placeholder="e.g. johndoe" />
+				<p id="username-input-description" className="text-xs/normal text-muted-foreground">
+					Choose a unique public handle.
+				</p>
+			</div>
 		</div>
 	),
 };
@@ -47,13 +55,23 @@ export const OptionalInput: Story = {
 export const ValidationError: Story = {
 	render: () => (
 		<div className="w-80">
-			<Input
-				label="Password"
-				error="Password must contain at least 8 characters and one number."
-				type="password"
-				defaultValue="12345"
-				className="border-red dark:border-red"
-			/>
+			<div className="flex flex-col gap-2">
+				<label htmlFor="password-validation" className="text-sm font-bold text-black dark:text-white">
+					Password
+				</label>
+				<Input
+					id="password-validation"
+					aria-describedby="password-validation-error"
+					aria-invalid={true}
+					error="Password must contain at least 8 characters and one number."
+					type="password"
+					defaultValue="12345"
+					className="border-red dark:border-red"
+				/>
+				<p id="password-validation-error" className="text-xs font-bold text-red-dark dark:text-red-light">
+					Password must contain at least 8 characters and one number.
+				</p>
+			</div>
 		</div>
 	),
 };
@@ -73,12 +91,15 @@ export const WithLabelTooltip: Story = {
 export const DisabledInput: Story = {
 	render: () => (
 		<div className="w-80">
-			<Input
-				label="API Token (Disabled)"
-				description="Your unique read-only API access token."
-				defaultValue="neob_tok_1234567890"
-				disabled
-			/>
+			<div className="flex flex-col gap-2">
+				<label htmlFor="api-token-disabled" className="text-sm font-bold text-black dark:text-white">
+					API Token
+				</label>
+				<Input id="api-token-disabled" aria-describedby="api-token-disabled-description" defaultValue="neob_tok_1234567890" disabled />
+				<p id="api-token-disabled-description" className="text-xs/normal text-muted-foreground">
+					Your unique read-only API access token.
+				</p>
+			</div>
 		</div>
 	),
 };
@@ -86,12 +107,15 @@ export const DisabledInput: Story = {
 export const WithInputArea: Story = {
 	render: () => (
 		<div className="w-96">
-			<InputArea
-				label="Feedback Details"
-				description="Please describe the issue you encountered in detail."
-				placeholder="Type details here..."
-				rows={4}
-			/>
+			<div className="flex flex-col gap-2">
+				<label htmlFor="issue-details" className="text-sm font-bold text-black dark:text-white">
+					Issue Details
+				</label>
+				<InputArea id="issue-details" aria-describedby="issue-details-description" placeholder="Type details here..." rows={4} />
+				<p id="issue-details-description" className="text-xs/normal text-muted-foreground">
+					Please describe the issue you encountered in detail.
+				</p>
+			</div>
 		</div>
 	),
 };

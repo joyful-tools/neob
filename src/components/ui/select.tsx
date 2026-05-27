@@ -23,6 +23,8 @@ export interface SelectProps<T = unknown, Multiple extends boolean | undefined =
 	BaseSelect.Root.Props<T, Multiple>,
 	'items'
 > {
+	'aria-label'?: string;
+	'aria-labelledby'?: string;
 	multiple?: Multiple;
 	renderValue?: (value: Multiple extends true ? T[] : T) => React.ReactNode;
 	className?: string;
@@ -107,6 +109,8 @@ export function Select<T = unknown, Multiple extends boolean | undefined = false
 	labelTooltip,
 	description,
 	error,
+	'aria-label': ariaLabel,
+	'aria-labelledby': ariaLabelledby,
 	required,
 	container,
 	containerClassName,
@@ -156,6 +160,8 @@ export function Select<T = unknown, Multiple extends boolean | undefined = false
 					className,
 				)}
 				aria-describedby={describedBy}
+				aria-label={ariaLabel}
+				aria-labelledby={ariaLabelledby}
 				aria-invalid={hasError ? true : undefined}
 			>
 				{loading ? (

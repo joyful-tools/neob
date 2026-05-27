@@ -20,6 +20,8 @@ const ComboboxContext = React.createContext<{
 	readonly anchorElement: HTMLDivElement | null;
 	readonly describedBy?: string;
 	readonly ariaInvalid?: boolean;
+	readonly ariaLabel?: string;
+	readonly ariaLabelledby?: string;
 }>({
 	size: 'base',
 	hasError: false,
@@ -57,6 +59,8 @@ export interface ComboboxProps<Value = unknown, Multiple extends boolean | undef
 	Value,
 	Multiple
 > {
+	readonly 'aria-label'?: string;
+	readonly 'aria-labelledby'?: string;
 	readonly label?: React.ReactNode;
 	readonly required?: boolean;
 	readonly labelTooltip?: React.ReactNode;
@@ -79,6 +83,8 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 	children,
 	size = 'base',
 	containerClassName,
+	'aria-label': ariaLabel,
+	'aria-labelledby': ariaLabelledby,
 	...props
 }: ComboboxProps<Value, Multiple>) {
 	const hasError = Boolean(error);
@@ -100,6 +106,8 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 				anchorElement,
 				describedBy,
 				ariaInvalid: hasError,
+				ariaLabel,
+				ariaLabelledby,
 			}}
 		>
 			<BaseCombobox.Root {...props}>{children}</BaseCombobox.Root>
@@ -208,7 +216,7 @@ export interface ComboboxTriggerValueProps extends React.ComponentPropsWithoutRe
  * Dropdown trigger button displaying the selected value.
  */
 function TriggerValue({ className, ref, placeholder, ...props }: ComboboxTriggerValueProps) {
-	const { size, hasError, describedBy, ariaInvalid, anchorRef } = React.useContext(ComboboxContext);
+	const { size, hasError, describedBy, ariaInvalid, anchorRef, ariaLabel, ariaLabelledby } = React.useContext(ComboboxContext);
 	const iconStyles = triggerValueIconStyles[size];
 
 	return (
@@ -221,6 +229,8 @@ function TriggerValue({ className, ref, placeholder, ...props }: ComboboxTrigger
 					iconStyles.padding,
 				)}
 				aria-describedby={describedBy}
+				aria-label={ariaLabel}
+				aria-labelledby={ariaLabelledby}
 				aria-invalid={ariaInvalid ? true : undefined}
 				{...props}
 			>
@@ -241,8 +251,10 @@ export interface ComboboxTriggerProps extends React.ComponentPropsWithoutRef<typ
 }
 
 function Trigger({ children, ref, ...props }: ComboboxTriggerProps) {
+	const { ariaLabel, ariaLabelledby } = React.useContext(ComboboxContext);
+
 	return (
-		<BaseCombobox.Trigger ref={ref} {...props}>
+		<BaseCombobox.Trigger ref={ref} aria-label={ariaLabel} aria-labelledby={ariaLabelledby} {...props}>
 			{children}
 		</BaseCombobox.Trigger>
 	);

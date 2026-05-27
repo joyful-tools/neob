@@ -123,10 +123,14 @@ export const ComplexComposition: Story = {
 
 				<InputGroup {...args}>
 					<InputGroup.Input type={showPassword ? 'text' : 'password'} defaultValue={password} readOnly placeholder="Password" />
-					<InputGroup.Button onClick={() => setShowPassword(!showPassword)} tooltip={showPassword ? 'Hide password' : 'Show password'}>
+					<InputGroup.Button
+						onClick={() => setShowPassword(!showPassword)}
+						tooltip={showPassword ? 'Hide password' : 'Show password'}
+						aria-label={showPassword ? 'Hide password' : 'Show password'}
+					>
 						{showPassword ? <EyeSlash className="size-4" /> : <Eye className="size-4" />}
 					</InputGroup.Button>
-					<InputGroup.Button onClick={handleCopy} tooltip="Copy value">
+					<InputGroup.Button onClick={handleCopy} tooltip="Copy value" aria-label="Copy value">
 						<Copy className="size-4" />
 					</InputGroup.Button>
 				</InputGroup>
@@ -151,12 +155,20 @@ export const Disabled: Story = {
 export const Error: Story = {
 	render: () => (
 		<div className="w-80">
-			<InputGroup error>
-				<InputGroup.Addon align="start">
-					<Envelope className="size-4" />
-				</InputGroup.Addon>
-				<InputGroup.Input placeholder="invalid-email" defaultValue="invalid-email" />
-			</InputGroup>
+			<div className="flex flex-col gap-2">
+				<label htmlFor="input-group-error" className="text-sm font-bold text-black dark:text-white">
+					Email Address
+				</label>
+				<InputGroup error aria-describedby="input-group-error-message">
+					<InputGroup.Addon align="start">
+						<Envelope className="size-4" />
+					</InputGroup.Addon>
+					<InputGroup.Input id="input-group-error" placeholder="invalid-email" defaultValue="invalid-email" aria-label="Email address" />
+				</InputGroup>
+				<p id="input-group-error-message" className="text-xs font-bold text-red-dark dark:text-red-light">
+					Enter a valid email address.
+				</p>
+			</div>
 		</div>
 	),
 };

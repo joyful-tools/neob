@@ -58,7 +58,7 @@ export const buttonVariants = cva(
 					active:translate-y-0.5 active:shadow-brutal-inset
 				`,
 				'dark-accent': `
-					border-4 border-black bg-orange text-white shadow-brutal
+					border-4 border-black bg-orange text-black shadow-brutal
 					hover:-translate-y-1 hover:shadow-brutal-lg
 					hover:after:translate-y-1
 					active:translate-y-1 active:shadow-brutal-inset

@@ -107,7 +107,7 @@ function CheckboxRoot({ label, description, controlFirst = true, error, classNam
 				</div>
 			</label>
 			{error && (
-				<span id={errorId} className="pl-8 text-xs font-bold text-red dark:text-red">
+				<span id={errorId} className="pl-8 text-xs font-bold text-red-dark dark:text-red-light">
 					{error}
 				</span>
 			)}
@@ -151,7 +151,7 @@ function CheckboxGroup({ legend, description, error, controlFirst = true, classN
 					)}
 					<div className="flex flex-col gap-3">{children}</div>
 					{error && (
-						<p id={errorId} className="text-xs font-bold text-red dark:text-red">
+						<p id={errorId} className="text-xs font-bold text-red-dark dark:text-red-light">
 							{error}
 						</p>
 					)}

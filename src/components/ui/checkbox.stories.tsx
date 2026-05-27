@@ -30,7 +30,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Standalone: Story = {
-	args: {},
+	args: {
+		'aria-label': 'Standalone checkbox',
+	},
 };
 
 export const WithLabel: Story = {

@@ -74,7 +74,20 @@ export const AutoResize: Story = {
 
 		return (
 			<div className="w-96">
-				<InputArea {...textareaProps} label="Biography" description="Tell us a bit about yourself." autoResize={autoResize} />
+				<div className="flex flex-col gap-2">
+					<label htmlFor="biography-input-area" className="text-sm font-bold text-black dark:text-white">
+						Biography
+					</label>
+					<InputArea
+						{...textareaProps}
+						id="biography-input-area"
+						aria-describedby="biography-input-area-description"
+						autoResize={autoResize}
+					/>
+					<p id="biography-input-area-description" className="text-xs/normal text-muted-foreground">
+						Tell us a bit about yourself.
+					</p>
+				</div>
 			</div>
 		);
 	},

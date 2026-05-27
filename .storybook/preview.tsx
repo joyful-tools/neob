@@ -1,7 +1,8 @@
-import type { Preview } from '@storybook/react-vite';
-import * as React from 'react';
 import { Controls, Description, Primary, Stories, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import * as React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+
+import type { Preview } from '@storybook/react-vite';
 import '../src/index.css';
 
 const preview: Preview = {
@@ -53,7 +54,6 @@ const preview: Preview = {
 					{ value: 'light', icon: 'circlehollow', title: 'Light' },
 					{ value: 'dark', icon: 'circle', title: 'Dark' },
 				],
-				showName: true,
 			},
 		},
 	},

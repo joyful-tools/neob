@@ -27,7 +27,7 @@ const pillVariants = cva(
 			color: {
 				orange: 'bg-orange text-black',
 				gold: 'bg-gold text-black',
-				red: 'bg-red text-white',
+				red: 'bg-red text-black',
 				green: 'bg-green text-black',
 				blue: 'bg-blue text-black',
 				purple: 'bg-purple text-black',

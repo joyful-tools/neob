@@ -30,7 +30,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Standalone: Story = {
-	args: {},
+	args: {
+		'aria-label': 'Standalone switch',
+	},
 };
 
 export const WithLabel: Story = {
@@ -84,7 +86,7 @@ export const ValidationError: Story = {
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		const toggle = canvas.getByLabelText('Agree to privacy policy');
+		const toggle = canvas.getByRole('switch');
 
 		// Error should be visible initially because checked is false
 		await expect(canvas.getByText('You must agree to the privacy policy.')).toBeInTheDocument();
