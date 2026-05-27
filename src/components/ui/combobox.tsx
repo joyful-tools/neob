@@ -4,8 +4,7 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
 
-import { InputWrapper } from './input';
-import { useTransformOrigin } from '../../hooks/use-transform-origin';
+import { Input as NeoInput } from './input';
 
 // ============================================================================
 // Types & Context
@@ -91,7 +90,7 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 
 	if (label || description || error || labelTooltip) {
 		return (
-			<InputWrapper
+			<NeoInput.Wrapper
 				label={label}
 				required={required}
 				labelTooltip={labelTooltip}
@@ -100,7 +99,7 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 				className={containerClassName}
 			>
 				{comboboxControl}
-			</InputWrapper>
+			</NeoInput.Wrapper>
 		);
 	}
 
@@ -133,7 +132,6 @@ function Content({
 	...properties
 }: ComboboxContentProps) {
 	const { multiple, anchorElement } = React.useContext(ComboboxContext);
-	const transformOriginRef = useTransformOrigin(anchorElement, ref);
 
 	const resolvedSideOffset = React.useMemo(() => {
 		const extraOffset = multiple ? 6 : 0;

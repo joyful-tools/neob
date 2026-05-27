@@ -80,7 +80,7 @@ interface DialogDescriptionProperties {
 // ============================================================================
 
 /** Dialog root supporting compound pattern or composed modal pattern. */
-export function Dialog({
+function DialogRoot({
 	children,
 	open: controlledOpen,
 	defaultOpen,
@@ -131,12 +131,12 @@ export function Dialog({
 		</DialogContext.Provider>
 	);
 }
-Dialog.displayName = 'Dialog';
+DialogRoot.displayName = 'Dialog';
 
-export const DialogTrigger = DialogPrimitive.Trigger;
+const DialogTrigger = DialogPrimitive.Trigger;
 
 /** Dialog content with animated overlay and panel. */
-export function DialogContent({ className, children, ref, onAnimationEnd, ...properties }: DialogContentProperties) {
+function DialogContent({ className, children, ref, onAnimationEnd, ...properties }: DialogContentProperties) {
 	const { open } = useContext(DialogContext);
 
 	return (
@@ -167,10 +167,10 @@ export function DialogContent({ className, children, ref, onAnimationEnd, ...pro
 		</AnimatePresence>
 	);
 }
-DialogContent.displayName = 'DialogContent';
+DialogContent.displayName = 'Dialog.Content';
 
 /** Dialog header with title area and close button. */
-export function DialogHeader({
+function DialogHeader({
 	className,
 	children,
 	hideClose = false,
@@ -188,10 +188,10 @@ export function DialogHeader({
 		</div>
 	);
 }
-DialogHeader.displayName = 'DialogHeader';
+DialogHeader.displayName = 'Dialog.Header';
 
 /** Dialog body for composed modals. */
-export function DialogBody({
+function DialogBody({
 	children,
 	className,
 	ref,
@@ -206,10 +206,10 @@ export function DialogBody({
 		</div>
 	);
 }
-DialogBody.displayName = 'DialogBody';
+DialogBody.displayName = 'Dialog.Body';
 
 /** Dialog footer for action buttons. */
-export function DialogFooter({ className, ...properties }: React.HTMLAttributes<HTMLDivElement>) {
+function DialogFooter({ className, ...properties }: React.HTMLAttributes<HTMLDivElement>) {
 	const { isComposed } = useContext(DialogContext);
 	return (
 		<div
@@ -218,10 +218,10 @@ export function DialogFooter({ className, ...properties }: React.HTMLAttributes<
 		/>
 	);
 }
-DialogFooter.displayName = 'DialogFooter';
+DialogFooter.displayName = 'Dialog.Footer';
 
 /** Dialog title text. */
-export function DialogTitle({ className, ref, ...properties }: DialogTitleProperties) {
+function DialogTitle({ className, ref, ...properties }: DialogTitleProperties) {
 	return (
 		<DialogPrimitive.Title
 			ref={ref}
@@ -230,12 +230,23 @@ export function DialogTitle({ className, ref, ...properties }: DialogTitleProper
 		/>
 	);
 }
-DialogTitle.displayName = 'DialogTitle';
+DialogTitle.displayName = 'Dialog.Title';
 
 /** Dialog description text. */
-export function DialogDescription({ className, ref, ...properties }: DialogDescriptionProperties) {
+function DialogDescription({ className, ref, ...properties }: DialogDescriptionProperties) {
 	return <DialogPrimitive.Description ref={ref} className={cn('text-sm text-muted-foreground', className)} {...properties} />;
 }
-DialogDescription.displayName = 'DialogDescription';
+DialogDescription.displayName = 'Dialog.Description';
 
-export const DialogClose = DialogPrimitive.Close;
+const DialogClose = DialogPrimitive.Close;
+
+export const Dialog = Object.assign(DialogRoot, {
+	Trigger: DialogTrigger,
+	Content: DialogContent,
+	Header: DialogHeader,
+	Footer: DialogFooter,
+	Title: DialogTitle,
+	Description: DialogDescription,
+	Close: DialogClose,
+	Body: DialogBody,
+});

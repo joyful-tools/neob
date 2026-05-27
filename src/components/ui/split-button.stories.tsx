@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { DropdownMenuItem } from './dropdown-menu';
+import { DropdownMenu } from './dropdown-menu';
 import { SplitButton } from './split-button';
 import { toast } from './toast';
 import { Toaster } from './toaster';
@@ -33,9 +33,9 @@ const handleSecondaryClick = (action: string) => {
 const PublishButton = (props: Partial<React.ComponentProps<typeof SplitButton>>) => {
 	const menuContent = (
 		<>
-			<DropdownMenuItem onSelect={() => handleSecondaryClick('Draft')}>Save as Draft</DropdownMenuItem>
-			<DropdownMenuItem onSelect={() => handleSecondaryClick('Schedule')}>Schedule Publish</DropdownMenuItem>
-			<DropdownMenuItem onSelect={() => handleSecondaryClick('Archive')}>Archive Post</DropdownMenuItem>
+			<DropdownMenu.Item onSelect={() => handleSecondaryClick('Draft')}>Save as Draft</DropdownMenu.Item>
+			<DropdownMenu.Item onSelect={() => handleSecondaryClick('Schedule')}>Schedule Publish</DropdownMenu.Item>
+			<DropdownMenu.Item onSelect={() => handleSecondaryClick('Archive')}>Archive Post</DropdownMenu.Item>
 		</>
 	);
 

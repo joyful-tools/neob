@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
 
-export function Card({ className, ref, ...properties }: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
+function CardRoot({ className, ref, ...properties }: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
 	return (
 		<div
 			ref={ref}
@@ -14,19 +14,25 @@ export function Card({ className, ref, ...properties }: React.HTMLAttributes<HTM
 		/>
 	);
 }
-Card.displayName = 'Card';
+CardRoot.displayName = 'Card';
 
-export function CardHeader({ className, ref, ...properties }: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
+function CardHeader({ className, ref, ...properties }: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
 	return <div ref={ref} className={cn('flex flex-col space-y-1.5 p-6', className)} {...properties} />;
 }
-CardHeader.displayName = 'CardHeader';
+CardHeader.displayName = 'Card.Header';
 
-export function CardTitle({ className, ref, ...properties }: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
+function CardTitle({ className, ref, ...properties }: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
 	return <div ref={ref} className={cn('font-display text-xl leading-none font-bold tracking-tight', className)} {...properties} />;
 }
-CardTitle.displayName = 'CardTitle';
+CardTitle.displayName = 'Card.Title';
 
-export function CardContent({ className, ref, ...properties }: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
+function CardContent({ className, ref, ...properties }: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
 	return <div ref={ref} className={cn('p-6 pt-0', className)} {...properties} />;
 }
-CardContent.displayName = 'CardContent';
+CardContent.displayName = 'Card.Content';
+
+export const Card = Object.assign(CardRoot, {
+	Header: CardHeader,
+	Title: CardTitle,
+	Content: CardContent,
+});

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Card, CardContent, CardHeader, CardTitle } from './card';
+import { Card } from './card';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
@@ -21,14 +21,14 @@ export const Default: Story = {
 		className: 'w-96',
 		children: (
 			<>
-				<CardHeader>
-					<CardTitle>Neo-Brutalist Card</CardTitle>
-				</CardHeader>
-				<CardContent>
+				<Card.Header>
+					<Card.Title>Neo-Brutalist Card</Card.Title>
+				</Card.Header>
+				<Card.Content>
 					<p className="text-sm">
 						This is a premium card built with a bold black border and a thick drop shadow that defines the neo-brutalism design system.
 					</p>
-				</CardContent>
+				</Card.Content>
 			</>
 		),
 	},

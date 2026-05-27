@@ -56,10 +56,10 @@ All input components (`Input`, `InputArea`, `SensitiveInput`, `InputGroup`) supp
 - If any wrapper prop is provided, the component automatically wraps itself in a `Field` layout.
 - If no wrapper prop is provided, the component renders **only** the raw control (no wrapping div).
 - Use `containerClassName` to style the `Field` wrapper; use `className` for the raw control.
-- Use `Field` / `Fieldset` directly only for custom form compositions (e.g., wrapping Select, Combobox, or groups).
+- Use `Input.Fieldset` directly only for custom form compositions (e.g., wrapping Select, Combobox, or groups).
 
 ```tsx
-import { Input, InputArea, SensitiveInput, InputGroup, Field, Fieldset } from 'neob';
+import { Input, InputArea, SensitiveInput, InputGroup } from 'neob';
 
 // Self-contained labeled input (no manual Field wrapper needed)
 <Input label="Username" description="Choose a handle" placeholder="johndoe" />
@@ -67,13 +67,15 @@ import { Input, InputArea, SensitiveInput, InputGroup, Field, Fieldset } from 'n
 // Self-contained labeled textarea
 <InputArea label="Bio" description="Tell us about yourself" autoResize />
 
-// Raw input without wrapper (for custom form libraries)
+// Raw input without wrapper (for custom form compositions)
 <Input placeholder="Bare input" />
 
-// Field for custom compositions
-<Field label="Custom Control">
-  <SomeCustomComponent />
-</Field>
+// Fieldset for custom compositions
+<Input.Fieldset legend="Options">
+  <Input.Wrapper label="Custom Control">
+    <SomeCustomComponent />
+  </Input.Wrapper>
+</Input.Fieldset>
 ```
 
 ### 1. Button
@@ -93,22 +95,22 @@ import { Button } from 'neob';
 Overlay component based on Base UI. Implements AnimatePresence.
 
 ```tsx
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, Button } from 'neob';
+import { Dialog, Button } from 'neob';
 
 // Usage:
 <Dialog open={isOpen} onOpenChange={setIsOpen}>
-  <DialogContent>
-    <DialogHeader>
-      <DialogTitle>Modal Heading</DialogTitle>
-      <DialogDescription>Description text</DialogDescription>
-    </DialogHeader>
+  <Dialog.Content>
+    <Dialog.Header>
+      <Dialog.Title>Modal Heading</Dialog.Title>
+      <Dialog.Description>Description text</Dialog.Description>
+    </Dialog.Header>
     <div>Main Body</div>
-    <DialogFooter>
+    <Dialog.Footer>
       <Button variant="subtle" onClick={() => setIsOpen(false)}>
         Cancel
       </Button>
-    </DialogFooter>
-  </DialogContent>
+    </Dialog.Footer>
+  </Dialog.Content>
 </Dialog>;
 ```
 
@@ -117,14 +119,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 Touch-gated tooltip wrapper. Touch start triggers a 700ms long press, while hover triggers immediately.
 
 ```tsx
-import { Tooltip, TooltipProvider, Button } from 'neob';
+import { Tooltip, Button } from 'neob';
 
 // Wrap application or page in provider once:
-<TooltipProvider>
+<Tooltip.Provider>
   <Tooltip content="Tooltip helper text" side="top">
     <Button variant="subtle">Hover Me</Button>
   </Tooltip>
-</TooltipProvider>;
+</Tooltip.Provider>;
 ```
 
 ### 4. Dropdown Menu
@@ -132,25 +134,17 @@ import { Tooltip, TooltipProvider, Button } from 'neob';
 Base UI menu with custom spring popover translation.
 
 ```tsx
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  Button,
-} from 'neob';
+import { DropdownMenu, Button } from 'neob';
 
 <DropdownMenu>
-  <DropdownMenuTrigger>
+  <DropdownMenu.Trigger>
     <Button>Open</Button>
-  </DropdownMenuTrigger>
-  <DropdownMenuContent>
-    <DropdownMenuLabel>Labels</DropdownMenuLabel>
-    <DropdownMenuSeparator />
-    <DropdownMenuItem onSelect={action}>Item</DropdownMenuItem>
-  </DropdownMenuContent>
+  </DropdownMenu.Trigger>
+  <DropdownMenu.Content>
+    <DropdownMenu.Label>Labels</DropdownMenu.Label>
+    <DropdownMenu.Separator />
+    <DropdownMenu.Item onSelect={action}>Item</DropdownMenu.Item>
+  </DropdownMenu.Content>
 </DropdownMenu>;
 ```
 
@@ -174,14 +168,14 @@ import { ResizablePanel } from 'neob';
 Coordinated verification input.
 
 ```tsx
-import { OTPFieldRoot, OTPFieldInput } from 'neob';
+import { OTPField } from 'neob';
 
-<OTPFieldRoot length={4} value={otp} onValueChange={setOtp}>
-  <OTPFieldInput index={0} />
-  <OTPFieldInput index={1} />
-  <OTPFieldInput index={2} />
-  <OTPFieldInput index={3} />
-</OTPFieldRoot>;
+<OTPField length={4} value={otp} onValueChange={setOtp}>
+  <OTPField.Input index={0} />
+  <OTPField.Input index={1} />
+  <OTPField.Input index={2} />
+  <OTPField.Input index={3} />
+</OTPField>;
 ```
 
 ### 7. Toast Alerts
@@ -199,10 +193,28 @@ toast.success('Successfully Saved!', { description: "All changes sync'd" });
 toast.error('Failed to Connect');
 ```
 
+### 8. Tabs
+
+Tabs supports two visual variants: `segmented` (default, with custom sliding indicator) and `subtle` (stark tab header buttons).
+
+```tsx
+import { Tabs } from 'neob';
+
+<Tabs defaultValue="account">
+  <Tabs.List variant="segmented">
+    <Tabs.Trigger value="account">Account</Tabs.Trigger>
+    <Tabs.Trigger value="password">Password</Tabs.Trigger>
+  </Tabs.List>
+  <Tabs.Content value="account">Account Settings Page</Tabs.Content>
+  <Tabs.Content value="password">Password Settings Page</Tabs.Content>
+</Tabs>;
+```
+
 ---
 
 ## Coding Conventions
 
+- **Single Component Imports:** Always import compound components via their parent component (e.g. `import { Tabs } from 'neob';` and use `<Tabs.List>`, `<Tabs.Trigger>`, etc.).
 - **Ref Forwarding:** All elements support modern React 19 ref-as-prop pattern. Do NOT use `forwardRef`.
 - **Early Returns:** Write early return statements for guard clauses.
 - **TypeScript:** Fully typed parameters. Do NOT use `as` assertions.

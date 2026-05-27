@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 
 import { Button } from './button';
-import { Dialog, DialogBody, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './dialog';
+import { Dialog } from './dialog';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
@@ -25,23 +25,23 @@ export const Default: Story = {
 			<>
 				<Button onClick={() => setOpen(true)}>Open Compound Dialog</Button>
 				<Dialog open={open} onOpenChange={setOpen}>
-					<DialogContent>
-						<DialogHeader>
-							<DialogTitle>Dialog Title</DialogTitle>
-							<DialogDescription>This is a description of what this dialog is for.</DialogDescription>
-						</DialogHeader>
+					<Dialog.Content>
+						<Dialog.Header>
+							<Dialog.Title>Dialog Title</Dialog.Title>
+							<Dialog.Description>This is a description of what this dialog is for.</Dialog.Description>
+						</Dialog.Header>
 						<div>
 							<p className="text-sm">Dialog content goes here.</p>
 						</div>
-						<DialogFooter>
+						<Dialog.Footer>
 							<Button variant="subtle" onClick={() => setOpen(false)}>
 								Cancel
 							</Button>
 							<Button variant="accent" onClick={() => setOpen(false)}>
 								Confirm
 							</Button>
-						</DialogFooter>
-					</DialogContent>
+						</Dialog.Footer>
+					</Dialog.Content>
 				</Dialog>
 			</>
 		);
@@ -57,17 +57,17 @@ export const ComposedModal: Story = {
 					Open Composed Dialog
 				</Button>
 				<Dialog open={open} onOpenChange={setOpen} title="Composed Dialog Heading">
-					<DialogBody>
+					<Dialog.Body>
 						<p className="text-sm">This is the composed modal body. It has proper standard padding.</p>
-					</DialogBody>
-					<DialogFooter>
+					</Dialog.Body>
+					<Dialog.Footer>
 						<Button variant="subtle" onClick={() => setOpen(false)}>
 							Cancel
 						</Button>
 						<Button variant="accent" onClick={() => setOpen(false)}>
 							Save Changes
 						</Button>
-					</DialogFooter>
+					</Dialog.Footer>
 				</Dialog>
 			</>
 		);

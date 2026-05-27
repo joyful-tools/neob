@@ -18,7 +18,7 @@ interface DropdownMenuProperties {
 	readonly modal?: boolean;
 }
 
-function DropdownMenu({ children, ...properties }: DropdownMenuProperties) {
+function DropdownMenuRoot({ children, ...properties }: DropdownMenuProperties) {
 	const [anchorElement, setAnchorElement] = React.useState<HTMLDivElement | null>(null);
 
 	const contextValue = React.useMemo(() => {
@@ -34,7 +34,7 @@ function DropdownMenu({ children, ...properties }: DropdownMenuProperties) {
 		</DropdownMenuContext.Provider>
 	);
 }
-DropdownMenu.displayName = 'DropdownMenu';
+DropdownMenuRoot.displayName = 'DropdownMenu';
 
 const DropdownMenuGroup = Menu.Group;
 
@@ -132,13 +132,13 @@ function DropdownMenuLabel({ children, className }: { readonly children: React.R
 }
 DropdownMenuLabel.displayName = 'DropdownMenuLabel';
 
-export {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuGroup,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-};
+export const DropdownMenu = Object.assign(DropdownMenuRoot, {
+	Trigger: DropdownMenuTrigger,
+	Content: DropdownMenuContent,
+	Group: DropdownMenuGroup,
+	Item: DropdownMenuItem,
+	Separator: DropdownMenuSeparator,
+	Label: DropdownMenuLabel,
+});
+
 export type { DropdownMenuTriggerProperties, DropdownMenuContentProperties, DropdownMenuItemProperties };

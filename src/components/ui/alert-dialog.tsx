@@ -93,7 +93,7 @@ interface AlertDialogTriggerProperties {
 // ============================================================================
 
 /** Alert dialog root with controllable open state. */
-export function AlertDialog({ children, open: controlledOpen, defaultOpen, onOpenChange, ...properties }: AlertDialogProperties) {
+function AlertDialogRoot({ children, open: controlledOpen, defaultOpen, onOpenChange, ...properties }: AlertDialogProperties) {
 	const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen ?? false);
 	const actionsReference = useRef<AlertDialogPrimitive.Root.Actions>(null);
 
@@ -120,7 +120,7 @@ export function AlertDialog({ children, open: controlledOpen, defaultOpen, onOpe
 }
 
 /** Button that opens the alert dialog. Supports asChild via render prop. */
-export function AlertDialogTrigger({ children, asChild, ref, ...properties }: AlertDialogTriggerProperties) {
+function AlertDialogTrigger({ children, asChild, ref, ...properties }: AlertDialogTriggerProperties) {
 	if (asChild && React.isValidElement<Record<string, unknown>>(children)) {
 		return <AlertDialogPrimitive.Trigger ref={ref} render={children} {...properties} />;
 	}
@@ -132,7 +132,7 @@ export function AlertDialogTrigger({ children, asChild, ref, ...properties }: Al
 }
 
 /** Alert dialog content with animated overlay and panel. */
-export function AlertDialogContent({ className, children, ref, onAnimationEnd, ...properties }: AlertDialogContentProperties) {
+function AlertDialogContent({ className, children, ref, onAnimationEnd, ...properties }: AlertDialogContentProperties) {
 	const { open } = useContext(AlertDialogContext);
 
 	return (
@@ -163,28 +163,28 @@ export function AlertDialogContent({ className, children, ref, onAnimationEnd, .
 		</AnimatePresence>
 	);
 }
-AlertDialogContent.displayName = 'AlertDialogContent';
+AlertDialogContent.displayName = 'AlertDialog.Content';
 
 /** Alert dialog header for title and description. */
-export function AlertDialogHeader({ className, ...properties }: React.HTMLAttributes<HTMLDivElement>) {
+function AlertDialogHeader({ className, ...properties }: React.HTMLAttributes<HTMLDivElement>) {
 	return <div className={cn(`flex flex-col space-y-2 text-center sm:text-left`, className)} {...properties} />;
 }
-AlertDialogHeader.displayName = 'AlertDialogHeader';
+AlertDialogHeader.displayName = 'AlertDialog.Header';
 
 /** Alert dialog footer for action buttons. */
-export function AlertDialogFooter({ className, ...properties }: React.HTMLAttributes<HTMLDivElement>) {
+function AlertDialogFooter({ className, ...properties }: React.HTMLAttributes<HTMLDivElement>) {
 	return <div className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', className)} {...properties} />;
 }
-AlertDialogFooter.displayName = 'AlertDialogFooter';
+AlertDialogFooter.displayName = 'AlertDialog.Footer';
 
 /** Alert dialog title text. */
-export function AlertDialogTitle({ className, ref, ...properties }: AlertDialogTitleProperties) {
+function AlertDialogTitle({ className, ref, ...properties }: AlertDialogTitleProperties) {
 	return <AlertDialogPrimitive.Title ref={ref} className={cn('font-display text-2xl font-bold', className)} {...properties} />;
 }
-AlertDialogTitle.displayName = 'AlertDialogTitle';
+AlertDialogTitle.displayName = 'AlertDialog.Title';
 
 /** Alert dialog description text. */
-export function AlertDialogDescription({ className, ref, ...properties }: AlertDialogDescriptionProperties) {
+function AlertDialogDescription({ className, ref, ...properties }: AlertDialogDescriptionProperties) {
 	return (
 		<AlertDialogPrimitive.Description
 			ref={ref}
@@ -193,16 +193,16 @@ export function AlertDialogDescription({ className, ref, ...properties }: AlertD
 		/>
 	);
 }
-AlertDialogDescription.displayName = 'AlertDialogDescription';
+AlertDialogDescription.displayName = 'AlertDialog.Description';
 
 /** Primary action button for alert dialog. Uses AlertDialog.Close internally. */
-export function AlertDialogAction({ className, variant, size, ref, ...properties }: AlertDialogActionProperties) {
+function AlertDialogAction({ className, variant, size, ref, ...properties }: AlertDialogActionProperties) {
 	return <AlertDialogPrimitive.Close ref={ref} className={cn(buttonVariants({ variant, size }), className)} {...properties} />;
 }
-AlertDialogAction.displayName = 'AlertDialogAction';
+AlertDialogAction.displayName = 'AlertDialog.Action';
 
 /** Cancel button for alert dialog. Uses AlertDialog.Close internally. */
-export function AlertDialogCancel({ className, ref, ...properties }: AlertDialogCancelProperties) {
+function AlertDialogCancel({ className, ref, ...properties }: AlertDialogCancelProperties) {
 	return (
 		<AlertDialogPrimitive.Close
 			ref={ref}
@@ -211,4 +211,15 @@ export function AlertDialogCancel({ className, ref, ...properties }: AlertDialog
 		/>
 	);
 }
-AlertDialogCancel.displayName = 'AlertDialogCancel';
+AlertDialogCancel.displayName = 'AlertDialog.Cancel';
+
+export const AlertDialog = Object.assign(AlertDialogRoot, {
+	Trigger: AlertDialogTrigger,
+	Content: AlertDialogContent,
+	Header: AlertDialogHeader,
+	Footer: AlertDialogFooter,
+	Title: AlertDialogTitle,
+	Description: AlertDialogDescription,
+	Action: AlertDialogAction,
+	Cancel: AlertDialogCancel,
+});

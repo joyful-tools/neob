@@ -144,7 +144,7 @@ function useOTPContext(): OTPContextValue {
  * Root container for the OTP input field.
  * Manages state, validation, and focus coordination between individual inputs.
  */
-export function OTPFieldRoot({
+function OTPFieldRoot({
 	children,
 	length = 6,
 	name,
@@ -382,7 +382,7 @@ export function OTPFieldRoot({
 // ============================================================================
 
 /** Individual OTP input field. Must be used within a Root component. */
-export function OTPFieldInput({ index, className }: InputProperties) {
+function OTPFieldInput({ index, className }: InputProperties) {
 	const {
 		value,
 		length,
@@ -449,8 +449,12 @@ export function OTPFieldInput({ index, className }: InputProperties) {
 // ============================================================================
 
 /** Hidden input for native form submission. Rendered automatically by Root when name is provided. */
-export function HiddenInput() {
+function HiddenInput() {
 	const { value, name } = useOTPContext();
 	if (!name) return;
 	return <input type="hidden" name={name} value={value.join('')} />;
 }
+
+export const OTPField = Object.assign(OTPFieldRoot, {
+	Input: OTPFieldInput,
+});

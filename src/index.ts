@@ -10,31 +10,11 @@ export { cn, getThemeColor } from './lib/utilities';
 export { Button, buttonVariants } from './components/ui/button';
 export type { ButtonProperties } from './components/ui/button';
 
-export { Card, CardHeader, CardTitle, CardContent } from './components/ui/card';
+export { Card } from './components/ui/card';
 
-export {
-	Dialog,
-	DialogTrigger,
-	DialogContent,
-	DialogHeader,
-	DialogFooter,
-	DialogTitle,
-	DialogDescription,
-	DialogClose,
-	DialogBody,
-} from './components/ui/dialog';
+export { Dialog } from './components/ui/dialog';
 
-export {
-	AlertDialog,
-	AlertDialogTrigger,
-	AlertDialogContent,
-	AlertDialogHeader,
-	AlertDialogFooter,
-	AlertDialogTitle,
-	AlertDialogDescription,
-	AlertDialogAction,
-	AlertDialogCancel,
-} from './components/ui/alert-dialog';
+export { AlertDialog } from './components/ui/alert-dialog';
 
 export { InputArea } from './components/ui/input-area';
 export type { InputAreaProperties } from './components/ui/input-area';
@@ -49,19 +29,11 @@ export type {
 
 export { Label, labelVariants } from './components/ui/label';
 
-export { OTPFieldRoot, OTPFieldInput } from './components/ui/otp-field';
+export { OTPField } from './components/ui/otp-field';
 
-export {
-	Popover,
-	PopoverTrigger,
-	PopoverContent,
-	PopoverAnchor,
-	PopoverClose,
-	PopoverDescription,
-	PopoverTitle,
-} from './components/ui/popover';
+export { Popover } from './components/ui/popover';
 
-export { RadioGroup, RadioGroupItem } from './components/ui/radio-group';
+export { RadioGroup } from './components/ui/radio-group';
 
 export { Spinner } from './components/ui/spinner';
 
@@ -74,22 +46,14 @@ export { AnimatedNumber } from './components/ui/animated-number';
 
 export { GridBackground } from './components/ui/grid-background';
 
-export { Tooltip, TooltipProvider } from './components/ui/tooltip';
+export { Tooltip } from './components/ui/tooltip';
 
-export {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuGroup,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from './components/ui/dropdown-menu';
+export { DropdownMenu } from './components/ui/dropdown-menu';
 
 export { Meter } from './components/ui/meter';
 export type { MeterProperties } from './components/ui/meter';
 
-export { Skeleton, ListSkeleton } from './components/ui/skeleton';
+export { Skeleton } from './components/ui/skeleton';
 export type { SkeletonProperties, ListSkeletonProperties } from './components/ui/skeleton';
 
 export { Collapsible } from './components/ui/collapsible';
@@ -128,11 +92,11 @@ export { useTransformOrigin } from './hooks/use-transform-origin';
 export { SensitiveInput } from './components/ui/sensitive-input';
 export type { SensitiveInputProperties } from './components/ui/sensitive-input';
 
-export { Checkbox, CheckboxItem, CheckboxGroup } from './components/ui/checkbox';
+export { Checkbox } from './components/ui/checkbox';
 export type { CheckboxProperties, CheckboxItemProperties, CheckboxGroupProperties } from './components/ui/checkbox';
 
-export { Input, InputWrapper, Fieldset, TextInput } from './components/ui/input';
-export type { InputProperties, InputWrapperProperties, FieldsetProperties, TextInputProperties } from './components/ui/input';
+export { Input } from './components/ui/input';
+export type { InputProperties, InputWrapperProperties, FieldsetProperties } from './components/ui/input';
 
 export { Switch } from './components/ui/switch';
 export type { SwitchProperties } from './components/ui/switch';
@@ -143,9 +107,9 @@ export type { SelectProps, SelectOptionProps } from './components/ui/select';
 export { Combobox } from './components/ui/combobox';
 export type { ComboboxProps, ComboboxSize } from './components/ui/combobox';
 
-export { Tabs, TabsList, TabsTrigger, TabsContent } from './components/ui/tabs';
+export { Tabs } from './components/ui/tabs';
 
-export { TableContainer, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell } from './components/ui/table';
+export { Table } from './components/ui/table';
 export type {
 	TableProperties,
 	TableHeaderProperties,
@@ -159,7 +123,7 @@ export type {
 export { DatePicker } from './components/ui/date-picker';
 export type { DatePickerProps } from './components/ui/date-picker';
 
-export { Pagination, PaginationInfo, PaginationPageSize, PaginationControls, PaginationSeparator } from './components/ui/pagination';
+export { Pagination } from './components/ui/pagination';
 export type {
 	PaginationProps,
 	PaginationInfoProps,

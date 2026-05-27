@@ -1,15 +1,7 @@
 import * as React from 'react';
 
 import { Button } from './button';
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuGroup,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from './dropdown-menu';
+import { DropdownMenu } from './dropdown-menu';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
@@ -29,24 +21,24 @@ export const Default: Story = {
 	render: () => {
 		return (
 			<DropdownMenu>
-				<DropdownMenuTrigger>
+				<DropdownMenu.Trigger>
 					<Button variant="default">Options Menu</Button>
-				</DropdownMenuTrigger>
-				<DropdownMenuContent align="center">
-					<DropdownMenuLabel>Account Settings</DropdownMenuLabel>
-					<DropdownMenuSeparator />
-					<DropdownMenuGroup>
-						<DropdownMenuItem onSelect={() => alert('Profile clicked')}>View Profile</DropdownMenuItem>
-						<DropdownMenuItem onSelect={() => alert('Billing clicked')}>Billing & Plans</DropdownMenuItem>
-						<DropdownMenuItem onSelect={() => alert('Security clicked')}>Security Settings</DropdownMenuItem>
-					</DropdownMenuGroup>
-					<DropdownMenuSeparator />
-					<DropdownMenuItem disabled>Developer API (Beta)</DropdownMenuItem>
-					<DropdownMenuSeparator />
-					<DropdownMenuItem className="text-red focus:bg-red focus:text-white" onSelect={() => alert('Logout clicked')}>
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content align="center">
+					<DropdownMenu.Label>Account Settings</DropdownMenu.Label>
+					<DropdownMenu.Separator />
+					<DropdownMenu.Group>
+						<DropdownMenu.Item onSelect={() => alert('Profile clicked')}>View Profile</DropdownMenu.Item>
+						<DropdownMenu.Item onSelect={() => alert('Billing clicked')}>Billing & Plans</DropdownMenu.Item>
+						<DropdownMenu.Item onSelect={() => alert('Security clicked')}>Security Settings</DropdownMenu.Item>
+					</DropdownMenu.Group>
+					<DropdownMenu.Separator />
+					<DropdownMenu.Item disabled>Developer API (Beta)</DropdownMenu.Item>
+					<DropdownMenu.Separator />
+					<DropdownMenu.Item className="text-red focus:bg-red focus:text-white" onSelect={() => alert('Logout clicked')}>
 						Sign Out
-					</DropdownMenuItem>
-				</DropdownMenuContent>
+					</DropdownMenu.Item>
+				</DropdownMenu.Content>
 			</DropdownMenu>
 		);
 	},

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useInputAreaAutoResize } from '@/hooks/use-input-area-auto-resize';
 import { cn } from '@/lib/utilities';
 
-import { InputWrapper } from './input';
+import { Input } from './input';
 
 import type { UseInputAreaAutoResizeOptions } from '@/hooks/use-input-area-auto-resize';
 
@@ -72,7 +72,7 @@ export function InputArea({
 
 	if (label || description || error || labelTooltip) {
 		return (
-			<InputWrapper
+			<Input.Wrapper
 				label={label}
 				description={description}
 				error={error}
@@ -83,7 +83,7 @@ export function InputArea({
 				className={containerClassName}
 			>
 				{control}
-			</InputWrapper>
+			</Input.Wrapper>
 		);
 	}
 

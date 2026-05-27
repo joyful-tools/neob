@@ -75,7 +75,7 @@ When dark mode is active, the variables mapping colors flip to a slate-dark sche
 
 ```tsx
 import React, { useState } from 'react';
-import { Button, Card, CardHeader, CardTitle, CardContent, Dialog, DialogContent, DialogTitle } from 'neob';
+import { Button, Card, Dialog } from 'neob';
 
 export function MyComponent() {
   const [open, setOpen] = useState(false);
@@ -83,26 +83,26 @@ export function MyComponent() {
   return (
     <div className="bg-background text-foreground min-h-screen p-8">
       <Card className="mx-auto max-w-md">
-        <CardHeader>
-          <CardTitle>Welcome to neob!</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
+        <Card.Header>
+          <Card.Title>Welcome to neob!</Card.Title>
+        </Card.Header>
+        <Card.Content className="flex flex-col gap-4">
           <p className="text-sm">This component library is styled with a premium Neo-Brutalist design language.</p>
 
           <Button variant="accent" onClick={() => setOpen(true)}>
             Open Dialog
           </Button>
-        </CardContent>
+        </Card.Content>
       </Card>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
-          <DialogTitle>Hello World!</DialogTitle>
+        <Dialog.Content>
+          <Dialog.Title>Hello World!</Dialog.Title>
           <p className="my-4 text-sm">This is a neo-brutalist popover modal dialog.</p>
           <Button variant="default" onClick={() => setOpen(false)}>
             Close
           </Button>
-        </DialogContent>
+        </Dialog.Content>
       </Dialog>
     </div>
   );
@@ -113,8 +113,9 @@ export function MyComponent() {
 
 ## Available Components
 
-- **Layout:** `Card`, `GridBackground`, `ResizablePanel`
-- **Actions:** `Button`, `Toggle`
-- **Feedback:** `Spinner`, `Meter`, `Skeleton`, `ListSkeleton`, `BorderBeam`
-- **Inputs:** `Input`, `Label`, `OTPFieldRoot`, `OTPFieldInput`, `RadioGroup`, `RadioGroupItem`
-- **Overlays:** `Dialog`, `AlertDialog`, `Popover`, `Tooltip`, `DropdownMenu`, `toast`, `Toaster`
+- **Layout:** `Card`, `Table`, `GridBackground`, `ResizablePanel`
+- **Actions:** `Button`, `Toggle`, `SplitButton`, `ConfirmButton`
+- **Feedback:** `Spinner`, `Meter`, `Skeleton`, `BorderBeam`, `LoadingBars`
+- **Inputs:** `Input`, `SensitiveInput`, `InputArea`, `InputGroup`, `Label`, `OTPField`, `RadioGroup`, `Checkbox`, `Switch`, `Select`, `Combobox`, `NumericSlider`
+- **Navigation:** `Tabs`, `Pagination`, `DatePicker`
+- **Overlays:** `Dialog`, `AlertDialog`, `ConfirmDialog`, `Popover`, `Tooltip`, `DropdownMenu`, `toast`, `Toaster`

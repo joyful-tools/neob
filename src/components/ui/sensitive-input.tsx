@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
 
-import { Input, InputWrapper } from './input';
+import { Input } from './input';
 
 export interface SensitiveInputProperties extends React.ComponentProps<typeof Input> {
 	readonly ref?: React.Ref<HTMLInputElement>;
@@ -49,7 +49,7 @@ export function SensitiveInput({
 
 	if (label || description || error || labelTooltip) {
 		return (
-			<InputWrapper
+			<Input.Wrapper
 				label={label}
 				description={description}
 				error={error}
@@ -60,7 +60,7 @@ export function SensitiveInput({
 				className={containerClassName}
 			>
 				{rawControl}
-			</InputWrapper>
+			</Input.Wrapper>
 		);
 	}
 

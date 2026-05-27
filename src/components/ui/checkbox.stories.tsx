@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Checkbox, CheckboxGroup, CheckboxItem } from './checkbox';
+import { Checkbox } from './checkbox';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
@@ -80,22 +80,22 @@ export const LabelOnLeft: Story = {
 	},
 };
 
-export const Group: StoryObj<typeof CheckboxGroup> = {
+export const Group: StoryObj<typeof Checkbox.Group> = {
 	render: () => {
 		const [values, setValues] = React.useState<string[]>(['email']);
 
 		return (
-			<CheckboxGroup
+			<Checkbox.Group
 				legend="Communication Preferences"
 				description="Choose how you want to receive updates."
 				value={values}
 				onValueChange={setValues}
 				className="w-80"
 			>
-				<CheckboxItem value="email" label="Email Updates" />
-				<CheckboxItem value="sms" label="SMS Messages" />
-				<CheckboxItem value="push" label="Push Notifications" />
-			</CheckboxGroup>
+				<Checkbox.Item value="email" label="Email Updates" />
+				<Checkbox.Item value="sms" label="SMS Messages" />
+				<Checkbox.Item value="push" label="Push Notifications" />
+			</Checkbox.Group>
 		);
 	},
 };

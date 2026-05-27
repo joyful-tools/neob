@@ -33,7 +33,7 @@ export interface TableCellProperties extends React.TdHTMLAttributes<HTMLTableCel
 /**
  * Responsive scroll container for Tables.
  */
-export function TableContainer({ className, children, ...properties }: React.HTMLAttributes<HTMLDivElement>) {
+function TableRoot({ className, children, ...properties }: React.HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div className="w-full overflow-auto rounded-lg border-2 border-black shadow-brutal-sm">
 			<table className={cn('w-full border-collapse text-sm', className)} {...properties}>
@@ -42,13 +42,13 @@ export function TableContainer({ className, children, ...properties }: React.HTM
 		</div>
 	);
 }
-TableContainer.displayName = 'TableContainer';
+TableRoot.displayName = 'Table';
 
 /**
  * Table header container (thead).
  * Uses high-contrast black/white fill.
  */
-export function TableHeader({ className, ref, ...properties }: TableHeaderProperties) {
+function TableHeader({ className, ref, ...properties }: TableHeaderProperties) {
 	return (
 		<thead
 			ref={ref}
@@ -57,28 +57,28 @@ export function TableHeader({ className, ref, ...properties }: TableHeaderProper
 		/>
 	);
 }
-TableHeader.displayName = 'TableHeader';
+TableHeader.displayName = 'Table.Header';
 
 /**
  * Table body section (tbody).
  */
-export function TableBody({ className, ref, ...properties }: TableBodyProperties) {
+function TableBody({ className, ref, ...properties }: TableBodyProperties) {
 	return <tbody ref={ref} className={cn('[&_tr:last-child]:border-0', className)} {...properties} />;
 }
-TableBody.displayName = 'TableBody';
+TableBody.displayName = 'Table.Body';
 
 /**
  * Table footer section (tfoot).
  */
-export function TableFooter({ className, ref, ...properties }: TableFooterProperties) {
+function TableFooter({ className, ref, ...properties }: TableFooterProperties) {
 	return <tfoot ref={ref} className={cn('border-t-2 border-black bg-muted/50 font-bold', className)} {...properties} />;
 }
-TableFooter.displayName = 'TableFooter';
+TableFooter.displayName = 'Table.Footer';
 
 /**
  * Table row (tr).
  */
-export function TableRow({ className, ref, ...properties }: TableRowProperties) {
+function TableRow({ className, ref, ...properties }: TableRowProperties) {
 	return (
 		<tr
 			ref={ref}
@@ -87,12 +87,12 @@ export function TableRow({ className, ref, ...properties }: TableRowProperties) 
 		/>
 	);
 }
-TableRow.displayName = 'TableRow';
+TableRow.displayName = 'Table.Row';
 
 /**
  * Header cell (th).
  */
-export function TableHead({ className, ref, ...properties }: TableHeadProperties) {
+function TableHead({ className, ref, ...properties }: TableHeadProperties) {
 	return (
 		<th
 			ref={ref}
@@ -101,12 +101,21 @@ export function TableHead({ className, ref, ...properties }: TableHeadProperties
 		/>
 	);
 }
-TableHead.displayName = 'TableHead';
+TableHead.displayName = 'Table.Head';
 
 /**
  * Standard cell (td).
  */
-export function TableCell({ className, ref, ...properties }: TableCellProperties) {
+function TableCell({ className, ref, ...properties }: TableCellProperties) {
 	return <td ref={ref} className={cn('p-4 align-middle font-medium text-black dark:text-white', className)} {...properties} />;
 }
-TableCell.displayName = 'TableCell';
+TableCell.displayName = 'Table.Cell';
+
+export const Table = Object.assign(TableRoot, {
+	Header: TableHeader,
+	Body: TableBody,
+	Footer: TableFooter,
+	Row: TableRow,
+	Head: TableHead,
+	Cell: TableCell,
+});

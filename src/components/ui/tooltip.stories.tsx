@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Button } from './button';
-import { Tooltip, TooltipProvider } from './tooltip';
+import { Tooltip } from './tooltip';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
@@ -13,9 +13,9 @@ const meta = {
 	},
 	decorators: [
 		(Story) => (
-			<TooltipProvider>
+			<Tooltip.Provider>
 				<Story />
-			</TooltipProvider>
+			</Tooltip.Provider>
 		),
 	],
 	tags: ['autodocs'],

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utilities';
 
 import { Button as BaseButton } from './button';
-import { InputWrapper } from './input';
+import { Input } from './input';
 import { Tooltip } from './tooltip';
 
 type InputGroupSize = 'sm' | 'default' | 'lg';
@@ -104,7 +104,7 @@ export function InputGroup({
 
 	if (label || description || errorMessage || labelTooltip) {
 		return (
-			<InputWrapper
+			<Input.Wrapper
 				label={label}
 				description={description}
 				error={errorMessage}
@@ -115,7 +115,7 @@ export function InputGroup({
 				className={containerClassName}
 			>
 				{rawControl}
-			</InputWrapper>
+			</Input.Wrapper>
 		);
 	}
 

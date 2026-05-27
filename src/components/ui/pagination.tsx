@@ -425,5 +425,3 @@ export const Pagination = Object.assign(PaginationRoot, {
 	Controls: PaginationControls,
 	Separator: PaginationSeparator,
 });
-
-export { PaginationInfo, PaginationPageSize, PaginationControls, PaginationSeparator };

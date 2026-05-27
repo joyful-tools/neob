@@ -4,7 +4,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utilities';
 
 import { Button } from './button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './dropdown-menu';
+import { DropdownMenu } from './dropdown-menu';
 
 export interface SplitButtonProperties extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	readonly variant?: 'default' | 'accent' | 'danger' | 'subtle';
@@ -63,7 +63,7 @@ export function SplitButton({
 				{children}
 			</Button>
 			<DropdownMenu modal={false}>
-				<DropdownMenuTrigger>
+				<DropdownMenu.Trigger>
 					<Button
 						type="button"
 						variant={variant}
@@ -74,10 +74,10 @@ export function SplitButton({
 					>
 						<CaretDown className="size-4" />
 					</Button>
-				</DropdownMenuTrigger>
-				<DropdownMenuContent align="end" className="p-1" style={{ minWidth: width }}>
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content align="end" className="p-1" style={{ minWidth: width }}>
 					{menuContent}
-				</DropdownMenuContent>
+				</DropdownMenu.Content>
 			</DropdownMenu>
 		</div>
 	);

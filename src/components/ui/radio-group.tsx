@@ -43,13 +43,13 @@ interface RadioGroupItemProperties {
 // ============================================================================
 
 /** Radio group container. Wraps Base UI RadioGroup primitive. */
-export function RadioGroup({ className, ref, ...properties }: RadioGroupProperties) {
+function RadioGroupRoot({ className, ref, ...properties }: RadioGroupProperties) {
 	return <RadioGroupPrimitive className={cn('grid gap-2', className)} {...properties} ref={ref} />;
 }
-RadioGroup.displayName = 'RadioGroup';
+RadioGroupRoot.displayName = 'RadioGroup';
 
 /** Individual radio button item. Must be used within RadioGroup. */
-export function RadioGroupItem({ className, ref, ...properties }: RadioGroupItemProperties) {
+function RadioGroupItem({ className, ref, ...properties }: RadioGroupItemProperties) {
 	return (
 		<Radio.Root ref={ref} className={cn(RADIO_ITEM_CLASS_NAME, className)} nativeButton render={<button type="button" />} {...properties}>
 			<Radio.Indicator className="flex items-center justify-center text-current select-none" keepMounted>
@@ -58,4 +58,8 @@ export function RadioGroupItem({ className, ref, ...properties }: RadioGroupItem
 		</Radio.Root>
 	);
 }
-RadioGroupItem.displayName = 'RadioGroupItem';
+RadioGroupItem.displayName = 'RadioGroup.Item';
+
+export const RadioGroup = Object.assign(RadioGroupRoot, {
+	Item: RadioGroupItem,
+});

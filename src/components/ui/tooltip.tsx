@@ -84,9 +84,10 @@ interface TooltipProperties {
 	forceOpen?: boolean;
 }
 
-export function TooltipProvider({ children }: { children: React.ReactNode }) {
+function TooltipProvider({ children }: { children: React.ReactNode }) {
 	return <BaseTooltip.Provider delay={300}>{children}</BaseTooltip.Provider>;
 }
+TooltipProvider.displayName = 'Tooltip.Provider';
 
 const springSnappy: Transition = {
 	type: 'spring',
@@ -100,7 +101,7 @@ const tooltipVariants = {
 	exit: { opacity: 0, scale: 0.92 },
 };
 
-export function Tooltip({ children, content, side = 'top', delayDuration, className, forceOpen = false }: TooltipProperties) {
+function TooltipRoot({ children, content, side = 'top', delayDuration, className, forceOpen = false }: TooltipProperties) {
 	const { open, onOpenChange, onTriggerTouchStart, cancelLongPress } = useTouchGatedTooltip();
 	const isOpen = forceOpen || open;
 
@@ -145,3 +146,8 @@ export function Tooltip({ children, content, side = 'top', delayDuration, classN
 		</BaseTooltip.Root>
 	);
 }
+TooltipRoot.displayName = 'Tooltip';
+
+export const Tooltip = Object.assign(TooltipRoot, {
+	Provider: TooltipProvider,
+});

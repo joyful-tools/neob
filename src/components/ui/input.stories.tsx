@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { Input, Fieldset, InputWrapper } from './input';
+import { Input } from './input';
 import { InputArea } from './input-area';
-import { RadioGroup, RadioGroupItem } from './radio-group';
+import { RadioGroup } from './radio-group';
 
 import type { InputProperties, FieldsetProperties } from './input';
 import type { Meta, StoryObj } from '@storybook/react-vite';
@@ -99,26 +99,26 @@ export const WithInputArea: Story = {
 export const GroupedControls: StoryObj<Omit<FieldsetProperties, 'children'> & { children?: React.ReactNode }> = {
 	render: () => (
 		<div className="w-80">
-			<Fieldset
+			<Input.Fieldset
 				legend="Choose Notification Delivery"
 				description="Select where you want your notifications to show up."
 				error="Please select at least one option."
 			>
 				<RadioGroup defaultValue="email">
 					<div className="flex items-center gap-3">
-						<RadioGroupItem value="email" id="delivery-email" />
+						<RadioGroup.Item value="email" id="delivery-email" />
 						<label htmlFor="delivery-email" className="cursor-pointer text-sm font-bold text-black dark:text-white">
 							Send to email
 						</label>
 					</div>
 					<div className="flex items-center gap-3">
-						<RadioGroupItem value="push" id="delivery-push" />
+						<RadioGroup.Item value="push" id="delivery-push" />
 						<label htmlFor="delivery-push" className="cursor-pointer text-sm font-bold text-black dark:text-white">
 							Show push notifications
 						</label>
 					</div>
 				</RadioGroup>
-			</Fieldset>
+			</Input.Fieldset>
 		</div>
 	),
 };
@@ -126,11 +126,11 @@ export const GroupedControls: StoryObj<Omit<FieldsetProperties, 'children'> & { 
 export const CustomComposition: Story = {
 	render: () => (
 		<div className="w-80">
-			<InputWrapper label="Custom Selection Wrapper" description="Use Input directly to wrap custom controls.">
+			<Input.Wrapper label="Custom Selection Wrapper" description="Use Input directly to wrap custom controls.">
 				<div className="rounded-lg border-2 border-dashed border-black/20 p-4 text-center text-sm font-bold text-muted-foreground dark:border-white/20">
 					[Custom Component Here]
 				</div>
-			</InputWrapper>
+			</Input.Wrapper>
 		</div>
 	),
 };

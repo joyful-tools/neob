@@ -50,7 +50,7 @@ interface PopoverContentProperties {
 // ============================================================================
 
 /** Popover root component. Wraps Base UI Popover primitive with a stable anchor context. */
-export function Popover({ children, ...properties }: React.ComponentProps<typeof PopoverPrimitive.Root>) {
+function PopoverRoot({ children, ...properties }: React.ComponentProps<typeof PopoverPrimitive.Root>) {
 	const [anchorElement, setAnchorElement] = React.useState<HTMLDivElement | null>(null);
 
 	const contextValue = React.useMemo(() => {
@@ -66,10 +66,10 @@ export function Popover({ children, ...properties }: React.ComponentProps<typeof
 		</PopoverContext.Provider>
 	);
 }
-Popover.displayName = 'Popover';
+PopoverRoot.displayName = 'Popover';
 
 /** Anchor point for popover positioning. Decoupled from translating elements. */
-export function PopoverAnchor({
+function PopoverAnchor({
 	children,
 	className,
 	ref,
@@ -103,10 +103,10 @@ export function PopoverAnchor({
 		</div>
 	);
 }
-PopoverAnchor.displayName = 'PopoverAnchor';
+PopoverAnchor.displayName = 'Popover.Anchor';
 
 /** Button that triggers the popover. Wrapped in a stable anchor context. */
-export function PopoverTrigger({ children, ...properties }: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
+function PopoverTrigger({ children, ...properties }: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
 	const context = React.useContext(PopoverContext);
 	return (
 		<div ref={context?.anchorRef} className="inline-flex">
@@ -114,10 +114,10 @@ export function PopoverTrigger({ children, ...properties }: React.ComponentProps
 		</div>
 	);
 }
-PopoverTrigger.displayName = 'PopoverTrigger';
+PopoverTrigger.displayName = 'Popover.Trigger';
 
 /** Popover content panel. Renders in a portal positioned against the stable anchor. */
-export function PopoverContent({
+function PopoverContent({
 	className,
 	align = 'center',
 	sideOffset,
@@ -155,8 +155,17 @@ export function PopoverContent({
 		</PopoverPrimitive.Portal>
 	);
 }
-PopoverContent.displayName = 'PopoverContent';
+PopoverContent.displayName = 'Popover.Content';
 
-export const PopoverClose = PopoverPrimitive.Close;
-export const PopoverDescription = PopoverPrimitive.Description;
-export const PopoverTitle = PopoverPrimitive.Title;
+const PopoverClose = PopoverPrimitive.Close;
+const PopoverDescription = PopoverPrimitive.Description;
+const PopoverTitle = PopoverPrimitive.Title;
+
+export const Popover = Object.assign(PopoverRoot, {
+	Trigger: PopoverTrigger,
+	Content: PopoverContent,
+	Anchor: PopoverAnchor,
+	Close: PopoverClose,
+	Description: PopoverDescription,
+	Title: PopoverTitle,
+});

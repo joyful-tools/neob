@@ -57,7 +57,7 @@ export interface CheckboxGroupProperties extends React.ComponentPropsWithoutRef<
  * Standard Checkbox component.
  * Can be used standalone or with a label and helper states.
  */
-export function Checkbox({ label, description, controlFirst = true, error, className, ref, ...properties }: CheckboxProperties) {
+function CheckboxRoot({ label, description, controlFirst = true, error, className, ref, ...properties }: CheckboxProperties) {
 	const checkboxControl = (
 		<BaseCheckbox.Root ref={ref} className={cn(CHECKBOX_ROOT_CLASSES, error && 'border-red dark:border-red', className)} {...properties}>
 			<BaseCheckbox.Indicator
@@ -93,16 +93,16 @@ export function Checkbox({ label, description, controlFirst = true, error, class
 		</div>
 	);
 }
-Checkbox.displayName = 'Checkbox';
+CheckboxRoot.displayName = 'Checkbox';
 
 /**
  * CheckboxItem for use inside a CheckboxGroup.
  * Leverages the CheckboxGroup context to determine layouts.
  */
-export function CheckboxItem({ label, className, ref, ...properties }: CheckboxItemProperties) {
+function CheckboxItem({ label, className, ref, ...properties }: CheckboxItemProperties) {
 	const { controlFirst } = React.useContext(CheckboxGroupContext);
 
-	return <Checkbox ref={ref} label={label} controlFirst={controlFirst} className={className} {...properties} />;
+	return <CheckboxRoot ref={ref} label={label} controlFirst={controlFirst} className={className} {...properties} />;
 }
 CheckboxItem.displayName = 'Checkbox.Item';
 
@@ -110,15 +110,7 @@ CheckboxItem.displayName = 'Checkbox.Item';
  * CheckboxGroup container.
  * Groups multiple CheckboxItems inside an accessible fieldset.
  */
-export function CheckboxGroup({
-	legend,
-	description,
-	error,
-	controlFirst = true,
-	className,
-	children,
-	...properties
-}: CheckboxGroupProperties) {
+function CheckboxGroup({ legend, description, error, controlFirst = true, className, children, ...properties }: CheckboxGroupProperties) {
 	return (
 		<CheckboxGroupContext.Provider value={{ controlFirst }}>
 			<BaseCheckboxGroup {...properties}>
@@ -133,3 +125,8 @@ export function CheckboxGroup({
 	);
 }
 CheckboxGroup.displayName = 'Checkbox.Group';
+
+export const Checkbox = Object.assign(CheckboxRoot, {
+	Item: CheckboxItem,
+	Group: CheckboxGroup,
+});

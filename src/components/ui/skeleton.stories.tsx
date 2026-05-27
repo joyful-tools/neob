@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Skeleton, ListSkeleton } from './skeleton';
+import { Skeleton } from './skeleton';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
@@ -25,7 +25,7 @@ export const Default: Story = {
 export const ListPlaceholder: Story = {
 	render: () => (
 		<div className="w-96">
-			<ListSkeleton itemCount={3} />
+			<Skeleton.List itemCount={3} />
 		</div>
 	),
 };

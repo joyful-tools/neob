@@ -5,7 +5,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utilities';
 
 import { buttonVariants } from './button';
-import { InputWrapper } from './input';
+import { Input } from './input';
 import { Skeleton } from './skeleton';
 
 /** Shape for items that carry extra metadata (disabled state). */
@@ -180,7 +180,7 @@ export function Select<T = unknown, Multiple extends boolean | undefined = false
 
 	if (label || description || error || labelTooltip) {
 		return (
-			<InputWrapper
+			<Input.Wrapper
 				label={label}
 				description={description}
 				error={error}
@@ -190,7 +190,7 @@ export function Select<T = unknown, Multiple extends boolean | undefined = false
 				className={containerClassName}
 			>
 				{selectControl}
-			</InputWrapper>
+			</Input.Wrapper>
 		);
 	}
 

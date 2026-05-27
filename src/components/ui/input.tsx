@@ -5,7 +5,7 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
 
-import { Tooltip, TooltipProvider } from './tooltip';
+import { Tooltip } from './tooltip';
 
 export interface InputWrapperProperties extends React.ComponentPropsWithoutRef<typeof BaseField.Root> {
 	readonly label?: React.ReactNode;
@@ -37,7 +37,7 @@ export interface InputProperties extends Omit<React.ComponentProps<'input'>, 're
 	readonly containerClassName?: string;
 }
 
-export function InputWrapper({
+function InputWrapper({
 	label,
 	description,
 	error,
@@ -60,7 +60,7 @@ export function InputWrapper({
 						{showOptional && <span className="text-xs font-normal text-muted-foreground"> (optional)</span>}
 					</span>
 					{labelTooltip && (
-						<TooltipProvider>
+						<Tooltip.Provider>
 							<Tooltip content={labelTooltip} side="top">
 								<button
 									type="button"
@@ -70,7 +70,7 @@ export function InputWrapper({
 									<span className="sr-only">Information</span>
 								</button>
 							</Tooltip>
-						</TooltipProvider>
+						</Tooltip.Provider>
 					)}
 				</BaseField.Label>
 			)}
@@ -87,9 +87,9 @@ export function InputWrapper({
 		</BaseField.Root>
 	);
 }
-InputWrapper.displayName = 'InputWrapper';
+InputWrapper.displayName = 'Input.Wrapper';
 
-export function Fieldset({ legend, description, error, className, children, ...properties }: FieldsetProperties) {
+function Fieldset({ legend, description, error, className, children, ...properties }: FieldsetProperties) {
 	return (
 		<BaseFieldset.Root className={cn('m-0 flex w-full flex-col gap-4 border-0 p-0', className)} {...properties}>
 			{legend && (
@@ -104,9 +104,9 @@ export function Fieldset({ legend, description, error, className, children, ...p
 		</BaseFieldset.Root>
 	);
 }
-Fieldset.displayName = 'Fieldset';
+Fieldset.displayName = 'Input.Fieldset';
 
-export function Input({
+function InputRoot({
 	className,
 	type = 'text',
 	ref,
@@ -157,8 +157,13 @@ export function Input({
 
 	return rawInput;
 }
-Input.displayName = 'Input';
+InputRoot.displayName = 'Input';
 
 export type TextInputProperties = InputProperties;
-export const TextInput = Input;
-TextInput.displayName = 'TextInput';
+const TextInput = InputRoot;
+
+export const Input = Object.assign(InputRoot, {
+	Wrapper: InputWrapper,
+	Fieldset,
+	Text: TextInput,
+});
