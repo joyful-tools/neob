@@ -12,6 +12,8 @@ export const buttonVariants = cva(
 		disabled:opacity-50 disabled:shadow-none
 		aria-expanded:translate-y-0.5 aria-expanded:shadow-brutal-inset
 		aria-expanded:after:translate-y-0 aria-expanded:hover:translate-y-0.5 aria-expanded:hover:shadow-brutal-inset aria-expanded:hover:after:translate-y-0
+		data-pressed:translate-y-0.5 data-pressed:shadow-brutal-inset
+		data-pressed:after:translate-y-0 data-pressed:hover:translate-y-0.5 data-pressed:hover:shadow-brutal-inset data-pressed:hover:after:translate-y-0
 	`,
 	{
 		variants: {
