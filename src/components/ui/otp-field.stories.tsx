@@ -1,5 +1,9 @@
+import { expect, userEvent, within } from '@storybook/test';
 import * as React from 'react';
 import { useState } from 'react';
+import { action } from 'storybook/actions';
+
+import { guardPlay } from '@/lib/storybook-interactions';
 
 import { OTPField } from './otp-field';
 
@@ -23,7 +27,14 @@ export const Default: Story = {
 		return (
 			<div className="flex flex-col items-center gap-4">
 				<h3 className="font-display text-lg font-bold">Enter Verification Code</h3>
-				<OTPField length={6} value={value} onValueChange={setValue}>
+				<OTPField
+					length={6}
+					value={value}
+					onValueChange={(nextValue) => {
+						setValue(nextValue);
+						action('otp-field-change')(nextValue);
+					}}
+				>
 					<OTPField.Input index={0} />
 					<OTPField.Input index={1} />
 					<OTPField.Input index={2} />
@@ -36,4 +47,10 @@ export const Default: Story = {
 			</div>
 		);
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const inputs = canvas.getAllByRole('textbox');
+		await userEvent.type(inputs[0], '123456');
+		await expect(canvas.getByText('Current Value: 123456')).toBeInTheDocument();
+	}),
 };

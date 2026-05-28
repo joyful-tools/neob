@@ -41,7 +41,7 @@ const AlertDialogContext = createContext<{ open: boolean }>({ open: false });
 // Types
 // ============================================================================
 
-interface AlertDialogProperties {
+interface AlertDialogProperties extends Omit<AlertDialogPrimitive.Root.Props, 'children' | 'open' | 'defaultOpen' | 'onOpenChange'> {
 	readonly children?: React.ReactNode;
 	readonly open?: boolean;
 	readonly defaultOpen?: boolean;

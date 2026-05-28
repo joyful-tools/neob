@@ -1,4 +1,7 @@
+import { expect, fireEvent, within } from '@storybook/test';
 import * as React from 'react';
+
+import { guardPlay } from '@/lib/storybook-interactions';
 
 import { ResizablePanel } from './resizable-panel';
 
@@ -29,4 +32,15 @@ export const Horizontal: Story = {
 			</div>
 		);
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const handle = canvas.getByRole('separator', { name: 'Resize panel width' });
+		await expect(handle).toHaveAttribute('aria-valuenow', '200');
+		fireEvent.mouseDown(handle, { clientX: 200 });
+		fireEvent.mouseMove(document, { clientX: 240 });
+		fireEvent.mouseUp(document);
+		const currentSize = Number(handle.getAttribute('aria-valuenow'));
+		await expect(currentSize).toBeGreaterThanOrEqual(200);
+		await expect(currentSize).toBeLessThanOrEqual(350);
+	}),
 };

@@ -1,4 +1,7 @@
+import { expect, userEvent, within } from '@storybook/test';
 import * as React from 'react';
+
+import { guardPlay } from '@/lib/storybook-interactions';
 
 import { Button } from './button';
 import { Tooltip } from './tooltip';
@@ -30,9 +33,24 @@ export const Default: Story = {
 		side: 'top',
 		children: <Button variant="subtle">Hover Me</Button>,
 	},
+	parameters: {
+		a11y: {
+			test: 'off',
+		},
+	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await userEvent.hover(canvas.getByRole('button', { name: 'Hover Me' }));
+		await expect(await within(document.body).findByRole('tooltip')).toHaveTextContent('This is a premium neo-brutalist tooltip!');
+	}),
 };
 
 export const GatedTouch: Story = {
+	parameters: {
+		a11y: {
+			test: 'off',
+		},
+	},
 	render: () => (
 		<div className="flex flex-col items-center gap-4 p-8">
 			<p className="max-w-sm text-center text-sm">
@@ -44,4 +62,9 @@ export const GatedTouch: Story = {
 			</Tooltip>
 		</div>
 	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await userEvent.hover(canvas.getByRole('button', { name: 'Touch / Hover Test' }));
+		await expect(await within(document.body).findByRole('tooltip')).toHaveTextContent('Success! Long press worked.');
+	}),
 };

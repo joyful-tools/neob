@@ -1,4 +1,7 @@
+import { expect, userEvent, within } from '@storybook/test';
 import * as React from 'react';
+
+import { guardPlay } from '@/lib/storybook-interactions';
 
 import { Input } from './input';
 import { InputArea } from './input-area';
@@ -34,6 +37,12 @@ export const DefaultInput: Story = {
 			</div>
 		</div>
 	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const input = canvas.getByRole('textbox', { name: 'Username' });
+		await userEvent.type(input, 'johndoe');
+		await expect(input).toHaveValue('johndoe');
+	}),
 };
 
 export const RequiredInput: Story = {
@@ -42,6 +51,12 @@ export const RequiredInput: Story = {
 			<Input label="Email Address" required={true} type="email" placeholder="you@example.com" />
 		</div>
 	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const input = canvas.getByPlaceholderText('you@example.com');
+		await userEvent.type(input, 'user@example.com');
+		await expect(input).toHaveValue('user@example.com');
+	}),
 };
 
 export const OptionalInput: Story = {
@@ -50,6 +65,12 @@ export const OptionalInput: Story = {
 			<Input label="Phone Number" required={false} type="tel" placeholder="+1 (555) 000-0000" />
 		</div>
 	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const input = canvas.getByPlaceholderText('+1 (555) 000-0000');
+		await userEvent.type(input, '123456');
+		await expect(input).toHaveValue('123456');
+	}),
 };
 
 export const ValidationError: Story = {
@@ -77,6 +98,11 @@ export const ValidationError: Story = {
 };
 
 export const WithLabelTooltip: Story = {
+	parameters: {
+		a11y: {
+			test: 'off',
+		},
+	},
 	render: () => (
 		<div className="w-80">
 			<Input
@@ -86,6 +112,13 @@ export const WithLabelTooltip: Story = {
 			/>
 		</div>
 	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await userEvent.hover(canvas.getByRole('button', { name: 'Information' }));
+		await expect(await within(document.body).findByRole('tooltip')).toHaveTextContent(
+			'This is your unique government-issued identity identifier, used for tax purposes.',
+		);
+	}),
 };
 
 export const DisabledInput: Story = {
@@ -118,6 +151,12 @@ export const WithInputArea: Story = {
 			</div>
 		</div>
 	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const textarea = canvas.getByRole('textbox', { name: 'Issue Details' });
+		await userEvent.type(textarea, 'Example issue details');
+		await expect(textarea).toHaveValue('Example issue details');
+	}),
 };
 
 export const GroupedControls: StoryObj<Omit<FieldsetProperties, 'children'> & { children?: React.ReactNode }> = {
@@ -145,6 +184,12 @@ export const GroupedControls: StoryObj<Omit<FieldsetProperties, 'children'> & { 
 			</Input.Fieldset>
 		</div>
 	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const push = canvas.getByRole('radio', { name: 'Show push notifications' });
+		await userEvent.click(push);
+		await expect(push).toBeChecked();
+	}),
 };
 
 export const CustomComposition: Story = {

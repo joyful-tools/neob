@@ -1,5 +1,6 @@
 /* eslint-disable better-tailwindcss/no-unknown-classes, @typescript-eslint/no-unsafe-function-type */
 import { CaretDown, CaretLeft, CaretRight, CaretUp } from '@phosphor-icons/react';
+import { AnimatePresence, motion } from 'motion/react';
 import * as React from 'react';
 import {
 	DayPicker,
@@ -25,6 +26,64 @@ const Chevron: CustomComponents['Chevron'] = ({ orientation, ...props }) => {
 	const Icon = orientation === 'left' ? CaretLeft : orientation === 'right' ? CaretRight : orientation === 'up' ? CaretUp : CaretDown;
 	return <Icon size={14} {...props} />;
 };
+
+const fadeTransition = {
+	duration: 0.05,
+	ease: 'easeOut',
+} as const;
+
+const slideTransition = {
+	type: 'spring',
+	stiffness: 720,
+	damping: 40,
+	mass: 0.55,
+} as const;
+
+const layoutTransition = {
+	type: 'spring',
+	stiffness: 540,
+	damping: 38,
+	mass: 0.7,
+} as const;
+
+type PageDirection = 'forward' | 'backward' | 'none';
+
+const bodyVariants = {
+	enter: (direction: PageDirection) => {
+		if (direction === 'forward') {
+			return { opacity: 0, x: 12, transition: slideTransition };
+		}
+
+		if (direction === 'backward') {
+			return { opacity: 0, x: -12, transition: slideTransition };
+		}
+
+		return { opacity: 0, transition: fadeTransition };
+	},
+	center: {
+		opacity: 1,
+		x: 0,
+	},
+	exit: (direction: PageDirection) => {
+		if (direction === 'forward') {
+			return { opacity: 0, x: -12, transition: slideTransition };
+		}
+
+		if (direction === 'backward') {
+			return { opacity: 0, x: 12, transition: slideTransition };
+		}
+
+		return { opacity: 0, transition: fadeTransition };
+	},
+} as const;
+
+function getFadeMotion() {
+	return {
+		initial: { opacity: 0 },
+		animate: { opacity: 1 },
+		exit: { opacity: 0 },
+	} as const;
+}
 
 /** Base props shared across all DatePicker modes */
 type BaseProps = Omit<PropsBase, 'classNames'> & {
@@ -111,6 +170,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 
 	// View state: 'days' | 'months' | 'years'
 	const [view, setView] = React.useState<'days' | 'months' | 'years'>('days');
+	const [pageDirection, setPageDirection] = React.useState<PageDirection>('none');
 
 	// Selected displayed month tracking (controlled or uncontrolled fallback)
 	const [internalMonth, setInternalMonth] = React.useState<Date>(() => {
@@ -139,22 +199,30 @@ export function DatePicker(fullProps: DatePickerProps) {
 		fullProps.onMonthChange?.(newMonth);
 	};
 
+	const changeView = (nextView: 'days' | 'months' | 'years') => {
+		setPageDirection('none');
+		setView(nextView);
+	};
+
 	const monthLabel = displayedMonth.toLocaleString('default', { month: 'long' });
 	const yearLabel = displayedMonth.getFullYear().toString();
 
 	const handlePrevClick = () => {
 		switch (view) {
 			case 'days': {
+				setPageDirection('backward');
 				handleMonthChange(new Date(displayedMonth.getFullYear(), displayedMonth.getMonth() - 1));
 
 				break;
 			}
 			case 'months': {
+				setPageDirection('backward');
 				handleMonthChange(new Date(displayedMonth.getFullYear() - 1, displayedMonth.getMonth()));
 
 				break;
 			}
 			case 'years': {
+				setPageDirection('backward');
 				setYearsStart((prev) => prev - 12);
 
 				break;
@@ -166,16 +234,19 @@ export function DatePicker(fullProps: DatePickerProps) {
 	const handleNextClick = () => {
 		switch (view) {
 			case 'days': {
+				setPageDirection('forward');
 				handleMonthChange(new Date(displayedMonth.getFullYear(), displayedMonth.getMonth() + 1));
 
 				break;
 			}
 			case 'months': {
+				setPageDirection('forward');
 				handleMonthChange(new Date(displayedMonth.getFullYear() + 1, displayedMonth.getMonth()));
 
 				break;
 			}
 			case 'years': {
+				setPageDirection('forward');
 				setYearsStart((prev) => prev + 12);
 
 				break;
@@ -184,7 +255,6 @@ export function DatePicker(fullProps: DatePickerProps) {
 		}
 	};
 
-	// Stable dimensions: Width expanded to 312px and Height expanded to 376px to prevent overflow
 	const containerClassName = cn(
 		'rdp-root relative box-border flex h-[376px] w-[312px] flex-col justify-between rounded-xl border-2 border-black bg-white p-4 text-black shadow-sm select-none dark:border-black dark:bg-zinc dark:text-white',
 		className,
@@ -293,8 +363,8 @@ export function DatePicker(fullProps: DatePickerProps) {
 							type="button"
 							variant={isSelected ? 'accent' : 'subtle'}
 							onClick={() => {
+								changeView('days');
 								handleMonthChange(new Date(year, idx));
-								setView('days');
 							}}
 							className={cn('h-12 w-full text-sm', isSelected && 'text-black dark:text-black')}
 						>
@@ -320,8 +390,8 @@ export function DatePicker(fullProps: DatePickerProps) {
 							type="button"
 							variant={isSelected ? 'accent' : 'subtle'}
 							onClick={() => {
+								changeView('days');
 								handleMonthChange(new Date(y, displayedMonth.getMonth()));
-								setView('days');
 							}}
 							className={cn('h-12 w-full text-sm', isSelected && 'text-black dark:text-black')}
 						>
@@ -337,30 +407,40 @@ export function DatePicker(fullProps: DatePickerProps) {
 		<div className={containerClassName}>
 			<div className="flex h-10 items-center justify-between border-b border-black/5 pb-2 dark:border-white/5">
 				<div className="flex items-center gap-1.5 font-sans text-lg font-bold tracking-wider text-black uppercase dark:text-white">
-					<button
-						type="button"
-						onClick={() => setView(view === 'months' ? 'days' : 'months')}
-						className={cn(
-							'cursor-pointer rounded-sm px-1.5 py-0.5 transition-colors select-none hover:bg-black/10 focus-visible:ring-2 focus-visible:ring-black focus-visible:outline-hidden dark:hover:bg-white/10 dark:focus-visible:ring-white',
-							view === 'months' && 'bg-black/5 dark:bg-white/10',
-						)}
-					>
-						{monthLabel}
-					</button>
+					<AnimatePresence mode="wait" initial={false}>
+						<motion.button
+							key={`header-month-${monthLabel}`}
+							type="button"
+							onClick={() => changeView(view === 'months' ? 'days' : 'months')}
+							{...getFadeMotion()}
+							transition={fadeTransition}
+							className={cn(
+								'cursor-pointer rounded-sm px-1.5 py-0.5 transition-colors select-none hover:bg-black/10 focus-visible:ring-2 focus-visible:ring-black focus-visible:outline-hidden dark:hover:bg-white/10 dark:focus-visible:ring-white',
+								view === 'months' && 'bg-black/5 dark:bg-white/10',
+							)}
+						>
+							{monthLabel}
+						</motion.button>
+					</AnimatePresence>
 					<span className="text-black/40 dark:text-white/40">/</span>
-					<button
-						type="button"
-						onClick={() => {
-							setYearsStart(displayedMonth.getFullYear() - 4);
-							setView(view === 'years' ? 'days' : 'years');
-						}}
-						className={cn(
-							'cursor-pointer rounded-sm px-1.5 py-0.5 transition-colors select-none hover:bg-black/10 focus-visible:ring-2 focus-visible:ring-black focus-visible:outline-hidden dark:hover:bg-white/10 dark:focus-visible:ring-white',
-							view === 'years' && 'bg-black/5 dark:bg-white/10',
-						)}
-					>
-						{yearLabel}
-					</button>
+					<AnimatePresence mode="wait" initial={false}>
+						<motion.button
+							key={`header-year-${yearLabel}`}
+							type="button"
+							onClick={() => {
+								setYearsStart(displayedMonth.getFullYear() - 4);
+								changeView(view === 'years' ? 'days' : 'years');
+							}}
+							{...getFadeMotion()}
+							transition={fadeTransition}
+							className={cn(
+								'cursor-pointer rounded-sm px-1.5 py-0.5 transition-colors select-none hover:bg-black/10 focus-visible:ring-2 focus-visible:ring-black focus-visible:outline-hidden dark:hover:bg-white/10 dark:focus-visible:ring-white',
+								view === 'years' && 'bg-black/5 dark:bg-white/10',
+							)}
+						>
+							{yearLabel}
+						</motion.button>
+					</AnimatePresence>
 				</div>
 				<div className="z-10 flex items-center gap-1">
 					<Button
@@ -387,11 +467,56 @@ export function DatePicker(fullProps: DatePickerProps) {
 			</div>
 
 			{/* Views Content Grid */}
-			<div className="flex flex-1 flex-col justify-between">
-				{view === 'days' && renderDays()}
-				{view === 'months' && renderMonths()}
-				{view === 'years' && renderYears()}
-			</div>
+			<motion.div className="relative flex flex-1 flex-col justify-between">
+				<AnimatePresence
+					mode={pageDirection === 'none' ? 'wait' : 'sync'}
+					initial={false}
+					custom={pageDirection}
+					onExitComplete={() => setPageDirection('none')}
+				>
+					{view === 'days' && (
+						<motion.div
+							key={`days-${displayedMonth.getFullYear()}-${displayedMonth.getMonth()}`}
+							layout={pageDirection === 'none' ? false : 'position'}
+							transition={layoutTransition}
+							variants={bodyVariants}
+							custom={pageDirection}
+							initial="enter"
+							animate="center"
+							exit="exit"
+							className={cn('flex h-full flex-1 flex-col', pageDirection !== 'none' && 'absolute inset-0')}
+						>
+							{renderDays()}
+						</motion.div>
+					)}
+					{view === 'months' && (
+						<motion.div
+							key={`months-${displayedMonth.getFullYear()}`}
+							variants={bodyVariants}
+							custom={pageDirection}
+							initial="enter"
+							animate="center"
+							exit="exit"
+							className={cn('flex h-full flex-1 flex-col', pageDirection !== 'none' && 'absolute inset-0')}
+						>
+							{renderMonths()}
+						</motion.div>
+					)}
+					{view === 'years' && (
+						<motion.div
+							key={`years-${yearsStart}`}
+							variants={bodyVariants}
+							custom={pageDirection}
+							initial="enter"
+							animate="center"
+							exit="exit"
+							className={cn('flex h-full flex-1 flex-col', pageDirection !== 'none' && 'absolute inset-0')}
+						>
+							{renderYears()}
+						</motion.div>
+					)}
+				</AnimatePresence>
+			</motion.div>
 		</div>
 	);
 }

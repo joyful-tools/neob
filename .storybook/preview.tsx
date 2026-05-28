@@ -5,6 +5,33 @@ import { MemoryRouter } from 'react-router-dom';
 import type { Preview } from '@storybook/react-vite';
 import '../src/index.css';
 
+function PreviewFrame({
+	children,
+	theme,
+	isCentered,
+	isDocs,
+}: {
+	children: React.ReactNode;
+	theme: string;
+	isCentered: boolean;
+	isDocs: boolean;
+}) {
+	React.useEffect(() => {
+		const htmlElement = document.documentElement;
+		htmlElement.classList.toggle('dark', theme === 'dark');
+	}, [theme]);
+
+	return (
+		<MemoryRouter>
+			<div
+				className={`bg-background text-foreground transition-colors duration-200 ${isDocs ? 'p-4' : 'min-h-screen p-8'} ${isCentered ? 'flex items-center justify-center' : ''}`}
+			>
+				{children}
+			</div>
+		</MemoryRouter>
+	);
+}
+
 const preview: Preview = {
 	parameters: {
 		backgrounds: {
@@ -61,24 +88,13 @@ const preview: Preview = {
 		(Story, context) => {
 			const theme = context.globals.theme || 'light';
 
-			React.useEffect(() => {
-				const htmlElement = document.documentElement;
-				htmlElement.classList.toggle('dark', theme === 'dark');
-			}, [theme]);
-
 			const isCentered = context.parameters.layout === 'centered';
 			const isDocs = context.viewMode === 'docs';
 
 			return (
-				<MemoryRouter>
-					<div
-						className={`bg-background text-foreground transition-colors duration-200 ${
-							isDocs ? 'p-4' : 'min-h-screen p-8'
-						} ${isCentered ? 'flex items-center justify-center' : ''}`}
-					>
-						<Story />
-					</div>
-				</MemoryRouter>
+				<PreviewFrame theme={theme} isCentered={isCentered} isDocs={isDocs}>
+					<Story />
+				</PreviewFrame>
 			);
 		},
 	],

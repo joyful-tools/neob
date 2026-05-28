@@ -1,8 +1,12 @@
+import { expect, userEvent, within } from '@storybook/test';
 import * as React from 'react';
+import { action } from 'storybook/actions';
+
+import { guardPlay } from '@/lib/storybook-interactions';
 
 import { Tabs } from './tabs';
 
-import type { Meta } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
 	title: 'Navigation/Tabs',
@@ -14,12 +18,20 @@ const meta = {
 } satisfies Meta<typeof Tabs>;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Segmented = {
+export const Segmented: Story = {
 	render: () => {
+		const [value, setValue] = React.useState('account');
 		return (
 			<div className="w-96">
-				<Tabs defaultValue="account">
+				<Tabs
+					value={value}
+					onValueChange={(nextValue) => {
+						setValue(nextValue);
+						action('tabs-segmented-change')(nextValue);
+					}}
+				>
 					<Tabs.List variant="segmented">
 						<Tabs.Trigger value="account">Account</Tabs.Trigger>
 						<Tabs.Trigger value="password">Password</Tabs.Trigger>
@@ -38,13 +50,25 @@ export const Segmented = {
 			</div>
 		);
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await userEvent.click(canvas.getByRole('tab', { name: 'Password' }));
+		await expect(canvas.getByText('Change your password details here.')).toBeInTheDocument();
+	}),
 };
 
-export const Subtle = {
+export const Subtle: Story = {
 	render: () => {
+		const [value, setValue] = React.useState('account');
 		return (
 			<div className="w-96">
-				<Tabs defaultValue="account">
+				<Tabs
+					value={value}
+					onValueChange={(nextValue) => {
+						setValue(nextValue);
+						action('tabs-subtle-change')(nextValue);
+					}}
+				>
 					<Tabs.List variant="subtle">
 						<Tabs.Trigger value="account">Account</Tabs.Trigger>
 						<Tabs.Trigger value="password">Password</Tabs.Trigger>
@@ -63,4 +87,9 @@ export const Subtle = {
 			</div>
 		);
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await userEvent.click(canvas.getByRole('tab', { name: 'A very long option' }));
+		await expect(canvas.getByText('Manage your system preferences here.')).toBeInTheDocument();
+	}),
 };

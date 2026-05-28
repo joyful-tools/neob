@@ -1,4 +1,7 @@
+import { expect, userEvent, waitFor, within } from '@storybook/test';
 import * as React from 'react';
+
+import { guardPlay } from '@/lib/storybook-interactions';
 
 import { InputArea } from './input-area';
 
@@ -35,6 +38,12 @@ export const Default: Story = {
 	args: {
 		placeholder: 'Write your thoughts here...',
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const textarea = canvas.getByRole('textbox');
+		await userEvent.type(textarea, 'Hello world');
+		await expect(textarea).toHaveValue('Hello world');
+	}),
 };
 
 export const AutoResize: Story = {
@@ -91,4 +100,20 @@ export const AutoResize: Story = {
 			</div>
 		);
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const textarea = canvas.getByRole('textbox', { name: 'Biography' });
+		const resizeContainer = textarea.parentElement;
+
+		await expect(resizeContainer).not.toBeNull();
+		const initialHeight = Number.parseFloat(resizeContainer?.getAttribute('style')?.match(/height:\s*([\d.]+)px/)?.[1] ?? '0');
+
+		await userEvent.type(textarea, 'A short bio{enter}with multiple{enter}lines to trigger resizing');
+		await expect(textarea).toHaveValue('A short bio\nwith multiple\nlines to trigger resizing');
+
+		await waitFor(() => {
+			const resizedHeight = Number.parseFloat(resizeContainer?.getAttribute('style')?.match(/height:\s*([\d.]+)px/)?.[1] ?? '0');
+			expect(resizedHeight).toBeGreaterThan(initialHeight);
+		});
+	}),
 };

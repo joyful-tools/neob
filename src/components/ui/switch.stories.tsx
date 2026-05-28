@@ -1,5 +1,8 @@
 import { expect, userEvent, within } from '@storybook/test';
 import * as React from 'react';
+import { action } from 'storybook/actions';
+
+import { guardPlay } from '@/lib/storybook-interactions';
 
 import { Switch } from './switch';
 
@@ -33,6 +36,12 @@ export const Standalone: Story = {
 	args: {
 		'aria-label': 'Standalone switch',
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const toggle = canvas.getByRole('switch');
+		await userEvent.click(toggle);
+		await expect(toggle).toBeChecked();
+	}),
 };
 
 export const WithLabel: Story = {
@@ -40,6 +49,12 @@ export const WithLabel: Story = {
 		label: 'Enable Push Notifications',
 		description: 'We will send you updates on your account activity.',
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const toggle = canvas.getByRole('switch');
+		await userEvent.click(toggle);
+		await expect(toggle).toBeChecked();
+	}),
 };
 
 export const AccentColor: Story = {
@@ -49,6 +64,11 @@ export const AccentColor: Story = {
 		variant: 'accent',
 		defaultChecked: true,
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const toggle = canvas.getByRole('switch');
+		await expect(toggle).toBeChecked();
+	}),
 };
 
 export const SuccessColor: Story = {
@@ -58,6 +78,10 @@ export const SuccessColor: Story = {
 		variant: 'success',
 		defaultChecked: true,
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await expect(canvas.getByRole('switch')).toBeChecked();
+	}),
 };
 
 export const DisabledState: Story = {
@@ -67,6 +91,12 @@ export const DisabledState: Story = {
 		disabled: true,
 		defaultChecked: true,
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const toggle = canvas.getByRole('switch');
+		await expect(toggle).toHaveAttribute('aria-disabled', 'true');
+		await expect(toggle).toBeChecked();
+	}),
 };
 
 export const ValidationError: Story = {
@@ -76,7 +106,15 @@ export const ValidationError: Story = {
 
 		return (
 			<div className="min-h-[76px] w-80">
-				<Switch {...arguments_} checked={checked} onCheckedChange={setChecked} error={error} />
+				<Switch
+					{...arguments_}
+					checked={checked}
+					onCheckedChange={(nextChecked) => {
+						setChecked(nextChecked);
+						action('switch-validation-change')(nextChecked);
+					}}
+					error={error}
+				/>
 			</div>
 		);
 	},
@@ -84,7 +122,7 @@ export const ValidationError: Story = {
 		label: 'Agree to privacy policy',
 		description: 'Required choice to register.',
 	},
-	play: async ({ canvasElement }) => {
+	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		const toggle = canvas.getByRole('switch');
 
@@ -102,7 +140,7 @@ export const ValidationError: Story = {
 
 		// Error should reappear
 		await expect(canvas.getByText('You must agree to the privacy policy.')).toBeInTheDocument();
-	},
+	}),
 };
 
 export const ControlLast: Story = {
@@ -111,4 +149,10 @@ export const ControlLast: Story = {
 		description: 'Display developer tools in editor.',
 		controlFirst: false,
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const toggle = canvas.getByRole('switch');
+		await userEvent.click(toggle);
+		await expect(toggle).toBeChecked();
+	}),
 };

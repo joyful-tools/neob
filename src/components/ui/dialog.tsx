@@ -46,7 +46,7 @@ const DialogContext = createContext<{ open: boolean; isComposed?: boolean }>({ o
 // Types
 // ============================================================================
 
-interface DialogProperties {
+interface DialogProperties extends Omit<DialogPrimitive.Root.Props, 'children' | 'open' | 'defaultOpen' | 'onOpenChange'> {
 	readonly children?: React.ReactNode;
 	readonly open?: boolean;
 	readonly defaultOpen?: boolean;

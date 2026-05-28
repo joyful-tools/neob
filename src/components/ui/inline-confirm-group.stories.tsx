@@ -1,9 +1,13 @@
+import { expect, userEvent, within } from '@storybook/test';
 import * as React from 'react';
 import { useState } from 'react';
+import { action } from 'storybook/actions';
+
+import { guardPlay } from '@/lib/storybook-interactions';
 
 import { InlineConfirmGroup } from './inline-confirm-group';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta } from '@storybook/react-vite';
 
 const meta = {
 	title: 'Inputs/InlineConfirmGroup',
@@ -11,14 +15,9 @@ const meta = {
 	parameters: {
 		layout: 'centered',
 	},
-	args: {
-		itemName: 'Item',
-		onConfirm: () => {},
-	},
 } satisfies Meta<typeof InlineConfirmGroup>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
 interface FileItem {
 	id: string;
@@ -36,6 +35,7 @@ const RealWorldList = () => {
 	const [deletingIds, setDeletingIds] = useState<string[]>([]);
 
 	const handleDelete = async (id: string) => {
+		action('inline-confirm-delete')(id);
 		setDeletingIds((previous) => [...previous, id]);
 		await new Promise((resolve) => setTimeout(resolve, 1500));
 		setFiles((previous) => previous.filter((file) => file.id !== id));
@@ -70,6 +70,12 @@ const RealWorldList = () => {
 	);
 };
 
-export const Default: Story = {
+export const Default = {
 	render: () => <RealWorldList />,
+	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+		const canvas = within(canvasElement);
+		const buttons = canvas.getAllByRole('button');
+		await userEvent.click(buttons[0]);
+		await expect(canvas.getAllByRole('button').length).toBeGreaterThan(1);
+	}),
 };

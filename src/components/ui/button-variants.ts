@@ -10,8 +10,8 @@ export const buttonVariants = cva(
 		after:transition-transform after:duration-25 after:ease-linear
 		after:content-[''] disabled:pointer-events-none
 		disabled:opacity-50 disabled:shadow-none
-		aria-expanded:translate-y-0
-		aria-expanded:after:translate-y-0 aria-expanded:hover:translate-y-0 aria-expanded:hover:after:translate-y-0
+		aria-expanded:translate-y-0.5 aria-expanded:shadow-brutal-inset
+		aria-expanded:after:translate-y-0 aria-expanded:hover:translate-y-0.5 aria-expanded:hover:shadow-brutal-inset aria-expanded:hover:after:translate-y-0
 	`,
 	{
 		variants: {

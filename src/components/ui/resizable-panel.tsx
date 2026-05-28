@@ -97,12 +97,22 @@ export function ResizablePanel({
 		isHorizontal ? 'w-1 cursor-col-resize' : 'h-1 cursor-row-resize',
 		isResizing && 'bg-orange',
 	);
+	const handleOrientation: React.AriaAttributes['aria-orientation'] = isHorizontal ? 'vertical' : 'horizontal';
+
+	const handleProperties = {
+		role: 'separator' as const,
+		'aria-orientation': handleOrientation,
+		'aria-valuemin': minSize,
+		'aria-valuemax': maxSize,
+		'aria-valuenow': size,
+		'aria-label': isHorizontal ? 'Resize panel width' : 'Resize panel height',
+	};
 
 	return (
 		<div ref={panelReference} className={cn('relative flex shrink-0', isHorizontal ? 'flex-row' : 'flex-col', className)} style={sizeStyle}>
-			{handlePosition === 'start' && <div className={handleClasses} onMouseDown={handleMouseDown} />}
+			{handlePosition === 'start' && <div className={handleClasses} onMouseDown={handleMouseDown} {...handleProperties} />}
 			<div className="flex-1 overflow-hidden">{children}</div>
-			{handlePosition === 'end' && <div className={handleClasses} onMouseDown={handleMouseDown} />}
+			{handlePosition === 'end' && <div className={handleClasses} onMouseDown={handleMouseDown} {...handleProperties} />}
 		</div>
 	);
 }

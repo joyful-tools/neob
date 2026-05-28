@@ -1,5 +1,9 @@
 import { Envelope, MagnifyingGlass, Eye, EyeSlash, Copy, X } from '@phosphor-icons/react';
+import { expect, userEvent, within } from '@storybook/test';
 import * as React from 'react';
+import { action } from 'storybook/actions';
+
+import { guardPlay } from '@/lib/storybook-interactions';
 
 import { InputGroup } from './input-group';
 import { NumericSlider } from './numeric-slider';
@@ -72,9 +76,22 @@ export const Clearable: Story = {
 		return (
 			<div className="w-80">
 				<InputGroup {...args}>
-					<InputGroup.Input placeholder="Type to show clear button..." value={value} onChange={(event) => setValue(event.target.value)} />
+					<InputGroup.Input
+						placeholder="Type to show clear button..."
+						value={value}
+						onChange={(event) => {
+							setValue(event.target.value);
+							action('input-group-clearable-change')(event.target.value);
+						}}
+					/>
 					{value && (
-						<InputGroup.Button onClick={() => setValue('')} aria-label="Clear field">
+						<InputGroup.Button
+							onClick={() => {
+								setValue('');
+								action('input-group-clearable-clear')();
+							}}
+							aria-label="Clear field"
+						>
 							<X className="size-3.5" />
 						</InputGroup.Button>
 					)}
@@ -82,6 +99,12 @@ export const Clearable: Story = {
 			</div>
 		);
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await userEvent.type(canvas.getByRole('textbox'), 'hello');
+		await expect(canvas.getByRole('button', { name: 'Clear field' })).toBeInTheDocument();
+		await userEvent.click(canvas.getByRole('button', { name: 'Clear field' }));
+	}),
 };
 
 export const Numeric: Story = {
@@ -90,9 +113,23 @@ export const Numeric: Story = {
 		return (
 			<div className="w-80">
 				<InputGroup {...args}>
-					<InputGroup.Input type="number" placeholder="Volume" value={value} onChange={(event) => setValue(Number(event.target.value))} />
-					<InputGroup.Addon align="end" className="-me-2">
-						<NumericSlider onChange={(delta) => setValue((previous) => Math.round((previous + delta) * 100) / 100)} />
+					<InputGroup.Input
+						type="number"
+						placeholder="Volume"
+						value={value}
+						onChange={(event) => {
+							const nextValue = Number(event.target.value);
+							setValue(nextValue);
+							action('input-group-numeric-input-change')(nextValue);
+						}}
+					/>
+					<InputGroup.Addon align="end">
+						<NumericSlider
+							onChange={(delta) => {
+								action('input-group-numeric-slider-change')(delta);
+								setValue((previous) => Math.round((previous + delta) * 100) / 100);
+							}}
+						/>
 					</InputGroup.Addon>
 				</InputGroup>
 			</div>
@@ -105,11 +142,6 @@ export const ComplexComposition: Story = {
 		const [showPassword, setShowPassword] = React.useState(false);
 		const password = 'super-secret-key';
 
-		const handleCopy = () => {
-			navigator.clipboard.writeText(password);
-			toast.success('Password copied to clipboard!');
-		};
-
 		return (
 			<div className="flex w-96 flex-col gap-4">
 				<Toaster />
@@ -117,26 +149,43 @@ export const ComplexComposition: Story = {
 					<InputGroup.Addon align="start">
 						<Envelope className="size-4" />
 					</InputGroup.Addon>
-					<InputGroup.Input type="email" placeholder="email@domain.com" />
+					<InputGroup.Input type="email" placeholder="username" />
 					<InputGroup.Suffix>@gmail.com</InputGroup.Suffix>
 				</InputGroup>
 
 				<InputGroup {...args}>
 					<InputGroup.Input type={showPassword ? 'text' : 'password'} defaultValue={password} readOnly placeholder="Password" />
 					<InputGroup.Button
-						onClick={() => setShowPassword(!showPassword)}
+						onClick={() => {
+							const nextShowPassword = !showPassword;
+							setShowPassword(nextShowPassword);
+							action('input-group-toggle-password')(nextShowPassword);
+						}}
 						tooltip={showPassword ? 'Hide password' : 'Show password'}
 						aria-label={showPassword ? 'Hide password' : 'Show password'}
 					>
 						{showPassword ? <EyeSlash className="size-4" /> : <Eye className="size-4" />}
 					</InputGroup.Button>
-					<InputGroup.Button onClick={handleCopy} tooltip="Copy value" aria-label="Copy value">
+					<InputGroup.Button
+						onClick={() => {
+							navigator.clipboard.writeText(password);
+							action('input-group-copy-value')();
+							toast.success('Password copied to clipboard!');
+						}}
+						tooltip="Copy value"
+						aria-label="Copy value"
+					>
 						<Copy className="size-4" />
 					</InputGroup.Button>
 				</InputGroup>
 			</div>
 		);
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await userEvent.click(canvas.getByRole('button', { name: 'Show password' }));
+		await expect(canvas.getByRole('button', { name: 'Hide password' })).toBeInTheDocument();
+	}),
 };
 
 export const Disabled: Story = {

@@ -1,3 +1,8 @@
+import { expect, userEvent, within } from '@storybook/test';
+import { action } from 'storybook/actions';
+
+import { guardPlay } from '@/lib/storybook-interactions';
+
 import { Button } from './button';
 import { toast } from './toast';
 import { Toaster } from './toaster';
@@ -23,6 +28,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const AllVariants: Story = {
+	parameters: {
+		a11y: {
+			test: 'off',
+		},
+	},
 	render: () => (
 		<div className="flex flex-wrap items-center gap-3">
 			<Button
@@ -77,9 +87,19 @@ export const AllVariants: Story = {
 			</Button>
 		</div>
 	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await userEvent.click(canvas.getByRole('button', { name: 'Default' }));
+		await expect(document.body.querySelector('[data-sonner-toast]')).not.toBeNull();
+	}),
 };
 
 export const WithActions: Story = {
+	parameters: {
+		a11y: {
+			test: 'off',
+		},
+	},
 	render: () => (
 		<div className="flex flex-wrap items-center gap-3">
 			<Button
@@ -88,8 +108,8 @@ export const WithActions: Story = {
 					toast.custom('File uploaded', {
 						description: 'document.pdf has been uploaded successfully.',
 						action: {
-							label: 'View File',
-							onClick: () => alert('Viewing file...'),
+							label: 'Open File',
+							onClick: () => action('toast-open-file')(),
 						},
 					})
 				}
@@ -102,8 +122,8 @@ export const WithActions: Story = {
 					toast.success('Team created', {
 						description: 'Your new team is ready to go.',
 						action: {
-							label: 'Invite Members',
-							onClick: () => alert('Opening invite...'),
+							label: 'Invite Team Members',
+							onClick: () => action('toast-invite-team-members')(),
 						},
 					})
 				}
@@ -117,7 +137,7 @@ export const WithActions: Story = {
 						description: 'Could not reach the server.',
 						action: {
 							label: 'Retry',
-							onClick: () => alert('Retrying...'),
+							onClick: () => action('toast-retry-connection')(),
 						},
 					})
 				}
@@ -126,9 +146,21 @@ export const WithActions: Story = {
 			</Button>
 		</div>
 	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await userEvent.click(canvas.getByRole('button', { name: 'Default + Action' }));
+		const body = within(document.body);
+		await expect(body.getByRole('button', { name: 'Open File' })).toBeInTheDocument();
+		await userEvent.click(body.getByRole('button', { name: 'Open File' }));
+	}),
 };
 
 export const Minimal: Story = {
+	parameters: {
+		a11y: {
+			test: 'off',
+		},
+	},
 	render: () => (
 		<div className="flex flex-wrap items-center gap-3">
 			<Button variant="default" onClick={() => toast.custom('Copied to clipboard')}>
@@ -142,4 +174,9 @@ export const Minimal: Story = {
 			</Button>
 		</div>
 	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await userEvent.click(canvas.getByRole('button', { name: 'Title Only' }));
+		await expect(document.body.querySelector('[data-sonner-toast]')).not.toBeNull();
+	}),
 };

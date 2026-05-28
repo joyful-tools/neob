@@ -1,6 +1,10 @@
 /* eslint-disable better-tailwindcss/no-unknown-classes */
+import { expect, userEvent, within } from '@storybook/test';
 import * as React from 'react';
 import { type DateRange } from 'react-day-picker';
+import { action } from 'storybook/actions';
+
+import { guardPlay } from '@/lib/storybook-interactions';
 
 import { DatePicker } from './date-picker';
 
@@ -22,13 +26,28 @@ export const Single = {
 		const [date, setDate] = React.useState<Date | undefined>(new Date(2026, 4, 15)); // May 15, 2026
 		return (
 			<div className="flex flex-col items-center gap-4">
-				<DatePicker mode="single" selected={date} onChange={setDate} />
+				<DatePicker
+					mode="single"
+					selected={date}
+					onChange={(selected, triggerDate, modifiers, event_) => {
+						setDate(selected);
+						action('date-picker-single-change')(selected, triggerDate, modifiers, event_);
+					}}
+					onMonthChange={(month) => {
+						action('date-picker-single-month-change')(month);
+					}}
+				/>
 				<div className="rounded-lg border-2 border-black bg-muted px-3 py-1.5 font-mono text-sm font-bold dark:border-white dark:bg-zinc">
 					Selected Date: {date ? date.toLocaleDateString() : 'None'}
 				</div>
 			</div>
 		);
 	},
+	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+		const canvas = within(canvasElement);
+		await userEvent.click(canvas.getByRole('gridcell', { name: /16/i }));
+		await expect(canvas.getByText(/Selected Date:/i)).toBeInTheDocument();
+	}),
 };
 
 export const Range = {
@@ -39,7 +58,17 @@ export const Range = {
 		});
 		return (
 			<div className="flex flex-col items-center gap-4">
-				<DatePicker mode="range" selected={range} onChange={setRange} />
+				<DatePicker
+					mode="range"
+					selected={range}
+					onChange={(selected, triggerDate, modifiers, event_) => {
+						setRange(selected);
+						action('date-picker-range-change')(selected, triggerDate, modifiers, event_);
+					}}
+					onMonthChange={(month) => {
+						action('date-picker-range-month-change')(month);
+					}}
+				/>
 				<div className="rounded-lg border-2 border-black bg-muted px-3 py-1.5 font-mono text-sm font-bold dark:border-white dark:bg-zinc">
 					Selected Range: {range?.from ? range.from.toLocaleDateString() : 'None'} – {range?.to ? range.to.toLocaleDateString() : 'None'}
 				</div>
@@ -53,7 +82,18 @@ export const Multiple = {
 		const [dates, setDates] = React.useState<Date[] | undefined>([new Date(2026, 4, 12), new Date(2026, 4, 15), new Date(2026, 4, 19)]);
 		return (
 			<div className="flex flex-col items-center gap-4">
-				<DatePicker mode="multiple" selected={dates} onChange={setDates} max={5} />
+				<DatePicker
+					mode="multiple"
+					selected={dates}
+					max={5}
+					onChange={(selected, triggerDate, modifiers, event_) => {
+						setDates(selected);
+						action('date-picker-multiple-change')(selected, triggerDate, modifiers, event_);
+					}}
+					onMonthChange={(month) => {
+						action('date-picker-multiple-month-change')(month);
+					}}
+				/>
 				<div className="max-w-xs rounded-lg border-2 border-black bg-muted px-3 py-1.5 text-center font-mono text-sm font-bold dark:border-white dark:bg-zinc">
 					Selected Dates: {dates && dates.length > 0 ? dates.map((d) => d.toLocaleDateString()).join(', ') : 'None'}
 				</div>
@@ -70,7 +110,17 @@ export const DarkMode = {
 		});
 		return (
 			<div className="dark flex flex-col items-center gap-4 rounded-2xl border-4 border-black bg-black p-8">
-				<DatePicker mode="range" selected={range} onChange={setRange} />
+				<DatePicker
+					mode="range"
+					selected={range}
+					onChange={(selected, triggerDate, modifiers, event_) => {
+						setRange(selected);
+						action('date-picker-dark-mode-change')(selected, triggerDate, modifiers, event_);
+					}}
+					onMonthChange={(month) => {
+						action('date-picker-dark-mode-month-change')(month);
+					}}
+				/>
 				<div className="rounded-lg border-2 border-white bg-zinc px-3 py-1.5 font-mono text-sm font-bold text-white">
 					Selected Range: {range?.from ? range.from.toLocaleDateString() : 'None'} – {range?.to ? range.to.toLocaleDateString() : 'None'}
 				</div>

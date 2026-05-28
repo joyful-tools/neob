@@ -1,5 +1,8 @@
 import { expect, userEvent, within } from '@storybook/test';
 import * as React from 'react';
+import { action } from 'storybook/actions';
+
+import { guardPlay } from '@/lib/storybook-interactions';
 
 import { Checkbox } from './checkbox';
 
@@ -33,6 +36,12 @@ export const Standalone: Story = {
 	args: {
 		'aria-label': 'Standalone checkbox',
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const checkbox = canvas.getByRole('checkbox');
+		await userEvent.click(checkbox);
+		await expect(checkbox).toBeChecked();
+	}),
 };
 
 export const WithLabel: Story = {
@@ -40,6 +49,12 @@ export const WithLabel: Story = {
 		label: 'Accept Terms and Conditions',
 		description: 'You must agree to the Terms of Service to proceed.',
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const checkbox = canvas.getByRole('checkbox', { name: /accept terms and conditions/i });
+		await userEvent.click(checkbox);
+		await expect(checkbox).toBeChecked();
+	}),
 };
 
 export const Indeterminate: Story = {
@@ -48,6 +63,10 @@ export const Indeterminate: Story = {
 		label: 'Parent Category Selection',
 		description: 'Some sub-categories are checked.',
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await expect(canvas.getByRole('checkbox', { name: /parent category selection/i })).toBePartiallyChecked();
+	}),
 };
 
 export const Disabled: Story = {
@@ -67,7 +86,10 @@ export const ValidationError: Story = {
 			<div className="min-h-[72px] w-80">
 				<Checkbox
 					checked={checked}
-					onCheckedChange={setChecked}
+					onCheckedChange={(nextChecked) => {
+						setChecked(nextChecked);
+						action('checkbox-validation-change')(nextChecked);
+					}}
 					label="Subscribe to newsletter"
 					description="Required option."
 					error={checked ? undefined : 'Please accept the newsletter subscription.'}
@@ -75,7 +97,7 @@ export const ValidationError: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvasElement }) => {
+	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		const checkbox = canvas.getByRole('checkbox');
 
@@ -93,7 +115,7 @@ export const ValidationError: Story = {
 
 		// Checked should be false, error should reappear
 		await expect(canvas.getByText('Please accept the newsletter subscription.')).toBeInTheDocument();
-	},
+	}),
 };
 
 export const LabelOnLeft: Story = {
@@ -102,6 +124,12 @@ export const LabelOnLeft: Story = {
 		description: 'Show standard dark mode switch in header.',
 		controlFirst: false,
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const checkbox = canvas.getByRole('checkbox', { name: /enable dark mode toggle/i });
+		await userEvent.click(checkbox);
+		await expect(checkbox).toBeChecked();
+	}),
 };
 
 export const Group: StoryObj<typeof Checkbox.Group> = {
@@ -113,7 +141,10 @@ export const Group: StoryObj<typeof Checkbox.Group> = {
 				legend="Communication Preferences"
 				description="Choose how you want to receive updates."
 				value={values}
-				onValueChange={setValues}
+				onValueChange={(nextValues) => {
+					setValues(nextValues);
+					action('checkbox-group-change')(nextValues);
+				}}
 				className="w-80"
 			>
 				<Checkbox.Item value="email" label="Email Updates" />
@@ -122,4 +153,10 @@ export const Group: StoryObj<typeof Checkbox.Group> = {
 			</Checkbox.Group>
 		);
 	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const sms = canvas.getByRole('checkbox', { name: /sms messages/i });
+		await userEvent.click(sms);
+		await expect(sms).toBeChecked();
+	}),
 };

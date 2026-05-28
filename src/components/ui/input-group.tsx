@@ -214,7 +214,7 @@ function InputGroupButton({ children, className, tooltip, ...properties }: Input
 			variant="ghost"
 			disabled={disabled || properties.disabled}
 			className={cn(
-				`h-7 w-auto min-w-7 cursor-pointer border-0 px-1.5 text-black/60 shadow-none hover:bg-zinc/10 hover:text-black dark:text-white/60 dark:hover:bg-zinc/80 dark:hover:text-white`,
+				`h-7 w-auto min-w-7 border px-1.5 text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white`,
 				size === 'sm' && 'h-5 min-w-5 px-1 text-xs',
 				size === 'lg' && 'h-9 min-w-9 px-2 text-base',
 				className,

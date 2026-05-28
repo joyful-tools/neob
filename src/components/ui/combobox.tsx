@@ -225,7 +225,7 @@ function TriggerValue({ className, ref, placeholder, ...props }: ComboboxTrigger
 				ref={ref}
 				className={cn(
 					getInputStyles(size, hasError),
-					'relative flex w-full items-center overflow-hidden shadow-brutal-sm transition-all duration-300 ease-spring hover:-translate-y-0.5 hover:shadow-brutal active:translate-y-0 active:shadow-brutal-inset disabled:hover:translate-y-0 disabled:hover:shadow-brutal-sm',
+					'relative flex w-full cursor-pointer items-center overflow-hidden shadow-brutal-sm transition-all duration-300 ease-spring hover:-translate-y-0.5 hover:shadow-brutal active:translate-y-0.5 active:shadow-brutal-inset disabled:hover:translate-y-0 disabled:hover:shadow-brutal-sm',
 					iconStyles.padding,
 				)}
 				aria-describedby={describedBy}

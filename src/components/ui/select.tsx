@@ -153,7 +153,7 @@ export function Select<T = unknown, Multiple extends boolean | undefined = false
 				className={cn(
 					buttonVariants({ size }),
 					'w-full justify-between bg-white font-bold text-black dark:bg-zinc dark:text-white',
-					'hover:-translate-y-0.5 hover:shadow-brutal active:translate-y-0 active:shadow-brutal-inset',
+					'hover:-translate-y-0.5 hover:shadow-brutal active:translate-y-0.5 active:shadow-brutal-inset',
 					'focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 dark:focus-visible:ring-white',
 					props.disabled && 'cursor-not-allowed opacity-50 hover:translate-y-0 hover:shadow-brutal-sm',
 					error && 'border-red focus-visible:ring-red dark:border-red dark:focus-visible:ring-red',
