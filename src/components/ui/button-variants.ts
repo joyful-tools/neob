@@ -46,7 +46,8 @@ export const buttonVariants = cva(
 					border-transparent
 					hover:border-black hover:bg-muted
 					active:translate-y-0.5 active:border-black active:bg-muted
-					active:shadow-brutal-inset
+					active:shadow-brutal-inset aria-expanded:border-black
+					data-pressed:border-black
 				`,
 				link: `
 					border-transparent underline-slide text-primary transition-none
@@ -75,7 +76,8 @@ export const buttonVariants = cva(
 					border-transparent text-white
 					hover:border-black hover:bg-zinc/80
 					active:translate-y-0.5 active:border-black active:bg-zinc/80
-					active:shadow-brutal-inset
+					active:shadow-brutal-inset aria-expanded:border-black
+					data-pressed:border-black
 				`,
 			},
 			size: {
