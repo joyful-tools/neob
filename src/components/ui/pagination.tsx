@@ -137,7 +137,7 @@ function PaginationPageSize({
 					onValueChange={(v) => onChange(Number(v))}
 					aria-label={labels.pageSize}
 					size="sm"
-					className="h-8 border-2 border-black px-2.5 text-xs font-black shadow-brutal-sm hover:translate-y-0 hover:shadow-brutal-sm dark:border-black [&_svg]:size-3"
+					className="h-8 border-2 border-black px-2.5 text-xs font-black shadow-brutal-sm dark:border-black [&_svg]:size-3"
 					containerClassName="p-1"
 				>
 					{options.map((size) => (
@@ -231,7 +231,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 								aria-label={labels.pageNumber}
 								size="sm"
 								className={cn(
-									'h-8 justify-center gap-1 rounded-none border-2 border-black px-2 text-xs font-black shadow-brutal-sm hover:translate-y-0 hover:shadow-brutal-sm active:translate-y-0 active:shadow-brutal-sm disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000] dark:border-black dark:bg-zinc dark:text-white [&_svg]:size-3',
+									'h-8 justify-center gap-1 rounded-none border-2 border-black px-2 text-xs font-black shadow-brutal-sm disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000] dark:border-black dark:bg-zinc dark:text-white [&_svg]:size-3',
 									maxPage <= 1 && '[&_svg]:opacity-30 [&>span]:opacity-30',
 								)}
 								containerClassName="w-[72px] min-w-0 border-2 p-1 dark:border-black"
