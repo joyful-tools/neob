@@ -13,7 +13,7 @@ import { buttonVariants } from './button';
 // ============================================================================
 
 const OVERLAY_CLASS_NAME = `
-	fixed inset-0 z-50 bg-black/50 backdrop-blur-xs
+	fixed inset-0 z-50 bg-black/35 backdrop-blur-md
 	data-[closed]:animate-overlay-out
 	data-[open]:animate-overlay-in
 `;
