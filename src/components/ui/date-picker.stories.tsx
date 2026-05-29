@@ -10,6 +10,22 @@ import { DatePicker } from './date-picker';
 
 import type { Meta } from '@storybook/react-vite';
 
+type DatePickerSingleStoryProperties = {
+	mode: 'single';
+	initialSelected?: Date;
+};
+
+type DatePickerRangeStoryProperties = {
+	mode: 'range';
+	initialSelected?: DateRange;
+};
+
+type DatePickerMultipleStoryProperties = {
+	mode: 'multiple';
+	initialSelected?: Date[];
+	max?: number;
+};
+
 const meta = {
 	title: 'Inputs/DatePicker',
 	component: DatePicker,
@@ -22,12 +38,16 @@ const meta = {
 export default meta;
 
 export const Single = {
-	render: () => {
-		const [date, setDate] = React.useState<Date | undefined>(new Date(2026, 4, 15)); // May 15, 2026
+	args: {
+		mode: 'single',
+		initialSelected: new Date(2026, 4, 15),
+	},
+	render: (args: DatePickerSingleStoryProperties) => {
+		const [date, setDate] = React.useState<Date | undefined>(args.initialSelected);
 		return (
 			<div className="flex flex-col items-center gap-4">
 				<DatePicker
-					mode="single"
+					mode={args.mode}
 					selected={date}
 					onChange={(selected, triggerDate, modifiers, event_) => {
 						setDate(selected);
@@ -51,15 +71,19 @@ export const Single = {
 };
 
 export const Range = {
-	render: () => {
-		const [range, setRange] = React.useState<DateRange | undefined>({
+	args: {
+		mode: 'range',
+		initialSelected: {
 			from: new Date(2026, 4, 10),
 			to: new Date(2026, 4, 18),
-		});
+		},
+	},
+	render: (args: DatePickerRangeStoryProperties) => {
+		const [range, setRange] = React.useState<DateRange | undefined>(args.initialSelected);
 		return (
 			<div className="flex flex-col items-center gap-4">
 				<DatePicker
-					mode="range"
+					mode={args.mode}
 					selected={range}
 					onChange={(selected, triggerDate, modifiers, event_) => {
 						setRange(selected);
@@ -78,14 +102,19 @@ export const Range = {
 };
 
 export const Multiple = {
-	render: () => {
-		const [dates, setDates] = React.useState<Date[] | undefined>([new Date(2026, 4, 12), new Date(2026, 4, 15), new Date(2026, 4, 19)]);
+	args: {
+		mode: 'multiple',
+		initialSelected: [new Date(2026, 4, 12), new Date(2026, 4, 15), new Date(2026, 4, 19)],
+		max: 5,
+	},
+	render: (args: DatePickerMultipleStoryProperties) => {
+		const [dates, setDates] = React.useState<Date[] | undefined>(args.initialSelected);
 		return (
 			<div className="flex flex-col items-center gap-4">
 				<DatePicker
-					mode="multiple"
+					mode={args.mode}
 					selected={dates}
-					max={5}
+					max={args.max}
 					onChange={(selected, triggerDate, modifiers, event_) => {
 						setDates(selected);
 						action('date-picker-multiple-change')(selected, triggerDate, modifiers, event_);
@@ -103,15 +132,19 @@ export const Multiple = {
 };
 
 export const DarkMode = {
-	render: () => {
-		const [range, setRange] = React.useState<DateRange | undefined>({
+	args: {
+		mode: 'range',
+		initialSelected: {
 			from: new Date(2026, 4, 14),
 			to: new Date(2026, 4, 22),
-		});
+		},
+	},
+	render: (args: DatePickerRangeStoryProperties) => {
+		const [range, setRange] = React.useState<DateRange | undefined>(args.initialSelected);
 		return (
 			<div className="dark flex flex-col items-center gap-4 rounded-2xl border-4 border-black bg-black p-8">
 				<DatePicker
-					mode="range"
+					mode={args.mode}
 					selected={range}
 					onChange={(selected, triggerDate, modifiers, event_) => {
 						setRange(selected);

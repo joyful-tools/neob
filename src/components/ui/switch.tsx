@@ -37,7 +37,7 @@ const VARIANT_ROOT_CLASSES = {
 
 const SWITCH_ROOT_CLASSES = `
 	peer relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center
-	rounded-full border-2 border-black bg-white shadow-brutal-inset-sm transition-colors
+	rounded-full border-2 border-black bg-white shadow-cel-inset-sm transition-colors
 	duration-300 ease-spring neo-focus-ring outline-hidden
 	disabled:cursor-not-allowed disabled:opacity-50
 	dark:bg-zinc

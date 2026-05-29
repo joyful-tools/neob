@@ -8,6 +8,11 @@ import { Tabs } from './tabs';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+type TabsStoryProperties = {
+	initialValue: string;
+	listVariant: 'segmented' | 'subtle';
+};
+
 const meta = {
 	title: 'Navigation/Tabs',
 	component: Tabs,
@@ -18,11 +23,15 @@ const meta = {
 } satisfies Meta<typeof Tabs>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<TabsStoryProperties>;
 
 export const Segmented: Story = {
-	render: () => {
-		const [value, setValue] = React.useState('account');
+	args: {
+		initialValue: 'account',
+		listVariant: 'segmented',
+	},
+	render: (args) => {
+		const [value, setValue] = React.useState(args.initialValue);
 		return (
 			<div className="w-96">
 				<Tabs
@@ -32,7 +41,7 @@ export const Segmented: Story = {
 						action('tabs-segmented-change')(nextValue);
 					}}
 				>
-					<Tabs.List variant="segmented">
+					<Tabs.List variant={args.listVariant}>
 						<Tabs.Trigger value="account">Account</Tabs.Trigger>
 						<Tabs.Trigger value="password">Password</Tabs.Trigger>
 						<Tabs.Trigger value="settings">A very long option</Tabs.Trigger>
@@ -58,8 +67,12 @@ export const Segmented: Story = {
 };
 
 export const Subtle: Story = {
-	render: () => {
-		const [value, setValue] = React.useState('account');
+	args: {
+		initialValue: 'account',
+		listVariant: 'subtle',
+	},
+	render: (args) => {
+		const [value, setValue] = React.useState(args.initialValue);
 		return (
 			<div className="w-96">
 				<Tabs
@@ -69,7 +82,7 @@ export const Subtle: Story = {
 						action('tabs-subtle-change')(nextValue);
 					}}
 				>
-					<Tabs.List variant="subtle">
+					<Tabs.List variant={args.listVariant}>
 						<Tabs.Trigger value="account">Account</Tabs.Trigger>
 						<Tabs.Trigger value="password">Password</Tabs.Trigger>
 						<Tabs.Trigger value="settings">A very long option</Tabs.Trigger>

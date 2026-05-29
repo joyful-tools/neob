@@ -98,6 +98,22 @@
 
 	--ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
+	--shadow-cel-depth: var(--shadow-cel-depth-md);
+	--shadow-cel-depth-sm: 2px;
+	--shadow-cel-depth-md: 4px;
+	--shadow-cel-depth-lg: 8px;
+	--shadow-cel-depth-xl: 12px;
+	--shadow-cel-color-default: rgba(0, 0, 0, 1);
+	--shadow-cel-inset-depth: var(--shadow-cel-inset-depth-md);
+	--shadow-cel-inset-depth-md: 3px;
+	--shadow-cel-inset-depth-sm: 2px;
+	--shadow-cel-inset-color-md: rgba(0, 0, 0, 0.25);
+	--shadow-cel-inset-color-sm: rgba(0, 0, 0, 0.2);
+	--underline-slide-thickness: 1px;
+	--underline-slide-duration: 300ms;
+	--focus-ring-inner-size: 2px;
+	--focus-ring-outer-size: 4px;
+
 	@keyframes overlay-in {
 		from {
 			opacity: 0;
@@ -221,67 +237,32 @@
 	}
 }
 
-@utility shadow-brutal {
-	--tw-shadow: 0 4px 0 0 rgba(0, 0, 0, 1), inset 0 0 0 0 transparent;
+@utility shadow-cel-* {
+	--shadow-cel-depth-value: --value(--shadow-cel-depth-*, --default(var(--shadow-cel-depth)));
+	--shadow-cel-color-value: --modifier(--color-*, [color], --default(var(--shadow-cel-color-default)));
+	--tw-shadow: 0 var(--shadow-cel-depth-value) 0 0 var(--shadow-cel-color-value), inset 0 0 0 0 transparent;
 	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-@utility shadow-brutal-* {
-	--tw-shadow: 0 4px 0 0 --value(--color-*), inset 0 0 0 0 transparent;
-	--tw-shadow: 0 4px 0 0 --value([color]), inset 0 0 0 0 transparent;
+@utility shadow-cel-inset-* {
+	--shadow-cel-inset-depth-value: --value(--shadow-cel-inset-depth-*, --default(var(--shadow-cel-inset-depth)));
+	--shadow-cel-inset-color-value: --modifier([color], --default(var(--shadow-cel-inset-color-md)));
+	--tw-shadow: 0 0 0 0 transparent, inset 0 var(--shadow-cel-inset-depth-value) 0 0 var(--shadow-cel-inset-color-value);
 	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-@utility shadow-brutal-sm {
-	--tw-shadow: 0 2px 0 0 rgba(0, 0, 0, 1), inset 0 0 0 0 transparent;
-	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-@utility shadow-brutal-sm-* {
-	--tw-shadow: 0 2px 0 0 --value(--color-*), inset 0 0 0 0 transparent;
-	--tw-shadow: 0 2px 0 0 --value([color]), inset 0 0 0 0 transparent;
-	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-@utility shadow-brutal-lg {
-	--tw-shadow: 0 8px 0 0 rgba(0, 0, 0, 1), inset 0 0 0 0 transparent;
-	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-@utility shadow-brutal-lg-* {
-	--tw-shadow: 0 8px 0 0 --value(--color-*), inset 0 0 0 0 transparent;
-	--tw-shadow: 0 8px 0 0 --value([color]), inset 0 0 0 0 transparent;
-	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-@utility shadow-brutal-xl {
-	--tw-shadow: 0 12px 0 0 rgba(0, 0, 0, 1), inset 0 0 0 0 transparent;
-	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-@utility shadow-brutal-xl-* {
-	--tw-shadow: 0 12px 0 0 --value(--color-*), inset 0 0 0 0 transparent;
-	--tw-shadow: 0 12px 0 0 --value([color]), inset 0 0 0 0 transparent;
-	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-@utility shadow-brutal-inset {
-	--tw-shadow: 0 0 0 0 transparent, inset 0 3px 0 0 rgba(0, 0, 0, 0.25);
-	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-@utility shadow-brutal-inset-sm {
-	--tw-shadow: 0 0 0 0 transparent, inset 0 2px 0 0 rgba(0, 0, 0, 0.2);
-	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-@utility underline-slide {
+@utility underline-slide-* {
+	--underline-slide-thickness-value: --value([length], [line-width], --default(var(--underline-slide-thickness)));
+	--underline-slide-duration-value: --modifier([time], --default(var(--underline-slide-duration)));
 	text-decoration: none;
-	background-image: linear-gradient(transparent calc(100% - 1px), currentColor 1px);
+	background-image: linear-gradient(
+		transparent calc(100% - var(--underline-slide-thickness-value)),
+		currentColor var(--underline-slide-thickness-value)
+	);
 	background-position-x: left;
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
-	transition: background-size 0.3s;
+	transition: background-size var(--underline-slide-duration-value);
 
 	&:hover {
 		background-position-x: 100%;
@@ -289,7 +270,9 @@
 	}
 }
 
-@utility neo-focus-ring {
+@utility neo-focus-ring-* {
+	--focus-ring-inner-size-value: --value([length], integer, --default(var(--focus-ring-inner-size)));
+	--focus-ring-outer-size-value: --modifier([length], integer, --default(var(--focus-ring-outer-size)));
 	position: relative;
 
 	&::before {
@@ -310,8 +293,8 @@
 
 	&:focus-visible::before {
 		box-shadow:
-			0 0 0 2px var(--color-background),
-			0 0 0 4px var(--color-ring);
+			0 0 0 var(--focus-ring-inner-size-value) var(--color-background),
+			0 0 0 var(--focus-ring-outer-size-value) var(--color-ring);
 		opacity: 1;
 	}
 }

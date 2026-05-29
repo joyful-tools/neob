@@ -137,7 +137,7 @@ function PaginationPageSize({
 					onValueChange={(v) => onChange(Number(v))}
 					aria-label={labels.pageSize}
 					size="sm"
-					className="h-8 border-2 border-black px-2.5 text-xs font-black shadow-brutal-sm dark:border-black [&_svg]:size-3"
+					className="h-8 border-2 border-black px-2.5 text-xs font-black shadow-cel-sm dark:border-black [&_svg]:size-3"
 					containerClassName="p-1"
 				>
 					{options.map((size) => (
@@ -194,7 +194,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							setPage(1);
 							setEditingPage(1);
 						}}
-						className="size-8 rounded-r-none p-0 shadow-brutal-sm focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]"
+						className="size-8 rounded-r-none p-0 shadow-cel-sm focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]"
 					>
 						<CaretDoubleLeft className={cn('size-4', isFirstPageDisabled && 'opacity-30')} />
 					</Button>
@@ -211,7 +211,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						setEditingPage(previousPage);
 					}}
 					className={cn(
-						'size-8 p-0 shadow-brutal-sm focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]',
+						'size-8 p-0 shadow-cel-sm focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]',
 						controls === 'full' ? 'ml-[-2px] rounded-none' : 'rounded-r-none',
 					)}
 				>
@@ -231,7 +231,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 								aria-label={labels.pageNumber}
 								size="sm"
 								className={cn(
-									'h-8 justify-center gap-1 rounded-none border-2 border-black px-2 text-xs font-black shadow-brutal-sm disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000] dark:border-black dark:bg-zinc dark:text-white [&_svg]:size-3',
+									'h-8 justify-center gap-1 rounded-none border-2 border-black px-2 text-xs font-black shadow-cel-sm disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000] dark:border-black dark:bg-zinc dark:text-white [&_svg]:size-3',
 									maxPage <= 1 && '[&_svg]:opacity-30 [&>span]:opacity-30',
 								)}
 								containerClassName="w-[72px] min-w-0 border-2 p-1 dark:border-black"
@@ -244,7 +244,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							</Select>
 						</div>
 					) : (
-						<div className="ml-[-2px] flex h-8 items-center justify-center rounded-none border-2 border-black bg-white shadow-brutal-sm select-none focus-within:z-10 focus-within:ring-2 focus-within:ring-black focus-within:ring-offset-2 dark:border-black dark:bg-zinc dark:focus-within:ring-white">
+						<div className="ml-[-2px] flex h-8 items-center justify-center rounded-none border-2 border-black bg-white shadow-cel-sm select-none focus-within:z-10 focus-within:ring-2 focus-within:ring-black focus-within:ring-offset-2 dark:border-black dark:bg-zinc dark:focus-within:ring-white">
 							<input
 								type="number"
 								disabled={maxPage <= 1}
@@ -296,7 +296,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						setEditingPage(nextPage);
 					}}
 					className={cn(
-						'ml-[-2px] size-8 p-0 shadow-brutal-sm focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]',
+						'ml-[-2px] size-8 p-0 shadow-cel-sm focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]',
 						controls === 'full' ? 'rounded-none' : 'rounded-l-none',
 					)}
 				>
@@ -313,7 +313,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							setPage(maxPage);
 							setEditingPage(maxPage);
 						}}
-						className="ml-[-2px] size-8 rounded-l-none p-0 shadow-brutal-sm focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]"
+						className="ml-[-2px] size-8 rounded-l-none p-0 shadow-cel-sm focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]"
 					>
 						<CaretDoubleRight className={cn('size-4', isLastPageDisabled && 'opacity-30')} />
 					</Button>

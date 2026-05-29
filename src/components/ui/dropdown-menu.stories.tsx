@@ -9,6 +9,10 @@ import { DropdownMenu } from './dropdown-menu';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+type DropdownMenuStoryProperties = {
+	triggerLabel: string;
+};
+
 const meta = {
 	title: 'Navigation/DropdownMenu',
 	component: DropdownMenu,
@@ -19,19 +23,22 @@ const meta = {
 } satisfies Meta<typeof DropdownMenu>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<DropdownMenuStoryProperties>;
 
 export const Default: Story = {
+	args: {
+		triggerLabel: 'Open Account Menu',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
+	render: (args) => {
 		return (
 			<DropdownMenu>
 				<DropdownMenu.Trigger>
-					<Button variant="default">Open Account Menu</Button>
+					<Button variant="default">{String(args.triggerLabel)}</Button>
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Content align="center">
 					<DropdownMenu.Label>Account Settings</DropdownMenu.Label>

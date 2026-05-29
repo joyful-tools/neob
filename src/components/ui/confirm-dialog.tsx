@@ -88,7 +88,7 @@ export function ConfirmDialog({
 									disabled={isConfirming}
 									placeholder={resourceName}
 									autoComplete="off"
-									className="rounded-md px-3 text-sm shadow-brutal-inset-sm"
+									className="rounded-md px-3 text-sm shadow-cel-inset-sm"
 								/>
 							</div>
 						)}

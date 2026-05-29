@@ -225,7 +225,7 @@ function TriggerValue({ className, ref, placeholder, ...props }: ComboboxTrigger
 				ref={ref}
 				className={cn(
 					getInputStyles(size, hasError),
-					'relative flex w-full cursor-pointer items-center overflow-hidden shadow-brutal-sm transition-all duration-300 ease-spring hover:-translate-y-0.5 hover:shadow-brutal active:translate-y-0.5 active:shadow-brutal-inset disabled:hover:translate-y-0 disabled:hover:shadow-brutal-sm aria-expanded:translate-y-0.5 aria-expanded:shadow-brutal-inset data-pressed:translate-y-0.5 data-pressed:shadow-brutal-inset',
+					'relative flex w-full cursor-pointer items-center overflow-hidden shadow-cel-sm transition-all duration-300 ease-spring hover:-translate-y-0.5 hover:shadow-cel-md active:translate-y-0.5 active:shadow-cel-inset-md disabled:hover:translate-y-0 disabled:hover:shadow-cel-sm aria-expanded:translate-y-0.5 aria-expanded:shadow-cel-inset-md data-pressed:translate-y-0.5 data-pressed:shadow-cel-inset-md',
 					iconStyles.padding,
 				)}
 				aria-describedby={describedBy}
@@ -315,7 +315,7 @@ function TriggerInput({
 			<BaseCombobox.Input
 				ref={ref}
 				placeholder={placeholder}
-				className={cn(getInputStyles(size, hasError), 'w-full shadow-brutal-inset', iconStyles.padding)}
+				className={cn(getInputStyles(size, hasError), 'w-full shadow-cel-inset-md', iconStyles.padding)}
 				aria-describedby={describedBy}
 				aria-invalid={ariaInvalid ? true : undefined}
 				{...props}
@@ -356,7 +356,7 @@ function getChipsContainerStyles(size: ComboboxSize, hasError: boolean) {
 	};
 
 	return cn(
-		`flex w-full flex-col gap-1 bg-white font-bold text-black shadow-brutal-inset transition-all duration-300 ease-spring select-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
+		`flex w-full flex-col gap-1 bg-white font-bold text-black shadow-cel-inset-md transition-all duration-300 ease-spring select-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
 		hasError
 			? 'border-red focus-within:ring-red dark:border-red dark:focus-within:ring-red'
 			: 'border-black focus-within:ring-black dark:border-black dark:focus-within:ring-white',
@@ -448,7 +448,7 @@ function Chip({ removeLabel = 'Remove', className, children, ref, ...props }: Co
 		<BaseCombobox.Chip
 			ref={ref}
 			className={cn(
-				'flex h-6 items-center gap-1.5 rounded-md border border-black bg-muted pr-[3px] pl-2 text-xs font-bold text-black shadow-brutal-sm dark:border-white dark:bg-zinc dark:text-white',
+				'flex h-6 items-center gap-1.5 rounded-md border border-black bg-muted pr-[3px] pl-2 text-xs font-bold text-black shadow-cel-sm dark:border-white dark:bg-zinc dark:text-white',
 				className,
 			)}
 			{...props}
@@ -528,7 +528,7 @@ function Input({ className, ref, ...props }: ComboboxInputProps) {
 		<BaseCombobox.Input
 			ref={ref}
 			className={cn(
-				'mx-1.5 my-1 flex h-9 min-w-0 self-stretch overflow-hidden rounded-md border-2 border-black bg-white px-3 py-1.5 text-sm font-medium shadow-brutal-inset focus:outline-hidden dark:bg-zinc dark:text-white',
+				'mx-1.5 my-1 flex h-9 min-w-0 self-stretch overflow-hidden rounded-md border-2 border-black bg-white px-3 py-1.5 text-sm font-medium shadow-cel-inset-md focus:outline-hidden dark:bg-zinc dark:text-white',
 				className,
 			)}
 			{...props}

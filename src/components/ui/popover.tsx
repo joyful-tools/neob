@@ -11,7 +11,7 @@ import { useTransformOrigin } from '../../hooks/use-transform-origin';
 
 const POPOVER_CONTENT_CLASS_NAME = `
 	z-50 w-72 origin-(--transform-origin) rounded-xl
-	border-2 border-black bg-popover p-4 text-popover-foreground shadow-brutal
+	border-2 border-black bg-popover p-4 text-popover-foreground shadow-cel
 	outline-none
 	data-[side=bottom]:[--tw-enter-translate-y:-0.5rem]
 	data-[side=left]:[--tw-enter-translate-x:0.5rem]
@@ -19,7 +19,7 @@ const POPOVER_CONTENT_CLASS_NAME = `
 	data-[side=top]:[--tw-enter-translate-y:0.5rem]
 	data-[closed]:animate-popover-out
 	data-[open]:animate-popover-in
-	dark:border-black dark:shadow-brutal
+	dark:border-black dark:shadow-cel
 `;
 
 // ============================================================================

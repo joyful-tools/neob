@@ -11,6 +11,86 @@ import { Combobox } from './combobox';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+type FruitComboboxStoryProperties = {
+	initialValue: string | null;
+	placeholder: string;
+};
+
+type LanguageComboboxStoryProperties = {
+	initialValue: Language | null;
+	ariaLabel: string;
+	triggerClassName: string;
+	placeholder?: string;
+	searchPlaceholder: string;
+};
+
+type GroupedComboboxStoryProperties = {
+	initialValue: ServerLocation | null;
+	placeholder: string;
+};
+
+type MultipleComboboxStoryProperties = {
+	initialValue: WorkspaceAppItem[];
+	placeholder: string;
+};
+
+type FieldComboboxStoryProperties = {
+	initialValue: DatabaseItem | null;
+	label: string;
+	description?: string;
+	placeholder: string;
+};
+
+type DisabledComboboxStoryProperties = {
+	fruitInitialValue: string;
+	fruitPlaceholder: string;
+	languageInitialValue: Language;
+	languageAriaLabel: string;
+	languageSearchPlaceholder: string;
+};
+
+type DisabledItemDatabase = DatabaseItem & {
+	disabled?: boolean;
+	reason?: string;
+};
+
+type DisabledItemsComboboxStoryProperties = {
+	initialValue: DisabledItemDatabase | null;
+	placeholder: string;
+	items: DisabledItemDatabase[];
+};
+
+type ErrorComboboxStoryProperties = {
+	initialValue: DatabaseItem | null;
+	label: string;
+	error: string;
+	placeholder: string;
+};
+
+type SizesComboboxStoryProperties = {
+	smInitialValue: string | null;
+	baseInitialValue: string | null;
+	smPlaceholder: string;
+	basePlaceholder: string;
+};
+
+type SizesSearchableStoryProperties = {
+	smInitialValue: Language | null;
+	baseInitialValue: Language | null;
+	smAriaLabel: string;
+	baseAriaLabel: string;
+	smTriggerClassName: string;
+	baseTriggerClassName: string;
+	searchPlaceholder: string;
+};
+
+type CustomTriggerComboboxStoryProperties = {
+	initialValue: Language | null;
+	ariaLabel: string;
+	searchPlaceholder: string;
+	emptyLabel: string;
+};
+
 function Text({
 	children,
 	variant,
@@ -48,7 +128,6 @@ const meta = {
 } satisfies Meta<typeof Combobox>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
 // ============================================================================
 // Data
@@ -257,14 +336,18 @@ const workspaceApps: WorkspaceAppItem[] = [
 // Demos
 // ============================================================================
 
-export const Default: Story = {
+export const Default: StoryObj<FruitComboboxStoryProperties> = {
+	args: {
+		initialValue: 'Apple',
+		placeholder: 'Please select',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		const [value, setValue] = React.useState<string | null>('Apple');
+	render: (args: FruitComboboxStoryProperties) => {
+		const [value, setValue] = React.useState<string | null>(args.initialValue);
 
 		return (
 			<div className="w-[300px]">
@@ -276,7 +359,7 @@ export const Default: Story = {
 					}}
 					items={fruits}
 				>
-					<Combobox.TriggerInput placeholder="Please select" />
+					<Combobox.TriggerInput placeholder={args.placeholder} />
 					<Combobox.Content>
 						<Combobox.Empty />
 						<Combobox.List>
@@ -303,19 +386,25 @@ export const Default: Story = {
 	}),
 };
 
-export const SearchableInside = {
+export const SearchableInside: StoryObj<LanguageComboboxStoryProperties> = {
+	args: {
+		initialValue: languages[0],
+		ariaLabel: 'Language selection',
+		triggerClassName: 'w-[200px]',
+		searchPlaceholder: 'Search languages',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		const [value, setValue] = React.useState<Language | null>(languages[0]);
+	render: (args: LanguageComboboxStoryProperties) => {
+		const [value, setValue] = React.useState<Language | null>(args.initialValue);
 
 		return (
 			<div className="size-[300px]">
 				<Combobox
-					aria-label="Language selection"
+					aria-label={args.ariaLabel}
 					value={value}
 					onValueChange={(nextValue) => {
 						setValue(nextValue);
@@ -323,9 +412,9 @@ export const SearchableInside = {
 					}}
 					items={languages}
 				>
-					<Combobox.TriggerValue className="w-[200px]" />
+					<Combobox.TriggerValue className={args.triggerClassName} />
 					<Combobox.Content>
-						<Combobox.Input placeholder="Search languages" />
+						<Combobox.Input placeholder={args.searchPlaceholder} />
 						<Combobox.Empty />
 						<Combobox.List>
 							{(item: Language) => (
@@ -353,19 +442,26 @@ export const SearchableInside = {
 	}),
 };
 
-export const SearchableSelect: Story = {
+export const SearchableSelect: StoryObj<LanguageComboboxStoryProperties> = {
+	args: {
+		initialValue: null,
+		ariaLabel: 'Select a language',
+		triggerClassName: 'w-[200px]',
+		placeholder: 'Select a language',
+		searchPlaceholder: 'Search languages',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		const [value, setValue] = React.useState<Language | null>(null);
+	render: (args: LanguageComboboxStoryProperties) => {
+		const [value, setValue] = React.useState<Language | null>(args.initialValue);
 
 		return (
 			<div className="size-[300px]">
 				<Combobox
-					aria-label="Select a language"
+					aria-label={args.ariaLabel}
 					value={value}
 					onValueChange={(nextValue) => {
 						setValue(nextValue);
@@ -373,9 +469,9 @@ export const SearchableSelect: Story = {
 					}}
 					items={languages}
 				>
-					<Combobox.TriggerValue className="w-[200px]" placeholder="Select a language" />
+					<Combobox.TriggerValue className={args.triggerClassName} placeholder={args.placeholder} />
 					<Combobox.Content>
-						<Combobox.Input placeholder="Search languages" />
+						<Combobox.Input placeholder={args.searchPlaceholder} />
 						<Combobox.Empty />
 						<Combobox.List>
 							{(item: Language) => (
@@ -403,14 +499,18 @@ export const SearchableSelect: Story = {
 	}),
 };
 
-export const Grouped = {
+export const Grouped: StoryObj<GroupedComboboxStoryProperties> = {
+	args: {
+		initialValue: null,
+		placeholder: 'Select server',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		const [value, setValue] = React.useState<ServerLocation | null>(null);
+	render: (args: GroupedComboboxStoryProperties) => {
+		const [value, setValue] = React.useState<ServerLocation | null>(args.initialValue);
 
 		return (
 			<div className="size-[300px]">
@@ -422,7 +522,7 @@ export const Grouped = {
 					}}
 					items={servers}
 				>
-					<Combobox.TriggerInput className="w-[200px]" placeholder="Select server" />
+					<Combobox.TriggerInput className="w-[200px]" placeholder={args.placeholder} />
 					<Combobox.Content>
 						<Combobox.Empty />
 						<Combobox.List>
@@ -458,14 +558,18 @@ export const Grouped = {
 	}),
 };
 
-export const Multiple: Story = {
+export const Multiple: StoryObj<MultipleComboboxStoryProperties> = {
+	args: {
+		initialValue: [],
+		placeholder: 'Select apps',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		const [value, setValue] = React.useState<WorkspaceAppItem[]>([]);
+	render: (args: MultipleComboboxStoryProperties) => {
+		const [value, setValue] = React.useState<WorkspaceAppItem[]>(args.initialValue);
 
 		return (
 			<div className="w-[400px]">
@@ -481,7 +585,7 @@ export const Multiple: Story = {
 				>
 					<Combobox.TriggerMultipleWithInput
 						className="w-full"
-						placeholder="Select apps"
+						placeholder={args.placeholder}
 						renderItem={(selected: WorkspaceAppItem) => <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>}
 						inputSide="right"
 					/>
@@ -513,14 +617,20 @@ export const Multiple: Story = {
 	}),
 };
 
-export const WithField = {
+export const WithField: StoryObj<FieldComboboxStoryProperties> = {
+	args: {
+		initialValue: null,
+		label: 'Database',
+		description: 'Select your preferred database',
+		placeholder: 'Select database',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		const [value, setValue] = React.useState<DatabaseItem | null>(null);
+	render: (args: FieldComboboxStoryProperties) => {
+		const [value, setValue] = React.useState<DatabaseItem | null>(args.initialValue);
 
 		return (
 			<div className="w-80">
@@ -531,10 +641,10 @@ export const WithField = {
 						setValue(nextValue);
 						action('combobox-with-field-change')(nextValue);
 					}}
-					label="Database"
-					description="Select your preferred database"
+					label={args.label}
+					description={args.description}
 				>
-					<Combobox.TriggerInput placeholder="Select database" />
+					<Combobox.TriggerInput placeholder={args.placeholder} />
 					<Combobox.Content>
 						<Combobox.Empty />
 						<Combobox.List>
@@ -562,12 +672,19 @@ export const WithField = {
 	}),
 };
 
-export const Disabled = {
-	render: () => {
+export const Disabled: StoryObj<DisabledComboboxStoryProperties> = {
+	args: {
+		fruitInitialValue: 'Apple',
+		fruitPlaceholder: 'Select fruit',
+		languageInitialValue: languages[0],
+		languageAriaLabel: 'Disabled language selection',
+		languageSearchPlaceholder: 'Search',
+	},
+	render: (args: DisabledComboboxStoryProperties) => {
 		return (
 			<div className="flex w-[500px] flex-wrap items-start gap-4">
-				<Combobox value="Apple" items={fruits} disabled>
-					<Combobox.TriggerInput className="w-[200px]" placeholder="Select fruit" />
+				<Combobox value={args.fruitInitialValue} items={fruits} disabled>
+					<Combobox.TriggerInput className="w-[200px]" placeholder={args.fruitPlaceholder} />
 					<Combobox.Content>
 						<Combobox.Empty />
 						<Combobox.List>
@@ -580,10 +697,10 @@ export const Disabled = {
 					</Combobox.Content>
 				</Combobox>
 
-				<Combobox aria-label="Disabled language selection" value={languages[0]} items={languages} disabled>
+				<Combobox aria-label={args.languageAriaLabel} value={args.languageInitialValue} items={languages} disabled>
 					<Combobox.TriggerValue className="w-[200px]" />
 					<Combobox.Content>
-						<Combobox.Input placeholder="Search" />
+						<Combobox.Input placeholder={args.languageSearchPlaceholder} />
 						<Combobox.Empty />
 						<Combobox.List>
 							{(item: Language) => (
@@ -599,34 +716,27 @@ export const Disabled = {
 	},
 };
 
-export const DisabledItems = {
+export const DisabledItems: StoryObj<DisabledItemsComboboxStoryProperties> = {
+	args: {
+		initialValue: null,
+		placeholder: 'Select database',
+		items: [
+			{ value: 'postgres', label: 'PostgreSQL' },
+			{ value: 'mysql', label: 'MySQL' },
+			{ value: 'mariadb', label: 'MariaDB', disabled: true, reason: 'Beta' },
+			{ value: 'mongodb', label: 'MongoDB' },
+			{ value: 'cassandra', label: 'Apache Cassandra', disabled: true, reason: 'Coming soon' },
+			{ value: 'redis', label: 'Redis' },
+			{ value: 'firebase-rt', label: 'Firebase Realtime Database' },
+		],
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		type DatabaseItemWithDisabled = DatabaseItem & {
-			disabled?: boolean;
-			reason?: string;
-		};
-
-		const items: DatabaseItemWithDisabled[] = [
-			{ value: 'postgres', label: 'PostgreSQL' },
-			{ value: 'mysql', label: 'MySQL' },
-			{ value: 'mariadb', label: 'MariaDB', disabled: true, reason: 'Beta' },
-			{ value: 'mongodb', label: 'MongoDB' },
-			{
-				value: 'cassandra',
-				label: 'Apache Cassandra',
-				disabled: true,
-				reason: 'Coming soon',
-			},
-			{ value: 'redis', label: 'Redis' },
-			{ value: 'firebase-rt', label: 'Firebase Realtime Database' },
-		];
-
-		const [value, setValue] = React.useState<DatabaseItemWithDisabled | null>(null);
+	render: (args: DisabledItemsComboboxStoryProperties) => {
+		const [value, setValue] = React.useState<DisabledItemDatabase | null>(args.initialValue);
 
 		return (
 			<div className="h-[300px] w-80">
@@ -636,13 +746,13 @@ export const DisabledItems = {
 						setValue(nextValue);
 						action('combobox-disabled-items-change')(nextValue);
 					}}
-					items={items}
+					items={args.items}
 				>
-					<Combobox.TriggerInput placeholder="Select database" />
+					<Combobox.TriggerInput placeholder={args.placeholder} />
 					<Combobox.Content>
 						<Combobox.Empty />
 						<Combobox.List>
-							{(item: DatabaseItemWithDisabled) => (
+							{(item: DisabledItemDatabase) => (
 								<Combobox.Item key={item.value} value={item} disabled={item.disabled}>
 									<span>
 										{item.label}
@@ -679,14 +789,20 @@ export const DisabledItems = {
 	}),
 };
 
-export const Error = {
+export const Error: StoryObj<ErrorComboboxStoryProperties> = {
+	args: {
+		initialValue: null,
+		label: 'Database',
+		error: 'Please select a database',
+		placeholder: 'Select database',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		const [value, setValue] = React.useState<DatabaseItem | null>(null);
+	render: (args: ErrorComboboxStoryProperties) => {
+		const [value, setValue] = React.useState<DatabaseItem | null>(args.initialValue);
 
 		return (
 			<div className="w-80">
@@ -697,10 +813,10 @@ export const Error = {
 						setValue(nextValue);
 						action('combobox-error-change')(nextValue);
 					}}
-					label="Database"
-					error="Please select a database"
+					label={args.label}
+					error={args.error}
 				>
-					<Combobox.TriggerInput placeholder="Select database" />
+					<Combobox.TriggerInput placeholder={args.placeholder} />
 					<Combobox.Content>
 						<Combobox.Empty />
 						<Combobox.List>
@@ -728,15 +844,21 @@ export const Error = {
 	}),
 };
 
-export const Sizes = {
+export const Sizes: StoryObj<SizesComboboxStoryProperties> = {
+	args: {
+		smInitialValue: null,
+		baseInitialValue: null,
+		smPlaceholder: 'Small (sm)',
+		basePlaceholder: 'Base (default)',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		const [smValue, setSmValue] = React.useState<string | null>(null);
-		const [baseValue, setBaseValue] = React.useState<string | null>(null);
+	render: (args: SizesComboboxStoryProperties) => {
+		const [smValue, setSmValue] = React.useState<string | null>(args.smInitialValue);
+		const [baseValue, setBaseValue] = React.useState<string | null>(args.baseInitialValue);
 
 		return (
 			<div className="flex w-[500px] flex-wrap items-center gap-4">
@@ -749,7 +871,7 @@ export const Sizes = {
 					}}
 					items={fruits.slice(0, 8)}
 				>
-					<Combobox.TriggerInput placeholder="Small (sm)" />
+					<Combobox.TriggerInput placeholder={args.smPlaceholder} />
 					<Combobox.Content>
 						<Combobox.Empty />
 						<Combobox.List>
@@ -770,7 +892,7 @@ export const Sizes = {
 					}}
 					items={fruits.slice(0, 8)}
 				>
-					<Combobox.TriggerInput placeholder="Base (default)" />
+					<Combobox.TriggerInput placeholder={args.basePlaceholder} />
 					<Combobox.Content>
 						<Combobox.Empty />
 						<Combobox.List>
@@ -794,20 +916,29 @@ export const Sizes = {
 	}),
 };
 
-export const SizesSearchableInside = {
+export const SizesSearchableInside: StoryObj<SizesSearchableStoryProperties> = {
+	args: {
+		smInitialValue: languages[0],
+		baseInitialValue: languages[1],
+		smAriaLabel: 'Small language selection',
+		baseAriaLabel: 'Base language selection',
+		smTriggerClassName: 'w-[160px]',
+		baseTriggerClassName: 'w-[180px]',
+		searchPlaceholder: 'Search',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		const [smValue, setSmValue] = React.useState<Language | null>(languages[0]);
-		const [baseValue, setBaseValue] = React.useState<Language | null>(languages[1]);
+	render: (args: SizesSearchableStoryProperties) => {
+		const [smValue, setSmValue] = React.useState<Language | null>(args.smInitialValue);
+		const [baseValue, setBaseValue] = React.useState<Language | null>(args.baseInitialValue);
 
 		return (
 			<div className="flex h-[300px] w-[500px] flex-wrap items-center gap-4">
 				<Combobox
-					aria-label="Small language selection"
+					aria-label={args.smAriaLabel}
 					size="sm"
 					value={smValue}
 					onValueChange={(nextValue) => {
@@ -816,9 +947,9 @@ export const SizesSearchableInside = {
 					}}
 					items={languages}
 				>
-					<Combobox.TriggerValue className="w-[160px]" />
+					<Combobox.TriggerValue className={args.smTriggerClassName} />
 					<Combobox.Content>
-						<Combobox.Input placeholder="Search" />
+						<Combobox.Input placeholder={args.searchPlaceholder} />
 						<Combobox.Empty />
 						<Combobox.List>
 							{(item: Language) => (
@@ -830,7 +961,7 @@ export const SizesSearchableInside = {
 					</Combobox.Content>
 				</Combobox>
 				<Combobox
-					aria-label="Base language selection"
+					aria-label={args.baseAriaLabel}
 					size="base"
 					value={baseValue}
 					onValueChange={(nextValue) => {
@@ -839,9 +970,9 @@ export const SizesSearchableInside = {
 					}}
 					items={languages}
 				>
-					<Combobox.TriggerValue className="w-[180px]" />
+					<Combobox.TriggerValue className={args.baseTriggerClassName} />
 					<Combobox.Content>
-						<Combobox.Input placeholder="Search" />
+						<Combobox.Input placeholder={args.searchPlaceholder} />
 						<Combobox.Empty />
 						<Combobox.List>
 							{(item: Language) => (
@@ -864,19 +995,25 @@ export const SizesSearchableInside = {
 	}),
 };
 
-export const CustomTrigger: Story = {
+export const CustomTrigger: StoryObj<CustomTriggerComboboxStoryProperties> = {
+	args: {
+		initialValue: languages[0],
+		ariaLabel: 'Custom language selection',
+		searchPlaceholder: 'Search languages',
+		emptyLabel: 'Select a language',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		const [value, setValue] = React.useState<Language | null>(languages[0]);
+	render: (args: CustomTriggerComboboxStoryProperties) => {
+		const [value, setValue] = React.useState<Language | null>(args.initialValue);
 
 		return (
 			<div className="size-[300px]">
 				<Combobox
-					aria-label="Custom language selection"
+					aria-label={args.ariaLabel}
 					value={value}
 					onValueChange={(nextValue) => {
 						setValue(nextValue);
@@ -894,12 +1031,12 @@ export const CustomTrigger: Story = {
 						}
 					>
 						<Combobox.Value>
-							<span className="truncate">{value ? `${value.emoji} ${value.label}` : 'Select a language'}</span>
+							<span className="truncate">{value ? `${value.emoji} ${value.label}` : args.emptyLabel}</span>
 						</Combobox.Value>
 						<CaretUpDown size={14} className="shrink-0 text-black/60 dark:text-white/60" />
 					</Combobox.Trigger>
 					<Combobox.Content>
-						<Combobox.Input placeholder="Search languages" />
+						<Combobox.Input placeholder={args.searchPlaceholder} />
 						<Combobox.Empty />
 						<Combobox.List>
 							{(item: Language) => (

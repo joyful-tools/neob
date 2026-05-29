@@ -96,7 +96,7 @@ export function InputGroup({
 			<div
 				onClick={handleContainerClick}
 				className={cn(
-					`flex w-full items-center overflow-hidden rounded-lg border-2 border-black bg-white font-medium shadow-brutal-inset-sm transition-all duration-300 ease-spring focus-within:ring-2 focus-within:ring-black focus-within:ring-offset-2 focus-within:outline-hidden dark:border-black dark:bg-zinc dark:focus-within:ring-white`,
+					`flex w-full items-center overflow-hidden rounded-lg border-2 border-black bg-white font-medium shadow-cel-inset-sm transition-all duration-300 ease-spring focus-within:ring-2 focus-within:ring-black focus-within:ring-offset-2 focus-within:outline-hidden dark:border-black dark:bg-zinc dark:focus-within:ring-white`,
 					size === 'sm' && 'h-8 px-2 text-sm',
 					size === 'default' && 'h-10 px-3.5 text-base',
 					size === 'lg' && 'h-12 px-4.5 text-lg',

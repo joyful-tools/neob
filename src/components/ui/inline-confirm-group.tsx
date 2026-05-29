@@ -108,7 +108,7 @@ export function InlineConfirmGroup({ itemName, onConfirm, onCancel, className, i
 						transition={spring}
 						style={{ borderRadius: 8, transformOrigin: 'right' }}
 						className={cn(
-							`flex shrink-0 origin-right items-center gap-1.5 rounded-lg border-2 border-black bg-white p-1 shadow-brutal-sm dark:bg-zinc`,
+							`flex shrink-0 origin-right items-center gap-1.5 rounded-lg border-2 border-black bg-white p-1 shadow-cel-sm dark:bg-zinc`,
 							className,
 						)}
 						onClick={(event) => event.stopPropagation()}

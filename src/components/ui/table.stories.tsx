@@ -4,6 +4,12 @@ import { Table } from './table';
 
 import type { Meta } from '@storybook/react-vite';
 
+type TableStoryProperties = {
+	invoices: typeof INVOICES;
+	showFooter?: boolean;
+	total?: string;
+};
+
 const meta = {
 	title: 'Data Display/Table',
 	component: Table,
@@ -22,8 +28,12 @@ const INVOICES = [
 	{ id: 'INV004', status: 'Paid', method: 'Credit Card', amount: '$450.00' },
 ];
 
-export const Default = {
-	render: () => {
+export const Default: import('@storybook/react-vite').StoryObj<TableStoryProperties> = {
+	args: {
+		invoices: INVOICES,
+		showFooter: false,
+	},
+	render: (args) => {
 		return (
 			<div className="w-[500px]">
 				<Table>
@@ -36,7 +46,7 @@ export const Default = {
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>
-						{INVOICES.map((invoice) => (
+						{args.invoices.map((invoice) => (
 							<Table.Row key={invoice.id}>
 								<Table.Cell className="font-mono">{invoice.id}</Table.Cell>
 								<Table.Cell>{invoice.status}</Table.Cell>
@@ -51,8 +61,13 @@ export const Default = {
 	},
 };
 
-export const WithFooter = {
-	render: () => {
+export const WithFooter: import('@storybook/react-vite').StoryObj<TableStoryProperties> = {
+	args: {
+		invoices: INVOICES,
+		showFooter: true,
+		total: '$1,200.00',
+	},
+	render: (args) => {
 		return (
 			<div className="w-[500px]">
 				<Table>
@@ -65,7 +80,7 @@ export const WithFooter = {
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>
-						{INVOICES.map((invoice) => (
+						{args.invoices.map((invoice) => (
 							<Table.Row key={invoice.id}>
 								<Table.Cell className="font-mono">{invoice.id}</Table.Cell>
 								<Table.Cell>{invoice.status}</Table.Cell>
@@ -74,12 +89,14 @@ export const WithFooter = {
 							</Table.Row>
 						))}
 					</Table.Body>
-					<Table.Footer>
-						<Table.Row>
-							<Table.Cell colSpan={3}>Total</Table.Cell>
-							<Table.Cell className="text-right font-black">$1,200.00</Table.Cell>
-						</Table.Row>
-					</Table.Footer>
+					{args.showFooter && (
+						<Table.Footer>
+							<Table.Row>
+								<Table.Cell colSpan={3}>Total</Table.Cell>
+								<Table.Cell className="text-right font-black">{args.total}</Table.Cell>
+							</Table.Row>
+						</Table.Footer>
+					)}
 				</Table>
 			</div>
 		);

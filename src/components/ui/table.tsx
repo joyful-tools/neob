@@ -35,7 +35,7 @@ export interface TableCellProperties extends React.TdHTMLAttributes<HTMLTableCel
  */
 function TableRoot({ className, children, ...properties }: React.HTMLAttributes<HTMLDivElement>) {
 	return (
-		<div className="w-full overflow-auto rounded-lg border-2 border-black shadow-brutal-sm">
+		<div className="w-full overflow-auto rounded-lg border-2 border-black shadow-cel-sm">
 			<table className={cn('w-full border-collapse text-sm', className)} {...properties}>
 				{children}
 			</table>

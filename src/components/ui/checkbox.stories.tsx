@@ -79,19 +79,24 @@ export const Disabled: Story = {
 };
 
 export const ValidationError: Story = {
-	render: () => {
-		const [checked, setChecked] = React.useState(false);
+	args: {
+		label: 'Subscribe to newsletter',
+		description: 'Required option.',
+		checked: false,
+	},
+	render: (args) => {
+		const [checked, setChecked] = React.useState(args.checked === true);
 
 		return (
 			<div className="min-h-[72px] w-80">
 				<Checkbox
+					label={args.label}
+					description={args.description}
 					checked={checked}
 					onCheckedChange={(nextChecked) => {
 						setChecked(nextChecked);
 						action('checkbox-validation-change')(nextChecked);
 					}}
-					label="Subscribe to newsletter"
-					description="Required option."
 					error={checked ? undefined : 'Please accept the newsletter subscription.'}
 				/>
 			</div>
@@ -132,9 +137,12 @@ export const LabelOnLeft: Story = {
 	}),
 };
 
-export const Group: StoryObj<typeof Checkbox.Group> = {
-	render: () => {
-		const [values, setValues] = React.useState<string[]>(['email']);
+export const Group: StoryObj<{ initialValues: string[] }> = {
+	args: {
+		initialValues: ['email'],
+	},
+	render: (args) => {
+		const [values, setValues] = React.useState<string[]>(args.initialValues);
 
 		return (
 			<Checkbox.Group

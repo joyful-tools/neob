@@ -192,9 +192,12 @@ export const ComplexComposition: Story = {
 };
 
 export const Disabled: Story = {
-	render: () => (
+	args: {
+		disabled: true,
+	},
+	render: (args) => (
 		<div className="w-80">
-			<InputGroup disabled>
+			<InputGroup {...args}>
 				<InputGroup.Addon align="start">
 					<Envelope className="size-4" />
 				</InputGroup.Addon>
@@ -205,13 +208,17 @@ export const Disabled: Story = {
 };
 
 export const Error: Story = {
-	render: () => (
+	args: {
+		error: true,
+		'aria-describedby': 'input-group-error-message',
+	},
+	render: (args) => (
 		<div className="w-80">
 			<div className="flex flex-col gap-2">
 				<label htmlFor="input-group-error" className="text-sm font-bold text-black dark:text-white">
 					Email Address
 				</label>
-				<InputGroup error aria-describedby="input-group-error-message">
+				<InputGroup {...args}>
 					<InputGroup.Addon align="start">
 						<Envelope className="size-4" />
 					</InputGroup.Addon>

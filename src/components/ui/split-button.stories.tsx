@@ -17,6 +17,8 @@ const meta = {
 	},
 	tags: ['autodocs'],
 	args: {
+		children: 'Publish Post',
+		disabled: false,
 		menuContent: <div />,
 	},
 } satisfies Meta<typeof SplitButton>;
@@ -24,7 +26,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const PublishButton = (props: Partial<React.ComponentProps<typeof SplitButton>>) => {
+const PublishButton = ({ children, menuContent: _menuContent, ...props }: React.ComponentProps<typeof SplitButton>) => {
 	const menuContent = (
 		<>
 			<DropdownMenu.Item
@@ -60,7 +62,7 @@ const PublishButton = (props: Partial<React.ComponentProps<typeof SplitButton>>)
 				menuContent={menuContent}
 				{...props}
 			>
-				Publish Post
+				{children}
 			</SplitButton>
 		</div>
 	);
@@ -72,7 +74,7 @@ export const Default: Story = {
 			test: 'off',
 		},
 	},
-	render: () => <PublishButton />,
+	render: (args) => <PublishButton {...args} />,
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
@@ -88,7 +90,10 @@ export const Accent: Story = {
 			test: 'off',
 		},
 	},
-	render: () => <PublishButton variant="accent" />,
+	args: {
+		variant: 'accent',
+	},
+	render: (args) => <PublishButton {...args} />,
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
@@ -104,7 +109,10 @@ export const Danger: Story = {
 			test: 'off',
 		},
 	},
-	render: () => <PublishButton variant="danger" />,
+	args: {
+		variant: 'danger',
+	},
+	render: (args) => <PublishButton {...args} />,
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
@@ -120,7 +128,10 @@ export const Subtle: Story = {
 			test: 'off',
 		},
 	},
-	render: () => <PublishButton variant="subtle" />,
+	args: {
+		variant: 'subtle',
+	},
+	render: (args) => <PublishButton {...args} />,
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
@@ -136,7 +147,11 @@ export const Small: Story = {
 			test: 'off',
 		},
 	},
-	render: () => <PublishButton size="sm" variant="accent" />,
+	args: {
+		size: 'sm',
+		variant: 'accent',
+	},
+	render: (args) => <PublishButton {...args} />,
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
@@ -152,7 +167,10 @@ export const Large: Story = {
 			test: 'off',
 		},
 	},
-	render: () => <PublishButton size="lg" />,
+	args: {
+		size: 'lg',
+	},
+	render: (args) => <PublishButton {...args} />,
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		const body = within(document.body);

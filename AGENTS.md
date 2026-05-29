@@ -36,11 +36,11 @@ All colors are controlled by CSS Custom Variables declared in `index.css`. The t
 
 Always apply these custom brutalist classes when building layouts:
 
-- `shadow-brutal` - Stark 4px solid black drop shadow.
-- `shadow-brutal-sm` - 2px solid black drop shadow (ideal for tags/buttons).
-- `shadow-brutal-lg` - 8px solid black drop shadow (ideal for hover states).
-- `shadow-brutal-inset` - Inset shadow for active button states.
-- `shadow-brutal-inset-sm` - Inset shadow for inputs/meter tracks.
+- `shadow-cel` - Stark 4px solid black drop shadow.
+- `shadow-cel-sm` - 2px solid black drop shadow (ideal for tags/buttons).
+- `shadow-cel-lg` - 8px solid black drop shadow (ideal for hover states).
+- `shadow-cel-inset` - Inset shadow for active button states.
+- `shadow-cel-inset-sm` - Inset shadow for inputs/meter tracks.
 - `neo-focus-ring` - Focus-visible border-offset outline animation.
 - `underline-slide` - Hover slide-out underline effect for link items.
 

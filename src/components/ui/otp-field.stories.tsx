@@ -22,13 +22,16 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-	render: () => {
+	args: {
+		length: 6,
+	},
+	render: (args) => {
 		const [value, setValue] = useState('');
 		return (
 			<div className="flex flex-col items-center gap-4">
 				<h3 className="font-display text-lg font-bold">Enter Verification Code</h3>
 				<OTPField
-					length={6}
+					{...args}
 					value={value}
 					onValueChange={(nextValue) => {
 						setValue(nextValue);

@@ -60,7 +60,7 @@ export function InputArea({
 		<textarea
 			required={required}
 			className={cn(
-				`flex min-h-[80px] w-full rounded-lg border-2 border-black bg-white px-4 py-2 text-base font-medium shadow-brutal-inset ring-0 ring-transparent ring-offset-0 transition-[color,background-color,border-color,text-decoration-color,fill,stroke,box-shadow] duration-300 ease-spring placeholder:text-muted-foreground focus:ring-2 focus:ring-black focus:ring-offset-2 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white dark:focus:ring-white`,
+				`flex min-h-[80px] w-full rounded-lg border-2 border-black bg-white px-4 py-2 text-base font-medium shadow-cel-inset-md ring-0 ring-transparent ring-offset-0 transition-[color,background-color,border-color,text-decoration-color,fill,stroke,box-shadow] duration-300 ease-spring placeholder:text-muted-foreground focus:ring-2 focus:ring-black focus:ring-offset-2 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white dark:focus:ring-white`,
 				autoResize && 'h-full min-h-0 resize-none',
 				className,
 			)}

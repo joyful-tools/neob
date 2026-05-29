@@ -4,6 +4,10 @@ import { Skeleton } from './skeleton';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+type SkeletonListStoryProperties = {
+	itemCount: number;
+};
+
 const meta = {
 	title: 'Feedback/Skeleton',
 	component: Skeleton,
@@ -22,10 +26,13 @@ export const Default: Story = {
 	},
 };
 
-export const ListPlaceholder: Story = {
-	render: () => (
+export const ListPlaceholder: StoryObj<SkeletonListStoryProperties> = {
+	args: {
+		itemCount: 3,
+	},
+	render: (args) => (
 		<div className="w-96">
-			<Skeleton.List itemCount={3} />
+			<Skeleton.List {...args} />
 		</div>
 	),
 };

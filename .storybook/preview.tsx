@@ -1,4 +1,4 @@
-import { Controls, Description, Primary, Stories, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { Description, Primary, Stories, Subtitle, Title } from '@storybook/addon-docs/blocks';
 import * as React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -63,7 +63,6 @@ const preview: Preview = {
 					<Subtitle />
 					<Description />
 					<Primary />
-					<Controls />
 					<Stories includePrimary={false} />
 				</>
 			),

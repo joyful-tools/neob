@@ -7,7 +7,7 @@ function CardRoot({ className, ref, ...properties }: React.HTMLAttributes<HTMLDi
 		<div
 			ref={ref}
 			className={cn(
-				`rounded-xl border-2 border-black bg-white text-card-foreground shadow-brutal transition-all duration-75 ease-out dark:bg-zinc`,
+				`rounded-xl border-2 border-black bg-white text-card-foreground shadow-cel-md transition-all duration-75 ease-out dark:bg-zinc`,
 				className,
 			)}
 			{...properties}

@@ -8,6 +8,14 @@ import { Pagination } from './pagination';
 
 import type { Meta } from '@storybook/react-vite';
 
+type PaginationStoryProperties = {
+	initialPage: number;
+	initialPerPage: number;
+	totalCount: number;
+	controls?: 'full' | 'simple';
+	pageSelector?: 'input' | 'dropdown';
+};
+
 const meta = {
 	title: 'Navigation/Pagination',
 	component: Pagination,
@@ -19,17 +27,23 @@ const meta = {
 
 export default meta;
 
-export const DefaultCompound = {
+export const DefaultCompound: { [key: string]: unknown } & import('@storybook/react-vite').StoryObj<PaginationStoryProperties> = {
 	name: 'Default',
+	args: {
+		initialPage: 1,
+		initialPerPage: 25,
+		totalCount: 325,
+		controls: 'full',
+		pageSelector: 'input',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		const [page, setPage] = React.useState(1);
-		const [perPage, setPerPage] = React.useState(25);
-		const totalCount = 325;
+	render: (args) => {
+		const [page, setPage] = React.useState(args.initialPage);
+		const [perPage, setPerPage] = React.useState(args.initialPerPage);
 
 		return (
 			<div className="w-full max-w-3xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
@@ -40,7 +54,7 @@ export const DefaultCompound = {
 						action('pagination-page-change')(nextPage);
 					}}
 					perPage={perPage}
-					totalCount={totalCount}
+					totalCount={args.totalCount}
 				>
 					<Pagination.Info />
 					<Pagination.Separator />
@@ -51,7 +65,7 @@ export const DefaultCompound = {
 							action('pagination-page-size-change')(nextPerPage);
 						}}
 					/>
-					<Pagination.Controls />
+					<Pagination.Controls controls={args.controls} pageSelector={args.pageSelector} />
 				</Pagination>
 			</div>
 		);
@@ -64,16 +78,20 @@ export const DefaultCompound = {
 	}),
 };
 
-export const SimpleControls = {
+export const SimpleControls: { [key: string]: unknown } & import('@storybook/react-vite').StoryObj<PaginationStoryProperties> = {
+	args: {
+		initialPage: 1,
+		initialPerPage: 10,
+		totalCount: 50,
+		controls: 'simple',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		const [page, setPage] = React.useState(1);
-		const perPage = 10;
-		const totalCount = 50;
+	render: (args) => {
+		const [page, setPage] = React.useState(args.initialPage);
 
 		return (
 			<div className="w-full max-w-xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
@@ -83,12 +101,12 @@ export const SimpleControls = {
 						setPage(nextPage);
 						action('pagination-simple-page-change')(nextPage);
 					}}
-					perPage={perPage}
-					totalCount={totalCount}
+					perPage={args.initialPerPage}
+					totalCount={args.totalCount}
 				>
 					<Pagination.Info />
 					<Pagination.Separator />
-					<Pagination.Controls controls="simple" />
+					<Pagination.Controls controls={args.controls} />
 				</Pagination>
 			</div>
 		);
@@ -101,17 +119,22 @@ export const SimpleControls = {
 	}),
 };
 
-export const DropdownSelector = {
+export const DropdownSelector: { [key: string]: unknown } & import('@storybook/react-vite').StoryObj<PaginationStoryProperties> = {
 	name: 'Dropdown Page Selector',
+	args: {
+		initialPage: 1,
+		initialPerPage: 10,
+		totalCount: 80,
+		controls: 'full',
+		pageSelector: 'dropdown',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		const [page, setPage] = React.useState(1);
-		const perPage = 10;
-		const totalCount = 80;
+	render: (args) => {
+		const [page, setPage] = React.useState(args.initialPage);
 
 		return (
 			<div className="w-full max-w-xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
@@ -121,12 +144,12 @@ export const DropdownSelector = {
 						setPage(nextPage);
 						action('pagination-dropdown-page-change')(nextPage);
 					}}
-					perPage={perPage}
-					totalCount={totalCount}
+					perPage={args.initialPerPage}
+					totalCount={args.totalCount}
 				>
 					<Pagination.Info />
 					<Pagination.Separator />
-					<Pagination.Controls pageSelector="dropdown" />
+					<Pagination.Controls controls={args.controls} pageSelector={args.pageSelector} />
 				</Pagination>
 			</div>
 		);

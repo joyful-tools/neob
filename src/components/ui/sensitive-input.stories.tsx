@@ -65,12 +65,16 @@ export const Disabled: Story = {
 };
 
 export const WithLabel: Story = {
-	render: () => (
+	args: {
+		id: 'token',
+		placeholder: 'Enter API token',
+	},
+	render: (args) => (
 		<div className="flex w-64 flex-col gap-2">
 			<label htmlFor="token" className="text-sm font-bold text-black dark:text-white">
 				API Token
 			</label>
-			<SensitiveInput id="token" placeholder="Enter API token" />
+			<SensitiveInput {...args} />
 		</div>
 	),
 	play: guardPlay(async ({ canvasElement }) => {

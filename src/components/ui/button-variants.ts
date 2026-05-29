@@ -10,43 +10,43 @@ export const buttonVariants = cva(
 		after:transition-transform after:duration-25 after:ease-linear
 		after:content-[''] disabled:pointer-events-none
 		disabled:opacity-50 disabled:shadow-none
-		aria-expanded:translate-y-0.5 aria-expanded:shadow-brutal-inset
-		aria-expanded:after:translate-y-0 aria-expanded:hover:translate-y-0.5 aria-expanded:hover:shadow-brutal-inset aria-expanded:hover:after:translate-y-0
-		data-pressed:translate-y-0.5 data-pressed:shadow-brutal-inset
-		data-pressed:after:translate-y-0 data-pressed:hover:translate-y-0.5 data-pressed:hover:shadow-brutal-inset data-pressed:hover:after:translate-y-0
+		aria-expanded:translate-y-0.5 aria-expanded:shadow-cel-inset-md
+		aria-expanded:after:translate-y-0 aria-expanded:hover:translate-y-0.5 aria-expanded:hover:shadow-cel-inset-md aria-expanded:hover:after:translate-y-0
+		data-pressed:translate-y-0.5 data-pressed:shadow-cel-inset-md
+		data-pressed:after:translate-y-0 data-pressed:hover:translate-y-0.5 data-pressed:hover:shadow-cel-inset-md data-pressed:hover:after:translate-y-0
 	`,
 	{
 		variants: {
 			variant: {
 				default: `
-					bg-primary-foreground text-primary shadow-brutal-sm
-					hover:-translate-y-0.5 hover:shadow-brutal
+					bg-primary-foreground text-primary shadow-cel-sm
+					hover:-translate-y-0.5 hover:shadow-cel-md
 					hover:after:translate-y-0.5
-					active:translate-y-0.5 active:shadow-brutal-inset
+					active:translate-y-0.5 active:shadow-cel-inset-md
 				`,
 				accent: `
-					bg-orange text-primary shadow-brutal-sm
-					hover:-translate-y-0.5 hover:bg-orange/90 hover:shadow-brutal
+					bg-orange text-primary shadow-cel-sm
+					hover:-translate-y-0.5 hover:bg-orange/90 hover:shadow-cel-md
 					hover:after:translate-y-0.5
-					active:translate-y-0.5 active:shadow-brutal-inset
+					active:translate-y-0.5 active:shadow-cel-inset-md
 				`,
 				danger: `
-					bg-red text-primary shadow-brutal-sm
-					hover:-translate-y-0.5 hover:bg-red/90 hover:shadow-brutal
+					bg-red text-primary shadow-cel-sm
+					hover:-translate-y-0.5 hover:bg-red/90 hover:shadow-cel-md
 					hover:after:translate-y-0.5
-					active:translate-y-0.5 active:shadow-brutal-inset
+					active:translate-y-0.5 active:shadow-cel-inset-md
 				`,
 				subtle: `
 					bg-primary-foreground text-primary
-					hover:-translate-y-0.5 hover:bg-muted hover:shadow-brutal-sm
+					hover:-translate-y-0.5 hover:bg-muted hover:shadow-cel-sm
 					hover:after:translate-y-0.5
-					active:translate-y-0.5 active:shadow-brutal-inset
+					active:translate-y-0.5 active:shadow-cel-inset-md
 				`,
 				ghost: `
 					border-transparent
 					hover:border-black hover:bg-muted
 					active:translate-y-0.5 active:border-black active:bg-muted
-					active:shadow-brutal-inset aria-expanded:border-black
+					active:shadow-cel-inset-md aria-expanded:border-black
 					data-pressed:border-black
 				`,
 				link: `
@@ -55,28 +55,28 @@ export const buttonVariants = cva(
 				`,
 				// Dark variants for use on dark backgrounds (player pages)
 				'dark-default': `
-					border-black bg-zinc text-white shadow-brutal-sm
-					hover:-translate-y-0.5 hover:shadow-brutal
+					border-black bg-zinc text-white shadow-cel-sm
+					hover:-translate-y-0.5 hover:shadow-cel-md
 					hover:after:translate-y-0.5
-					active:translate-y-0.5 active:shadow-brutal-inset
+					active:translate-y-0.5 active:shadow-cel-inset-md
 				`,
 				'dark-accent': `
-					border-4 border-black bg-orange text-black shadow-brutal
-					hover:-translate-y-1 hover:shadow-brutal-lg
+					border-4 border-black bg-orange text-black shadow-cel-md
+					hover:-translate-y-1 hover:shadow-cel-lg
 					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-brutal-inset
+					active:translate-y-1 active:shadow-cel-inset-md
 				`,
 				'dark-subtle': `
 					border-black bg-black text-white
-					hover:-translate-y-0.5 hover:bg-zinc/80 hover:shadow-brutal-sm
+					hover:-translate-y-0.5 hover:bg-zinc/80 hover:shadow-cel-sm
 					hover:after:translate-y-0.5
-					active:translate-y-0.5 active:shadow-brutal-inset
+					active:translate-y-0.5 active:shadow-cel-inset-md
 				`,
 				'dark-ghost': `
 					border-transparent text-white
 					hover:border-black hover:bg-zinc/80
 					active:translate-y-0.5 active:border-black active:bg-zinc/80
-					active:shadow-brutal-inset aria-expanded:border-black
+					active:shadow-cel-inset-md aria-expanded:border-black
 					data-pressed:border-black
 				`,
 			},
@@ -93,78 +93,78 @@ export const buttonVariants = cva(
 				variant: ['default', 'accent', 'danger'],
 				size: 'lg',
 				class: `
-					shadow-brutal
-					hover:-translate-y-1 hover:shadow-brutal-lg
+					shadow-cel-md
+					hover:-translate-y-1 hover:shadow-cel-lg
 					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-brutal-inset
+					active:translate-y-1 active:shadow-cel-inset-md
 				`,
 			},
 			{
 				variant: 'subtle',
 				size: 'lg',
 				class: `
-					hover:-translate-y-1 hover:shadow-brutal
+					hover:-translate-y-1 hover:shadow-cel-md
 					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-brutal-inset
+					active:translate-y-1 active:shadow-cel-inset-md
 				`,
 			},
 			{
 				variant: 'dark-default',
 				size: 'lg',
 				class: `
-					shadow-brutal
-					hover:-translate-y-1 hover:shadow-brutal-lg
+					shadow-cel-md
+					hover:-translate-y-1 hover:shadow-cel-lg
 					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-brutal-inset
+					active:translate-y-1 active:shadow-cel-inset-md
 				`,
 			},
 			{
 				variant: 'dark-accent',
 				size: 'lg',
 				class: `
-					shadow-brutal
-					hover:-translate-y-1 hover:shadow-brutal-lg
+					shadow-cel-md
+					hover:-translate-y-1 hover:shadow-cel-lg
 					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-brutal-inset
+					active:translate-y-1 active:shadow-cel-inset-md
 				`,
 			},
 			{
 				variant: ['default', 'accent', 'danger'],
 				size: 'xl',
 				class: `
-					shadow-brutal
-					hover:-translate-y-1 hover:shadow-brutal-lg
+					shadow-cel-md
+					hover:-translate-y-1 hover:shadow-cel-lg
 					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-brutal-inset
+					active:translate-y-1 active:shadow-cel-inset-md
 				`,
 			},
 			{
 				variant: 'subtle',
 				size: 'xl',
 				class: `
-					hover:-translate-y-1 hover:shadow-brutal
+					hover:-translate-y-1 hover:shadow-cel-md
 					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-brutal-inset
+					active:translate-y-1 active:shadow-cel-inset-md
 				`,
 			},
 			{
 				variant: 'dark-default',
 				size: 'xl',
 				class: `
-					shadow-brutal
-					hover:-translate-y-1 hover:shadow-brutal-lg
+					shadow-cel-md
+					hover:-translate-y-1 hover:shadow-cel-lg
 					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-brutal-inset
+					active:translate-y-1 active:shadow-cel-inset-md
 				`,
 			},
 			{
 				variant: 'dark-accent',
 				size: 'xl',
 				class: `
-					shadow-brutal
-					hover:-translate-y-1 hover:shadow-brutal-lg
+					shadow-cel-md
+					hover:-translate-y-1 hover:shadow-cel-lg
 					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-brutal-inset
+					active:translate-y-1 active:shadow-cel-inset-md
 				`,
 			},
 			// Link variant should have no padding/height - it's inline text

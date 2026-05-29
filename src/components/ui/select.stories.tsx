@@ -8,6 +8,16 @@ import { Select } from './select';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+type SelectStoryProperties = {
+	initialValue?: string;
+	placeholder?: string;
+	'aria-label'?: string;
+	label?: React.ReactNode;
+	description?: React.ReactNode;
+	disabled?: boolean;
+	items?: React.ComponentProps<typeof Select>['items'];
+};
+
 const meta = {
 	title: 'Inputs/Select',
 	component: Select,
@@ -18,26 +28,31 @@ const meta = {
 } satisfies Meta<typeof Select>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<SelectStoryProperties>;
 
 export const Default: Story = {
+	args: {
+		initialValue: 'apple',
+		placeholder: 'Select a fruit',
+		'aria-label': 'Fruit selection',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		const [val, setVal] = React.useState('apple');
+	render: (args) => {
+		const [val, setVal] = React.useState(args.initialValue ?? '');
 		return (
 			<div className="w-64">
 				<Select
+					placeholder={args.placeholder}
+					aria-label={args['aria-label']}
 					value={val}
 					onValueChange={(value) => {
-						setVal(value ?? '');
+						setVal(typeof value === 'string' ? value : '');
 						action('select-default-change')(value);
 					}}
-					placeholder="Select a fruit"
-					aria-label="Fruit selection"
 				>
 					<Select.Option value="apple">Apple</Select.Option>
 					<Select.Option value="banana">Banana</Select.Option>
@@ -58,10 +73,16 @@ export const Default: Story = {
 };
 
 export const Disabled: Story = {
-	render: () => {
+	args: {
+		initialValue: 'banana',
+		disabled: true,
+		placeholder: 'Select a fruit',
+		'aria-label': 'Disabled fruit selection',
+	},
+	render: (args) => {
 		return (
 			<div className="w-64">
-				<Select defaultValue="banana" disabled placeholder="Select a fruit" aria-label="Disabled fruit selection">
+				<Select defaultValue={args.initialValue} disabled={args.disabled} placeholder={args.placeholder} aria-label={args['aria-label']}>
 					<Select.Option value="apple">Apple</Select.Option>
 					<Select.Option value="banana">Banana</Select.Option>
 				</Select>
@@ -71,28 +92,34 @@ export const Disabled: Story = {
 };
 
 export const ItemsProp: Story = {
+	args: {
+		initialValue: 'apple',
+		placeholder: 'Select a fruit',
+		'aria-label': 'Fruit selection items',
+		items: {
+			apple: 'Apple',
+			banana: 'Banana',
+			blueberry: { label: 'Blueberry', disabled: true },
+			strawberry: 'Strawberry',
+		},
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		const [val, setVal] = React.useState('apple');
+	render: (args) => {
+		const [val, setVal] = React.useState(args.initialValue ?? '');
 		return (
 			<div className="w-64">
 				<Select
+					placeholder={args.placeholder}
+					aria-label={args['aria-label']}
+					items={args.items}
 					value={val}
 					onValueChange={(value) => {
-						setVal(value ?? '');
+						setVal(typeof value === 'string' ? value : '');
 						action('select-items-prop-change')(value);
-					}}
-					placeholder="Select a fruit"
-					aria-label="Fruit selection items"
-					items={{
-						apple: 'Apple',
-						banana: 'Banana',
-						blueberry: { label: 'Blueberry', disabled: true },
-						strawberry: 'Strawberry',
 					}}
 				/>
 			</div>
@@ -109,24 +136,30 @@ export const ItemsProp: Story = {
 };
 
 export const Labeled: Story = {
+	args: {
+		initialValue: 'apple',
+		label: 'Fruit Selection',
+		description: 'Choose your favorite fruit from the list.',
+		placeholder: 'Select a fruit',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
-		const [val, setVal] = React.useState('apple');
+	render: (args) => {
+		const [val, setVal] = React.useState(args.initialValue ?? '');
 		return (
 			<div className="w-64">
 				<Select
+					label={args.label}
+					description={args.description}
+					placeholder={args.placeholder}
 					value={val}
 					onValueChange={(value) => {
-						setVal(value ?? '');
+						setVal(typeof value === 'string' ? value : '');
 						action('select-labeled-change')(value);
 					}}
-					label="Fruit Selection"
-					description="Choose your favorite fruit from the list."
-					placeholder="Select a fruit"
 				>
 					<Select.Option value="apple">Apple</Select.Option>
 					<Select.Option value="banana">Banana</Select.Option>
@@ -147,15 +180,20 @@ export const Labeled: Story = {
 };
 
 export const Groups: Story = {
+	args: {
+		initialValue: 'light',
+		placeholder: 'Select a theme',
+		'aria-label': 'Theme selection',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
+	render: (args) => {
 		return (
 			<div className="w-64">
-				<Select defaultValue="light" placeholder="Select a theme" aria-label="Theme selection">
+				<Select defaultValue={args.initialValue} placeholder={args.placeholder} aria-label={args['aria-label']}>
 					<Select.Group>
 						<Select.GroupLabel>System Theme</Select.GroupLabel>
 						<Select.Option value="system">Follow System</Select.Option>

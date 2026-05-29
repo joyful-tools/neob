@@ -11,6 +11,14 @@ import { GlobalDialogBackdrop } from './global-dialog-backdrop';
 
 import type { Meta } from '@storybook/react-vite';
 
+type ConfirmDialogStoryProperties = {
+	variant?: 'default' | 'danger' | 'warning';
+	title: string;
+	description: string;
+	resourceName?: string;
+	confirmLabel?: string;
+};
+
 const meta = {
 	title: 'Surfaces/ConfirmDialog',
 	component: ConfirmDialog,
@@ -70,19 +78,18 @@ const ConfirmDialogWrapper = ({
 };
 
 export const NormalConfirm = {
+	args: {
+		variant: 'default',
+		title: 'Save Changes?',
+		description: 'Are you sure you want to save the current configuration settings? This will update your production builds.',
+		confirmLabel: 'Save',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => (
-		<ConfirmDialogWrapper
-			variant="default"
-			title="Save Changes?"
-			description="Are you sure you want to save the current configuration settings? This will update your production builds."
-			confirmLabel="Save"
-		/>
-	),
+	render: (args: ConfirmDialogStoryProperties) => <ConfirmDialogWrapper {...args} />,
 	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
@@ -93,20 +100,20 @@ export const NormalConfirm = {
 };
 
 export const Destructive = {
+	args: {
+		variant: 'danger',
+		title: 'Delete Production Database?',
+		description:
+			'Do you want to delete the production database? All tables, backups, and configurations will be permanently erased and cannot be restored.',
+		resourceName: 'delete-production-db',
+		confirmLabel: 'Delete Permanently',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => (
-		<ConfirmDialogWrapper
-			variant="danger"
-			title="Delete Production Database?"
-			description="Do you want to delete the production database? All tables, backups, and configurations will be permanently erased and cannot be restored."
-			resourceName="delete-production-db"
-			confirmLabel="Delete Permanently"
-		/>
-	),
+	render: (args: ConfirmDialogStoryProperties) => <ConfirmDialogWrapper {...args} />,
 	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 		const canvas = within(canvasElement);
 		const body = within(document.body);

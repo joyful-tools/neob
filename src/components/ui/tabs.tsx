@@ -41,7 +41,7 @@ function TabsList({
 
 	const indicatorClasses =
 		variant === 'segmented'
-			? 'absolute rounded-md border-2 border-black bg-white shadow-brutal-sm dark:bg-zinc dark:border-black z-0'
+			? 'absolute rounded-md border-2 border-black bg-white shadow-cel-sm dark:bg-zinc dark:border-black z-0'
 			: 'absolute border-b-4 border-black dark:border-white bg-transparent z-10';
 
 	const indicatorStyle = {

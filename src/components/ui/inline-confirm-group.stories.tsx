@@ -9,6 +9,10 @@ import { InlineConfirmGroup } from './inline-confirm-group';
 
 import type { Meta } from '@storybook/react-vite';
 
+type InlineConfirmGroupStoryProperties = {
+	initialFiles: FileItem[];
+};
+
 const meta = {
 	title: 'Inputs/InlineConfirmGroup',
 	component: InlineConfirmGroup,
@@ -25,13 +29,8 @@ interface FileItem {
 	size: string;
 }
 
-const RealWorldList = () => {
-	const [files, setFiles] = useState<FileItem[]>([
-		{ id: '1', name: 'package.json', size: '2.4 KB' },
-		{ id: '2', name: 'vite.config.ts', size: '1.2 KB' },
-		{ id: '3', name: 'index.css', size: '12 KB' },
-		{ id: '4', name: 'README.md', size: '4.5 KB' },
-	]);
+const RealWorldList = ({ initialFiles }: InlineConfirmGroupStoryProperties) => {
+	const [files, setFiles] = useState<FileItem[]>(initialFiles);
 	const [deletingIds, setDeletingIds] = useState<string[]>([]);
 
 	const handleDelete = async (id: string) => {
@@ -43,7 +42,7 @@ const RealWorldList = () => {
 	};
 
 	return (
-		<div className="w-[450px] rounded-xl border-4 border-black bg-white p-6 text-black shadow-brutal dark:bg-zinc dark:text-white">
+		<div className="w-[450px] rounded-xl border-4 border-black bg-white p-6 text-black shadow-cel-md dark:bg-zinc dark:text-white">
 			<h3 className="mb-4 border-b-2 border-black pb-2 font-display text-lg font-bold">Project Directory Files</h3>
 			<p className="mb-4 text-xs text-muted-foreground">
 				Click the ghost trash icon, then confirm by clicking the trash again (the cancel button will spawn directly under your mouse).
@@ -71,7 +70,15 @@ const RealWorldList = () => {
 };
 
 export const Default = {
-	render: () => <RealWorldList />,
+	args: {
+		initialFiles: [
+			{ id: '1', name: 'package.json', size: '2.4 KB' },
+			{ id: '2', name: 'vite.config.ts', size: '1.2 KB' },
+			{ id: '3', name: 'index.css', size: '12 KB' },
+			{ id: '4', name: 'README.md', size: '4.5 KB' },
+		],
+	},
+	render: (args: InlineConfirmGroupStoryProperties) => <RealWorldList {...args} />,
 	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 		const canvas = within(canvasElement);
 		const buttons = canvas.getAllByRole('button');

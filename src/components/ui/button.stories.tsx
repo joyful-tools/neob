@@ -10,6 +10,11 @@ import { Spinner } from './spinner';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+type ButtonCollectionStoryProperties = {
+	lightVariants: Array<{ label: string; variant: 'default' | 'accent' | 'danger' | 'subtle' | 'ghost' | 'link' }>;
+	darkVariants: Array<{ label: string; variant: 'dark-default' | 'dark-accent' | 'dark-subtle' | 'dark-ghost' }>;
+};
+
 const meta = {
 	title: 'Inputs/Button',
 	component: Button,
@@ -294,43 +299,39 @@ export const WithBothIcons: Story = {
 	}),
 };
 
-export const AllVariants: Story = {
-	render: () => {
+export const AllVariants: StoryObj<ButtonCollectionStoryProperties> = {
+	args: {
+		lightVariants: [
+			{ label: 'Default', variant: 'default' },
+			{ label: 'Accent', variant: 'accent' },
+			{ label: 'Danger', variant: 'danger' },
+			{ label: 'Subtle', variant: 'subtle' },
+			{ label: 'Ghost', variant: 'ghost' },
+			{ label: 'Link', variant: 'link' },
+		],
+		darkVariants: [
+			{ label: 'Dark Default', variant: 'dark-default' },
+			{ label: 'Dark Accent', variant: 'dark-accent' },
+			{ label: 'Dark Subtle', variant: 'dark-subtle' },
+			{ label: 'Dark Ghost', variant: 'dark-ghost' },
+		],
+	},
+	render: (args: ButtonCollectionStoryProperties) => {
 		return (
 			<div className="flex flex-col gap-4">
 				<div className="flex flex-wrap gap-2">
-					<Button variant="default" onClick={() => action('all-variants-default-click')()}>
-						Default
-					</Button>
-					<Button variant="accent" onClick={() => action('all-variants-accent-click')()}>
-						Accent
-					</Button>
-					<Button variant="danger" onClick={() => action('all-variants-danger-click')()}>
-						Danger
-					</Button>
-					<Button variant="subtle" onClick={() => action('all-variants-subtle-click')()}>
-						Subtle
-					</Button>
-					<Button variant="ghost" onClick={() => action('all-variants-ghost-click')()}>
-						Ghost
-					</Button>
-					<Button variant="link" onClick={() => action('all-variants-link-click')()}>
-						Link
-					</Button>
+					{args.lightVariants.map((button) => (
+						<Button key={button.label} variant={button.variant} onClick={() => action(`all-variants-${button.variant}-click`)()}>
+							{button.label}
+						</Button>
+					))}
 				</div>
 				<div className="flex flex-wrap gap-2 rounded-lg bg-black p-4">
-					<Button variant="dark-default" onClick={() => action('all-variants-dark-default-click')()}>
-						Dark Default
-					</Button>
-					<Button variant="dark-accent" onClick={() => action('all-variants-dark-accent-click')()}>
-						Dark Accent
-					</Button>
-					<Button variant="dark-subtle" onClick={() => action('all-variants-dark-subtle-click')()}>
-						Dark Subtle
-					</Button>
-					<Button variant="dark-ghost" onClick={() => action('all-variants-dark-ghost-click')()}>
-						Dark Ghost
-					</Button>
+					{args.darkVariants.map((button) => (
+						<Button key={button.label} variant={button.variant} onClick={() => action(`all-variants-${button.variant}-click`)()}>
+							{button.label}
+						</Button>
+					))}
 				</div>
 			</div>
 		);

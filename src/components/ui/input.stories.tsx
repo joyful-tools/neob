@@ -24,13 +24,18 @@ type StoryProps = Omit<InputProperties, 'children'> & { children?: React.ReactNo
 type Story = StoryObj<StoryProps>;
 
 export const DefaultInput: Story = {
-	render: () => (
+	args: {
+		id: 'username-input',
+		'aria-describedby': 'username-input-description',
+		placeholder: 'e.g. johndoe',
+	},
+	render: (args) => (
 		<div className="w-80">
 			<div className="flex flex-col gap-2">
 				<label htmlFor="username-input" className="text-sm font-bold text-black dark:text-white">
 					Username
 				</label>
-				<Input id="username-input" aria-describedby="username-input-description" placeholder="e.g. johndoe" />
+				<Input {...args} />
 				<p id="username-input-description" className="text-xs/normal text-muted-foreground">
 					Choose a unique public handle.
 				</p>
@@ -46,9 +51,15 @@ export const DefaultInput: Story = {
 };
 
 export const RequiredInput: Story = {
-	render: () => (
+	args: {
+		label: 'Email Address',
+		required: true,
+		type: 'email',
+		placeholder: 'you@example.com',
+	},
+	render: (args) => (
 		<div className="w-80">
-			<Input label="Email Address" required={true} type="email" placeholder="you@example.com" />
+			<Input {...args} />
 		</div>
 	),
 	play: guardPlay(async ({ canvasElement }) => {
@@ -60,9 +71,15 @@ export const RequiredInput: Story = {
 };
 
 export const OptionalInput: Story = {
-	render: () => (
+	args: {
+		label: 'Phone Number',
+		required: false,
+		type: 'tel',
+		placeholder: '+1 (555) 000-0000',
+	},
+	render: (args) => (
 		<div className="w-80">
-			<Input label="Phone Number" required={false} type="tel" placeholder="+1 (555) 000-0000" />
+			<Input {...args} />
 		</div>
 	),
 	play: guardPlay(async ({ canvasElement }) => {
@@ -74,21 +91,22 @@ export const OptionalInput: Story = {
 };
 
 export const ValidationError: Story = {
-	render: () => (
+	args: {
+		id: 'password-validation',
+		'aria-describedby': 'password-validation-error',
+		'aria-invalid': true,
+		error: 'Password must contain at least 8 characters and one number.',
+		type: 'password',
+		defaultValue: '12345',
+		className: 'border-red dark:border-red',
+	},
+	render: (args) => (
 		<div className="w-80">
 			<div className="flex flex-col gap-2">
 				<label htmlFor="password-validation" className="text-sm font-bold text-black dark:text-white">
 					Password
 				</label>
-				<Input
-					id="password-validation"
-					aria-describedby="password-validation-error"
-					aria-invalid={true}
-					error="Password must contain at least 8 characters and one number."
-					type="password"
-					defaultValue="12345"
-					className="border-red dark:border-red"
-				/>
+				<Input {...args} />
 				<p id="password-validation-error" className="text-xs font-bold text-red-dark dark:text-red-light">
 					Password must contain at least 8 characters and one number.
 				</p>
@@ -98,18 +116,19 @@ export const ValidationError: Story = {
 };
 
 export const WithLabelTooltip: Story = {
+	args: {
+		label: 'Personal Identification Number',
+		labelTooltip: 'This is your unique government-issued identity identifier, used for tax purposes.',
+		placeholder: '000-00-0000',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => (
+	render: (args) => (
 		<div className="w-80">
-			<Input
-				label="Personal Identification Number"
-				labelTooltip="This is your unique government-issued identity identifier, used for tax purposes."
-				placeholder="000-00-0000"
-			/>
+			<Input {...args} />
 		</div>
 	),
 	play: guardPlay(async ({ canvasElement }) => {
@@ -122,13 +141,19 @@ export const WithLabelTooltip: Story = {
 };
 
 export const DisabledInput: Story = {
-	render: () => (
+	args: {
+		id: 'api-token-disabled',
+		'aria-describedby': 'api-token-disabled-description',
+		defaultValue: 'neob_tok_1234567890',
+		disabled: true,
+	},
+	render: (args) => (
 		<div className="w-80">
 			<div className="flex flex-col gap-2">
 				<label htmlFor="api-token-disabled" className="text-sm font-bold text-black dark:text-white">
 					API Token
 				</label>
-				<Input id="api-token-disabled" aria-describedby="api-token-disabled-description" defaultValue="neob_tok_1234567890" disabled />
+				<Input {...args} />
 				<p id="api-token-disabled-description" className="text-xs/normal text-muted-foreground">
 					Your unique read-only API access token.
 				</p>
@@ -137,14 +162,20 @@ export const DisabledInput: Story = {
 	),
 };
 
-export const WithInputArea: Story = {
-	render: () => (
+export const WithInputArea: StoryObj<{ id: string; 'aria-describedby': string; placeholder: string; rows: number }> = {
+	args: {
+		id: 'issue-details',
+		'aria-describedby': 'issue-details-description',
+		placeholder: 'Type details here...',
+		rows: 4,
+	},
+	render: (args) => (
 		<div className="w-96">
 			<div className="flex flex-col gap-2">
 				<label htmlFor="issue-details" className="text-sm font-bold text-black dark:text-white">
 					Issue Details
 				</label>
-				<InputArea id="issue-details" aria-describedby="issue-details-description" placeholder="Type details here..." rows={4} />
+				<InputArea {...args} />
 				<p id="issue-details-description" className="text-xs/normal text-muted-foreground">
 					Please describe the issue you encountered in detail.
 				</p>
@@ -159,15 +190,17 @@ export const WithInputArea: Story = {
 	}),
 };
 
-export const GroupedControls: StoryObj<Omit<FieldsetProperties, 'children'> & { children?: React.ReactNode }> = {
-	render: () => (
+export const GroupedControls: StoryObj<Omit<FieldsetProperties, 'children'> & { initialValue: string }> = {
+	args: {
+		legend: 'Choose Notification Delivery',
+		description: 'Select where you want your notifications to show up.',
+		error: 'Please select at least one option.',
+		initialValue: 'email',
+	},
+	render: (args) => (
 		<div className="w-80">
-			<Input.Fieldset
-				legend="Choose Notification Delivery"
-				description="Select where you want your notifications to show up."
-				error="Please select at least one option."
-			>
-				<RadioGroup defaultValue="email">
+			<Input.Fieldset legend={args.legend} description={args.description} error={args.error}>
+				<RadioGroup defaultValue={args.initialValue}>
 					<div className="flex items-center gap-3">
 						<RadioGroup.Item value="email" id="delivery-email" />
 						<label htmlFor="delivery-email" className="cursor-pointer text-sm font-bold text-black dark:text-white">
@@ -193,9 +226,13 @@ export const GroupedControls: StoryObj<Omit<FieldsetProperties, 'children'> & { 
 };
 
 export const CustomComposition: Story = {
-	render: () => (
+	args: {
+		label: 'Custom Selection Wrapper',
+		description: 'Use Input directly to wrap custom controls.',
+	},
+	render: (args) => (
 		<div className="w-80">
-			<Input.Wrapper label="Custom Selection Wrapper" description="Use Input directly to wrap custom controls.">
+			<Input.Wrapper label={args.label} description={args.description}>
 				<div className="rounded-lg border-2 border-dashed border-black/20 p-4 text-center text-sm font-bold text-muted-foreground dark:border-white/20">
 					[Custom Component Here]
 				</div>

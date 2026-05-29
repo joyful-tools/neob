@@ -26,7 +26,10 @@ export const Default: Story = {
 };
 
 export const Animated: Story = {
-	render: () => {
+	args: {
+		'aria-label': 'Asset upload progress',
+	},
+	render: (args) => {
 		const [value, setValue] = useState(20);
 
 		useEffect(() => {
@@ -37,9 +40,9 @@ export const Animated: Story = {
 		}, []);
 
 		return (
-			<div className="flex w-96 flex-col items-center gap-4 rounded-xl border-2 border-black bg-white p-4 text-black shadow-brutal-sm dark:bg-zinc dark:text-white">
+			<div className="flex w-96 flex-col items-center gap-4 rounded-xl border-2 border-black bg-white p-4 text-black shadow-cel-sm dark:bg-zinc dark:text-white">
 				<div className="font-display text-sm font-bold">Uploading Assets...</div>
-				<Meter value={value} aria-label="Asset upload progress" />
+				<Meter {...args} value={value} />
 				<div className="text-xs font-bold text-muted-foreground">{value}% Complete</div>
 			</div>
 		);

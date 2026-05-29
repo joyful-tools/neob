@@ -10,6 +10,13 @@ import { Dialog } from './dialog';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+type DialogStoryProperties = {
+	triggerLabel: string;
+	title: string;
+	description: string;
+	body: string;
+};
+
 const meta = {
 	title: 'Surfaces/Dialog',
 	component: Dialog,
@@ -20,15 +27,21 @@ const meta = {
 } satisfies Meta<typeof Dialog>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<DialogStoryProperties>;
 
 export const Default: Story = {
+	args: {
+		triggerLabel: 'Open Dialog',
+		title: 'Dialog Title',
+		description: 'This is a description of what this dialog is for.',
+		body: 'Dialog content goes here.',
+	},
 	parameters: {
 		a11y: {
 			test: 'off',
 		},
 	},
-	render: () => {
+	render: (args) => {
 		const [open, setOpen] = useState(false);
 		return (
 			<>
@@ -38,7 +51,7 @@ export const Default: Story = {
 						setOpen(true);
 					}}
 				>
-					Open Dialog
+					{args.triggerLabel}
 				</Button>
 				<Dialog
 					open={open}
@@ -49,11 +62,11 @@ export const Default: Story = {
 				>
 					<Dialog.Content>
 						<Dialog.Header>
-							<Dialog.Title>Dialog Title</Dialog.Title>
-							<Dialog.Description>This is a description of what this dialog is for.</Dialog.Description>
+							<Dialog.Title>{args.title}</Dialog.Title>
+							<Dialog.Description>{args.description}</Dialog.Description>
 						</Dialog.Header>
 						<Dialog.Body>
-							<p className="text-sm">Dialog content goes here.</p>
+							<p className="text-sm">{args.body}</p>
 						</Dialog.Body>
 						<Dialog.Footer>
 							<Button

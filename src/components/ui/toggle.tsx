@@ -12,9 +12,9 @@ import { buttonVariants } from './button-variants';
 
 const TOGGLE_ON_CLASS_NAME = `
 	data-[pressed]:border-black data-[pressed]:bg-orange
-	data-[pressed]:text-black data-[pressed]:shadow-brutal-inset
+	data-[pressed]:text-black data-[pressed]:shadow-cel-inset
 	data-[pressed]:hover:translate-y-0 data-[pressed]:hover:bg-orange/90
-	data-[pressed]:hover:shadow-brutal-inset
+	data-[pressed]:hover:shadow-cel-inset
 	data-[pressed]:active:translate-y-0.5
 `;
 
