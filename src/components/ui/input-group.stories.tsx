@@ -1,4 +1,4 @@
-import { Envelope, MagnifyingGlass, Eye, EyeSlash, Copy, X } from '@phosphor-icons/react';
+import { Envelope, MagnifyingGlass, Eye, EyeSlash, Copy, X, Check } from '@phosphor-icons/react';
 import { expect, userEvent, within } from '@storybook/test';
 import * as React from 'react';
 import { action } from 'storybook/actions';
@@ -7,7 +7,6 @@ import { guardPlay } from '@/lib/storybook-interactions';
 
 import { InputGroup } from './input-group';
 import { NumericSlider } from './numeric-slider';
-import { toast } from './toast';
 import { Toaster } from './toaster';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
@@ -142,6 +141,8 @@ export const ComplexComposition: Story = {
 		const [showPassword, setShowPassword] = React.useState(false);
 		const password = 'super-secret-key';
 
+		const [copied, setCopied] = React.useState(false);
+
 		return (
 			<div className="flex w-96 flex-col gap-4">
 				<Toaster />
@@ -168,14 +169,16 @@ export const ComplexComposition: Story = {
 					</InputGroup.Button>
 					<InputGroup.Button
 						onClick={() => {
-							navigator.clipboard.writeText(password);
-							action('input-group-copy-value')();
-							toast.success('Password copied to clipboard!');
+							if (!password) return;
+							void navigator.clipboard.writeText(password).then(() => {
+								setCopied(true);
+								setTimeout(() => setCopied(false), 2000);
+							});
 						}}
 						tooltip="Copy value"
 						aria-label="Copy value"
 					>
-						<Copy className="size-4" />
+						{copied ? <Check className="size-4" /> : <Copy className="size-4" />}
 					</InputGroup.Button>
 				</InputGroup>
 			</div>

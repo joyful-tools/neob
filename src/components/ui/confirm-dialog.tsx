@@ -1,13 +1,8 @@
-import { AlertDialog as AlertDialogPrimitive } from '@base-ui/react/alert-dialog';
 import { Check, Copy } from '@phosphor-icons/react';
-import { AnimatePresence, motion, type Transition } from 'motion/react';
 import { useState, type ReactNode } from 'react';
 
-import { useDeferredOpen } from '@/hooks/use-deferred-open';
-import { cn } from '@/lib/utilities';
-
 import { Button } from './button';
-import { useDialogStackPresence } from './dialog-stack';
+import { Dialog } from './dialog';
 import { Input } from './input';
 
 export interface ConfirmDialogProperties {
@@ -23,18 +18,6 @@ export interface ConfirmDialogProperties {
 	isConfirming?: boolean;
 }
 
-const springSnappy: Transition = {
-	type: 'spring',
-	stiffness: 550,
-	damping: 28,
-};
-
-const modalContentVariants = {
-	hidden: { opacity: 0, scale: 1.08 },
-	visible: { opacity: 1, scale: 1 },
-	exit: { opacity: 0, scale: 1.08 },
-};
-
 export function ConfirmDialog({
 	open,
 	onOpenChange,
@@ -47,9 +30,6 @@ export function ConfirmDialog({
 	resourceName,
 	isConfirming = false,
 }: ConfirmDialogProperties) {
-	const { dialogOpen, show, onExitComplete } = useDeferredOpen(open);
-	useDialogStackPresence(open);
-
 	const [typedConfirmation, setTypedConfirmation] = useState('');
 	const [copied, setCopied] = useState(false);
 
@@ -72,83 +52,63 @@ export function ConfirmDialog({
 	}
 
 	return (
-		<AlertDialogPrimitive.Root open={dialogOpen} onOpenChange={handleOpenChange}>
-			{dialogOpen && (
-				<AlertDialogPrimitive.Portal keepMounted>
-					<AnimatePresence onExitComplete={onExitComplete}>
-						{show && (
-							<div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4">
-								<AlertDialogPrimitive.Popup
-									render={
-										<motion.div variants={modalContentVariants} initial="hidden" animate="visible" exit="exit" transition={springSnappy} />
-									}
-									className={cn(
-										`relative grid w-full max-w-[calc(100vw-2rem)] gap-4 rounded-xl border-4 border-black bg-white p-6 shadow-brutal sm:max-w-lg dark:bg-zinc dark:text-white`,
-									)}
-								>
-									<div className="border-b-2 border-black pb-3">
-										<AlertDialogPrimitive.Title className="font-display text-xl font-bold tracking-tight text-black dark:text-white">
-											{title}
-										</AlertDialogPrimitive.Title>
-									</div>
-									<div className="py-2">
-										<AlertDialogPrimitive.Description className="text-sm/relaxed text-black/80 dark:text-white/80">
-											{description}
-										</AlertDialogPrimitive.Description>
-
-										{resourceName && (
-											<div className="mt-4 space-y-3">
-												<p className="text-sm text-black/80 dark:text-white/80">
-													Type in{' '}
-													<Button
-														type="button"
-														variant="subtle"
-														size="sm"
-														onClick={handleCopyResourceName}
-														className="h-6 px-2 font-mono text-xs"
-													>
-														{resourceName}
-														{copied ? <Check className="size-3 text-green" /> : <Copy className="size-3" />}
-													</Button>{' '}
-													to confirm:
-												</p>
-												<Input
-													type="text"
-													value={typedConfirmation}
-													onChange={(event) => setTypedConfirmation(event.target.value)}
-													onKeyDown={(event) => {
-														if (event.key === 'Enter' && confirmationMatches && !isConfirming) {
-															onConfirm();
-														}
-													}}
-													disabled={isConfirming}
-													placeholder={resourceName}
-													autoComplete="off"
-													className="h-10 rounded-md px-3 text-sm shadow-brutal-inset-sm"
-												/>
-											</div>
-										)}
-									</div>
-									<div className="flex flex-col-reverse gap-2 border-t-2 border-black pt-3 sm:flex-row sm:justify-end">
-										<Button type="button" variant="subtle" onClick={() => handleOpenChange(false)} disabled={isConfirming}>
-											{cancelLabel}
-										</Button>
-										<Button
-											type="button"
-											onClick={onConfirm}
-											disabled={!confirmationMatches}
-											variant={variant === 'danger' ? 'danger' : variant === 'warning' ? 'accent' : 'default'}
-											isLoading={isConfirming}
-										>
-											{confirmLabel}
-										</Button>
-									</div>
-								</AlertDialogPrimitive.Popup>
+		<Dialog open={open} onOpenChange={handleOpenChange} preventClose>
+			<Dialog.Content>
+				<Dialog.Header>
+					<Dialog.Title>{title}</Dialog.Title>
+				</Dialog.Header>
+				<Dialog.Body>
+					<div className="flex flex-col gap-6">
+						<Dialog.Description>{description}</Dialog.Description>
+						{resourceName && (
+							<div className="flex flex-col gap-3">
+								<p className="text-sm text-black/80 dark:text-white/80">
+									Type in{' '}
+									<Button
+										type="button"
+										variant="subtle"
+										size="sm"
+										onClick={handleCopyResourceName}
+										className="mx-0.5 h-6 px-2 font-mono text-xs"
+									>
+										{resourceName}
+										{copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+									</Button>{' '}
+									to confirm:
+								</p>
+								<Input
+									type="text"
+									value={typedConfirmation}
+									onChange={(event) => setTypedConfirmation(event.target.value)}
+									onKeyDown={(event) => {
+										if (event.key === 'Enter' && confirmationMatches && !isConfirming) {
+											onConfirm();
+										}
+									}}
+									disabled={isConfirming}
+									placeholder={resourceName}
+									autoComplete="off"
+									className="rounded-md px-3 text-sm shadow-brutal-inset-sm"
+								/>
 							</div>
 						)}
-					</AnimatePresence>
-				</AlertDialogPrimitive.Portal>
-			)}
-		</AlertDialogPrimitive.Root>
+					</div>
+				</Dialog.Body>
+				<Dialog.Footer>
+					<Button type="button" variant="subtle" onClick={() => handleOpenChange(false)} disabled={isConfirming}>
+						{cancelLabel}
+					</Button>
+					<Button
+						type="button"
+						onClick={onConfirm}
+						disabled={!confirmationMatches}
+						variant={variant === 'danger' ? 'danger' : variant === 'warning' ? 'accent' : 'default'}
+						isLoading={isConfirming}
+					>
+						{confirmLabel}
+					</Button>
+				</Dialog.Footer>
+			</Dialog.Content>
+		</Dialog>
 	);
 }

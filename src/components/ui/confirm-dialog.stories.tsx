@@ -102,7 +102,7 @@ export const Destructive = {
 		<ConfirmDialogWrapper
 			variant="danger"
 			title="Delete Production Database?"
-			description="This action is extremely dangerous and cannot be undone. All tables, backups, and configurations will be permanently erased."
+			description="Do you want to delete the production database? All tables, backups, and configurations will be permanently erased and cannot be restored."
 			resourceName="delete-production-db"
 			confirmLabel="Delete Permanently"
 		/>

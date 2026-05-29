@@ -20,7 +20,7 @@ const OVERLAY_CLASS_NAME = `
 
 const CONTENT_CLASS_NAME = `
 	relative grid w-full max-w-[calc(100vw-2rem)] gap-4 rounded-xl
-	border-4 border-black bg-white dark:bg-zinc p-6 shadow-brutal
+	border-4 border-black bg-white dark:bg-zinc p-6 shadow-xl
 	sm:max-w-lg dark:text-white
 `;
 
@@ -40,7 +40,7 @@ const springSnappy = {
 // Context
 // ============================================================================
 
-const DialogContext = createContext<{ open: boolean; isComposed?: boolean }>({ open: false });
+const DialogContext = createContext<{ open: boolean; preventClose: boolean; isComposed?: boolean }>({ open: false, preventClose: false });
 
 // ============================================================================
 // Types
@@ -51,9 +51,8 @@ interface DialogProperties extends Omit<DialogPrimitive.Root.Props, 'children' |
 	readonly open?: boolean;
 	readonly defaultOpen?: boolean;
 	readonly onOpenChange?: (open: boolean) => void;
-	readonly title?: string;
 	readonly className?: string;
-	readonly hideClose?: boolean;
+	readonly preventClose?: boolean;
 }
 
 interface DialogContentProperties {
@@ -80,16 +79,7 @@ interface DialogDescriptionProperties {
 // ============================================================================
 
 /** Dialog root supporting compound pattern or composed modal pattern. */
-function DialogRoot({
-	children,
-	open: controlledOpen,
-	defaultOpen,
-	onOpenChange,
-	title,
-	className,
-	hideClose = false,
-	...properties
-}: DialogProperties) {
+function DialogRoot({ children, open: controlledOpen, defaultOpen, onOpenChange, preventClose = false, ...properties }: DialogProperties) {
 	const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen ?? false);
 	const actionsReference = useRef<DialogPrimitive.Root.Actions>(null);
 
@@ -106,26 +96,17 @@ function DialogRoot({
 		[isControlled, onOpenChange],
 	);
 
-	useDialogStackPresence(open, () => handleOpenChange(false));
-
-	if (title !== undefined) {
-		return (
-			<DialogContext.Provider value={{ open, isComposed: true }}>
-				<DialogPrimitive.Root open={open} onOpenChange={handleOpenChange} actionsRef={actionsReference} {...properties}>
-					<DialogContent className={cn('gap-0 p-0', className)}>
-						<DialogHeader className="border-b-2 border-black px-6 py-4" hideClose={hideClose}>
-							<DialogTitle>{title}</DialogTitle>
-						</DialogHeader>
-						{children}
-					</DialogContent>
-				</DialogPrimitive.Root>
-			</DialogContext.Provider>
-		);
-	}
+	useDialogStackPresence(open, preventClose ? undefined : () => handleOpenChange(false));
 
 	return (
-		<DialogContext.Provider value={{ open, isComposed: false }}>
-			<DialogPrimitive.Root open={open} onOpenChange={handleOpenChange} actionsRef={actionsReference} {...properties}>
+		<DialogContext.Provider value={{ open, preventClose, isComposed: false }}>
+			<DialogPrimitive.Root
+				open={open}
+				onOpenChange={handleOpenChange}
+				actionsRef={actionsReference}
+				disablePointerDismissal={preventClose}
+				{...properties}
+			>
 				{children}
 			</DialogPrimitive.Root>
 		</DialogContext.Provider>
@@ -170,16 +151,13 @@ function DialogContent({ className, children, ref, onAnimationEnd, ...properties
 DialogContent.displayName = 'Dialog.Content';
 
 /** Dialog header with title area and close button. */
-function DialogHeader({
-	className,
-	children,
-	hideClose = false,
-	...properties
-}: React.HTMLAttributes<HTMLDivElement> & { readonly hideClose?: boolean }) {
+function DialogHeader({ className, children, ...properties }: React.HTMLAttributes<HTMLDivElement>) {
+	const { preventClose } = useContext(DialogContext);
+
 	return (
 		<div className={cn('flex flex-row items-start justify-between gap-4', className)} {...properties}>
 			<div className="flex flex-1 flex-col space-y-1.5 text-center sm:text-left">{children}</div>
-			{!hideClose && (
+			{!preventClose && (
 				<DialogPrimitive.Close className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }), '-mt-3 -mr-3 shrink-0')}>
 					<X className="size-4" />
 					<span className="sr-only">Close</span>
@@ -201,7 +179,7 @@ function DialogBody({
 	readonly ref?: React.Ref<HTMLDivElement>;
 }) {
 	return (
-		<div ref={ref} className={cn('p-6', className)}>
+		<div ref={ref} className={cn('py-2', className)}>
 			{children}
 		</div>
 	);
