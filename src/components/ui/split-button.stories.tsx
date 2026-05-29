@@ -6,8 +6,6 @@ import { guardPlay } from '@/lib/storybook-interactions';
 
 import { DropdownMenu } from './dropdown-menu';
 import { SplitButton } from './split-button';
-import { toast } from './toast';
-import { Toaster } from './toaster';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
@@ -32,7 +30,6 @@ const PublishButton = (props: Partial<React.ComponentProps<typeof SplitButton>>)
 			<DropdownMenu.Item
 				onSelect={() => {
 					action('split-button-save-draft')();
-					toast.info('Secondary Action: Draft');
 				}}
 			>
 				Save as Draft
@@ -40,7 +37,6 @@ const PublishButton = (props: Partial<React.ComponentProps<typeof SplitButton>>)
 			<DropdownMenu.Item
 				onSelect={() => {
 					action('split-button-schedule-publish')();
-					toast.info('Secondary Action: Schedule');
 				}}
 			>
 				Schedule Publish
@@ -48,7 +44,6 @@ const PublishButton = (props: Partial<React.ComponentProps<typeof SplitButton>>)
 			<DropdownMenu.Item
 				onSelect={() => {
 					action('split-button-archive-post')();
-					toast.info('Secondary Action: Archive');
 				}}
 			>
 				Archive Post
@@ -58,11 +53,9 @@ const PublishButton = (props: Partial<React.ComponentProps<typeof SplitButton>>)
 
 	return (
 		<div className="p-8">
-			<Toaster />
 			<SplitButton
 				onClick={() => {
 					action('split-button-primary-click')();
-					toast.success('Primary Action Triggered!');
 				}}
 				menuContent={menuContent}
 				{...props}
