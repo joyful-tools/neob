@@ -132,3 +132,14 @@ export type {
 	PaginationSeparatorProps,
 	PaginationLabels,
 } from './components/ui/pagination';
+
+export { Breadcrumb } from './components/ui/breadcrumb';
+export type {
+	BreadcrumbProps,
+	BreadcrumbLinkProps,
+	BreadcrumbCurrentProps,
+	BreadcrumbSeparatorProps,
+	BreadcrumbEllipsisProps,
+	BreadcrumbClipboardProps,
+	BreadcrumbSize,
+} from './components/ui/breadcrumb';
