@@ -14,6 +14,9 @@ jobs:
   checks:
     name: Checks
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,6 +32,15 @@ jobs:
 
       - name: Lint, typecheck, and validate Storybook interactions and accessibility
         run: bun run check
+
+      - name: Report Storybook coverage
+        if: always()
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vite-config-path: ./vitest.config.ts
+          json-summary-path: ./coverage/storybook/coverage-summary.json
+          file-coverage-mode: changes
 
   preview:
     name: Deploy Storybook Preview

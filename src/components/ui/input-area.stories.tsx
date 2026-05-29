@@ -1,5 +1,5 @@
-import { expect, userEvent, waitFor, within } from '@storybook/test';
 import * as React from 'react';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 

@@ -2,6 +2,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
+import { playwright } from '@vitest/browser-playwright';
 import { defineConfig, mergeConfig } from 'vitest/config';
 
 import viteConfig from './vite.config';
@@ -21,11 +22,17 @@ export default mergeConfig(
 			name: 'storybook',
 			browser: {
 				enabled: true,
-				provider: 'playwright',
+				provider: playwright(),
 				headless: true,
 				instances: [{ browser: 'chromium' }],
 			},
 			setupFiles: ['./.storybook/vitest.setup.ts'],
+			coverage: {
+				provider: 'v8',
+				reporter: ['text', 'html', 'lcov', 'json-summary'],
+				reportsDirectory: './coverage/storybook',
+				exclude: ['dist/**', 'storybook-static/**', '**/*.stories.*', '.storybook/**'],
+			},
 		},
 	}),
 );

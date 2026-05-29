@@ -1,7 +1,7 @@
 import { CaretUpDown } from '@phosphor-icons/react';
-import { expect, userEvent, waitFor, within } from '@storybook/test';
 import * as React from 'react';
 import { action } from 'storybook/actions';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 import { cn } from '@/lib/utilities';

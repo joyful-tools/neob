@@ -1,5 +1,5 @@
 import { Folder, House, FileText } from '@phosphor-icons/react';
-import { expect, within } from '@storybook/test';
+import { expect, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 

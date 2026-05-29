@@ -1,7 +1,7 @@
 import { Envelope, MagnifyingGlass, X } from '@phosphor-icons/react';
-import { expect, userEvent, within } from '@storybook/test';
 import * as React from 'react';
 import { action } from 'storybook/actions';
+import { expect, userEvent, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 
