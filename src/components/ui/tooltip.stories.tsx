@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 
@@ -69,5 +69,46 @@ export const GatedTouch: Story = {
 		const canvas = within(canvasElement);
 		await userEvent.hover(canvas.getByRole('button', { name: 'Touch / Hover Test' }));
 		await expect(await within(document.body).findByRole('tooltip')).toHaveTextContent('Success! Long press worked.');
+	}),
+};
+
+export const TouchLongPressBehavior: Story = {
+	args: {
+		content: 'Long press confirmed.',
+	},
+	parameters: {
+		a11y: {
+			test: 'off',
+		},
+	},
+	render: (args) => (
+		<div className="flex flex-col items-center gap-4 p-8">
+			<Tooltip {...args}>
+				<Button variant="accent">Hold To Open</Button>
+			</Tooltip>
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const trigger = canvas.getByRole('button', { name: 'Hold To Open' });
+
+		trigger.dispatchEvent(new Event('touchstart', { bubbles: true, cancelable: true }));
+		await new Promise((resolve) => globalThis.setTimeout(resolve, 150));
+		trigger.dispatchEvent(new Event('touchend', { bubbles: true, cancelable: true }));
+
+		await waitFor(() => {
+			expect(within(document.body).queryByRole('tooltip')).not.toBeInTheDocument();
+		});
+
+		trigger.dispatchEvent(new Event('touchstart', { bubbles: true, cancelable: true }));
+
+		await waitFor(
+			async () => {
+				expect(await within(document.body).findByRole('tooltip')).toHaveTextContent('Long press confirmed.');
+			},
+			{ timeout: 1200 },
+		);
+
+		trigger.dispatchEvent(new Event('touchend', { bubbles: true, cancelable: true }));
 	}),
 };

@@ -31,7 +31,7 @@ export default mergeConfig(
 				provider: 'v8',
 				reporter: ['text', 'html', 'lcov', 'json-summary'],
 				reportsDirectory: './coverage/storybook',
-				exclude: ['dist/**', 'storybook-static/**', '**/*.stories.*', '.storybook/**'],
+				exclude: ['dist/**', 'storybook-static/**', '**/*.stories.*', '.storybook/**', 'src/lib/storybook-interactions.ts'],
 			},
 		},
 	}),

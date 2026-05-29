@@ -1,5 +1,5 @@
 import { action } from 'storybook/actions';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 
@@ -187,5 +187,137 @@ export const Minimal: Story = {
 		const canvas = within(canvasElement);
 		await userEvent.click(canvas.getByRole('button', { name: 'Title Only' }));
 		await expect(document.body.querySelector('[data-sonner-toast]')).not.toBeNull();
+	}),
+};
+
+export const VariantDismissal: Story = {
+	args: {
+		buttons: [
+			{
+				label: 'Success Variant',
+				variant: 'accent',
+				kind: 'success',
+				title: 'Deployment complete',
+				description: 'All services are healthy.',
+			},
+			{
+				label: 'Warning Variant',
+				variant: 'default',
+				kind: 'warning',
+				title: 'High memory usage',
+				description: 'One worker exceeded the soft limit.',
+			},
+			{
+				label: 'Info Variant',
+				variant: 'subtle',
+				kind: 'info',
+				title: 'Maintenance window',
+				description: 'Planned maintenance starts in 15 minutes.',
+			},
+		],
+	},
+	parameters: {
+		a11y: {
+			test: 'off',
+		},
+	},
+	render: (args) => (
+		<div className="flex flex-wrap items-center gap-3">
+			{args.buttons.map((button) => (
+				<Button key={button.label} variant={button.variant} onClick={() => showToast(button)}>
+					{button.label}
+				</Button>
+			))}
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const body = within(document.body);
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Success Variant' }));
+		await expect(body.getByText('Deployment complete')).toBeInTheDocument();
+		await expect(body.getByText('All services are healthy.')).toBeInTheDocument();
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Warning Variant' }));
+		await expect(body.getByText('High memory usage')).toBeInTheDocument();
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Info Variant' }));
+		await expect(body.getByText('Maintenance window')).toBeInTheDocument();
+
+		const lastToast = document.body
+			.querySelectorAll('[data-sonner-toast]')
+			.item(document.body.querySelectorAll('[data-sonner-toast]').length - 1);
+		const closeButton = lastToast?.querySelector('button');
+
+		await expect(closeButton).not.toBeNull();
+		await userEvent.click(closeButton!);
+		await waitFor(() => {
+			expect(lastToast?.isConnected).toBe(false);
+		});
+	}),
+};
+
+export const MixedActionsAndClosePaths: Story = {
+	args: {
+		buttons: [
+			{
+				label: 'Custom Action',
+				variant: 'default',
+				kind: 'custom',
+				title: 'Draft saved',
+				actionLabel: 'Review Draft',
+				actionEvent: 'toast-review-draft',
+			},
+			{
+				label: 'Info Action',
+				variant: 'subtle',
+				kind: 'info',
+				title: 'New release available',
+				description: 'Version 2.1.0 is ready to install.',
+				actionLabel: 'Read Notes',
+				actionEvent: 'toast-read-notes',
+			},
+			{ label: 'Warning Title Only', variant: 'default', kind: 'warning', title: 'Storage nearing limit' },
+			{
+				label: 'Error Close',
+				variant: 'danger',
+				kind: 'error',
+				title: 'Upload failed',
+				description: 'A network error interrupted the upload.',
+			},
+		],
+	},
+	parameters: {
+		a11y: {
+			test: 'off',
+		},
+	},
+	render: (args) => (
+		<div className="flex flex-wrap items-center gap-3">
+			{args.buttons.map((button) => (
+				<Button key={button.label} variant={button.variant} onClick={() => showToast(button)}>
+					{button.label}
+				</Button>
+			))}
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const body = within(document.body);
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Custom Action' }));
+		await expect(body.getByText('Draft saved')).toBeInTheDocument();
+		await userEvent.click(body.getByRole('button', { name: 'Review Draft' }));
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Info Action' }));
+		await expect(body.getByText('New release available')).toBeInTheDocument();
+		await expect(body.getByText('Version 2.1.0 is ready to install.')).toBeInTheDocument();
+		await userEvent.click(body.getByRole('button', { name: 'Read Notes' }));
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Warning Title Only' }));
+		await expect(body.getByText('Storage nearing limit')).toBeInTheDocument();
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Error Close' }));
+		await expect(body.getByText('Upload failed')).toBeInTheDocument();
 	}),
 };

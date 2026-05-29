@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { action } from 'storybook/actions';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 
 import { InlineConfirmGroup } from './inline-confirm-group';
 
-import type { Meta } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 type InlineConfirmGroupStoryProperties = {
 	initialFiles: FileItem[];
@@ -22,6 +22,7 @@ const meta = {
 } satisfies Meta<typeof InlineConfirmGroup>;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
 interface FileItem {
 	id: string;
@@ -84,5 +85,121 @@ export const Default = {
 		const buttons = canvas.getAllByRole('button');
 		await userEvent.click(buttons[0]);
 		await expect(canvas.getAllByRole('button').length).toBeGreaterThan(1);
+	}),
+};
+
+export const KeyboardAndOutsideCancel: Story = {
+	args: {
+		itemName: 'package.json',
+		onConfirm: () => {},
+	},
+	render: () => {
+		const [cancelCount, setCancelCount] = React.useState(0);
+		return (
+			<div className="flex min-h-40 items-start justify-start p-8">
+				<div className="flex flex-col gap-4">
+					<InlineConfirmGroup
+						itemName="package.json"
+						onConfirm={() => {
+							action('inline-confirm-keyboard-confirm')();
+						}}
+						onCancel={() => {
+							action('inline-confirm-keyboard-cancel')();
+							setCancelCount((previous) => previous + 1);
+						}}
+					/>
+					<p className="font-mono text-sm font-bold">Cancel Count: {cancelCount}</p>
+					<button type="button" className="rounded-md border-2 border-black px-3 py-2 font-bold">
+						Outside Target
+					</button>
+				</div>
+			</div>
+		);
+	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Delete package.json' }));
+		await waitFor(() => {
+			expect(canvas.getByRole('button', { name: 'Cancel delete package.json' })).toHaveFocus();
+		});
+
+		await userEvent.keyboard('{ArrowRight}');
+		await expect(canvas.getByRole('button', { name: 'Confirm delete package.json' })).toHaveFocus();
+
+		await userEvent.keyboard('{Tab}');
+		await expect(canvas.getByRole('button', { name: 'Cancel delete package.json' })).toHaveFocus();
+
+		await userEvent.keyboard('{Escape}');
+		await waitFor(() => {
+			expect(canvas.queryByRole('group', { name: 'Delete confirmation for package.json' })).not.toBeInTheDocument();
+			expect(canvas.getByText('Cancel Count: 1')).toBeInTheDocument();
+		});
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Delete package.json' }));
+		await waitFor(() => {
+			expect(canvas.getByRole('group', { name: 'Delete confirmation for package.json' })).toBeInTheDocument();
+		});
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Outside Target' }));
+		await waitFor(() => {
+			expect(canvas.queryByRole('group', { name: 'Delete confirmation for package.json' })).not.toBeInTheDocument();
+			expect(canvas.getByText('Cancel Count: 2')).toBeInTheDocument();
+		});
+	}),
+};
+
+export const ConfirmAndLoadingState: Story = {
+	args: {
+		itemName: 'README.md',
+		onConfirm: () => {},
+	},
+	render: () => {
+		const [confirmed, setConfirmed] = React.useState(false);
+		return (
+			<div className="flex flex-col gap-6 p-8">
+				<div className="flex items-center gap-4">
+					<InlineConfirmGroup
+						itemName="README.md"
+						onConfirm={() => {
+							action('inline-confirm-confirm')();
+							setConfirmed(true);
+						}}
+						onCancel={() => {
+							action('inline-confirm-loading-cancel')();
+						}}
+					/>
+					<p className="font-mono text-sm font-bold">Confirmed: {confirmed ? 'yes' : 'no'}</p>
+				</div>
+				<div className="flex items-center gap-4">
+					<InlineConfirmGroup
+						itemName="locked-file.txt"
+						isLoading
+						onConfirm={() => {
+							action('inline-confirm-loading-confirm')();
+						}}
+					/>
+					<p className="font-mono text-sm font-bold">Loading Delete Control</p>
+				</div>
+			</div>
+		);
+	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Delete README.md' }));
+		await waitFor(() => {
+			expect(canvas.getByRole('button', { name: 'Confirm delete README.md' })).toBeInTheDocument();
+		});
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Confirm delete README.md' }));
+		await waitFor(() => {
+			expect(canvas.getByText('Confirmed: yes')).toBeInTheDocument();
+			expect(canvas.queryByRole('button', { name: 'Confirm delete README.md' })).not.toBeInTheDocument();
+		});
+
+		const loadingDeleteButton = canvas.getByRole('button', { name: 'Delete locked-file.txt' });
+		await expect(loadingDeleteButton).toBeDisabled();
+		await expect(canvas.queryByRole('group', { name: 'Delete confirmation for locked-file.txt' })).not.toBeInTheDocument();
 	}),
 };

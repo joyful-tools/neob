@@ -26,6 +26,7 @@ export function ResizablePanel({
 }: ResizablePanelProperties) {
 	const [size, setSize] = useState(defaultSize);
 	const [isResizing, setIsResizing] = useState(false);
+	const [isHandleHovered, setIsHandleHovered] = useState(false);
 	const panelReference = useRef<HTMLDivElement>(null);
 	const startPositionReference = useRef(0);
 	const startSizeReference = useRef(0);
@@ -89,14 +90,6 @@ export function ResizablePanel({
 	const isHorizontal = direction === 'horizontal';
 	const sizeStyle = isHorizontal ? { width: size } : { height: size };
 
-	const handleClasses = cn(
-		`
-			shrink-0 bg-black transition-colors duration-150
-			hover:bg-orange
-		`,
-		isHorizontal ? 'w-1 cursor-col-resize' : 'h-1 cursor-row-resize',
-		isResizing && 'bg-orange',
-	);
 	const handleOrientation: React.AriaAttributes['aria-orientation'] = isHorizontal ? 'vertical' : 'horizontal';
 
 	const handleProperties = {
@@ -108,11 +101,43 @@ export function ResizablePanel({
 		'aria-label': isHorizontal ? 'Resize panel width' : 'Resize panel height',
 	};
 
+	const handleStateClasses = isResizing || isHandleHovered ? 'bg-orange' : 'bg-black';
+
+	function renderHandle() {
+		return (
+			<div className={cn('group relative shrink-0', isHorizontal ? 'w-0 cursor-col-resize' : 'h-0 cursor-row-resize')}>
+				<div
+					className={cn(
+						'absolute z-10 transition-[width,height,background-color] duration-100 ease-out',
+						handleStateClasses,
+						isHorizontal
+							? isResizing || isHandleHovered
+								? 'top-0 left-1/2 h-full w-1 -translate-x-1/2 cursor-col-resize'
+								: 'top-0 left-1/2 h-full w-0.5 -translate-x-1/2 cursor-col-resize'
+							: isResizing || isHandleHovered
+								? 'top-1/2 left-0 h-1 w-full -translate-y-1/2 cursor-row-resize'
+								: 'top-1/2 left-0 h-0.5 w-full -translate-y-1/2 cursor-row-resize',
+					)}
+				/>
+				<div
+					className={cn(
+						'absolute z-20 -translate-1/2 bg-transparent',
+						isHorizontal ? 'top-1/2 left-1/2 h-full w-4 cursor-col-resize' : 'top-1/2 left-1/2 h-4 w-full cursor-row-resize',
+					)}
+					onMouseDown={handleMouseDown}
+					onMouseEnter={() => setIsHandleHovered(true)}
+					onMouseLeave={() => setIsHandleHovered(false)}
+					{...handleProperties}
+				/>
+			</div>
+		);
+	}
+
 	return (
 		<div ref={panelReference} className={cn('relative flex shrink-0', isHorizontal ? 'flex-row' : 'flex-col', className)} style={sizeStyle}>
-			{handlePosition === 'start' && <div className={handleClasses} onMouseDown={handleMouseDown} {...handleProperties} />}
+			{handlePosition === 'start' && renderHandle()}
 			<div className="flex-1 overflow-hidden">{children}</div>
-			{handlePosition === 'end' && <div className={handleClasses} onMouseDown={handleMouseDown} {...handleProperties} />}
+			{handlePosition === 'end' && renderHandle()}
 		</div>
 	);
 }

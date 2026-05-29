@@ -35,3 +35,6 @@ lerna-debug.log*
 .eslintcache
 .temp/
 .tmp/
+
+# Coverage
+coverage/

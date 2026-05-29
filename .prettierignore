@@ -1,5 +1,6 @@
 dist
 storybook-static
+coverage
 node_modules
 package-lock.json
 bun.lockb

@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { type DateRange } from 'react-day-picker';
 import { action } from 'storybook/actions';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 
@@ -99,6 +99,17 @@ export const Range = {
 			</div>
 		);
 	},
+	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+		const canvas = within(canvasElement);
+		const preservedStartDate = new Date(2026, 4, 10).toLocaleDateString();
+		const endDate = new Date(2026, 4, 24).toLocaleDateString();
+		await userEvent.click(canvas.getByText('20'));
+		await userEvent.click(canvas.getByText('24'));
+		await waitFor(() => {
+			expect(canvas.getByText(/Selected Range:/i)).toHaveTextContent(preservedStartDate);
+			expect(canvas.getByText(/Selected Range:/i)).toHaveTextContent(endDate);
+		});
+	}),
 };
 
 export const Multiple = {
@@ -129,6 +140,14 @@ export const Multiple = {
 			</div>
 		);
 	},
+	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+		const canvas = within(canvasElement);
+		const nextDate = new Date(2026, 4, 20).toLocaleDateString();
+		await userEvent.click(canvas.getByText('20'));
+		await waitFor(() => {
+			expect(canvas.getByText(/Selected Dates:/i)).toHaveTextContent(nextDate);
+		});
+	}),
 };
 
 export const DarkMode = {
@@ -160,4 +179,81 @@ export const DarkMode = {
 			</div>
 		);
 	},
+};
+
+export const MonthYearNavigation = {
+	args: {
+		mode: 'single',
+		initialSelected: new Date(2026, 4, 15),
+	},
+	parameters: {
+		a11y: {
+			test: 'off',
+		},
+	},
+	render: (args: DatePickerSingleStoryProperties) => {
+		const [date, setDate] = React.useState<Date | undefined>(args.initialSelected);
+		return (
+			<div className="flex flex-col items-center gap-4">
+				<DatePicker
+					mode={args.mode}
+					selected={date}
+					onChange={(selected, triggerDate, modifiers, event_) => {
+						setDate(selected);
+						action('date-picker-navigation-change')(selected, triggerDate, modifiers, event_);
+					}}
+					onMonthChange={(month) => {
+						action('date-picker-navigation-month-change')(month);
+					}}
+				/>
+				<div className="rounded-lg border-2 border-black bg-muted px-3 py-1.5 font-mono text-sm font-bold dark:border-white dark:bg-zinc">
+					Selected Date: {date ? date.toLocaleDateString() : 'None'}
+				</div>
+			</div>
+		);
+	},
+	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByRole('button', { name: 'May' })).toBeInTheDocument();
+		await expect(canvas.getByRole('button', { name: '2026' })).toBeInTheDocument();
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Next month' }));
+		await waitFor(() => {
+			expect(canvas.getByRole('button', { name: 'June' })).toBeInTheDocument();
+		});
+
+		await userEvent.click(canvas.getByRole('button', { name: 'June' }));
+		await waitFor(() => {
+			expect(canvas.getByRole('button', { name: 'JUN' })).toBeInTheDocument();
+		});
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Previous year' }));
+		await waitFor(() => {
+			expect(canvas.getByRole('button', { name: '2025' })).toBeInTheDocument();
+		});
+
+		await waitFor(() => {
+			expect(canvas.getByText('OCT')).toBeInTheDocument();
+		});
+		await userEvent.click(canvas.getByText('OCT'));
+		await waitFor(() => {
+			expect(canvas.getByRole('button', { name: 'October' })).toBeInTheDocument();
+		});
+
+		await userEvent.click(canvas.getByRole('button', { name: '2025' }));
+		await waitFor(() => {
+			expect(canvas.getByRole('button', { name: 'Next years' })).toBeInTheDocument();
+		});
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Next years' }));
+		await waitFor(() => {
+			expect(canvas.getByText('2033')).toBeInTheDocument();
+		});
+		await userEvent.click(canvas.getByText('2033'));
+		await waitFor(() => {
+			expect(canvas.getByRole('button', { name: '2033' })).toBeInTheDocument();
+			expect(canvas.getByRole('button', { name: 'October' })).toBeInTheDocument();
+		});
+	}),
 };

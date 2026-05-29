@@ -117,3 +117,63 @@ export const AutoResize: Story = {
 		});
 	}),
 };
+
+export const WithValidationWrapper: Story = {
+	args: {
+		id: 'project-notes-input-area',
+		label: 'Project Notes',
+		description: 'Add the internal context for this release.',
+		error: 'Notes must include at least one deployment step.',
+		required: true,
+		placeholder: 'Write release notes...',
+	},
+	parameters: {
+		a11y: {
+			test: 'off',
+		},
+	},
+	render: (args) => (
+		<div className="w-96">
+			<InputArea {...args} />
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const textarea = canvas.getByRole('textbox');
+		const describedBy = textarea.getAttribute('aria-describedby');
+
+		await expect(canvas.queryByText('Add the internal context for this release.')).not.toBeInTheDocument();
+		await expect(canvas.queryByText('Notes must include at least one deployment step.')).not.toBeInTheDocument();
+		await expect(textarea).toHaveAttribute('aria-invalid', 'true');
+		await expect(textarea).toBeRequired();
+		await expect(describedBy).toBeTruthy();
+		await userEvent.type(textarea, 'Deploy API before worker rollout');
+		await expect(textarea).toHaveValue('Deploy API before worker rollout');
+	}),
+};
+
+export const AutoResizeMaxRows: Story = {
+	args: {
+		placeholder: 'Capture deployment steps...',
+		rows: 1,
+	},
+	render: (args: StoryProps) => (
+		<div className="w-96">
+			<InputArea {...args} aria-label="Deployment Notes" autoResize={{ maxRows: 2, animate: false }} />
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const textarea = canvas.getByRole('textbox', { name: 'Deployment Notes' });
+		const resizeContainer = textarea.parentElement;
+
+		await expect(resizeContainer).not.toBeNull();
+		await userEvent.type(textarea, 'Step 1{enter}Step 2{enter}Step 3{enter}Step 4');
+		await expect(textarea).toHaveValue('Step 1\nStep 2\nStep 3\nStep 4');
+
+		await waitFor(() => {
+			expect(resizeContainer?.getAttribute('style')).toContain('height');
+			expect(textarea.style.overflowY).toBe('auto');
+		});
+	}),
+};

@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { expect, within } from 'storybook/test';
+
+import { guardPlay } from '@/lib/storybook-interactions';
 
 import { Pill } from './pill';
 
@@ -70,6 +73,46 @@ export const AllColors: StoryObj<PillCollectionStoryProperties> = {
 			))}
 		</div>
 	),
+};
+
+export const WithRefAndCustomAttributes: Story = {
+	args: {
+		children: 'Interactive Tag',
+		color: 'white',
+		size: 'lg',
+		rounded: 'full',
+	},
+	render: (args) => {
+		const pillReference = React.useRef<HTMLSpanElement>(null);
+		const [refStatus, setRefStatus] = React.useState('missing');
+
+		React.useEffect(() => {
+			setRefStatus(pillReference.current ? pillReference.current.tagName.toLowerCase() : 'missing');
+		}, []);
+
+		return (
+			<div className="flex flex-col gap-3">
+				<Pill
+					{...args}
+					ref={pillReference}
+					className="uppercase shadow-cel-sm"
+					data-testid="pill-ref-target"
+					title="Interactive tag pill"
+				/>
+				<p className="font-mono text-sm font-bold">Ref Target: {refStatus}</p>
+			</div>
+		);
+	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const pill = canvas.getByTestId('pill-ref-target');
+
+		await expect(canvas.getByText('Ref Target: span')).toBeInTheDocument();
+		await expect(pill).toHaveAttribute('title', 'Interactive tag pill');
+		await expect(pill).toHaveClass('uppercase');
+		await expect(pill).toHaveClass('shadow-cel-sm');
+		await expect(pill).toHaveTextContent('Interactive Tag');
+	}),
 };
 
 export const Sizes: StoryObj<PillCollectionStoryProperties> = {
