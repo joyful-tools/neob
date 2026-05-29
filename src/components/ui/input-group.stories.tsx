@@ -1,4 +1,4 @@
-import { Envelope, MagnifyingGlass, Eye, EyeSlash, Copy, X, Check } from '@phosphor-icons/react';
+import { Envelope, MagnifyingGlass, X } from '@phosphor-icons/react';
 import { expect, userEvent, within } from '@storybook/test';
 import * as React from 'react';
 import { action } from 'storybook/actions';
@@ -7,7 +7,6 @@ import { guardPlay } from '@/lib/storybook-interactions';
 
 import { InputGroup } from './input-group';
 import { NumericSlider } from './numeric-slider';
-import { Toaster } from './toaster';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
@@ -138,14 +137,8 @@ export const Numeric: Story = {
 
 export const ComplexComposition: Story = {
 	render: (args) => {
-		const [showPassword, setShowPassword] = React.useState(false);
-		const password = 'super-secret-key';
-
-		const [copied, setCopied] = React.useState(false);
-
 		return (
 			<div className="flex w-96 flex-col gap-4">
-				<Toaster />
 				<InputGroup {...args}>
 					<InputGroup.Addon align="start">
 						<Envelope className="size-4" />
@@ -153,42 +146,9 @@ export const ComplexComposition: Story = {
 					<InputGroup.Input type="email" placeholder="username" />
 					<InputGroup.Suffix>@gmail.com</InputGroup.Suffix>
 				</InputGroup>
-
-				<InputGroup {...args}>
-					<InputGroup.Input type={showPassword ? 'text' : 'password'} defaultValue={password} readOnly placeholder="Password" />
-					<InputGroup.Button
-						onClick={() => {
-							const nextShowPassword = !showPassword;
-							setShowPassword(nextShowPassword);
-							action('input-group-toggle-password')(nextShowPassword);
-						}}
-						tooltip={showPassword ? 'Hide password' : 'Show password'}
-						aria-label={showPassword ? 'Hide password' : 'Show password'}
-					>
-						{showPassword ? <EyeSlash className="size-4" /> : <Eye className="size-4" />}
-					</InputGroup.Button>
-					<InputGroup.Button
-						onClick={() => {
-							if (!password) return;
-							void navigator.clipboard.writeText(password).then(() => {
-								setCopied(true);
-								setTimeout(() => setCopied(false), 2000);
-							});
-						}}
-						tooltip="Copy value"
-						aria-label="Copy value"
-					>
-						{copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-					</InputGroup.Button>
-				</InputGroup>
 			</div>
 		);
 	},
-	play: guardPlay(async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		await userEvent.click(canvas.getByRole('button', { name: 'Show password' }));
-		await expect(canvas.getByRole('button', { name: 'Hide password' })).toBeInTheDocument();
-	}),
 };
 
 export const Disabled: Story = {

@@ -87,12 +87,12 @@ function TabsTrigger({
 				const triggerClasses =
 					variant === 'segmented'
 						? cn(
-								`relative z-10 inline-flex cursor-pointer items-center justify-center rounded-lg border-2 border-transparent px-3.5 py-1.5 font-sans text-sm font-bold text-muted-foreground outline-hidden transition-colors duration-150 select-none hover:text-black focus-visible:ring-2 focus-visible:ring-black dark:hover:text-white dark:focus-visible:ring-white`,
+								`neo-focus-ring relative z-10 inline-flex cursor-pointer items-center justify-center rounded-lg border-2 border-transparent px-3.5 py-1.5 font-sans text-sm font-bold text-muted-foreground outline-hidden transition-colors duration-150 select-none hover:text-black dark:hover:text-white`,
 								isSelected && 'text-black dark:text-white',
 								className,
 							)
 						: cn(
-								`relative z-10 mb-[-3px] inline-flex cursor-pointer items-center justify-center border-2 border-transparent px-4 py-2 font-sans text-sm font-semibold text-muted-foreground outline-hidden transition-colors duration-150 select-none hover:text-black focus-visible:ring-2 focus-visible:ring-black dark:hover:text-white dark:focus-visible:ring-white`,
+								`neo-focus-ring relative z-10 mb-[-3px] inline-flex cursor-pointer items-center justify-center border-2 border-transparent px-4 py-2 font-sans text-sm font-semibold text-muted-foreground outline-hidden transition-colors duration-150 select-none hover:text-black dark:hover:text-white`,
 								isSelected && 'z-20 text-black dark:text-white',
 								className,
 							);
@@ -119,16 +119,7 @@ function TabsContent({
 }: React.ComponentPropsWithoutRef<typeof BaseTabs.Panel> & {
 	readonly ref?: React.Ref<HTMLDivElement>;
 }) {
-	return (
-		<BaseTabs.Panel
-			ref={ref}
-			className={cn(
-				`outline-hidden focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 dark:focus-visible:ring-white`,
-				className,
-			)}
-			{...properties}
-		/>
-	);
+	return <BaseTabs.Panel ref={ref} className={cn(`neo-focus-ring outline-hidden`, className)} {...properties} />;
 }
 TabsContent.displayName = 'Tabs.Content';
 

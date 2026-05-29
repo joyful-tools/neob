@@ -4,6 +4,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utilities';
 
 import { Input } from './input';
+import { InputGroup } from './input-group';
 
 export interface SensitiveInputProperties extends React.ComponentProps<typeof Input> {
 	readonly ref?: React.Ref<HTMLInputElement>;
@@ -16,6 +17,7 @@ export interface SensitiveInputProperties extends React.ComponentProps<typeof In
 export function SensitiveInput({
 	className,
 	ref,
+	type: _type,
 	label,
 	description,
 	error,
@@ -27,59 +29,38 @@ export function SensitiveInput({
 	...properties
 }: SensitiveInputProperties) {
 	const [isVisible, setIsVisible] = React.useState(false);
-
-	function toggleVisibility() {
-		setIsVisible((prev) => !prev);
-	}
-
-	const descriptionId = React.useId();
-	const errorId = React.useId();
-	const hasDescription = Boolean(description);
-	const hasError = Boolean(error);
-
-	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
-
-	const rawControl = (
-		<div className="relative w-full">
-			<Input
+	return (
+		<InputGroup
+			label={label}
+			description={description}
+			error={error}
+			required={required}
+			labelTooltip={labelTooltip}
+			controlFirst={controlFirst}
+			hideLabel={hideLabel}
+			containerClassName={containerClassName}
+			disabled={properties.disabled}
+		>
+			<InputGroup.Input
 				type={isVisible ? 'text' : 'password'}
-				className={cn('pr-12', className)}
+				className={cn('pr-2', className)}
 				ref={ref}
-				aria-describedby={describedBy}
-				aria-invalid={hasError ? true : undefined}
+				required={required}
+				disabled={properties.disabled}
 				{...properties}
 			/>
-			<button
-				type="button"
-				className="absolute top-1/2 right-2 flex size-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent text-muted-foreground transition-colors select-none hover:text-black focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:hover:text-white dark:focus-visible:ring-white"
-				onClick={toggleVisibility}
+			<InputGroup.Button
+				onClick={() => {
+					setIsVisible((prev) => !prev);
+				}}
 				disabled={properties.disabled}
+				aria-label={isVisible ? 'Hide value' : 'Show value'}
+				className="px-0"
 			>
 				{isVisible ? <EyeSlash className="size-5" /> : <Eye className="size-5" />}
 				<span className="sr-only">{isVisible ? 'Hide value' : 'Show value'}</span>
-			</button>
-		</div>
+			</InputGroup.Button>
+		</InputGroup>
 	);
-
-	if (label || description || error || labelTooltip) {
-		return (
-			<Input.Wrapper
-				label={label}
-				description={description}
-				error={error}
-				required={required}
-				labelTooltip={labelTooltip}
-				controlFirst={controlFirst}
-				hideLabel={hideLabel}
-				descriptionId={descriptionId}
-				errorId={errorId}
-				className={containerClassName}
-			>
-				{rawControl}
-			</Input.Wrapper>
-		);
-	}
-
-	return rawControl;
 }
 SensitiveInput.displayName = 'SensitiveInput';
