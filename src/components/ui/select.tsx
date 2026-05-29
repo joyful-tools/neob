@@ -154,9 +154,8 @@ export function Select<T = unknown, Multiple extends boolean | undefined = false
 					buttonVariants({ size }),
 					'w-full justify-between bg-white font-bold text-black dark:bg-zinc dark:text-white',
 					'hover:-translate-y-0.5 hover:shadow-cel-md active:translate-y-0.5 active:shadow-cel-inset-md',
-					'focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 dark:focus-visible:ring-white',
 					props.disabled && 'cursor-not-allowed opacity-50 hover:translate-y-0 hover:shadow-cel-sm',
-					error && 'border-red focus-visible:ring-red dark:border-red dark:focus-visible:ring-red',
+					error && 'border-red dark:border-red',
 					className,
 				)}
 				aria-describedby={describedBy}

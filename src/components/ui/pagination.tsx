@@ -219,7 +219,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 				</Button>
 				{controls === 'full' &&
 					(pageSelector === 'dropdown' ? (
-						<div className="ml-[-2px] w-[72px] focus-within:z-10">
+						<div className="ml-[-2px] w-[72px] shadow-cel-sm focus-within:z-10">
 							<Select
 								value={String(page)}
 								onValueChange={(value) => {
@@ -230,11 +230,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 								disabled={maxPage <= 1}
 								aria-label={labels.pageNumber}
 								size="sm"
-								className={cn(
-									'h-8 justify-center gap-1 rounded-none border-2 border-black px-2 text-xs font-black shadow-cel-sm disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000] dark:border-black dark:bg-zinc dark:text-white [&_svg]:size-3',
-									maxPage <= 1 && '[&_svg]:opacity-30 [&>span]:opacity-30',
-								)}
-								containerClassName="w-[72px] min-w-0 border-2 p-1 dark:border-black"
+								className={cn('rounded-none', maxPage <= 1 && 'disabled:opacity-100 [&_svg]:opacity-30 [&>span]:opacity-30')}
 							>
 								{Array.from({ length: maxPage }, (_, i) => i + 1).map((p) => (
 									<Select.Option key={p} value={String(p)} className="px-2 py-1 text-xs">
@@ -244,7 +240,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							</Select>
 						</div>
 					) : (
-						<div className="ml-[-2px] flex h-8 items-center justify-center rounded-none border-2 border-black bg-white shadow-cel-sm select-none focus-within:z-10 focus-within:ring-2 focus-within:ring-black focus-within:ring-offset-2 dark:border-black dark:bg-zinc dark:focus-within:ring-white">
+						<div className="ml-[-2px] flex h-8 items-center justify-center rounded-none border-2 border-black bg-white shadow-cel-sm ring-0 ring-transparent ring-offset-0 transition-all duration-300 ease-spring select-none focus-within:z-10 focus-within:ring-2 focus-within:ring-black focus-within:ring-offset-2 dark:border-black dark:bg-zinc dark:ring-offset-black dark:focus-within:ring-white">
 							<input
 								type="number"
 								disabled={maxPage <= 1}
