@@ -11,10 +11,8 @@ import { cn } from '@/lib/utilities';
 
 const RADIO_ITEM_CLASS_NAME = `
 	aspect-square size-5 shrink-0 cursor-pointer rounded-full border-2
-	border-black bg-white shadow-cel-sm ring-0 ring-transparent ring-offset-0
-	transition-all duration-300 ease-spring
-	focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2
-	focus-visible:outline-hidden
+	border-black bg-white shadow-cel-sm transition-all duration-300 ease-spring
+	neo-focus-ring isolate outline-hidden
 	disabled:cursor-not-allowed disabled:opacity-50
 	data-[checked]:bg-black data-[checked]:text-white
 	dark:bg-zinc dark:data-[checked]:bg-white

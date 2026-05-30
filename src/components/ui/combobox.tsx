@@ -43,10 +43,8 @@ function getInputStyles(size: ComboboxSize, hasError: boolean) {
 	};
 
 	return cn(
-		`flex w-full items-center justify-between bg-white font-bold text-black transition-all duration-300 ease-spring select-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
-		hasError
-			? 'border-red focus-visible:ring-red dark:border-red dark:focus-visible:ring-red'
-			: 'border-black focus-visible:ring-black dark:border-black dark:focus-visible:ring-white',
+		`neo-focus-ring-focus isolate flex w-full items-center justify-between bg-white font-bold text-black outline-hidden transition-all duration-300 ease-spring select-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
+		hasError ? 'border-red [--color-ring:var(--color-red)] dark:border-red' : 'border-black dark:border-black',
 		sizeClasses[size],
 	);
 }
@@ -324,7 +322,7 @@ function TriggerInput({
 			<BaseCombobox.Clear
 				aria-label={clearLabel}
 				className={cn(
-					'absolute top-1/2 flex -translate-y-1/2 cursor-pointer border-0 bg-transparent p-0 text-black/60 transition-opacity hover:text-black focus:outline-hidden data-disabled:pointer-events-none data-disabled:opacity-0 dark:text-white/60 dark:hover:text-white',
+					'neo-focus-ring absolute top-1/2 isolate flex -translate-y-1/2 cursor-pointer rounded-sm border-0 bg-transparent p-0 text-black/60 outline-hidden transition-opacity hover:text-black data-disabled:pointer-events-none data-disabled:opacity-0 dark:text-white/60 dark:hover:text-white',
 					iconStyles.clearRight,
 				)}
 			>
@@ -334,7 +332,7 @@ function TriggerInput({
 			<BaseCombobox.Trigger
 				aria-label={showOptionsLabel}
 				className={cn(
-					'absolute top-1/2 m-0 flex -translate-y-1/2 cursor-pointer items-center justify-center border-0 bg-transparent p-0 text-black/60 hover:text-black focus:outline-hidden disabled:pointer-events-none dark:text-white/60 dark:hover:text-white',
+					'neo-focus-ring absolute top-1/2 isolate m-0 flex -translate-y-1/2 cursor-pointer items-center justify-center rounded-sm border-0 bg-transparent p-0 text-black/60 outline-hidden hover:text-black disabled:pointer-events-none dark:text-white/60 dark:hover:text-white',
 					iconStyles.caretRight,
 				)}
 			>
@@ -356,10 +354,8 @@ function getChipsContainerStyles(size: ComboboxSize, hasError: boolean) {
 	};
 
 	return cn(
-		`flex w-full flex-col gap-1 bg-white font-bold text-black shadow-cel-inset-md transition-all duration-300 ease-spring select-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
-		hasError
-			? 'border-red focus-within:ring-red dark:border-red dark:focus-within:ring-red'
-			: 'border-black focus-within:ring-black dark:border-black dark:focus-within:ring-white',
+		`neo-focus-ring-focus isolate flex w-full flex-col gap-1 bg-white font-bold text-black shadow-cel-inset-md outline-hidden transition-all duration-300 ease-spring select-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
+		hasError ? 'border-red [--color-ring:var(--color-red)] dark:border-red' : 'border-black dark:border-black',
 		sizeClasses[size],
 	);
 }
@@ -407,7 +403,7 @@ function TriggerMultipleWithInput<ValueType>({
 			{inputSide === 'top' && (
 				<BaseCombobox.Input
 					placeholder={placeholder}
-					className="w-full border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black focus:outline-hidden dark:text-white"
+					className="w-full border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black outline-hidden dark:text-white"
 					aria-describedby={describedBy}
 					aria-invalid={ariaInvalid ? true : undefined}
 				/>
@@ -423,7 +419,7 @@ function TriggerMultipleWithInput<ValueType>({
 				{inputSide === 'right' && (
 					<BaseCombobox.Input
 						placeholder={placeholder}
-						className="min-w-[80px] flex-1 border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black focus:outline-hidden dark:text-white"
+						className="min-w-[80px] flex-1 border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black outline-hidden dark:text-white"
 						aria-describedby={describedBy}
 						aria-invalid={ariaInvalid ? true : undefined}
 					/>
@@ -528,7 +524,7 @@ function Input({ className, ref, ...props }: ComboboxInputProps) {
 		<BaseCombobox.Input
 			ref={ref}
 			className={cn(
-				'mx-1.5 my-1 flex h-9 min-w-0 self-stretch overflow-hidden rounded-md border-2 border-black bg-white px-3 py-1.5 text-sm font-medium shadow-cel-inset-md focus:outline-hidden dark:bg-zinc dark:text-white',
+				'neo-focus-ring-focus isolate m-2 flex h-9 min-w-0 self-stretch overflow-hidden rounded-md border-2 border-black bg-white px-3 py-1.5 text-sm font-medium shadow-cel-inset-md outline-hidden dark:bg-zinc dark:text-white',
 				className,
 			)}
 			{...props}

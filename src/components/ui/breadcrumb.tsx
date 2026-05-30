@@ -144,7 +144,7 @@ function BreadcrumbClipboard({ text, className, onClick, ...props }: BreadcrumbC
 			variant="ghost"
 			size="icon"
 			className={cn(
-				'size-8 opacity-0 transition-opacity focus-visible:opacity-100 active:opacity-100 group-hover-always:opacity-100',
+				'size-7 border text-black/60 opacity-0 transition-opacity [--focus-ring-inner-size:0] [--focus-ring-outer-size:2px] hover:text-black focus-visible:opacity-100 active:opacity-100 dark:text-white/60 dark:hover:text-white group-hover-always:opacity-100',
 				className,
 			)}
 			onClick={handleClick}

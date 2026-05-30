@@ -152,6 +152,7 @@ export function Select<T = unknown, Multiple extends boolean | undefined = false
 			<BaseSelect.Trigger
 				className={cn(
 					buttonVariants({ size }),
+					'neo-focus-ring-focus isolate outline-hidden',
 					'w-full justify-between bg-white font-bold text-black dark:bg-zinc dark:text-white',
 					'hover:-translate-y-0.5 hover:shadow-cel-md active:translate-y-0.5 active:shadow-cel-inset-md',
 					props.disabled && 'cursor-not-allowed opacity-50 hover:translate-y-0 hover:shadow-cel-sm',

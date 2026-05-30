@@ -44,6 +44,7 @@
 	--color-border: hsl(var(--border));
 	--color-ring: hsl(var(--ring));
 	--color-card: hsl(var(--card));
+	--color-ring-offset: hsl(var(--ring-offset));
 	--color-card-foreground: hsl(var(--card-foreground));
 	--color-popover: hsl(var(--popover));
 	--color-popover-foreground: hsl(var(--popover-foreground));
@@ -194,6 +195,7 @@
 		--muted-foreground: 0 0% 45.1%;
 		--border: 0 0% 89.8%;
 		--ring: 0 0% 3.9%;
+		--ring-offset: 0 0% 100%;
 		--card: 0 0% 100%;
 		--card-foreground: 0 0% 3.9%;
 		--popover: 0 0% 100%;
@@ -211,6 +213,7 @@
 		--muted-foreground: 0 0% 63.9%;
 		--border: 0 0% 14.9%;
 		--ring: 0 0% 83.1%;
+		--ring-offset: 0 0% 3.9%;
 		--card: 0 0% 3.9%;
 		--card-foreground: 0 0% 98%;
 		--popover: 0 0% 3.9%;
@@ -283,7 +286,7 @@
 		pointer-events: none;
 		z-index: -1;
 		box-shadow:
-			0 0 0 0 var(--color-background),
+			0 0 0 0 var(--color-ring-offset),
 			0 0 0 0 var(--color-ring);
 		opacity: 0;
 		transition:
@@ -293,9 +296,22 @@
 
 	&:focus-visible::before {
 		box-shadow:
-			0 0 0 var(--focus-ring-inner-size-value) var(--color-background),
+			0 0 0 var(--focus-ring-inner-size-value) var(--color-ring-offset),
 			0 0 0 var(--focus-ring-outer-size-value) var(--color-ring);
 		opacity: 1;
+	}
+}
+
+@utility neo-focus-ring-focus-* {
+	--focus-ring-inner-size-value: --value([length], integer, --default(var(--focus-ring-inner-size)));
+	--focus-ring-outer-size-value: --modifier([length], integer, --default(var(--focus-ring-outer-size)));
+	position: relative;
+	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow, 0 0 #0000);
+
+	&:focus,
+	&:focus-within {
+		--tw-ring-offset-shadow: 0 0 0 var(--focus-ring-inner-size-value) var(--color-ring-offset);
+		--tw-ring-shadow: 0 0 0 var(--focus-ring-outer-size-value) var(--color-ring);
 	}
 }
 

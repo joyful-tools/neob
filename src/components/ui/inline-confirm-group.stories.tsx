@@ -5,6 +5,7 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 
+import { Button } from './button';
 import { InlineConfirmGroup } from './inline-confirm-group';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
@@ -100,6 +101,7 @@ export const KeyboardAndOutsideCancel: Story = {
 				<div className="flex flex-col gap-4">
 					<InlineConfirmGroup
 						itemName="package.json"
+						direction="right"
 						onConfirm={() => {
 							action('inline-confirm-keyboard-confirm')();
 						}}
@@ -109,9 +111,7 @@ export const KeyboardAndOutsideCancel: Story = {
 						}}
 					/>
 					<p className="font-mono text-sm font-bold">Cancel Count: {cancelCount}</p>
-					<button type="button" className="rounded-md border-2 border-black px-3 py-2 font-bold">
-						Outside Target
-					</button>
+					<Button type="button">Outside Target</Button>
 				</div>
 			</div>
 		);

@@ -36,7 +36,7 @@ function TabsList({
 }) {
 	const listClasses =
 		variant === 'segmented'
-			? 'relative inline-flex items-center gap-1 border-2 border-black bg-muted/40 p-1 rounded-xl dark:border-black dark:bg-zinc/30'
+			? 'relative inline-flex items-center gap-1 border-2 border-black bg-muted/40 p-2 rounded-xl dark:border-black dark:bg-zinc/30'
 			: 'relative flex w-full space-x-1 border-b-2 border-zinc-200 pb-px dark:border-zinc-800';
 
 	const indicatorClasses =

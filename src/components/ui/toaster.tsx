@@ -19,7 +19,7 @@ export function Toaster({ ...properties }: ToasterProperties) {
 					cancelButton:
 						'group-[.toast]:bg-white dark:group-[.toast]:bg-zinc group-[.toast]:text-black dark:group-[.toast]:text-white group-[.toast]:border-2 group-[.toast]:border-black group-[.toast]:font-bold group-[.toast]:font-sans group-[.toast]:rounded-md group-[.toast]:text-sm group-[.toast]:transition-transform group-[.toast]:active:translate-y-0.5 group-[.toast]:shadow-cel-sm hover:group-[.toast]:bg-gray-100 dark:hover:group-[.toast]:bg-zinc/80',
 					closeButton:
-						'group-[.toast]:!bg-transparent group-[.toast]:!border-2 group-[.toast]:!border-transparent group-[.toast]:!text-black dark:group-[.toast]:!text-white group-[.toast]:!rounded-md group-[.toast]:!size-10 group-[.toast]:!p-0 group-[.toast]:!opacity-100 group-[.toast]:!-right-3 group-[.toast]:!-top-3 group-[.toast]:!transition-transform group-[.toast]:!shadow-none hover:group-[.toast]:!bg-muted/80 focus-visible:group-[.toast]:!outline-none focus-visible:group-[.toast]:!ring-0',
+						'group-[.toast]:neo-focus-ring group-[.toast]:isolate group-[.toast]:!bg-transparent group-[.toast]:!border-2 group-[.toast]:!border-transparent group-[.toast]:!text-black dark:group-[.toast]:!text-white group-[.toast]:!rounded-md group-[.toast]:!size-10 group-[.toast]:!p-0 group-[.toast]:!opacity-100 group-[.toast]:!-right-3 group-[.toast]:!-top-3 group-[.toast]:!outline-none group-[.toast]:!transition-transform group-[.toast]:!shadow-none hover:group-[.toast]:!bg-muted/80',
 					error:
 						'group-[.toaster]:!bg-red-50 group-[.toaster]:!text-red-900 dark:group-[.toaster]:!bg-red-dark dark:group-[.toaster]:!text-red-light',
 					success:

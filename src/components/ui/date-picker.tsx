@@ -281,7 +281,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 				week: 'flex w-full mt-1 justify-between',
 				day: 'h-9 w-9 p-0 relative flex items-center justify-center',
 				day_button:
-					'cursor-pointer flex h-9 w-9 items-center justify-center rounded-lg border-2 border-transparent text-sm font-bold text-black transition-all duration-200 select-none hover:bg-black/10 hover:border-black dark:text-white dark:hover:bg-white/10 dark:hover:border-black focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white',
+					'neo-focus-ring isolate cursor-pointer flex h-9 w-9 items-center justify-center rounded-lg border-2 border-transparent text-sm font-bold text-black outline-hidden transition-all duration-200 select-none hover:bg-black/10 hover:border-black dark:text-white dark:hover:bg-white/10 dark:hover:border-black',
 				today: '[&_button]:border-2 [&_button]:border-dashed [&_button]:border-black dark:[&_button]:border-black',
 				selected:
 					'[&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-black dark:[&_button]:bg-orange dark:[&_button]:text-black dark:[&_button]:border-black hover:[&_button]:bg-orange/90',
@@ -415,7 +415,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 							{...getFadeMotion()}
 							transition={fadeTransition}
 							className={cn(
-								'cursor-pointer rounded-sm px-1.5 py-0.5 transition-colors select-none hover:bg-black/10 focus-visible:ring-2 focus-visible:ring-black focus-visible:outline-hidden dark:hover:bg-white/10 dark:focus-visible:ring-white',
+								'neo-focus-ring isolate cursor-pointer rounded-sm px-1.5 py-0.5 outline-hidden transition-colors select-none hover:bg-black/10 dark:hover:bg-white/10',
 								view === 'months' && 'bg-black/5 dark:bg-white/10',
 							)}
 						>
@@ -434,7 +434,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 							{...getFadeMotion()}
 							transition={fadeTransition}
 							className={cn(
-								'cursor-pointer rounded-sm px-1.5 py-0.5 transition-colors select-none hover:bg-black/10 focus-visible:ring-2 focus-visible:ring-black focus-visible:outline-hidden dark:hover:bg-white/10 dark:focus-visible:ring-white',
+								'neo-focus-ring isolate cursor-pointer rounded-sm px-1.5 py-0.5 outline-hidden transition-colors select-none hover:bg-black/10 dark:hover:bg-white/10',
 								view === 'years' && 'bg-black/5 dark:bg-white/10',
 							)}
 						>

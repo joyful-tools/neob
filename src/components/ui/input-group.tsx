@@ -96,11 +96,11 @@ export function InputGroup({
 			<div
 				onClick={handleContainerClick}
 				className={cn(
-					`flex w-full items-center overflow-hidden rounded-lg border-2 border-black bg-white font-medium shadow-cel-inset-sm transition-all duration-300 ease-spring focus-within:ring-2 focus-within:ring-black focus-within:ring-offset-2 focus-within:outline-hidden dark:border-black dark:bg-zinc dark:focus-within:ring-white`,
+					`neo-focus-ring-focus isolate flex w-full items-center overflow-hidden rounded-lg border-2 border-black bg-white font-medium shadow-cel-inset-sm outline-hidden transition-all duration-300 ease-spring dark:border-black dark:bg-zinc`,
 					size === 'sm' && 'h-8 px-2 text-sm',
 					size === 'default' && 'h-10 px-3.5 text-base',
 					size === 'lg' && 'h-12 px-4.5 text-lg',
-					hasError && 'border-red focus-within:ring-red dark:border-red dark:focus-within:ring-red',
+					hasError && 'border-red [--color-ring:var(--color-red)] dark:border-red',
 					disabled && 'pointer-events-none cursor-not-allowed opacity-50 select-none',
 					className,
 				)}
@@ -168,7 +168,7 @@ function InputGroupInput({ className, type = 'text', ref, onBlur, ...properties 
 				onBlur?.(event);
 			}}
 			className={cn(
-				`size-full flex-1 border-0 bg-transparent p-0 text-foreground placeholder:text-muted-foreground focus:ring-0 focus:outline-hidden focus-visible:outline-hidden disabled:cursor-not-allowed`,
+				`size-full flex-1 border-0 bg-transparent p-0 text-foreground outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed`,
 				className,
 			)}
 			{...properties}
@@ -214,7 +214,7 @@ function InputGroupButton({ children, className, tooltip, ...properties }: Input
 			variant="ghost"
 			disabled={disabled || properties.disabled}
 			className={cn(
-				`h-7 w-auto min-w-7 border px-1.5 text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white`,
+				`h-7 w-auto min-w-7 border px-1.5 text-black/60 [--focus-ring-inner-size:0] [--focus-ring-outer-size:2px] hover:text-black dark:text-white/60 dark:hover:text-white`,
 				size === 'sm' && 'h-5 min-w-5 px-1 text-xs',
 				size === 'lg' && 'h-9 min-w-9 px-2 text-base',
 				className,

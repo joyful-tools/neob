@@ -240,12 +240,12 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							</Select>
 						</div>
 					) : (
-						<div className="ml-[-2px] flex h-8 items-center justify-center rounded-none border-2 border-black bg-white shadow-cel-sm ring-0 ring-transparent ring-offset-0 transition-all duration-300 ease-spring select-none focus-within:z-10 focus-within:ring-2 focus-within:ring-black focus-within:ring-offset-2 dark:border-black dark:bg-zinc dark:ring-offset-black dark:focus-within:ring-white">
+						<div className="neo-focus-ring-focus isolate ml-[-2px] flex h-8 items-center justify-center rounded-none border-2 border-black bg-white shadow-cel-sm outline-hidden transition-all duration-300 ease-spring select-none focus-within:z-10 dark:border-black dark:bg-zinc">
 							<input
 								type="number"
 								disabled={maxPage <= 1}
 								className={cn(
-									'h-full w-12 border-0 bg-transparent p-0 text-center text-xs font-bold text-foreground placeholder:text-muted-foreground focus:ring-0 focus:outline-hidden focus-visible:outline-hidden disabled:cursor-not-allowed',
+									'h-full w-12 border-0 bg-transparent p-0 text-center text-xs font-bold text-foreground outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed',
 									maxPage <= 1 && 'opacity-30',
 								)}
 								aria-label={labels.pageNumber}

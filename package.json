@@ -80,9 +80,9 @@
 		"storybook": "storybook dev -p 6006",
 		"storybook:build": "storybook build",
 		"storybook:test": "vitest run --config vitest.config.ts",
-		"storybook:test:ci": "vitest run --coverage --config vitest.config.ts",
+		"storybook:test:coverage": "vitest run --coverage --config vitest.config.ts",
 		"storybook:test:watch": "vitest --config vitest.config.ts",
-		"check": "bun run lint && bun run typecheck && bun run storybook:test:ci",
+		"check": "bun run lint && bun run typecheck && bun run storybook:test:coverage",
 		"storybook:deploy": "wrangler deploy",
 		"prepare": "husky"
 	},

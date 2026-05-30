@@ -15,8 +15,7 @@ const CHECKBOX_ROOT_CLASSES = `
 	peer relative flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center
 	rounded-xs border-2 border-black bg-white shadow-cel-sm transition-all
 	duration-300 ease-spring
-	data-[focus-visible]:outline-hidden data-[focus-visible]:ring-2
-	data-[focus-visible]:ring-black data-[focus-visible]:ring-offset-2
+	outline-hidden neo-focus-ring isolate
 	data-[checked]:bg-black data-[checked]:text-white
 	data-[indeterminate]:bg-black data-[indeterminate]:text-white
 	disabled:cursor-not-allowed disabled:opacity-50

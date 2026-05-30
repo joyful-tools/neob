@@ -56,6 +56,17 @@ export function ConfirmButton({
 	const descriptionId = useId();
 	const layoutId = useId();
 
+	const handleOpenChange = React.useCallback(
+		(nextOpen: boolean) => {
+			if (!nextOpen && isConfirming) {
+				return;
+			}
+
+			setOpen(nextOpen);
+		},
+		[isConfirming],
+	);
+
 	useEffect(() => {
 		if (!open) return;
 
@@ -67,13 +78,13 @@ export function ConfirmButton({
 			}
 
 			if (!containerElement?.contains(event.target)) {
-				setOpen(false);
+				handleOpenChange(false);
 			}
 		}
 
 		function handleKeyDown(event: KeyboardEvent) {
 			if (event.key === 'Escape') {
-				setOpen(false);
+				handleOpenChange(false);
 			}
 		}
 
@@ -84,7 +95,7 @@ export function ConfirmButton({
 			document.removeEventListener('pointerdown', handlePointerDown);
 			document.removeEventListener('keydown', handleKeyDown);
 		};
-	}, [confirmButtonElement, containerElement, open]);
+	}, [confirmButtonElement, containerElement, handleOpenChange, open]);
 
 	async function handleConfirm() {
 		setIsConfirming(true);
@@ -124,7 +135,14 @@ export function ConfirmButton({
 							</p>
 						)}
 						<div className="mt-3 flex w-full items-center justify-center gap-1.5">
-							<Button type="button" variant="subtle" size="sm" disabled={isConfirming} onClick={() => setOpen(false)} className="h-7 px-3">
+							<Button
+								type="button"
+								variant="subtle"
+								size="sm"
+								disabled={isConfirming}
+								onClick={() => handleOpenChange(false)}
+								className="h-7 px-3"
+							>
 								{cancelLabel}
 							</Button>
 							<Button
