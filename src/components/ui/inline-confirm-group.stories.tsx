@@ -1,3 +1,4 @@
+import { Archive, DownloadSimple, Trash } from '@phosphor-icons/react';
 import * as React from 'react';
 import { useState } from 'react';
 import { action } from 'storybook/actions';
@@ -6,7 +7,7 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { guardPlay } from '@/lib/storybook-interactions';
 
 import { Button } from './button';
-import { InlineConfirmGroup } from './inline-confirm-group';
+import { InlineConfirmGroup, InlineConfirmGroupIntent } from './inline-confirm-group';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
@@ -25,29 +26,69 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+type FileAction = 'delete' | 'archive' | 'download';
+
+interface FileActionOption {
+	kind: FileAction;
+}
+
 interface FileItem {
 	id: string;
 	name: string;
 	size: string;
+	actions: FileActionOption[];
+}
+
+function getActionProperties(kind: FileAction): {
+	actionLabel: string;
+	actionIcon: React.ReactElement<{ className?: string }>;
+	intent: InlineConfirmGroupIntent;
+} {
+	switch (kind) {
+		case 'archive': {
+			return {
+				actionLabel: 'Archive',
+				actionIcon: <Archive />,
+				intent: 'info',
+			};
+		}
+		case 'download': {
+			return {
+				actionLabel: 'Download',
+				actionIcon: <DownloadSimple />,
+				intent: 'success',
+			};
+		}
+		default: {
+			return {
+				actionLabel: 'Delete',
+				actionIcon: <Trash />,
+				intent: 'danger',
+			};
+		}
+	}
 }
 
 const RealWorldList = ({ initialFiles }: InlineConfirmGroupStoryProperties) => {
 	const [files, setFiles] = useState<FileItem[]>(initialFiles);
-	const [deletingIds, setDeletingIds] = useState<string[]>([]);
+	const [loadingActionIds, setLoadingActionIds] = useState<string[]>([]);
 
-	const handleDelete = async (id: string) => {
-		action('inline-confirm-delete')(id);
-		setDeletingIds((previous) => [...previous, id]);
+	const handleAction = async (id: string, kind: FileAction) => {
+		const actionId = `${id}-${kind}`;
+		action('inline-confirm-action')({ id, kind });
+		setLoadingActionIds((previous) => [...previous, actionId]);
 		await new Promise((resolve) => setTimeout(resolve, 1500));
-		setFiles((previous) => previous.filter((file) => file.id !== id));
-		setDeletingIds((previous) => previous.filter((deletingId) => deletingId !== id));
+		if (kind !== 'download') {
+			setFiles((previous) => previous.filter((file) => file.id !== id));
+		}
+		setLoadingActionIds((previous) => previous.filter((loadingId) => loadingId !== actionId));
 	};
 
 	return (
 		<div className="w-[450px] rounded-xl border-4 border-black bg-white p-6 text-black shadow-cel-md dark:bg-zinc dark:text-white">
 			<h3 className="mb-4 border-b-2 border-black pb-2 font-display text-lg font-bold">Project Directory Files</h3>
 			<p className="mb-4 text-xs text-muted-foreground">
-				Click the ghost trash icon, then confirm by clicking the trash again (the cancel button will spawn directly under your mouse).
+				Each file supports delete, while only some files also expose archive or download actions.
 			</p>
 			<ul className="space-y-3">
 				{files.map((file) => (
@@ -57,11 +98,22 @@ const RealWorldList = ({ initialFiles }: InlineConfirmGroupStoryProperties) => {
 							<p className="text-xs text-black/60 dark:text-white/60">{file.size}</p>
 						</div>
 						<div className="flex items-center gap-2">
-							<InlineConfirmGroup
-								itemName={file.name}
-								onConfirm={() => void handleDelete(file.id)}
-								isLoading={deletingIds.includes(file.id)}
-							/>
+							{file.actions.map((fileAction) => {
+								const actionProperties = getActionProperties(fileAction.kind);
+								const actionId = `${file.id}-${fileAction.kind}`;
+
+								return (
+									<InlineConfirmGroup
+										key={actionId}
+										itemName={file.name}
+										actionLabel={actionProperties.actionLabel}
+										actionIcon={actionProperties.actionIcon}
+										intent={actionProperties.intent}
+										onConfirm={() => void handleAction(file.id, fileAction.kind)}
+										isLoading={loadingActionIds.includes(actionId)}
+									/>
+								);
+							})}
 						</div>
 					</li>
 				))}
@@ -74,10 +126,30 @@ const RealWorldList = ({ initialFiles }: InlineConfirmGroupStoryProperties) => {
 export const Default = {
 	args: {
 		initialFiles: [
-			{ id: '1', name: 'package.json', size: '2.4 KB' },
-			{ id: '2', name: 'vite.config.ts', size: '1.2 KB' },
-			{ id: '3', name: 'index.css', size: '12 KB' },
-			{ id: '4', name: 'README.md', size: '4.5 KB' },
+			{
+				id: '1',
+				name: 'package.json',
+				size: '2.4 KB',
+				actions: [{ kind: 'download' }, { kind: 'delete' }],
+			},
+			{
+				id: '2',
+				name: 'release-notes.md',
+				size: '1.2 KB',
+				actions: [{ kind: 'download' }, { kind: 'delete' }],
+			},
+			{
+				id: '3',
+				name: 'invoices.csv',
+				size: '12 KB',
+				actions: [{ kind: 'download' }, { kind: 'archive' }],
+			},
+			{
+				id: '4',
+				name: 'README.md',
+				size: '4.5 KB',
+				actions: [{ kind: 'download' }, { kind: 'delete' }],
+			},
 		],
 	},
 	render: (args: InlineConfirmGroupStoryProperties) => <RealWorldList {...args} />,
@@ -101,6 +173,9 @@ export const KeyboardAndOutsideCancel: Story = {
 				<div className="flex flex-col gap-4">
 					<InlineConfirmGroup
 						itemName="package.json"
+						actionLabel="Archive"
+						actionIcon={<Archive />}
+						intent="info"
 						direction="right"
 						onConfirm={() => {
 							action('inline-confirm-keyboard-confirm')();
@@ -119,31 +194,31 @@ export const KeyboardAndOutsideCancel: Story = {
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
-		await userEvent.click(canvas.getByRole('button', { name: 'Delete package.json' }));
+		await userEvent.click(canvas.getByRole('button', { name: 'Archive package.json' }));
 		await waitFor(() => {
-			expect(canvas.getByRole('button', { name: 'Cancel delete package.json' })).toHaveFocus();
+			expect(canvas.getByRole('button', { name: 'Cancel archive package.json' })).toHaveFocus();
 		});
 
 		await userEvent.keyboard('{ArrowRight}');
-		await expect(canvas.getByRole('button', { name: 'Confirm delete package.json' })).toHaveFocus();
+		await expect(canvas.getByRole('button', { name: 'Confirm archive package.json' })).toHaveFocus();
 
 		await userEvent.keyboard('{Tab}');
-		await expect(canvas.getByRole('button', { name: 'Cancel delete package.json' })).toHaveFocus();
+		await expect(canvas.getByRole('button', { name: 'Cancel archive package.json' })).toHaveFocus();
 
 		await userEvent.keyboard('{Escape}');
 		await waitFor(() => {
-			expect(canvas.queryByRole('group', { name: 'Delete confirmation for package.json' })).not.toBeInTheDocument();
+			expect(canvas.queryByRole('group', { name: 'Archive confirmation for package.json' })).not.toBeInTheDocument();
 			expect(canvas.getByText('Cancel Count: 1')).toBeInTheDocument();
 		});
 
-		await userEvent.click(canvas.getByRole('button', { name: 'Delete package.json' }));
+		await userEvent.click(canvas.getByRole('button', { name: 'Archive package.json' }));
 		await waitFor(() => {
-			expect(canvas.getByRole('group', { name: 'Delete confirmation for package.json' })).toBeInTheDocument();
+			expect(canvas.getByRole('group', { name: 'Archive confirmation for package.json' })).toBeInTheDocument();
 		});
 
 		await userEvent.click(canvas.getByRole('button', { name: 'Outside Target' }));
 		await waitFor(() => {
-			expect(canvas.queryByRole('group', { name: 'Delete confirmation for package.json' })).not.toBeInTheDocument();
+			expect(canvas.queryByRole('group', { name: 'Archive confirmation for package.json' })).not.toBeInTheDocument();
 			expect(canvas.getByText('Cancel Count: 2')).toBeInTheDocument();
 		});
 	}),
@@ -161,6 +236,9 @@ export const ConfirmAndLoadingState: Story = {
 				<div className="flex items-center gap-4">
 					<InlineConfirmGroup
 						itemName="README.md"
+						actionLabel="Delete"
+						actionIcon={<Trash />}
+						intent="danger"
 						onConfirm={() => {
 							action('inline-confirm-confirm')();
 							setConfirmed(true);
@@ -174,6 +252,9 @@ export const ConfirmAndLoadingState: Story = {
 				<div className="flex items-center gap-4">
 					<InlineConfirmGroup
 						itemName="locked-file.txt"
+						actionLabel="Delete"
+						actionIcon={<Trash />}
+						intent="danger"
 						isLoading
 						onConfirm={() => {
 							action('inline-confirm-loading-confirm')();

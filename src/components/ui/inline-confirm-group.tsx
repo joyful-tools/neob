@@ -8,9 +8,13 @@ import { cn } from '@/lib/utilities';
 import { Spinner } from './spinner';
 
 export type InlineConfirmGroupDirection = 'left' | 'right';
+export type InlineConfirmGroupIntent = 'danger' | 'info' | 'success';
 
 export interface InlineConfirmGroupProperties {
 	readonly itemName: string;
+	readonly actionLabel?: string;
+	readonly actionIcon?: React.ReactElement<{ className?: string }>;
+	readonly intent?: InlineConfirmGroupIntent;
 	readonly onConfirm: () => void;
 	readonly onCancel?: () => void;
 	readonly className?: string;
@@ -24,8 +28,17 @@ const spring: Transition = {
 	damping: 40,
 };
 
+const intentClassNames: Record<InlineConfirmGroupIntent, string> = {
+	danger: 'bg-red/10 text-red hover:bg-red dark:bg-red/20',
+	info: 'bg-blue/10 text-blue hover:bg-blue dark:bg-blue/20',
+	success: 'bg-green/10 text-green hover:bg-green dark:bg-green/20',
+};
+
 export function InlineConfirmGroup({
 	itemName,
+	actionLabel = 'Delete',
+	actionIcon = <Trash />,
+	intent = 'danger',
 	onConfirm,
 	onCancel,
 	className,
@@ -40,6 +53,11 @@ export function InlineConfirmGroup({
 	const groupPositionClassName = direction === 'left' ? 'right-0 origin-right' : 'left-0 origin-left';
 	const triggerOriginClassName = direction === 'left' ? 'origin-right' : 'origin-left';
 	const transformOrigin = direction;
+	const actionLabelLowercase = actionLabel.toLowerCase();
+	const renderActionIcon = useCallback(
+		(sizeClassName: string) => React.cloneElement(actionIcon, { className: cn(sizeClassName, actionIcon.props.className) }),
+		[actionIcon],
+	);
 
 	// Auto-focus cancel button on mount so the user has immediate focus there
 	useEffect(() => {
@@ -115,10 +133,13 @@ export function InlineConfirmGroup({
 			tabIndex={0}
 			disabled={isLoading}
 			onClick={handleConfirmClick}
-			className="neo-focus-ring isolate flex size-7 cursor-pointer items-center justify-center rounded-md border border-black bg-red/10 text-red outline-hidden transition-all select-none hover:bg-red hover:text-white disabled:pointer-events-none disabled:opacity-50 dark:border-white dark:bg-red/20"
-			aria-label={`Confirm delete ${itemName}`}
+			className={cn(
+				'neo-focus-ring isolate flex size-7 cursor-pointer items-center justify-center rounded-md border border-black outline-hidden transition-all select-none hover:text-white disabled:pointer-events-none disabled:opacity-50 dark:border-white',
+				intentClassNames[intent],
+			)}
+			aria-label={`Confirm ${actionLabelLowercase} ${itemName}`}
 		>
-			<Trash className="size-4" />
+			{renderActionIcon('size-4')}
 		</button>
 	);
 	const cancelButton = (
@@ -130,7 +151,7 @@ export function InlineConfirmGroup({
 			disabled={isLoading}
 			onClick={handleCancelClick}
 			className="neo-focus-ring isolate flex size-7 cursor-pointer items-center justify-center rounded-md border border-black bg-zinc/10 text-black outline-hidden transition-all select-none hover:bg-black hover:text-white disabled:pointer-events-none disabled:opacity-50 dark:border-white dark:bg-zinc/20 dark:text-white dark:hover:bg-white dark:hover:text-black"
-			aria-label={`Cancel delete ${itemName}`}
+			aria-label={`Cancel ${actionLabelLowercase} ${itemName}`}
 		>
 			<X className="size-4" />
 		</button>
@@ -146,7 +167,7 @@ export function InlineConfirmGroup({
 						layoutId={layoutId}
 						layoutDependency={open}
 						role="group"
-						aria-label={`Delete confirmation for ${itemName}`}
+						aria-label={`${actionLabel} confirmation for ${itemName}`}
 						transition={spring}
 						style={{ borderRadius: 8, transformOrigin }}
 						className={cn(
@@ -175,10 +196,12 @@ export function InlineConfirmGroup({
 								event.stopPropagation();
 								setOpen(true);
 							}}
-							className="neo-focus-ring isolate flex size-9 cursor-pointer items-center justify-center rounded-md border-2 border-transparent text-black outline-hidden transition-all select-none hover:border-black hover:bg-muted active:translate-y-0.5 disabled:pointer-events-none disabled:opacity-50 dark:text-white dark:hover:border-white dark:hover:bg-zinc"
-							aria-label={`Delete ${itemName}`}
+							className={cn(
+								'neo-focus-ring isolate flex size-9 cursor-pointer items-center justify-center rounded-md border-2 border-transparent text-black outline-hidden transition-all select-none hover:border-black hover:bg-muted active:translate-y-0.5 disabled:pointer-events-none disabled:opacity-50 dark:text-white dark:hover:border-white dark:hover:bg-zinc',
+							)}
+							aria-label={`${actionLabel} ${itemName}`}
 						>
-							{isLoading ? <Spinner size="sm" className="size-5" /> : <Trash className="size-5" />}
+							{isLoading ? <Spinner size="sm" className="size-5" /> : renderActionIcon('size-5')}
 						</button>
 					</motion.div>
 				)}
