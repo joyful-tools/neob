@@ -143,3 +143,6 @@ export type {
 	BreadcrumbClipboardProps,
 	BreadcrumbSize,
 } from './components/ui/breadcrumb';
+
+export { VirtualizedViewport } from './components/ui/virtualized-viewport';
+export type { VirtualizedViewportProps } from './components/ui/virtualized-viewport';

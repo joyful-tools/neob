@@ -11,7 +11,8 @@ export function shouldInteractionPlay() {
 	if (globalThis.window.sessionStorage.getItem(STORYBOOK_INTERACTIONS_FORCE_ENABLE) === 'true') return true;
 
 	const disableInteractions = getStoredInteractionPreference();
-	return disableInteractions === 'false' || disableInteractions === null;
+	// Disabled by default for human users (returns false when disableInteractions is null)
+	return disableInteractions === 'false';
 }
 
 export function guardPlay<TContext>(play: (context: TContext) => Promise<void> | void) {

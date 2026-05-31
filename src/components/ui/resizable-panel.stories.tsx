@@ -8,7 +8,7 @@ import { ResizablePanel } from './resizable-panel';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
-	title: 'Utils/ResizablePanel',
+	title: 'Utility/ResizablePanel',
 	component: ResizablePanel,
 	parameters: {
 		layout: 'centered',

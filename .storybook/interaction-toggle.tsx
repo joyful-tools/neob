@@ -11,10 +11,7 @@ function getInitialDisableInteractions() {
 	const storedPreference = globalThis.window.localStorage.getItem(INTERACTION_STORAGE_KEY);
 	if (storedPreference !== null) return storedPreference === 'true';
 
-	const reducedMotion = globalThis.window.matchMedia('(prefers-reduced-motion)');
-	if (!reducedMotion.matches) return false;
-
-	globalThis.window.localStorage.setItem(INTERACTION_STORAGE_KEY, 'true');
+	// Default is disabled for human users
 	return true;
 }
 

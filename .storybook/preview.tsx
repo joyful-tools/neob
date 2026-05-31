@@ -24,7 +24,7 @@ function PreviewFrame({
 	return (
 		<MemoryRouter>
 			<div
-				className={`bg-background text-foreground transition-colors duration-200 ${isDocs ? 'p-4' : 'min-h-screen p-8'} ${isCentered ? 'flex items-center justify-center' : ''}`}
+				className={`bg-background text-foreground transition-colors duration-200 ${isDocs ? 'p-4' : 'min-h-full p-8'} ${isCentered ? 'flex items-center justify-center' : ''}`}
 			>
 				{children}
 			</div>
