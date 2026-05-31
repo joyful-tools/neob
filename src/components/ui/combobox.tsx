@@ -524,7 +524,7 @@ function Input({ className, ref, ...props }: ComboboxInputProps) {
 		<BaseCombobox.Input
 			ref={ref}
 			className={cn(
-				'neo-focus-ring-focus isolate m-2 flex h-9 min-w-0 self-stretch overflow-hidden rounded-md border-2 border-black bg-white px-3 py-1.5 text-sm font-medium shadow-cel-inset-md outline-hidden dark:bg-zinc dark:text-white',
+				'neo-focus-ring-focus isolate mx-2 mt-1 mb-2 flex h-9 min-w-0 self-stretch overflow-hidden rounded-md border-2 border-black bg-white px-3 py-1.5 text-sm font-medium shadow-cel-inset-md outline-hidden dark:bg-zinc dark:text-white',
 				className,
 			)}
 			{...props}
