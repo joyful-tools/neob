@@ -3,17 +3,9 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
 
-// ============================================================================
-// Context & Types
-// ============================================================================
-
 export type TabsVariant = 'segmented' | 'subtle';
 
 const TabsVariantContext = React.createContext<TabsVariant>('segmented');
-
-// ============================================================================
-// Components
-// ============================================================================
 
 /**
  * Root Tabs container.

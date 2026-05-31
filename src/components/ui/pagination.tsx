@@ -10,10 +10,6 @@ const DEFAULT_PAGE_SIZE_OPTIONS = [25, 50, 100, 250] as const;
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
-// ============================================================================
-// i18n Labels
-// ============================================================================
-
 export interface PaginationLabels {
 	/** Aria label for the navigation landmark. @default "Pagination" */
 	navigation?: string;
@@ -41,10 +37,6 @@ const DEFAULT_LABELS: Required<PaginationLabels> = {
 	pageSize: 'Page size',
 };
 
-// ============================================================================
-// Pagination Context
-// ============================================================================
-
 interface PaginationContextValue {
 	page: number;
 	perPage?: number;
@@ -66,10 +58,6 @@ function usePaginationContext() {
 	}
 	return context;
 }
-
-// ============================================================================
-// Pagination.Info
-// ============================================================================
 
 export interface PaginationInfoProps {
 	/** Custom render function for the info text */
@@ -98,10 +86,6 @@ function PaginationInfo({ children, className }: PaginationInfoProps) {
 }
 
 PaginationInfo.displayName = 'Pagination.Info';
-
-// ============================================================================
-// Pagination.PageSize
-// ============================================================================
 
 export interface PaginationPageSizeProps {
 	/** Current page size value */
@@ -152,10 +136,6 @@ function PaginationPageSize({
 }
 
 PaginationPageSize.displayName = 'Pagination.PageSize';
-
-// ============================================================================
-// Pagination.Controls
-// ============================================================================
 
 export interface PaginationControlsProps {
 	/** Controls variant: 'full' or 'simple'. @default "full" */
@@ -321,10 +301,6 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 
 PaginationControls.displayName = 'Pagination.Controls';
 
-// ============================================================================
-// Pagination.Separator
-// ============================================================================
-
 export interface PaginationSeparatorProps {
 	/** Additional CSS classes */
 	readonly className?: string;
@@ -335,10 +311,6 @@ function PaginationSeparator({ className }: PaginationSeparatorProps) {
 }
 
 PaginationSeparator.displayName = 'Pagination.Separator';
-
-// ============================================================================
-// Pagination Root
-// ============================================================================
 
 export interface PaginationProps {
 	/** Callback fired when the current page changes. */

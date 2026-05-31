@@ -5,10 +5,6 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
 
-// ============================================================================
-// Constants
-// ============================================================================
-
 const RADIO_ITEM_CLASS_NAME = `
 	aspect-square size-5 shrink-0 cursor-pointer rounded-full border-2
 	border-black bg-white shadow-cel-sm transition-all duration-300 ease-spring
@@ -18,10 +14,6 @@ const RADIO_ITEM_CLASS_NAME = `
 	dark:bg-zinc dark:data-[checked]:bg-white
 	dark:data-[checked]:text-black
 `;
-
-// ============================================================================
-// Types
-// ============================================================================
 
 interface RadioGroupProperties extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive> {
 	readonly ref?: React.Ref<HTMLDivElement>;
@@ -35,10 +27,6 @@ interface RadioGroupItemProperties {
 	readonly disabled?: boolean;
 	readonly style?: React.CSSProperties & Record<string, string>;
 }
-
-// ============================================================================
-// Components
-// ============================================================================
 
 /** Radio group container. Wraps Base UI RadioGroup primitive. */
 function RadioGroupRoot({ className, ref, ...properties }: RadioGroupProperties) {

@@ -168,7 +168,6 @@ function invokeCallback(
 export function DatePicker(fullProps: DatePickerProps) {
 	const { className, classNames, components, fixedWeeks = true } = fullProps;
 
-	// View state: 'days' | 'months' | 'years'
 	const [view, setView] = React.useState<'days' | 'months' | 'years'>('days');
 	const [pageDirection, setPageDirection] = React.useState<PageDirection>('none');
 

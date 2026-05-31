@@ -129,10 +129,6 @@ const meta = {
 
 export default meta;
 
-// ============================================================================
-// Data
-// ============================================================================
-
 const fruits = [
 	'Apple',
 	'Apricot',
@@ -331,10 +327,6 @@ const workspaceApps: WorkspaceAppItem[] = [
 	{ value: 'trello', label: 'Trello', vendor: 'Atlassian' },
 	{ value: 'zoom', label: 'Zoom', vendor: 'Zoom' },
 ];
-
-// ============================================================================
-// Demos
-// ============================================================================
 
 export const Default: StoryObj<FruitComboboxStoryProperties> = {
 	args: {

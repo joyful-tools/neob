@@ -142,10 +142,8 @@ function InputGroupInput({ className, type = 'text', ref, onBlur, ...properties 
 
 	const handleRef = React.useCallback(
 		(node: HTMLInputElement | null) => {
-			// Update local ref
 			Object.assign(inputRef, { current: node });
 
-			// Update forwarded ref
 			if (typeof ref === 'function') {
 				ref(node);
 			} else if (ref) {
@@ -256,7 +254,6 @@ function InputGroupSuffix({ children, className, ...properties }: InputGroupSuff
 	);
 }
 
-// Bind sub-components
 InputGroup.Input = InputGroupInput;
 InputGroup.Addon = InputGroupAddon;
 InputGroup.Button = InputGroupButton;

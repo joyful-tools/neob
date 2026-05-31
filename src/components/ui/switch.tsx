@@ -3,10 +3,6 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
 
-// ============================================================================
-// Types
-// ============================================================================
-
 export interface SwitchProperties extends React.ComponentPropsWithoutRef<typeof BaseSwitch.Root> {
 	readonly ref?: React.Ref<HTMLButtonElement>;
 	readonly label?: React.ReactNode;
@@ -15,10 +11,6 @@ export interface SwitchProperties extends React.ComponentPropsWithoutRef<typeof 
 	readonly error?: string;
 	readonly variant?: 'default' | 'accent' | 'success';
 }
-
-// ============================================================================
-// Constants
-// ============================================================================
 
 const VARIANT_ROOT_CLASSES = {
 	default: `
@@ -49,10 +41,6 @@ const SWITCH_THUMB_CLASSES = `
 	data-[checked]:translate-x-[22px] data-[checked]:bg-white
 	dark:bg-white dark:data-[checked]:bg-black
 `;
-
-// ============================================================================
-// Components
-// ============================================================================
 
 /**
  * Sliding Switch toggle control component.

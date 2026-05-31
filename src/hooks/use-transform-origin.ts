@@ -56,7 +56,6 @@ export function useTransformOrigin<T extends HTMLElement>(anchorElement: HTMLEle
 			popup.style.transformOrigin = origin;
 		};
 
-		// Run immediately on layout
 		updateOrigin();
 
 		// Observe data-side on popup and style changes on its parent (the Floating UI Positioner)

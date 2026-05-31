@@ -2,10 +2,6 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
 
-// ============================================================================
-// Types
-// ============================================================================
-
 export interface VirtualizedViewportProps<T> {
 	/** Array of items to be virtualized. */
 	readonly items: T[];
@@ -36,10 +32,6 @@ export interface VirtualizedViewportProps<T> {
 	/** Optional callback fired when the rendered or visible item ranges change. */
 	readonly onRangeChange?: (range: { startIndex: number; endIndex: number; firstVisibleIndex: number; lastVisibleIndex: number }) => void;
 }
-
-// ============================================================================
-// Pure Layout Helpers
-// ============================================================================
 
 /**
  * Binary search to find the item index spanning the target scroll offset.
@@ -150,10 +142,6 @@ function getItemKeyDefault<T>(item: T, index: number): string | number {
 	return index;
 }
 
-// ============================================================================
-// Component
-// ============================================================================
-
 export function VirtualizedViewport<T>({
 	items,
 	renderItem,
@@ -185,14 +173,10 @@ export function VirtualizedViewport<T>({
 		[viewportRef],
 	);
 
-	// --------------------------------------------------------------------------
-	// State & Size Mapping
-	// --------------------------------------------------------------------------
 	const [sizeMap, setSizeMap] = React.useState<Map<string | number, number>>(() => new Map());
 	const [viewportHeight, setViewportHeight] = React.useState(0);
 	const [scrollTop, setScrollTop] = React.useState(0);
 
-	// Stable references for items and key getter inside callback refs
 	const itemsRef = React.useRef(items);
 	const getItemKeyRef = React.useRef(getItemKey || ((item: T, idx: number) => getItemKeyDefault(item, idx)));
 
@@ -206,7 +190,6 @@ export function VirtualizedViewport<T>({
 	const prevOffsetsRef = React.useRef<number[]>([]);
 	const anchorRef = React.useRef<{ key: string | number; offset: number } | null>(null);
 
-	// Derive sizes and offsets (uses props and state directly for pure renders without ref access)
 	const sizes = React.useMemo(() => {
 		const getK = getItemKey || getItemKeyDefault;
 		return items.map((item, index) => {
@@ -227,9 +210,6 @@ export function VirtualizedViewport<T>({
 		sizesLengthRef.current = sizes.length;
 	}, [offsets, sizes.length]);
 
-	// --------------------------------------------------------------------------
-	// Refs & Stable Callbacks
-	// --------------------------------------------------------------------------
 	const resizeObserverRef = React.useRef<ResizeObserver | null>(null);
 	const elementsRef = React.useRef<Map<string | number, HTMLDivElement>>(new Map());
 	const pendingSizesRef = React.useRef<Map<string | number, number>>(new Map());
@@ -248,9 +228,6 @@ export function VirtualizedViewport<T>({
 		anchorRef.current = { key, offset: anchorOffset };
 	}, []);
 
-	// --------------------------------------------------------------------------
-	// Range Calculations
-	// --------------------------------------------------------------------------
 	const { startIndex, endIndex, firstVisibleIndex, lastVisibleIndex } = React.useMemo(
 		() => calculateRenderRange(offsets, scrollTop, viewportHeight, items.length, overscan),
 		[offsets, scrollTop, viewportHeight, items.length, overscan],
@@ -278,9 +255,6 @@ export function VirtualizedViewport<T>({
 	const postHeight = Math.max(0, totalHeight - (offsets[endIndex + 1] ?? 0));
 	const stickyOffset = React.useMemo(() => calculateStickyOffset(viewportHeight, contentHeight), [viewportHeight, contentHeight]);
 
-	// --------------------------------------------------------------------------
-	// Observers & Height Measurement
-	// --------------------------------------------------------------------------
 	React.useEffect(() => {
 		const observer = new ResizeObserver((entries) => {
 			const currentScrollTop = localViewportRef.current?.scrollTop ?? 0;
@@ -358,9 +332,7 @@ export function VirtualizedViewport<T>({
 		return () => observer.disconnect();
 	}, []);
 
-	// --------------------------------------------------------------------------
 	// Scroll Anchoring Application (Synchronized via layout effects to avoid render side-effects)
-	// --------------------------------------------------------------------------
 	React.useLayoutEffect(() => {
 		const viewport = localViewportRef.current;
 		if (!viewport) return;
@@ -422,9 +394,6 @@ export function VirtualizedViewport<T>({
 		prevOffsetsRef.current = offsets;
 	}, [items, offsets, getItemKey]);
 
-	// --------------------------------------------------------------------------
-	// Handlers
-	// --------------------------------------------------------------------------
 	const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
 		const nextScroll = event.currentTarget.scrollTop;
 		setScrollTop(nextScroll);
@@ -450,10 +419,6 @@ export function VirtualizedViewport<T>({
 			}
 		}
 	};
-
-	// --------------------------------------------------------------------------
-	// Render Output
-	// --------------------------------------------------------------------------
 	const renderedItems = React.useMemo(() => {
 		const result: React.ReactNode[] = [];
 		const getK = getItemKey || getItemKeyDefault;

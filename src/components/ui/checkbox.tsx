@@ -5,10 +5,6 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
 
-// ============================================================================
-// Context & Constants
-// ============================================================================
-
 const CheckboxGroupContext = React.createContext<{ controlFirst?: boolean }>({ controlFirst: true });
 
 const CHECKBOX_ROOT_CLASSES = `
@@ -23,10 +19,6 @@ const CHECKBOX_ROOT_CLASSES = `
 	dark:data-[checked]:text-black dark:data-[indeterminate]:bg-white
 	dark:data-[indeterminate]:text-black
 `;
-
-// ============================================================================
-// Types
-// ============================================================================
 
 export interface CheckboxProperties extends React.ComponentPropsWithoutRef<typeof BaseCheckbox.Root> {
 	readonly ref?: React.Ref<HTMLElement>;
@@ -47,10 +39,6 @@ export interface CheckboxGroupProperties extends React.ComponentPropsWithoutRef<
 	readonly error?: string;
 	readonly controlFirst?: boolean;
 }
-
-// ============================================================================
-// Components
-// ============================================================================
 
 /**
  * Standard Checkbox component.

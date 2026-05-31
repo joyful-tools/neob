@@ -11,6 +11,42 @@ import { VirtualizedViewport, type VirtualizedViewportProps } from './virtualize
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+interface Slab {
+	id: string;
+	label: number;
+	bg: string;
+	height: number;
+}
+
+const BG = ['bg-orange', 'bg-gold', 'bg-blue', 'bg-purple', 'bg-pink', 'bg-yellow', 'bg-red', 'bg-green'] as const;
+
+const hexId = (n: number) => {
+	const sign = n < 0 ? '-' : '';
+	return sign + Math.abs(n).toString(16).toUpperCase().padStart(3, '0');
+};
+
+const makeSlabs = (count: number, dynamic = false, offset = 0): Slab[] =>
+	Array.from({ length: count }, (_, i) => {
+		const idx = offset + i;
+		return {
+			id: `s-${idx}`,
+			label: idx,
+			bg: BG[idx % BG.length]!,
+			height: dynamic ? [48, 72, 96][idx % 3]! : 48,
+		};
+	});
+
+const SlabItem = ({ slab }: { slab: Slab }) => (
+	<div
+		style={{ height: slab.height }}
+		className={cn('flex items-center border-b-2 border-black px-4 transition-colors duration-100 hover:brightness-110', slab.bg)}
+	>
+		<span className="inline-flex items-center rounded-md bg-black/80 px-2 py-0.5 font-mono text-xs font-bold text-white">
+			{hexId(slab.label)}
+		</span>
+	</div>
+);
+
 const meta = {
 	title: 'Utility/VirtualizedViewport',
 	component: VirtualizedViewport,
@@ -18,101 +54,42 @@ const meta = {
 		layout: 'centered',
 	},
 	tags: ['autodocs'],
-} satisfies Meta<VirtualizedViewportProps<MockItem>>;
+} satisfies Meta<VirtualizedViewportProps<Slab>>;
 
 export default meta;
-type Story = StoryObj<VirtualizedViewportProps<MockItem>>;
-
-interface MockItem {
-	id: string;
-	title: string;
-	description: string;
-	color: string;
-	height: number;
-}
-
-const COLORS = [
-	'bg-orange-light text-zinc-900 border-orange-dark dark:text-orange-light',
-	'bg-gold-light text-zinc-900 border-gold-dark dark:text-gold-light',
-	'bg-blue-light text-zinc-900 border-blue-dark dark:text-blue-light',
-	'bg-purple-light text-zinc-900 border-purple-dark dark:text-purple-light',
-	'bg-pink-light text-zinc-900 border-pink-dark dark:text-pink-light',
-	'bg-yellow-light text-zinc-900 border-yellow-dark dark:text-yellow-light',
-	'bg-red-light text-zinc-900 border-red-dark dark:text-red-light',
-	'bg-green-light text-zinc-900 border-green-dark dark:text-green-light',
-];
-
-const LOREM_IPSUM = [
-	'Lorem ipsum dolor sit amet.',
-	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor.',
-	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna.',
-];
-
-const generateItems = (count: number, variableHeights = false, startIndex = 0): MockItem[] => {
-	return Array.from({ length: count }, (_, i) => {
-		const globalIndex = startIndex + i;
-		const loremIndex = variableHeights ? globalIndex % 3 : 0;
-		const height = variableHeights ? (loremIndex === 2 ? 120 : loremIndex === 1 ? 80 : 60) : 60;
-		return {
-			id: `item-${globalIndex}`,
-			title: `Item #${globalIndex + 1}`,
-			description: LOREM_IPSUM[loremIndex]!,
-			color: COLORS[globalIndex % COLORS.length]!,
-			height,
-		};
-	});
-};
+type Story = StoryObj<VirtualizedViewportProps<Slab>>;
 
 export const Basic: Story = {
 	args: {
-		items: generateItems(100, false),
-		estimatedItemHeight: 60,
+		items: makeSlabs(100),
+		estimatedItemHeight: 48,
 		overscan: 5,
 	},
-	render: (args: VirtualizedViewportProps<MockItem>) => {
-		const [itemsList, setItemsList] = React.useState<MockItem[]>(args.items);
+	render: (args: VirtualizedViewportProps<Slab>) => {
+		const [items, setItems] = React.useState<Slab[]>(args.items);
 
 		return (
-			<div className="flex w-[600px] flex-col gap-4">
-				<div className="flex items-center justify-between rounded-xl border-2 border-black bg-muted/40 p-4">
-					<div>
-						<h3 className="font-display text-lg">Virtualized Viewport</h3>
-					</div>
+			<div className="flex w-[480px] flex-col gap-4">
+				<div className="flex items-center justify-between rounded-xl border-2 border-black bg-muted/40 p-3">
+					<h3 className="font-display text-base">Basic</h3>
 					<div className="flex gap-2">
-						<Button variant="subtle" size="sm" onClick={() => setItemsList((prev) => [...prev, ...generateItems(50, false, prev.length)])}>
-							Add 50 Items
+						<Button variant="subtle" size="sm" onClick={() => setItems((p) => [...p, ...makeSlabs(50, false, p.length)])}>
+							+50
 						</Button>
-						<Button variant="danger" size="sm" onClick={() => setItemsList([])}>
-							Clear List
+						<Button variant="danger" size="sm" onClick={() => setItems([])}>
+							Clear
 						</Button>
 					</div>
 				</div>
 
-				<Card className="h-[400px] overflow-hidden border-2 border-black bg-white p-0 dark:bg-zinc">
+				<Card className="h-[400px] overflow-hidden border-2 border-black p-0">
 					<VirtualizedViewport
-						items={itemsList}
+						items={items}
 						estimatedItemHeight={args.estimatedItemHeight}
 						overscan={args.overscan}
 						className="size-full"
-						onScroll={(e) => {
-							action('onScroll')(e.currentTarget.scrollTop);
-						}}
-						renderItem={(item) => (
-							<div
-								style={{ height: item.height }}
-								className="flex items-center gap-3 border-b-2 border-black bg-white px-4 transition-all duration-150 hover:bg-muted/10 dark:bg-zinc"
-							>
-								<div
-									className={cn(
-										'inline-flex items-center justify-center rounded-lg border-2 border-black px-3 py-1 font-sans text-[10px] font-bold shadow-cel-sm',
-										item.color,
-									)}
-								>
-									{item.title}
-								</div>
-								<span className="text-xs font-medium text-muted-foreground">{item.description}</span>
-							</div>
-						)}
+						onScroll={(e) => action('onScroll')(e.currentTarget.scrollTop)}
+						renderItem={(item) => <SlabItem slab={item} />}
 					/>
 				</Card>
 			</div>
@@ -122,100 +99,74 @@ export const Basic: Story = {
 		const canvas = within(canvasElement);
 		const scrollContainer = canvasElement.querySelector('.overflow-y-auto');
 		await expect(scrollContainer).toBeInTheDocument();
-
 		if (!scrollContainer) throw new Error('Scroll container not found');
 
-		// 1. Initially check that early items are rendered and visible
-		await expect(canvas.getByText('Item #1')).toBeInTheDocument();
-		await expect(canvas.getByText('Item #5')).toBeInTheDocument();
+		await expect(canvas.getByText('000')).toBeInTheDocument();
+		await expect(canvas.getByText('004')).toBeInTheDocument();
 
-		// Items far down the list should NOT be in the DOM
-		await expect(canvas.queryByText('Item #50')).not.toBeInTheDocument();
+		await expect(canvas.queryByText('031')).not.toBeInTheDocument();
 
-		// 2. Perform a scroll
-		scrollContainer.scrollTop = 1200; // Scroll past 20 items (20 * 60 = 1200)
+		scrollContainer.scrollTop = 960;
 		scrollContainer.dispatchEvent(new Event('scroll'));
-
-		// Wait a brief moment for state synchronization
 		await new Promise((resolve) => setTimeout(resolve, 50));
 
-		// Now item 20-30 should be visible, and item 1 should be virtualized out of DOM
-		await expect(canvas.getByText('Item #22')).toBeInTheDocument();
-		await expect(canvas.queryByText('Item #1')).not.toBeInTheDocument();
+		await expect(canvas.getByText('015')).toBeInTheDocument();
+		await expect(canvas.queryByText('000')).not.toBeInTheDocument();
 
-		// 3. Test clear list button
-		const clearButton = canvas.getByRole('button', { name: 'Clear List' });
+		const clearButton = canvas.getByRole('button', { name: 'Clear' });
 		await userEvent.click(clearButton);
-		await expect(canvas.queryByText('Item #22')).not.toBeInTheDocument();
+		await expect(canvas.queryByText('015')).not.toBeInTheDocument();
 	}),
 };
 
 export const DynamicHeights: Story = {
 	args: {
-		items: generateItems(200, true),
-		estimatedItemHeight: 100,
+		items: makeSlabs(200, true),
+		estimatedItemHeight: 72,
 		overscan: 5,
 	},
-	render: (args: VirtualizedViewportProps<MockItem>) => {
-		const [itemsList, setItemsList] = React.useState<MockItem[]>(args.items);
+	render: (args: VirtualizedViewportProps<Slab>) => {
+		const [items, setItems] = React.useState<Slab[]>(args.items);
 
 		return (
-			<div className="flex w-[600px] flex-col gap-4">
-				<div className="flex items-center justify-between rounded-xl border-2 border-black bg-muted/40 p-4">
-					<div>
-						<h3 className="font-display text-lg">Virtualized Viewport</h3>
-					</div>
+			<div className="flex w-[480px] flex-col gap-4">
+				<div className="flex items-center justify-between rounded-xl border-2 border-black bg-muted/40 p-3">
+					<h3 className="font-display text-base">Dynamic Heights</h3>
 					<div className="flex gap-2">
 						<Button
 							variant="accent"
 							size="sm"
 							onClick={() =>
-								setItemsList((prev) => {
+								setItems((prev) => {
+									const lowestLabel = prev.length > 0 ? Math.min(...prev.map((s) => s.label)) : 0;
 									const prepended = Array.from({ length: 10 }, (_, i) => {
-										const loremIndex = i % 3;
-										const height = loremIndex === 2 ? 120 : loremIndex === 1 ? 80 : 60;
-										const id = `prepend-${Date.now()}-${i}`;
+										const label = lowestLabel - 10 + i;
 										return {
-											id,
-											title: `Prepended #${i + 1}`,
-											description: LOREM_IPSUM[loremIndex]!,
-											color: COLORS[i % COLORS.length]!,
-											height,
+											id: `pre-${Date.now()}-${i}`,
+											label,
+											bg: BG[((label % BG.length) + BG.length) % BG.length]!,
+											height: [48, 72, 96][((label % 3) + 3) % 3]!,
 										};
 									});
 									return [...prepended, ...prev];
 								})
 							}
 						>
-							Prepend 10 Items
+							Prepend 10
 						</Button>
-						<Button variant="subtle" size="sm" onClick={() => setItemsList((prev) => [...prev, ...generateItems(10, true, prev.length)])}>
-							Append 10 Items
+						<Button variant="subtle" size="sm" onClick={() => setItems((p) => [...p, ...makeSlabs(10, true, p.length)])}>
+							Append 10
 						</Button>
 					</div>
 				</div>
 
-				<Card className="h-[450px] overflow-hidden border-2 border-black bg-white p-0 shadow-cel-md dark:bg-zinc">
+				<Card className="h-[450px] overflow-hidden border-2 border-black p-0 shadow-cel-md">
 					<VirtualizedViewport
-						items={itemsList}
+						items={items}
 						estimatedItemHeight={args.estimatedItemHeight}
 						overscan={args.overscan}
 						className="size-full"
-						renderItem={(item) => (
-							<div
-								style={{ minHeight: item.height }}
-								className="flex flex-col gap-2 border-b-2 border-black bg-white p-4 transition-colors duration-150 hover:bg-muted/10 dark:bg-zinc"
-							>
-								<div className="flex items-center">
-									<span
-										className={cn('rounded-md border border-black px-2 py-0.5 font-sans text-[10px] font-bold shadow-cel-sm', item.color)}
-									>
-										{item.title}
-									</span>
-								</div>
-								<p className="text-xs/relaxed font-medium text-muted-foreground">{item.description}</p>
-							</div>
-						)}
+						renderItem={(item) => <SlabItem slab={item} />}
 					/>
 				</Card>
 			</div>
@@ -226,10 +177,8 @@ export const DynamicHeights: Story = {
 		const scrollContainer = canvasElement.querySelector('.overflow-y-auto');
 		if (!scrollContainer) throw new Error('Scroll container not found');
 
-		// 1. Verify dynamic height items rendering
-		await expect(canvas.getByText('Item #1')).toBeInTheDocument();
+		await expect(canvas.getByText('000')).toBeInTheDocument();
 
-		// Scroll to a mid point
 		scrollContainer.scrollTop = 500;
 		scrollContainer.dispatchEvent(new Event('scroll'));
 		await new Promise((resolve) => setTimeout(resolve, 50));
@@ -237,14 +186,10 @@ export const DynamicHeights: Story = {
 		const firstScrollTop = scrollContainer.scrollTop;
 		expect(firstScrollTop).toBeGreaterThanOrEqual(450);
 
-		// 2. Prepend items (adds offset of prepended items, triggering scroll anchoring adjustment)
-		const prependButton = canvas.getByRole('button', { name: 'Prepend 10 Items' });
+		const prependButton = canvas.getByRole('button', { name: 'Prepend 10' });
 		await userEvent.click(prependButton);
-
-		// Wait for sizes/offsets recalculation and layout effect anchoring adjustment
 		await new Promise((resolve) => setTimeout(resolve, 100));
 
-		// ScrollTop should adjust upwards because we prepended 10 items above the current viewport
 		const afterPrependScrollTop = scrollContainer.scrollTop;
 		expect(afterPrependScrollTop).toBeGreaterThan(firstScrollTop);
 	}),
@@ -252,12 +197,12 @@ export const DynamicHeights: Story = {
 
 export const VisualBufferDebugger: Story = {
 	args: {
-		items: generateItems(100, true),
-		estimatedItemHeight: 120,
+		items: makeSlabs(100, true),
+		estimatedItemHeight: 72,
 		overscan: 4,
 	},
-	render: (args: VirtualizedViewportProps<MockItem>) => {
-		const [itemsList] = React.useState<MockItem[]>(args.items);
+	render: (args: VirtualizedViewportProps<Slab>) => {
+		const [items] = React.useState<Slab[]>(args.items);
 		const [range, setRange] = React.useState({
 			startIndex: 0,
 			endIndex: -1,
@@ -267,43 +212,23 @@ export const VisualBufferDebugger: Story = {
 
 		return (
 			<div className="flex w-[680px] flex-col gap-4">
-				<div className="rounded-xl border-2 border-black bg-muted/40 p-4">
-					<h3 className="font-display text-lg">Virtualized Viewport Debugger</h3>
+				<div className="rounded-xl border-2 border-black bg-muted/40 p-3">
+					<h3 className="font-display text-base">Buffer Debugger</h3>
 				</div>
 
 				<div className="flex gap-4">
-					{/* Scrollable Viewport */}
-					<Card className="h-[450px] w-[380px] overflow-hidden border-2 border-black bg-white p-0 shadow-cel-md">
+					<Card className="h-[450px] w-[380px] overflow-hidden border-2 border-black p-0 shadow-cel-md">
 						<VirtualizedViewport
-							items={itemsList}
+							items={items}
 							estimatedItemHeight={args.estimatedItemHeight}
 							overscan={args.overscan}
 							className="size-full"
 							onRangeChange={setRange}
-							renderItem={(item) => (
-								<div
-									style={{ minHeight: item.height }}
-									className="flex flex-col gap-2 border-b-2 border-black bg-white p-4 transition-colors duration-150 hover:bg-muted/10 dark:bg-zinc"
-								>
-									<div className="flex items-center">
-										<span
-											className={cn(
-												'rounded-md border border-black px-2.5 py-0.5 font-sans text-[10px] font-bold shadow-cel-sm',
-												item.color,
-											)}
-										>
-											{item.title}
-										</span>
-									</div>
-									<p className="text-xs/relaxed font-medium text-muted-foreground">{item.description}</p>
-								</div>
-							)}
+							renderItem={(item) => <SlabItem slab={item} />}
 						/>
 					</Card>
 
-					{/* Virtualization Map */}
-					<Card className="flex flex-1 flex-col border-2 border-black bg-white p-4 shadow-cel-md">
-						{/* Legend */}
+					<Card className="flex flex-1 flex-col border-2 border-black p-4 shadow-cel-md">
 						<div className="mb-3 flex flex-wrap gap-2 font-mono text-[10px]">
 							<div className="flex items-center gap-1">
 								<div className="size-3 rounded-sm border border-black bg-green-light shadow-cel-inset-sm" />
@@ -315,13 +240,12 @@ export const VisualBufferDebugger: Story = {
 							</div>
 							<div className="flex items-center gap-1">
 								<div className="size-3 rounded-sm border border-black bg-muted shadow-cel-inset-sm" />
-								<span>Virtualized</span>
+								<span>Virtual</span>
 							</div>
 						</div>
 
-						{/* Grid Map */}
 						<div className="grid max-h-[300px] flex-1 grid-cols-10 gap-1 overflow-y-auto pr-1">
-							{itemsList.map((_, i) => {
+							{items.map((_, i) => {
 								const isVisible = i >= range.firstVisibleIndex && i <= range.lastVisibleIndex;
 								const isRendered = i >= range.startIndex && i <= range.endIndex;
 
@@ -335,13 +259,13 @@ export const VisualBufferDebugger: Story = {
 								return (
 									<div
 										key={i}
-										title={`Item #${i + 1}`}
+										title={`#${hexId(i)}`}
 										className={cn(
 											'flex size-6 items-center justify-center rounded-sm border border-black font-mono text-[9px] shadow-cel-sm transition-all duration-150',
 											statusClass,
 										)}
 									>
-										{i + 1}
+										{i}
 									</div>
 								);
 							})}
@@ -353,7 +277,7 @@ export const VisualBufferDebugger: Story = {
 	},
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		await expect(canvas.getByText('Virtualized Viewport Debugger')).toBeInTheDocument();
-		await expect(canvas.getByText('Item #1')).toBeInTheDocument();
+		await expect(canvas.getByText('Buffer Debugger')).toBeInTheDocument();
+		await expect(canvas.getByText('000')).toBeInTheDocument();
 	}),
 };

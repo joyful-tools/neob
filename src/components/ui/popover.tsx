@@ -5,10 +5,6 @@ import { cn } from '@/lib/utilities';
 
 import { useTransformOrigin } from '../../hooks/use-transform-origin';
 
-// ============================================================================
-// Constants
-// ============================================================================
-
 const POPOVER_CONTENT_CLASS_NAME = `
 	z-50 w-72 origin-(--transform-origin) rounded-xl
 	border-2 border-black bg-popover p-4 text-popover-foreground shadow-cel
@@ -22,18 +18,10 @@ const POPOVER_CONTENT_CLASS_NAME = `
 	dark:border-black dark:shadow-cel
 `;
 
-// ============================================================================
-// Context
-// ============================================================================
-
 const PopoverContext = React.createContext<{
 	readonly anchorRef: React.RefCallback<HTMLDivElement | null>;
 	readonly anchorElement: HTMLDivElement | null;
 } | null>(null);
-
-// ============================================================================
-// Types
-// ============================================================================
 
 interface PopoverContentProperties {
 	readonly ref?: React.Ref<HTMLDivElement>;
@@ -44,10 +32,6 @@ interface PopoverContentProperties {
 	readonly side?: 'top' | 'bottom' | 'left' | 'right';
 	readonly onOpenAutoFocus?: (event: Event) => void;
 }
-
-// ============================================================================
-// Components
-// ============================================================================
 
 /** Popover root component. Wraps Base UI Popover primitive with a stable anchor context. */
 function PopoverRoot({ children, ...properties }: React.ComponentProps<typeof PopoverPrimitive.Root>) {

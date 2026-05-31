@@ -82,10 +82,7 @@ function forceHiddenStyles(node: HTMLTextAreaElement) {
 function pickSizingStyles(style: CSSStyleDeclaration): Record<SizingStyleKey, string> {
 	const result = {} as Record<SizingStyleKey, string>;
 	for (const key of SIZING_STYLE_KEYS) {
-		result[key] = style.getPropertyValue(
-			// Convert camelCase to kebab-case for getPropertyValue
-			key.replaceAll(/([A-Z])/g, '-$1').toLowerCase(),
-		);
+		result[key] = style.getPropertyValue(key.replaceAll(/([A-Z])/g, '-$1').toLowerCase());
 	}
 	return result;
 }
@@ -155,7 +152,6 @@ export function useInputAreaAutoResize(options: UseInputAreaAutoResizeOptions = 
 		const sizingData = getSizingData(node);
 		if (!sizingData) return;
 
-		// Ensure hidden textarea exists
 		let hiddenTextarea = hiddenTextareaRef.current;
 		if (!hiddenTextarea) {
 			hiddenTextarea = document.createElement('textarea');
@@ -173,18 +169,15 @@ export function useInputAreaAutoResize(options: UseInputAreaAutoResizeOptions = 
 		const { paddingSize, borderSize, sizingStyle } = sizingData;
 		const { boxSizing } = sizingStyle;
 
-		// Copy sizing styles to hidden textarea
 		for (const [cssKey, cssValue] of Object.entries(sizingStyle)) {
 			(hiddenTextarea.style as unknown as Record<string, string>)[cssKey] = cssValue;
 		}
 
 		forceHiddenStyles(hiddenTextarea);
 
-		// Measure content height
 		hiddenTextarea.value = node.value || node.placeholder || 'x';
 		const height = getHeight(hiddenTextarea, sizingData);
 
-		// Measure single row height
 		hiddenTextarea.value = 'x';
 		const rowHeight = hiddenTextarea.scrollHeight - paddingSize;
 
@@ -195,7 +188,6 @@ export function useInputAreaAutoResize(options: UseInputAreaAutoResizeOptions = 
 
 		const contentHeight = Math.max(minHeight, height);
 
-		// Calculate max height from maxRows
 		hiddenTextarea.value = 'x';
 		hiddenTextarea.rows = maxRows === Infinity ? node.rows : maxRows;
 		const maxHeight = maxRows === Infinity ? Infinity : getHeight(hiddenTextarea, sizingData);
@@ -209,7 +201,6 @@ export function useInputAreaAutoResize(options: UseInputAreaAutoResizeOptions = 
 			node.scrollTop = 0;
 		}
 
-		// Skip if height hasn't changed meaningfully
 		if (Math.abs(container.offsetHeight - targetHeight) < 1) {
 			node.style.overflowY = isScrolling ? 'auto' : 'hidden';
 			return;
@@ -224,12 +215,10 @@ export function useInputAreaAutoResize(options: UseInputAreaAutoResizeOptions = 
 
 		const { duration = 75, easing = 'ease-out' } = typeof animate === 'object' ? animate : {};
 
-		// Set transition styles and height on container
 		node.style.overflowY = 'hidden';
 		container.style.transition = `height ${duration}ms ${easing}`;
 		container.style.setProperty('height', `${targetHeight}px`);
 
-		// Clean up previous transitionend listener if any
 		if ((container as any)._cleanupTransition) {
 			(container as any)._cleanupTransition();
 		}
@@ -254,7 +243,6 @@ export function useInputAreaAutoResize(options: UseInputAreaAutoResizeOptions = 
 		container.addEventListener('transitionend', handleTransitionEnd);
 	}, [maxRows, animate]);
 
-	// Callback ref to attach to the container
 	const callbackRef = useCallback(
 		(node: HTMLElement | null) => {
 			containerRef.current = node;
@@ -267,7 +255,6 @@ export function useInputAreaAutoResize(options: UseInputAreaAutoResizeOptions = 
 		[resize],
 	);
 
-	// Listen for input/change events and window resize
 	useEffect(() => {
 		const container = containerRef.current;
 		if (!container) return;
@@ -291,7 +278,6 @@ export function useInputAreaAutoResize(options: UseInputAreaAutoResizeOptions = 
 		node.addEventListener('scroll', handleScroll);
 		window.addEventListener('resize', handleDeferredResize);
 
-		// Run initial resize
 		handleDeferredResize();
 
 		return () => {

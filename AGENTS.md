@@ -1,10 +1,42 @@
-# Agent Integration Guide for "neob"
+# NEOB KNOWLEDGE BASE
 
-This file provides a structured technical reference for AI coding agents to integrate and consume the **neob** component library. It outlines design tokens, component schemas, path aliases, class name rules, and animations.
+**Generated:** 2026-05-31 | **Branch:** main
+
+## OVERVIEW
+
+Brutalist React 19 component library (`neob`). Form-focused inputs with opt-in wrappers, touch-gated tooltips, sliding indicator segmented tabs, animated overlays, and performant virtualized viewports. Built on React 19, Base UI, Tailwind CSS v4, Framer Motion (motion/react), and Storybook. Driven by Bun as the package manager and Vitest for testing.
+
+## STRUCTURE
+
+```
+neob/
+├── .storybook/              # Storybook configurations and theme setup
+├── src/
+│   ├── components/          # React components
+│   │   └── ui/              # Stark brutalist atom/molecule components
+│   ├── hooks/               # Core React hooks (useInputAreaAutoResize, useTransformOrigin, useDeferredOpen)
+│   ├── lib/                 # Shared utilities and Storybook integration helpers
+│   ├── index.css            # Global CSS containing Tailwind classes and custom tokens
+│   └── index.ts             # Library barrel exports
+├── package.json             # Scripts, dependencies, and bundle configuration
+├── tsconfig.json            # TypeScript compile configurations
+└── vite.config.ts           # Library-mode build config
+```
+
+## WHERE TO LOOK
+
+| Task                      | Location                                  | Notes                                                         |
+| ------------------------- | ----------------------------------------- | ------------------------------------------------------------- |
+| Component implementations | `src/components/ui/{name}.tsx`            | Direct atomic component implementation files.                 |
+| Hooks and auto-resizing   | `src/hooks/use-input-area-auto-resize.ts` | Layout and textarea sizing logic.                             |
+| Storybook stories         | `src/components/ui/{name}.stories.tsx`    | Component playground and visual verification setup.           |
+| Global design tokens      | `src/index.css`                           | Theme and token definitions (colors, fonts, variables).       |
+| Shared CSS utilities      | `src/lib/utilities.ts`                    | The `cn(...)` Tailwind merge helper and `getThemeColor(...)`. |
+| Bundle build configs      | `vite.config.ts` & `tsconfig.json`        | Bundling and compiler directives.                             |
 
 ---
 
-## Design System Tokens & Colors
+## DESIGN SYSTEM TOKENS & COLORS
 
 All colors are controlled by CSS Custom Variables declared in `index.css`. The tailwind variants utilize these tokens:
 
@@ -32,7 +64,7 @@ All colors are controlled by CSS Custom Variables declared in `index.css`. The t
 
 ---
 
-## Key Tailwind Utility Classes
+## KEY UTILITY CLASSES
 
 Always apply these custom brutalist classes when building layouts:
 
@@ -46,176 +78,82 @@ Always apply these custom brutalist classes when building layouts:
 
 ---
 
-## Component API & Usage Cheatsheet
+## CONVENTIONS
 
-### Form Input Architecture
+### Styling (CRITICAL)
 
-All input components (`Input`, `InputArea`, `SensitiveInput`, `InputGroup`) support an **opt-in wrapper** pattern:
+- **Brutalist Border & Tokens**: Colors must lean on curated tokens rather than standard Tailwind shades (e.g., `border-black`, `bg-zinc`, custom theme variables). Never use raw Tailwind colors like `bg-blue-500` or `text-gray-900`.
+- **Tailwind class merging**: Always utilize the exposed `cn(...)` utility helper when combining conditional classes dynamically.
+- **Mode/theme**: Custom light/dark themes are applied via the `.dark` class wrapper, targeting root variables or components.
 
-- Pass `label`, `description`, `error`, `required`, `labelTooltip`, `controlFirst`, `hideLabel` directly as props.
-- If any wrapper prop is provided, the component automatically wraps itself in a `Field` layout.
-- If no wrapper prop is provided, the component renders **only** the raw control (no wrapping div).
-- Use `containerClassName` to style the `Field` wrapper; use `className` for the raw control.
-- Use `Input.Fieldset` directly only for custom form compositions (e.g., wrapping Select, Combobox, or groups).
+### Components
 
-```tsx
-import { Input, InputArea, SensitiveInput, InputGroup } from 'neob';
+- **Single Component Imports**: Always import compound components via their parent component (e.g., `import { Tabs } from 'neob';` and use `<Tabs.List>`, `<Tabs.Trigger>`, etc.).
+- **Ref Forwarding**: All elements support modern React 19 ref-as-prop pattern. Do NOT use `forwardRef`.
+- **Early Returns**: Write early return statements for guard clauses.
+- **Display Names**: Always set `displayName` (e.g., `Tabs.displayName = 'Tabs'`) to aid React Developer Tools debugging.
 
-// Self-contained labeled input (no manual Field wrapper needed)
-<Input label="Username" description="Choose a handle" placeholder="johndoe" />
+### TypeScript
 
-// Self-contained labeled textarea
-<InputArea label="Bio" description="Tell us about yourself" autoResize />
+- **Fully Typed**: Parameters must be fully typed. Do NOT use `as` assertions.
+- **No `any` type**: Use explicit types or generics instead of `any`.
 
-// Raw input without wrapper (for custom form compositions)
-<Input placeholder="Bare input" />
+### Comments & Documentation (CRITICAL)
 
-// Fieldset for custom compositions
-<Input.Fieldset legend="Options">
-  <Input.Wrapper label="Custom Control">
-    <SomeCustomComponent />
-  </Input.Wrapper>
-</Input.Fieldset>
-```
+- **No Redundant Comments**: Avoid writing redundant comments that describe "WHAT" code is doing if it is already clear from the implementation (e.g., `// check if is open` above `if (isOpen) { ... }`).
+- **Explain the "WHY"**: Keep or write critical comments that explain "WHY" something is done (e.g., hacks, workarounds, edge cases, specific animations, complex math formulas, non-obvious optimizations).
+- **No Banner/Divider Comments**: Do not include visual block comments like `// =============` or `// Components` to separate code. Keep the structure clean.
 
-### 1. Button
+---
 
-Variants: `default`, `accent`, `danger`, `subtle`, `ghost`, `link`, `dark-default`, `dark-accent`, `dark-subtle`, `dark-ghost`.
-Sizes: `default`, `sm`, `lg`, `xl`, `icon`.
+## ANTI-PATTERNS
 
-```tsx
-import { Button } from 'neob';
-<Button variant="accent" size="lg">
-  Action
-</Button>;
-```
+| Pattern                                            | Why                                                     | Instead                                              |
+| :------------------------------------------------- | :------------------------------------------------------ | :--------------------------------------------------- |
+| `bg-blue-500`, `text-gray-900`                     | Breaks brutalist theme, fails styling guidelines        | Use semantic/curated tokens: `bg-blue`, `bg-zinc`    |
+| Using `forwardRef`                                 | Redundant in React 19, which supports direct `ref` prop | Pass `ref` as a regular prop to the component        |
+| Redundant comments (e.g. `// check if open`)       | Clutters the codebase without adding value              | Write self-documenting code; explain only the "why"  |
+| Visual block comments / divider banners            | Clutters the file structure                             | Keep structure clean with standard spacing           |
+| `as` type assertions                               | Bypasses TypeScript compiler safety                     | Fully type parameters, interfaces, and return values |
+| Importing sub-components directly (e.g. `TabList`) | Violates component coupling conventions                 | Import parent `Tabs` and use `<Tabs.List>`           |
+| Editing auto-generated files                       | Changes will be lost on subsequent builds               | Edit source configs or run code generator            |
 
-### 2. Dialog & AlertDialog
+---
 
-Overlay component based on Base UI. Implements AnimatePresence.
+## COMMANDS
 
-```tsx
-import { Dialog, Button } from 'neob';
+Execute all commands using `bun`:
 
-// Usage:
-<Dialog open={isOpen} onOpenChange={setIsOpen}>
-  <Dialog.Content>
-    <Dialog.Header>
-      <Dialog.Title>Modal Heading</Dialog.Title>
-      <Dialog.Description>Description text</Dialog.Description>
-    </Dialog.Header>
-    <div>Main Body</div>
-    <Dialog.Footer>
-      <Button variant="subtle" onClick={() => setIsOpen(false)}>
-        Cancel
-      </Button>
-    </Dialog.Footer>
-  </Dialog.Content>
-</Dialog>;
-```
-
-### 3. Tooltip
-
-Touch-gated tooltip wrapper. Touch start triggers a 700ms long press, while hover triggers immediately.
-
-```tsx
-import { Tooltip, Button } from 'neob';
-
-// Wrap application or page in provider once:
-<Tooltip.Provider>
-  <Tooltip content="Tooltip helper text" side="top">
-    <Button variant="subtle">Hover Me</Button>
-  </Tooltip>
-</Tooltip.Provider>;
-```
-
-### 4. Dropdown Menu
-
-Base UI menu with custom spring popover translation.
-
-```tsx
-import { DropdownMenu, Button } from 'neob';
-
-<DropdownMenu>
-  <DropdownMenu.Trigger>
-    <Button>Open</Button>
-  </DropdownMenu.Trigger>
-  <DropdownMenu.Content>
-    <DropdownMenu.Label>Labels</DropdownMenu.Label>
-    <DropdownMenu.Separator />
-    <DropdownMenu.Item onSelect={action}>Item</DropdownMenu.Item>
-  </DropdownMenu.Content>
-</DropdownMenu>;
-```
-
-### 5. Resizable Panel
-
-Layout pane splitter with custom drag-resizing.
-
-```tsx
-import { ResizablePanel } from 'neob';
-
-<div className="flex h-64 border-2 border-black">
-  <ResizablePanel direction="horizontal" defaultSize={200} minSize={100} maxSize={400}>
-    <div>Left sidebar</div>
-  </ResizablePanel>
-  <div className="flex-1">Right content</div>
-</div>;
-```
-
-### 6. One-Time Password Field
-
-Coordinated verification input.
-
-```tsx
-import { OTPField } from 'neob';
-
-<OTPField length={4} value={otp} onValueChange={setOtp}>
-  <OTPField.Input index={0} />
-  <OTPField.Input index={1} />
-  <OTPField.Input index={2} />
-  <OTPField.Input index={3} />
-</OTPField>;
-```
-
-### 7. Toast Alerts
-
-Built on Sonner.
-
-```tsx
-import { toast, Toaster } from 'neob';
-
-// Render the <Toaster /> at root:
-<Toaster />;
-
-// Trigger:
-toast.success('Successfully Saved!', { description: "All changes sync'd" });
-toast.error('Failed to Connect');
-```
-
-### 8. Tabs
-
-Tabs supports two visual variants: `segmented` (default, with custom sliding indicator) and `subtle` (stark tab header buttons).
-
-```tsx
-import { Tabs } from 'neob';
-
-<Tabs defaultValue="account">
-  <Tabs.List variant="segmented">
-    <Tabs.Trigger value="account">Account</Tabs.Trigger>
-    <Tabs.Trigger value="password">Password</Tabs.Trigger>
-  </Tabs.List>
-  <Tabs.Content value="account">Account Settings Page</Tabs.Content>
-  <Tabs.Content value="password">Password Settings Page</Tabs.Content>
-</Tabs>;
+```bash
+bun run storybook           # Launch Storybook dev server (localhost:6006)
+bun run build               # Build the library bundle via Vite
+bun run lint                # Prettier checks + ESLint checking
+bun run format              # Format files using Prettier and ESLint autofix
+bun run typecheck           # Run TypeScript compiler checks (`tsc --noEmit`)
+bun run storybook:test      # Run component tests via Vitest
+bun run check               # Run lint + typecheck + storybook tests with coverage
 ```
 
 ---
 
-## Coding Conventions
+## TOOLCHAIN
 
-- **Single Component Imports:** Always import compound components via their parent component (e.g. `import { Tabs } from 'neob';` and use `<Tabs.List>`, `<Tabs.Trigger>`, etc.).
-- **Ref Forwarding:** All elements support modern React 19 ref-as-prop pattern. Do NOT use `forwardRef`.
-- **Early Returns:** Write early return statements for guard clauses.
-- **TypeScript:** Fully typed parameters. Do NOT use `as` assertions.
-- **Tailwind class merging:** Always utilize the exposed `cn(...)` utility helper when combining conditional classes dynamically.
+| Tool         | Version       | Notes                                                 |
+| :----------- | :------------ | :---------------------------------------------------- |
+| Node         | ^20.x / ^22.x | Runtime environment                                   |
+| Bun          | ^1.x          | Package manager and runner (driven by `bun.lock`)     |
+| React        | ^19.2.3       | Core framework                                        |
+| Vite         | ^6.4.2        | Bundler (library build mode)                          |
+| Tailwind CSS | ^4.1.18       | Utility styling framework via `@tailwindcss/vite`     |
+| ESLint       | ^9.39.4       | Code linting                                          |
+| Prettier     | ^3.7.4        | Code formatting                                       |
+| Vitest       | ^4.1.7        | Test runner supporting playwright browser environment |
+| Storybook    | ^10.4.1       | UI component playground and testing environment       |
+
+---
+
+## SECURITY
+
+- **NEVER commit** secrets, API keys, or personal developer tokens.
+- Keep `.env` and environment configs gitignored.
+- Ensure Storybook build configs do not expose sensitive local build environments.

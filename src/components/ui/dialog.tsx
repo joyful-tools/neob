@@ -8,10 +8,6 @@ import { cn } from '@/lib/utilities';
 import { buttonVariants } from './button';
 import { useDialogStackPresence } from './dialog-stack';
 
-// ============================================================================
-// Constants
-// ============================================================================
-
 const OVERLAY_CLASS_NAME = `
 	fixed inset-0 z-50 bg-black/35 backdrop-blur-md
 	data-[closed]:animate-overlay-out
@@ -36,15 +32,7 @@ const springSnappy = {
 	damping: 28,
 } as const;
 
-// ============================================================================
-// Context
-// ============================================================================
-
 const DialogContext = createContext<{ open: boolean; preventClose: boolean; isComposed?: boolean }>({ open: false, preventClose: false });
-
-// ============================================================================
-// Types
-// ============================================================================
 
 interface DialogProperties extends Omit<DialogPrimitive.Root.Props, 'children' | 'open' | 'defaultOpen' | 'onOpenChange'> {
 	readonly children?: React.ReactNode;
@@ -73,10 +61,6 @@ interface DialogDescriptionProperties {
 	readonly className?: string;
 	readonly children?: React.ReactNode;
 }
-
-// ============================================================================
-// Components
-// ============================================================================
 
 /** Dialog root supporting compound pattern or composed modal pattern. */
 function DialogRoot({ children, open: controlledOpen, defaultOpen, onOpenChange, preventClose = false, ...properties }: DialogProperties) {

@@ -3,10 +3,6 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
 
-// ============================================================================
-// Types
-// ============================================================================
-
 type ValidationMode = 'numeric' | 'alphanumeric';
 
 interface OTPContextValue {
@@ -45,10 +41,6 @@ interface InputProperties {
 	readonly className?: string;
 }
 
-// ============================================================================
-// Constants
-// ============================================================================
-
 const INPUT_CLASS_NAME = `
 	aspect-square size-12 grow rounded-lg border-2 border-black bg-white
 	dark:bg-zinc text-center font-mono text-xl font-bold uppercase text-black
@@ -59,10 +51,6 @@ const INPUT_CLASS_NAME = `
 	selection:bg-black selection:text-white
 	dark:selection:bg-white dark:selection:text-black
 `;
-
-// ============================================================================
-// Utilities
-// ============================================================================
 
 /** Validates a single character against the specified mode */
 function validateChar(char: string, mode: ValidationMode): boolean {
@@ -86,10 +74,6 @@ function valueToArray(value: string, length: number): string[] {
 	}
 	return characters;
 }
-
-// ============================================================================
-// Hooks
-// ============================================================================
 
 /**
  * Manages controllable state that can be either controlled externally or uncontrolled internally.
@@ -121,10 +105,6 @@ function useControllableState<T>({
 	return [value, setValue] as const;
 }
 
-// ============================================================================
-// Context
-// ============================================================================
-
 const OTPContext = createContext<OTPContextValue | undefined>(undefined);
 
 function useOTPContext(): OTPContextValue {
@@ -134,10 +114,6 @@ function useOTPContext(): OTPContextValue {
 	}
 	return context;
 }
-
-// ============================================================================
-// Root Component
-// ============================================================================
 
 /**
  * Root container for the OTP input field.
@@ -157,7 +133,6 @@ function OTPFieldRoot({
 	className,
 	autoSubmit = false,
 }: RootProperties) {
-	// State
 	const [value, setValue] = useControllableState({
 		prop: valueProperty,
 		defaultProp: defaultValue ?? '',
@@ -166,16 +141,13 @@ function OTPFieldRoot({
 	const [activeInputIndex, setActiveInputIndex] = useState(autoFocus ? 0 : -1);
 	const [selectionTrigger, setSelectionTrigger] = useState(0);
 
-	// Refs
 	const inputReferences = useRef<(HTMLInputElement | null)[]>([]);
 	const formReference = useRef<HTMLFormElement | null>(null);
 	const pendingFocusIndex = useRef(-1);
 	const previousValue = useRef(value ?? '');
 
-	// Derived state
 	const valueArray = useMemo(() => valueToArray(value ?? '', length), [value, length]);
 
-	// Callbacks
 	const registerInput = useCallback((index: number, element: HTMLInputElement | null) => {
 		inputReferences.current[index] = element;
 	}, []);
@@ -217,13 +189,11 @@ function OTPFieldRoot({
 			// Validate character (empty string means deletion)
 			if (targetChar && !validateChar(targetChar, validationMode)) return;
 
-			// Build new value
 			const newValueArray = [...valueArray];
 			newValueArray[index] = targetChar ? (validationMode === 'alphanumeric' ? targetChar.toUpperCase() : targetChar) : '';
 
 			updateValue(newValueArray.join(''));
 
-			// Auto-advance to next input on successful entry
 			if (targetChar && index < length - 1) {
 				focusInput(index + 1);
 			}
@@ -286,7 +256,6 @@ function OTPFieldRoot({
 			const pastedData = event.clipboardData.getData('text').trim();
 			if (!pastedData) return;
 
-			// Extract and validate characters
 			const validChars: string[] = [];
 			for (const char of pastedData) {
 				if (validateChar(char, validationMode) && validChars.length < length) {
@@ -300,8 +269,6 @@ function OTPFieldRoot({
 		[length, validationMode, updateValue, focusInput],
 	);
 
-	// Effects
-
 	// Synchronize focus and selection after state updates
 	useLayoutEffect(() => {
 		if (pendingFocusIndex.current >= 0 && pendingFocusIndex.current < length) {
@@ -314,7 +281,6 @@ function OTPFieldRoot({
 		}
 	}, [activeInputIndex, selectionTrigger, length]);
 
-	// Auto-submit when value is complete
 	useEffect(() => {
 		const currentValue = value ?? '';
 		if (currentValue !== previousValue.current) {
@@ -326,14 +292,12 @@ function OTPFieldRoot({
 		}
 	}, [value, length, autoSubmit]);
 
-	// Discover parent form for auto-submit
 	useEffect(() => {
 		if (autoSubmit && inputReferences.current[0]) {
 			formReference.current = inputReferences.current[0].closest('form');
 		}
 	}, [autoSubmit]);
 
-	// Context value (memoized to prevent unnecessary re-renders)
 	const contextValue = useMemo<OTPContextValue>(
 		() => ({
 			value: valueArray,
@@ -375,10 +339,6 @@ function OTPFieldRoot({
 		</OTPContext.Provider>
 	);
 }
-
-// ============================================================================
-// Input Component
-// ============================================================================
 
 /** Individual OTP input field. Must be used within a Root component. */
 function OTPFieldInput({ index, className }: InputProperties) {
@@ -442,10 +402,6 @@ function OTPFieldInput({ index, className }: InputProperties) {
 		/>
 	);
 }
-
-// ============================================================================
-// Hidden Input Component
-// ============================================================================
 
 /** Hidden input for native form submission. Rendered automatically by Root when name is provided. */
 function HiddenInput() {

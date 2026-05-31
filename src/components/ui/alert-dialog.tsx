@@ -8,10 +8,6 @@ import { cn } from '@/lib/utilities';
 
 import { buttonVariants } from './button';
 
-// ============================================================================
-// Constants
-// ============================================================================
-
 const OVERLAY_CLASS_NAME = `
 	fixed inset-0 z-50 bg-black/35 backdrop-blur-md
 	data-[closed]:animate-overlay-out
@@ -31,15 +27,7 @@ const MOTION_VARIANTS = {
 	transition: { duration: 0.15, ease: [0.34, 1.56, 0.64, 1] as const },
 } as const;
 
-// ============================================================================
-// Context
-// ============================================================================
-
 const AlertDialogContext = createContext<{ open: boolean }>({ open: false });
-
-// ============================================================================
-// Types
-// ============================================================================
 
 interface AlertDialogProperties extends Omit<AlertDialogPrimitive.Root.Props, 'children' | 'open' | 'defaultOpen' | 'onOpenChange'> {
 	readonly children?: React.ReactNode;
@@ -87,10 +75,6 @@ interface AlertDialogTriggerProperties {
 	readonly asChild?: boolean;
 	readonly ref?: React.Ref<HTMLButtonElement>;
 }
-
-// ============================================================================
-// Components
-// ============================================================================
 
 /** Alert dialog root with controllable open state. */
 function AlertDialogRoot({ children, open: controlledOpen, defaultOpen, onOpenChange, ...properties }: AlertDialogProperties) {

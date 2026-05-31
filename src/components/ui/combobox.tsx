@@ -6,10 +6,6 @@ import { cn } from '@/lib/utilities';
 
 import { Input as NeoInput } from './input';
 
-// ============================================================================
-// Types & Context
-// ============================================================================
-
 export type ComboboxSize = 'xs' | 'sm' | 'base' | 'lg';
 
 const ComboboxContext = React.createContext<{
@@ -30,10 +26,6 @@ const ComboboxContext = React.createContext<{
 	anchorElement: null,
 });
 
-// ============================================================================
-// Helper styling function
-// ============================================================================
-
 function getInputStyles(size: ComboboxSize, hasError: boolean) {
 	const sizeClasses = {
 		xs: 'h-6 text-xs px-2 py-0.5 rounded-md border-[1.5px]',
@@ -48,10 +40,6 @@ function getInputStyles(size: ComboboxSize, hasError: boolean) {
 		sizeClasses[size],
 	);
 }
-
-// ============================================================================
-// Components
-// ============================================================================
 
 export interface ComboboxProps<Value = unknown, Multiple extends boolean | undefined = false> extends BaseCombobox.Root.Props<
 	Value,
@@ -196,7 +184,6 @@ function Content({
 }
 Content.displayName = 'Combobox.Content';
 
-// Size-dependent styles for TriggerValue icon
 const triggerValueIconStyles: Record<ComboboxSize, { padding: string; iconSize: number; iconRight: string }> = {
 	xs: { padding: 'pr-6', iconSize: 12, iconRight: 'right-1' },
 	sm: { padding: 'pr-8', iconSize: 14, iconRight: 'right-1.5' },
@@ -259,7 +246,6 @@ function Trigger({ children, ref, ...props }: ComboboxTriggerProps) {
 }
 Trigger.displayName = 'Combobox.Trigger';
 
-// Size-dependent styles for TriggerInput icons
 const triggerInputIconStyles: Record<ComboboxSize, { padding: string; iconSize: number; clearRight: string; caretRight: string }> = {
 	xs: {
 		padding: 'pr-7',
@@ -591,10 +577,6 @@ function GroupLabel({ className, ref, ...props }: ComboboxGroupLabelProps) {
 	);
 }
 GroupLabel.displayName = 'Combobox.GroupLabel';
-
-// ============================================================================
-// Exports
-// ============================================================================
 
 export interface ComboboxComponent {
 	<Value, Multiple extends boolean | undefined = false>(props: ComboboxProps<Value, Multiple>): React.JSX.Element;

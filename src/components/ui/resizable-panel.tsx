@@ -31,7 +31,6 @@ export function ResizablePanel({
 	const startPositionReference = useRef(0);
 	const startSizeReference = useRef(0);
 
-	// Handle mouse down on resize handle
 	const handleMouseDown = useCallback(
 		(event: React.MouseEvent) => {
 			event.preventDefault();
@@ -42,7 +41,6 @@ export function ResizablePanel({
 		[direction, size],
 	);
 
-	// Handle mouse move during resize
 	useEffect(() => {
 		if (!isResizing) return;
 
