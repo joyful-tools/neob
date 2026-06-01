@@ -1,65 +1,70 @@
 # neob
 
-**neob** is a reusable design system and React component library based on unstyled primitives from [Base UI](https://base-ui.com/) and styled in a bold **Neo-Brutalist** aesthetic.
+A React 19 component library styled in a bold Neo-Brutalist aesthetic.
 
-It features stark black borders, high-contrast layouts, spring animations, and dark/light mode support.
-
----
-
-## Features
-
-- **Base UI Integration:** Built on accessible, robust, unstyled primitives.
-- **Neo-Brutalist Design:** Bold colors, thick black borders, stark drop shadows (`shadow-brutal`), and urban styling.
-- **Interactive Componentry:** dialogs, popovers, custom inputs, touch-gated tooltips, dropdown menus, and resizable layout panels.
-- **Dark Mode:** Effortless theming with class-based overrides (`.dark`).
-- **Storybook:** Embedded Storybook for instant preview.
-
----
+neob provides accessible, design-system-compliant UI components built on [Base UI](https://base-ui.com/). It handles keyboard navigation, focus management, and ARIA attributes with high-contrast layouts, spring animations, and built-in dark/light mode support.
 
 ## Installation
 
-Install `neob` and its peer dependencies via your favorite package manager:
+Install `neob` using your favorite package manager:
 
 ```bash
 # Using bun (recommended)
-bun add neob react react-dom motion @phosphor-icons/react sonner
+bun add neob
 
 # Using npm
-npm install neob react react-dom motion @phosphor-icons/react sonner
+npm install neob
+
+# Using pnpm
+pnpm add neob
 ```
 
----
+### Peer Dependencies
 
-## Setup & Configuration
+Ensure the following peer dependencies are installed:
 
-### 1. Import Styles
+```bash
+# Using bun
+bun add react react-dom motion @phosphor-icons/react sonner
 
-Import the precompiled library stylesheet at the root of your application (e.g. `main.tsx` or `index.tsx`):
+# Using npm
+npm install react react-dom motion @phosphor-icons/react sonner
+```
+
+## Usage
+
+Import components and styles directly at the root of your application:
 
 ```tsx
+import { Button, Card, Dialog } from 'neob';
 import 'neob/dist/index.css';
 ```
 
-### 2. Configure Tailwind CSS
+### Granular Imports (Tree-Shaking)
 
-Since `neob` is built on Tailwind CSS v4, it declares custom theme tokens and utility classes (such as `shadow-brutal` and `neo-focus-ring`). If you want to use custom `neob` classes inside your host application, ensure your `index.css` imports Tailwind and includes the path to `neob` source files for compiling:
+To reduce your bundle size, you can import components individually:
+
+```tsx
+import { Button } from 'neob/button';
+import { Card } from 'neob/card';
+```
+
+### Tailwind CSS v4 Configuration
+
+`neob` leverages Tailwind CSS v4 for styling. To make custom `neob` CSS classes and themes available in your application, configure Tailwind to inspect the package:
 
 ```css
 @import 'tailwindcss';
 
-/* Add this line so Tailwind parses neob class names */
-@source '../node_modules/neob/dist/**/*.{js,cjs}';
+/* Ensure Tailwind compiles neob classes from node_modules */
+@source "../node_modules/neob/dist/**/*.{js,cjs}";
 ```
 
----
+## Dark & Light Mode
 
-## Dark & Light Mode Support
+`neob` supports dynamic dark mode out-of-the-box. The dark mode theme is class-based and will activate when the `.dark` class is applied to any parent element (e.g., `<html>` or `<body>`):
 
-`neob` features a full dark mode system powered by CSS custom variables. Dark mode is class-based and triggers when the `.dark` class is applied to any parent element (usually `<html>` or `<body>`).
-
-To toggle dark mode:
-
-```javascript
+```js
 // Enable dark mode
 document.documentElement.classList.add('dark');
 
@@ -67,55 +72,19 @@ document.documentElement.classList.add('dark');
 document.documentElement.classList.remove('dark');
 ```
 
-When dark mode is active, the variables mapping colors flip to a slate-dark scheme, and components automatically adapt while retaining their stark neo-brutalist borders.
+When active, color tokens automatically shift to their dark variant.
 
----
+## Development & Documentation
 
-## Usage Example
+To run the Storybook server locally for interactive documentation, testing, and component previews:
 
-```tsx
-import React, { useState } from 'react';
-import { Button, Card, Dialog } from 'neob';
-
-export function MyComponent() {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <div className="bg-background text-foreground min-h-screen p-8">
-      <Card className="mx-auto max-w-md">
-        <Card.Header>
-          <Card.Title>Welcome to neob!</Card.Title>
-        </Card.Header>
-        <Card.Content className="flex flex-col gap-4">
-          <p className="text-sm">This component library is styled with a premium Neo-Brutalist design language.</p>
-
-          <Button variant="accent" onClick={() => setOpen(true)}>
-            Open Dialog
-          </Button>
-        </Card.Content>
-      </Card>
-
-      <Dialog open={open} onOpenChange={setOpen}>
-        <Dialog.Content>
-          <Dialog.Title>Hello World!</Dialog.Title>
-          <p className="my-4 text-sm">This is a neo-brutalist popover modal dialog.</p>
-          <Button variant="default" onClick={() => setOpen(false)}>
-            Close
-          </Button>
-        </Dialog.Content>
-      </Dialog>
-    </div>
-  );
-}
+```bash
+bun run storybook
 ```
 
----
+Refer to the available package scripts for testing and linting:
 
-## Available Components
-
-- **Layout:** `Card`, `Table`, `GridBackground`, `ResizablePanel`
-- **Actions:** `Button`, `Toggle`, `SplitButton`, `ConfirmButton`
-- **Feedback:** `Spinner`, `Meter`, `Skeleton`, `BorderBeam`, `LoadingBars`
-- **Inputs:** `Input`, `SensitiveInput`, `InputArea`, `InputGroup`, `Label`, `OTPField`, `RadioGroup`, `Checkbox`, `Switch`, `Select`, `Combobox`, `NumericSlider`
-- **Navigation:** `Tabs`, `Pagination`, `DatePicker`
-- **Overlays:** `Dialog`, `AlertDialog`, `ConfirmDialog`, `Popover`, `Tooltip`, `DropdownMenu`, `toast`, `Toaster`
+```bash
+bun run check        # Run linting, typechecking, and storybook tests
+bun run build        # Build the library bundle
+```
