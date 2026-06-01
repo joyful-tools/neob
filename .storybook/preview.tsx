@@ -1,9 +1,19 @@
 import { Description, Primary, Stories, Subtitle, Title } from '@storybook/addon-docs/blocks';
-import { ReactNode, useEffect } from 'react';
+import { MotionGlobalConfig } from 'motion/react';
+import { useEffect } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import type { Preview } from '@storybook/react-vite';
+import type { ReactNode } from 'react';
+
 import '../src/index.css';
+
+if (
+	globalThis.window !== undefined &&
+	(/StorybookTestRunner/i.test(globalThis.navigator.userAgent) || '__vitest_browser__' in globalThis.window)
+) {
+	MotionGlobalConfig.skipAnimations = true;
+}
 
 function PreviewFrame({
 	children,

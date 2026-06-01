@@ -1,3 +1,5 @@
+/** @jsxRuntime automatic */
+/** @jsxImportSource react */
 import { PlayIcon, StopIcon } from '@storybook/icons';
 import { useCallback, useState } from 'react';
 import { IconButton } from 'storybook/internal/components';

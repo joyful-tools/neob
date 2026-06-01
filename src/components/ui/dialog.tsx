@@ -8,6 +8,8 @@ import { cn } from '@/lib/utilities';
 import { buttonVariants } from './button';
 import { useDialogStackPresence } from './dialog-stack';
 
+import type { HTMLAttributes, ReactNode, Ref } from 'react';
+
 const OVERLAY_CLASS_NAME = `
 	fixed inset-0 z-50 bg-black/35 backdrop-blur-sm
 	data-[closed]:animate-overlay-out
@@ -35,7 +37,7 @@ const springSnappy = {
 const DialogContext = createContext<{ open: boolean; preventClose: boolean; isComposed?: boolean }>({ open: false, preventClose: false });
 
 interface DialogProperties extends Omit<DialogPrimitive.Root.Props, 'children' | 'open' | 'defaultOpen' | 'onOpenChange'> {
-	readonly children?: React.ReactNode;
+	readonly children?: ReactNode;
 	readonly open?: boolean;
 	readonly defaultOpen?: boolean;
 	readonly onOpenChange?: (open: boolean) => void;
@@ -44,22 +46,22 @@ interface DialogProperties extends Omit<DialogPrimitive.Root.Props, 'children' |
 }
 
 interface DialogContentProperties {
-	readonly ref?: React.Ref<HTMLDivElement>;
+	readonly ref?: Ref<HTMLDivElement>;
 	readonly className?: string;
-	readonly children?: React.ReactNode;
+	readonly children?: ReactNode;
 	readonly onAnimationEnd?: () => void;
 }
 
 interface DialogTitleProperties {
-	readonly ref?: React.Ref<HTMLHeadingElement>;
+	readonly ref?: Ref<HTMLHeadingElement>;
 	readonly className?: string;
-	readonly children?: React.ReactNode;
+	readonly children?: ReactNode;
 }
 
 interface DialogDescriptionProperties {
-	readonly ref?: React.Ref<HTMLParagraphElement>;
+	readonly ref?: Ref<HTMLParagraphElement>;
 	readonly className?: string;
-	readonly children?: React.ReactNode;
+	readonly children?: ReactNode;
 }
 
 /** Dialog root supporting compound pattern or composed modal pattern. */
@@ -135,7 +137,7 @@ function DialogContent({ className, children, ref, onAnimationEnd, ...properties
 DialogContent.displayName = 'Dialog.Content';
 
 /** Dialog header with title area and close button. */
-function DialogHeader({ className, children, ...properties }: React.HTMLAttributes<HTMLDivElement>) {
+function DialogHeader({ className, children, ...properties }: HTMLAttributes<HTMLDivElement>) {
 	const { preventClose } = useContext(DialogContext);
 
 	return (
@@ -158,9 +160,9 @@ function DialogBody({
 	className,
 	ref,
 }: {
-	readonly children: React.ReactNode;
+	readonly children: ReactNode;
 	readonly className?: string;
-	readonly ref?: React.Ref<HTMLDivElement>;
+	readonly ref?: Ref<HTMLDivElement>;
 }) {
 	return (
 		<div ref={ref} className={cn('py-2', className)}>
@@ -171,7 +173,7 @@ function DialogBody({
 DialogBody.displayName = 'Dialog.Body';
 
 /** Dialog footer for action buttons. */
-function DialogFooter({ className, ...properties }: React.HTMLAttributes<HTMLDivElement>) {
+function DialogFooter({ className, ...properties }: HTMLAttributes<HTMLDivElement>) {
 	const { isComposed } = useContext(DialogContext);
 	return (
 		<div

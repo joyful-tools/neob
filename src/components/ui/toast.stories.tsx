@@ -8,10 +8,11 @@ import { toast } from './toast';
 import { Toaster } from './toaster';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { ComponentProps } from 'react';
 
 type ToastButtonConfiguration = {
 	label: string;
-	variant: React.ComponentProps<typeof Button>['variant'];
+	variant: ComponentProps<typeof Button>['variant'];
 	kind: 'custom' | 'success' | 'error' | 'info' | 'warning';
 	title: string;
 	description?: string;
