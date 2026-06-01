@@ -63,6 +63,7 @@ export default defineConfig(
 
 	{
 		files: ['**/*.{ts,tsx}'],
+		ignores: ['.storybook/**/*'],
 		rules: {
 			'no-restricted-syntax': [
 				'error',
@@ -73,6 +74,23 @@ export default defineConfig(
 				{
 					selector: 'ImportDeclaration[source.value="react"] > ImportDefaultSpecifier',
 					message: 'Do not use default imports from "react" (import React). Prefer specific named imports instead.',
+				},
+			],
+		},
+	},
+
+	{
+		// Enforce default React import for Storybook Manager/Addon entries.
+		// Storybook Manager UI runs React 18 under the hood. Manager files must compile using the
+		// classic JSX runtime (via /** @jsxRuntime classic */) and default-import React to let
+		// Storybook's bundler shim React to the manager's internal React 18 instance.
+		files: ['.storybook/manager.tsx', '.storybook/interaction-toggle.tsx'],
+		rules: {
+			'no-restricted-syntax': [
+				'error',
+				{
+					selector: 'ImportDeclaration[source.value="react"]:not(:has(ImportDefaultSpecifier))',
+					message: 'Storybook Manager entries/addons must default-import React for classic JSX runtime compilation.',
 				},
 			],
 		},

@@ -1,5 +1,5 @@
-/** @jsxRuntime automatic */
-/** @jsxImportSource react */
+/** @jsxRuntime classic */
+import React from 'react';
 import { addons, types } from 'storybook/manager-api';
 
 import { ADDON_ID, InteractionToggle, TOOL_ID } from './interaction-toggle';

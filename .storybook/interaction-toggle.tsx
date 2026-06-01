@@ -1,7 +1,6 @@
-/** @jsxRuntime automatic */
-/** @jsxImportSource react */
+/** @jsxRuntime classic */
 import { PlayIcon, StopIcon } from '@storybook/icons';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { IconButton } from 'storybook/internal/components';
 
 import { INTERACTION_STORAGE_KEY } from '../src/lib/storybook-interactions';

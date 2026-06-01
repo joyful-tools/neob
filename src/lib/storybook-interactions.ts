@@ -1,4 +1,13 @@
+/**
+ * Utilities for guarding and toggling Storybook interactions
+ * to make Storybook interactions user-controlled and accessibility-friendly.
+ *
+ * Inspired by the approach described in:
+ * https://github.blog/engineering/user-experience/how-to-make-storybook-interactions-respect-user-motion-preferences/
+ */
+
 export const INTERACTION_STORAGE_KEY = 'disableInteractions';
+
 export const STORYBOOK_INTERACTIONS_FORCE_ENABLE = 'storybook-force-enable-interactions';
 
 function getStoredInteractionPreference() {
