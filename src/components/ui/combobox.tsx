@@ -39,7 +39,7 @@ const ComboboxContext = createContext<{
 	anchorElement: null,
 });
 
-function getInputStyles(size: ComboboxSize, hasError: boolean) {
+function getInputStyles(size: ComboboxSize, hasError: boolean, focusRingClass = 'neo-focus-ring-focus') {
 	const sizeClasses = {
 		xs: 'h-6 text-xs px-2 py-0.5 rounded-md border-[1.5px]',
 		sm: 'h-8 text-sm px-3 py-1 rounded-md border-2',
@@ -48,7 +48,8 @@ function getInputStyles(size: ComboboxSize, hasError: boolean) {
 	};
 
 	return cn(
-		`neo-focus-ring-focus isolate flex w-full items-center justify-between bg-white font-bold text-black outline-hidden transition-all duration-300 ease-spring select-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
+		focusRingClass,
+		`isolate flex w-full items-center justify-between bg-white font-bold text-black outline-hidden transition-all duration-300 ease-spring select-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
 		hasError ? 'border-red [--color-ring:var(--color-red)] dark:border-red' : 'border-black dark:border-black',
 		sizeClasses[size],
 	);
@@ -222,7 +223,7 @@ function TriggerValue({ className, ref, placeholder, ...props }: ComboboxTrigger
 			<BaseCombobox.Trigger
 				ref={ref}
 				className={cn(
-					getInputStyles(size, hasError),
+					getInputStyles(size, hasError, 'neo-focus-ring'),
 					'relative flex w-full cursor-pointer items-center overflow-hidden shadow-cel-sm transition-all duration-300 ease-spring hover:-translate-y-0.5 hover:shadow-cel-md active:translate-y-0.5 active:shadow-cel-inset-md disabled:hover:translate-y-0 disabled:hover:shadow-cel-sm aria-expanded:translate-y-0.5 aria-expanded:shadow-cel-inset-md data-pressed:translate-y-0.5 data-pressed:shadow-cel-inset-md',
 					iconStyles.padding,
 				)}

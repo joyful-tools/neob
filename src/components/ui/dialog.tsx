@@ -11,7 +11,7 @@ import { useDialogStackPresence } from './dialog-stack';
 import type { HTMLAttributes, ReactNode, Ref } from 'react';
 
 const OVERLAY_CLASS_NAME = `
-	fixed inset-0 z-50 bg-black/35 backdrop-blur-sm
+	fixed inset-0 z-50 bg-black/35 backdrop-blur-xs
 	data-[closed]:animate-overlay-out
 	data-[open]:animate-overlay-in
 `;

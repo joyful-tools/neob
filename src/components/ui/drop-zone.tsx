@@ -286,7 +286,7 @@ export function DropZone({
 					transition={{ duration: 0.1, ease: 'easeOut' }}
 					ref={dropOverlayRef}
 					className={cn(
-						'absolute inset-0 z-50 flex flex-col items-center justify-center gap-3 rounded-2xl border-4 border-dashed border-black bg-black/35 p-6 text-white backdrop-blur-md',
+						'absolute inset-0 z-50 flex flex-col items-center justify-center gap-3 rounded-2xl border-4 border-dashed border-black bg-black/35 p-6 text-white backdrop-blur-xs',
 						fullscreenElement && 'fixed inset-0 m-4 border-8',
 					)}
 					onDragOver={handleDragOver}

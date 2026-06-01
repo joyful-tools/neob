@@ -1,10 +1,11 @@
-import { UploadSimple } from '@phosphor-icons/react';
+import { Plus, UploadSimple } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, fireEvent, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 
+import { Button } from './button';
 import { DropZone, type DropZoneResult } from './drop-zone';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
@@ -99,13 +100,13 @@ export const Default: Story = {
 					}}
 				>
 					{({ openFilePicker }) => (
-						<div
-							onClick={openFilePicker}
-							className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-4 border-dashed border-black bg-white p-12 text-black transition-colors select-none hover:bg-muted/30 dark:border-black dark:bg-zinc dark:text-white"
-						>
+						<div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-black bg-white p-12 text-black select-none dark:border-black dark:bg-zinc dark:text-white">
 							<UploadSimple className="mb-2 size-10 text-orange" />
-							<span className="text-center font-sans text-sm font-bold">Click or Drag files here to upload</span>
-							<span className="mt-2 font-mono text-xs text-muted-foreground">Only image files accepted</span>
+							<span className="mb-4 text-center font-sans text-sm font-bold">Drag images here to upload or</span>
+							<Button type="button" variant="accent" size="sm" onClick={openFilePicker}>
+								<Plus className="size-4" />
+								<span>Select File</span>
+							</Button>
 						</div>
 					)}
 				</DropZone>
@@ -168,12 +169,13 @@ export const InvalidFileRejection: Story = {
 					}}
 				>
 					{({ openFilePicker }) => (
-						<div
-							onClick={openFilePicker}
-							className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-4 border-dashed border-black bg-white p-12 text-black transition-colors select-none hover:bg-muted/30 dark:bg-zinc dark:text-white"
-						>
+						<div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-black bg-white p-12 text-black select-none dark:bg-zinc dark:text-white">
 							<UploadSimple className="mb-2 size-10 text-orange" />
-							<span className="text-center font-sans text-sm font-bold">Drag file here (Requires PNG, size: 100B - 1KB)</span>
+							<span className="mb-4 text-center font-sans text-sm font-bold">Drag file here (Requires PNG, size: 100B - 1KB)</span>
+							<Button type="button" variant="accent" size="sm" onClick={openFilePicker}>
+								<Plus className="size-4" />
+								<span>Select File</span>
+							</Button>
 						</div>
 					)}
 				</DropZone>
@@ -238,15 +240,13 @@ export const FullPageDropZone: Story = {
 					}}
 				>
 					{({ openFilePicker }) => (
-						<div
-							onClick={openFilePicker}
-							className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-4 border-dashed border-black bg-white p-12 text-black transition-colors select-none hover:bg-muted/30 dark:border-black dark:bg-zinc dark:text-white"
-						>
+						<div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-black bg-white p-12 text-black select-none dark:border-black dark:bg-zinc dark:text-white">
 							<UploadSimple className="mb-2 size-10 text-orange" />
-							<span className="text-center font-sans text-sm font-bold">Click or Drag files anywhere on the page</span>
-							<span className="mt-2 text-center font-mono text-xs text-muted-foreground">
-								Only image files accepted. (Try dragging a file onto the screen)
-							</span>
+							<span className="mb-4 text-center font-sans text-sm font-bold">Drag files anywhere on the page</span>
+							<Button type="button" variant="accent" size="sm" onClick={openFilePicker}>
+								<Plus className="size-4" />
+								<span>Select File</span>
+							</Button>
 						</div>
 					)}
 				</DropZone>
