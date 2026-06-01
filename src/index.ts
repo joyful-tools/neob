@@ -146,3 +146,17 @@ export type {
 
 export { VirtualizedViewport } from './components/ui/virtualized-viewport';
 export type { VirtualizedViewportProps } from './components/ui/virtualized-viewport';
+
+export { Accordion } from './components/ui/accordion';
+export { ButtonGroup } from './components/ui/button-group';
+export type { ButtonGroupButtonProperties } from './components/ui/button-group';
+export { HoverPreview } from './components/ui/hover-preview';
+export type { HoverPreviewProps } from './components/ui/hover-preview';
+export { DropZone } from './components/ui/drop-zone';
+export type { DropZoneProps, DropZoneResult, FileRejection, FileRejectionCode, ValidationOptions } from './components/ui/drop-zone';
+export { SmartSticky } from './components/ui/smart-sticky';
+export type { SmartStickyProps } from './components/ui/smart-sticky';
+export { HumanizedTime } from './components/ui/humanized-time';
+export type { HumanizedTimeProps } from './components/ui/humanized-time';
+export { Marquee } from './components/ui/marquee';
+export type { MarqueeProps } from './components/ui/marquee';

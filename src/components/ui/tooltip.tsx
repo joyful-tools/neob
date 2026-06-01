@@ -91,8 +91,8 @@ TooltipProvider.displayName = 'Tooltip.Provider';
 
 const springSnappy: Transition = {
 	type: 'spring',
-	stiffness: 500,
-	damping: 30,
+	stiffness: 800,
+	damping: 35,
 };
 
 const tooltipVariants = {

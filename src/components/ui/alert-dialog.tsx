@@ -9,7 +9,7 @@ import { cn } from '@/lib/utilities';
 import { buttonVariants } from './button';
 
 const OVERLAY_CLASS_NAME = `
-	fixed inset-0 z-50 bg-black/35 backdrop-blur-md
+	fixed inset-0 z-50 bg-black/35 backdrop-blur-sm
 	data-[closed]:animate-overlay-out
 	data-[open]:animate-overlay-in
 `;
