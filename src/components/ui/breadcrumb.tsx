@@ -1,35 +1,47 @@
 import { CaretRight, Check, Copy, DotsThree } from '@phosphor-icons/react';
-import * as React from 'react';
+import {
+	AnchorHTMLAttributes,
+	ButtonHTMLAttributes,
+	Children,
+	cloneElement,
+	HTMLAttributes,
+	isValidElement,
+	MouseEvent,
+	ReactElement,
+	ReactNode,
+	useEffect,
+	useState,
+} from 'react';
 
 import { cn } from '@/lib/utilities';
 
 import { Button } from './button';
 import { Skeleton } from './skeleton';
 
-type BreadcrumbItemElement = React.ReactElement<BreadcrumbLinkProps | BreadcrumbCurrentProps>;
+type BreadcrumbItemElement = ReactElement<BreadcrumbLinkProps | BreadcrumbCurrentProps>;
 
 export type BreadcrumbSize = 'sm' | 'default';
 
-export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
-	readonly children: React.ReactNode;
+export interface BreadcrumbProps extends HTMLAttributes<HTMLElement> {
+	readonly children: ReactNode;
 	readonly size?: BreadcrumbSize;
 }
 
-export interface BreadcrumbLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+export interface BreadcrumbLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 	readonly href: string;
-	readonly icon?: React.ReactNode;
+	readonly icon?: ReactNode;
 }
 
-export interface BreadcrumbCurrentProps extends React.HTMLAttributes<HTMLDivElement> {
-	readonly icon?: React.ReactNode;
+export interface BreadcrumbCurrentProps extends HTMLAttributes<HTMLDivElement> {
+	readonly icon?: ReactNode;
 	readonly loading?: boolean;
 }
 
-export type BreadcrumbSeparatorProps = React.HTMLAttributes<HTMLSpanElement>;
+export type BreadcrumbSeparatorProps = HTMLAttributes<HTMLSpanElement>;
 
-export type BreadcrumbEllipsisProps = React.HTMLAttributes<HTMLSpanElement>;
+export type BreadcrumbEllipsisProps = HTMLAttributes<HTMLSpanElement>;
 
-export interface BreadcrumbClipboardProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+export interface BreadcrumbClipboardProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
 	readonly text: string;
 }
 
@@ -113,9 +125,9 @@ function BreadcrumbEllipsis({ className, ...props }: BreadcrumbEllipsisProps) {
 }
 
 function BreadcrumbClipboard({ text, className, onClick, ...props }: BreadcrumbClipboardProps) {
-	const [isCopied, setIsCopied] = React.useState(false);
+	const [isCopied, setIsCopied] = useState(false);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (!isCopied) {
 			return;
 		}
@@ -124,7 +136,7 @@ function BreadcrumbClipboard({ text, className, onClick, ...props }: BreadcrumbC
 		return () => globalThis.clearTimeout(timeoutId);
 	}, [isCopied]);
 
-	const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleClick = async (event: MouseEvent<HTMLButtonElement>) => {
 		onClick?.(event);
 		if (event.defaultPrevented || !text) {
 			return;
@@ -157,22 +169,19 @@ function BreadcrumbClipboard({ text, className, onClick, ...props }: BreadcrumbC
 	);
 }
 
-function isBreadcrumbItemElement<P>(
-	child: React.ReactNode,
-	component: (props: P) => React.ReactElement | null,
-): child is React.ReactElement<P> {
-	return React.isValidElement<P>(child) && child.type === component;
+function isBreadcrumbItemElement<P>(child: ReactNode, component: (props: P) => ReactElement | null): child is ReactElement<P> {
+	return isValidElement<P>(child) && child.type === component;
 }
 
 function cloneBreadcrumbItemElement(element: BreadcrumbItemElement, key: string) {
-	return React.cloneElement(element, { key });
+	return cloneElement(element, { key });
 }
 
-function isBreadcrumbItem(child: React.ReactNode): child is BreadcrumbItemElement {
+function isBreadcrumbItem(child: ReactNode): child is BreadcrumbItemElement {
 	return isBreadcrumbItemElement(child, BreadcrumbLink) || isBreadcrumbItemElement(child, BreadcrumbCurrent);
 }
 
-function getMobileBreadcrumbChildren(children: React.ReactNode[]) {
+function getMobileBreadcrumbChildren(children: ReactNode[]) {
 	const breadcrumbItems = children.filter((child) => isBreadcrumbItem(child));
 
 	if (breadcrumbItems.length <= 2) {
@@ -204,7 +213,7 @@ function getMobileBreadcrumbChildren(children: React.ReactNode[]) {
 }
 
 function BreadcrumbRoot({ children, size = 'default', className, ...props }: BreadcrumbProps) {
-	const childArray = React.Children.toArray(children);
+	const childArray = Children.toArray(children);
 	const mobileChildren = getMobileBreadcrumbChildren(childArray);
 
 	return (

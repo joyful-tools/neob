@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { ComponentProps, ReactNode, Ref, useId } from 'react';
 
 import { useInputAreaAutoResize } from '@/hooks/use-input-area-auto-resize';
 import { cn } from '@/lib/utilities';
@@ -7,19 +7,19 @@ import { Input } from './input';
 
 import type { UseInputAreaAutoResizeOptions } from '@/hooks/use-input-area-auto-resize';
 
-export interface InputAreaProperties extends Omit<React.ComponentProps<'textarea'>, 'required'> {
-	readonly ref?: React.Ref<HTMLTextAreaElement>;
+export interface InputAreaProperties extends Omit<ComponentProps<'textarea'>, 'required'> {
+	readonly ref?: Ref<HTMLTextAreaElement>;
 	/**
 	 * Enable auto-resizing to fit content.
 	 * Pass `true` for default behavior, or an options object
 	 * with `maxRows` and/or `animate` for fine-grained control.
 	 */
 	readonly autoResize?: boolean | UseInputAreaAutoResizeOptions;
-	readonly label?: React.ReactNode;
-	readonly description?: React.ReactNode;
+	readonly label?: ReactNode;
+	readonly description?: ReactNode;
 	readonly error?: string;
 	readonly required?: boolean;
-	readonly labelTooltip?: React.ReactNode;
+	readonly labelTooltip?: ReactNode;
 	readonly controlFirst?: boolean;
 	readonly hideLabel?: boolean;
 	readonly containerClassName?: string;
@@ -49,8 +49,8 @@ export function InputArea({
 
 	const autoResizeRef = useInputAreaAutoResize(autoResizeOptions);
 
-	const descriptionId = React.useId();
-	const errorId = React.useId();
+	const descriptionId = useId();
+	const errorId = useId();
 	const hasDescription = Boolean(description);
 	const hasError = Boolean(error);
 

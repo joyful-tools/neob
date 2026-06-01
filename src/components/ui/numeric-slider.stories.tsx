@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
@@ -25,7 +25,7 @@ export const PointerLockLifecycle: Story = {
 		onChange: () => {},
 	},
 	render: (args) => {
-		const [value, setValue] = React.useState(100);
+		const [value, setValue] = useState(100);
 		return (
 			<div className="flex flex-col items-center gap-4">
 				<NumericSlider

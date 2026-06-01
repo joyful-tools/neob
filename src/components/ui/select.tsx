@@ -1,6 +1,6 @@
 import { Select as BaseSelect } from '@base-ui/react/select';
 import { CaretUpDown, Check } from '@phosphor-icons/react';
-import * as React from 'react';
+import { ReactNode, Ref, RefObject, useId } from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -11,13 +11,13 @@ import { Skeleton } from './skeleton';
 /** Shape for items that carry extra metadata (disabled state). */
 export interface SelectItemDescriptor {
 	/** Display label for the option. */
-	label: React.ReactNode;
+	label: ReactNode;
 	/** When `true`, the option cannot be selected. */
 	disabled?: boolean;
 }
 
 /** Value type accepted by the `items` object-map prop. */
-export type SelectItemValue = React.ReactNode | SelectItemDescriptor;
+export type SelectItemValue = ReactNode | SelectItemDescriptor;
 
 export interface SelectProps<T = unknown, Multiple extends boolean | undefined = false> extends Omit<
 	BaseSelect.Root.Props<T, Multiple>,
@@ -26,19 +26,19 @@ export interface SelectProps<T = unknown, Multiple extends boolean | undefined =
 	'aria-label'?: string;
 	'aria-labelledby'?: string;
 	multiple?: Multiple;
-	renderValue?: (value: Multiple extends true ? T[] : T) => React.ReactNode;
+	renderValue?: (value: Multiple extends true ? T[] : T) => ReactNode;
 	className?: string;
 	size?: 'default' | 'sm' | 'lg' | 'xl';
-	label?: React.ReactNode;
+	label?: ReactNode;
 	hideLabel?: boolean;
 	placeholder?: string;
 	loading?: boolean;
-	labelTooltip?: React.ReactNode;
-	description?: React.ReactNode;
+	labelTooltip?: ReactNode;
+	description?: ReactNode;
 	error?: string;
-	container?: HTMLElement | null | React.RefObject<HTMLElement | null>;
+	container?: HTMLElement | null | RefObject<HTMLElement | null>;
 	containerClassName?: string;
-	items?: Record<string, SelectItemValue> | ReadonlyArray<{ label: React.ReactNode; value: T }>;
+	items?: Record<string, SelectItemValue> | ReadonlyArray<{ label: ReactNode; value: T }>;
 }
 
 function isItemDescriptor(value: SelectItemValue): value is SelectItemDescriptor {
@@ -54,8 +54,8 @@ function isItemDescriptor(value: SelectItemValue): value is SelectItemDescriptor
 }
 
 function normalizeItems<T>(
-	items: Record<string, SelectItemValue> | ReadonlyArray<{ label: React.ReactNode; value: T }>,
-): ReadonlyArray<{ label: React.ReactNode; value: T }> {
+	items: Record<string, SelectItemValue> | ReadonlyArray<{ label: ReactNode; value: T }>,
+): ReadonlyArray<{ label: ReactNode; value: T }> {
 	if (Array.isArray(items)) {
 		return items;
 	}
@@ -70,9 +70,7 @@ function normalizeItems<T>(
 	});
 }
 
-function renderOptionsFromItems<T>(
-	items: Record<string, SelectItemValue> | ReadonlyArray<{ label: React.ReactNode; value: T }>,
-): React.ReactNode {
+function renderOptionsFromItems<T>(items: Record<string, SelectItemValue> | ReadonlyArray<{ label: ReactNode; value: T }>): ReactNode {
 	const normalizedItems = normalizeItems(items);
 	const disabledLookup = new Map<string, { disabled?: boolean }>();
 	if (!Array.isArray(items)) {
@@ -140,8 +138,8 @@ export function Select<T = unknown, Multiple extends boolean | undefined = false
 
 	const { items: _items, ...baseProps } = props;
 
-	const descriptionId = React.useId();
-	const errorId = React.useId();
+	const descriptionId = useId();
+	const errorId = useId();
 	const hasDescription = Boolean(description);
 	const hasError = Boolean(error);
 
@@ -215,7 +213,7 @@ export function Select<T = unknown, Multiple extends boolean | undefined = false
 }
 
 export interface SelectOptionProps<T = unknown> {
-	children: React.ReactNode;
+	children: ReactNode;
 	value: T;
 	disabled?: boolean;
 	className?: string;
@@ -243,9 +241,9 @@ function Option<T>({ children, value, disabled, className }: SelectOptionProps<T
 Option.displayName = 'Select.Option';
 
 export interface SelectGroupProps {
-	children: React.ReactNode;
+	children: ReactNode;
 	className?: string;
-	ref?: React.Ref<HTMLDivElement>;
+	ref?: Ref<HTMLDivElement>;
 }
 
 function Group({ children, className, ref }: SelectGroupProps) {
@@ -258,9 +256,9 @@ function Group({ children, className, ref }: SelectGroupProps) {
 Group.displayName = 'Select.Group';
 
 export interface SelectGroupLabelProps {
-	children: React.ReactNode;
+	children: ReactNode;
 	className?: string;
-	ref?: React.Ref<HTMLDivElement>;
+	ref?: Ref<HTMLDivElement>;
 }
 
 function GroupLabel({ children, className, ref }: SelectGroupLabelProps) {
@@ -277,7 +275,7 @@ GroupLabel.displayName = 'Select.GroupLabel';
 
 export interface SelectSeparatorProps {
 	className?: string;
-	ref?: React.Ref<HTMLDivElement>;
+	ref?: Ref<HTMLDivElement>;
 }
 
 function Separator({ className, ref }: SelectSeparatorProps) {

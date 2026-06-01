@@ -61,6 +61,46 @@ export default defineConfig(
 		},
 	},
 
+	{
+		files: ['**/*.{ts,tsx}'],
+		rules: {
+			'no-restricted-syntax': [
+				'warn',
+				{
+					selector: 'ImportDeclaration[source.value="react"] > ImportNamespaceSpecifier',
+					message: 'Do not use namespace imports from "react" (import * as React). Prefer specific named imports instead.',
+				},
+				{
+					selector: 'ImportDeclaration[source.value="react"] > ImportDefaultSpecifier',
+					message: 'Do not use default imports from "react" (import React). Prefer specific named imports instead.',
+				},
+			],
+		},
+	},
+
+	{
+		files: [
+			'src/components/ui/stack-overlay.stories.tsx',
+			'src/components/ui/stack-header.stories.tsx',
+			'src/components/ui/border-beam.stories.tsx',
+			'src/components/ui/button-badge.stories.tsx',
+			'src/components/ui/hover-clip.stories.tsx',
+		],
+		rules: {
+			'no-restricted-syntax': [
+				'error',
+				{
+					selector: 'ImportDeclaration[source.value="react"] > ImportNamespaceSpecifier',
+					message: 'Do not use namespace imports from "react" (import * as React). Prefer specific named imports instead.',
+				},
+				{
+					selector: 'ImportDeclaration[source.value="react"] > ImportDefaultSpecifier',
+					message: 'Do not use default imports from "react" (import React). Prefer specific named imports instead.',
+				},
+			],
+		},
+	},
+
 	importX.flatConfigs.recommended,
 	{
 		settings: {

@@ -1,6 +1,6 @@
 import { Toggle as TogglePrimitive } from '@base-ui/react/toggle';
 import { type VariantProps } from 'class-variance-authority';
-import * as React from 'react';
+import { isValidElement, ReactNode, Ref } from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -15,13 +15,13 @@ const TOGGLE_ON_CLASS_NAME = `
 `;
 
 interface ToggleProperties extends VariantProps<typeof buttonVariants> {
-	readonly ref?: React.Ref<HTMLButtonElement>;
+	readonly ref?: Ref<HTMLButtonElement>;
 	readonly pressed?: boolean;
 	readonly defaultPressed?: boolean;
 	readonly onPressedChange?: (pressed: boolean) => void;
 	readonly disabled?: boolean;
 	readonly className?: string;
-	readonly children?: React.ReactNode;
+	readonly children?: ReactNode;
 	readonly asChild?: boolean;
 	readonly 'aria-label'?: string;
 	readonly 'aria-pressed'?: boolean;
@@ -37,7 +37,7 @@ export function Toggle({
 	children,
 	...properties
 }: ToggleProperties) {
-	if (asChild && React.isValidElement<Record<string, unknown>>(children)) {
+	if (asChild && isValidElement<Record<string, unknown>>(children)) {
 		return <TogglePrimitive ref={ref} render={children} className={cn(TOGGLE_ON_CLASS_NAME, className)} {...properties} />;
 	}
 

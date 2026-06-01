@@ -1,9 +1,8 @@
-import * as React from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { TimeHTMLAttributes, useEffect, useMemo, useState } from 'react';
 
 import { Tooltip } from './tooltip';
 
-export interface HumanizedTimeProps extends React.TimeHTMLAttributes<HTMLTimeElement> {
+export interface HumanizedTimeProps extends TimeHTMLAttributes<HTMLTimeElement> {
 	readonly date?: Date | number | string;
 	readonly updateInterval?: number | { total: (options: { unit: 'milliseconds' }) => number };
 	readonly locale?: string;

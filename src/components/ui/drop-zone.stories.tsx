@@ -1,5 +1,5 @@
 import { UploadSimple } from '@phosphor-icons/react';
-import * as React from 'react';
+import { useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, fireEvent, within } from 'storybook/test';
 
@@ -87,7 +87,7 @@ function createMockDataTransfer(files: File[]): DataTransfer {
 
 export const Default: Story = {
 	render: () => {
-		const [results, setResults] = React.useState<DropZoneResult | null>(null);
+		const [results, setResults] = useState<DropZoneResult | null>(null);
 
 		return (
 			<div className="flex w-[450px] flex-col gap-4">
@@ -155,7 +155,7 @@ export const Default: Story = {
 
 export const InvalidFileRejection: Story = {
 	render: () => {
-		const [results, setResults] = React.useState<DropZoneResult | null>(null);
+		const [results, setResults] = useState<DropZoneResult | null>(null);
 
 		return (
 			<div className="flex w-[450px] flex-col gap-4">
@@ -225,7 +225,7 @@ export const InvalidFileRejection: Story = {
 
 export const FullPageDropZone: Story = {
 	render: () => {
-		const [results, setResults] = React.useState<DropZoneResult | null>(null);
+		const [results, setResults] = useState<DropZoneResult | null>(null);
 
 		return (
 			<div className="flex w-[450px] flex-col gap-4">

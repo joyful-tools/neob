@@ -1,5 +1,4 @@
 import { Meter as BaseMeter } from '@base-ui/react/meter';
-import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
 

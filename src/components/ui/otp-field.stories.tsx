@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, within } from 'storybook/test';
@@ -148,7 +147,7 @@ export const FormSubmission: Story = {
 	},
 	render: (args) => {
 		const [value, setValue] = useState('');
-		const [submittedValue, setSubmittedValue] = React.useState('');
+		const [submittedValue, setSubmittedValue] = useState('');
 		return (
 			<form
 				className="flex flex-col items-center gap-4"

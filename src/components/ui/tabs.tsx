@@ -1,11 +1,11 @@
 import { Tabs as BaseTabs } from '@base-ui/react/tabs';
-import * as React from 'react';
+import { ComponentPropsWithoutRef, createContext, Ref, useContext } from 'react';
 
 import { cn } from '@/lib/utilities';
 
 export type TabsVariant = 'segmented' | 'subtle';
 
-const TabsVariantContext = React.createContext<TabsVariant>('segmented');
+const TabsVariantContext = createContext<TabsVariant>('segmented');
 
 /**
  * Root Tabs container.
@@ -22,9 +22,9 @@ function TabsList({
 	variant = 'segmented',
 	ref,
 	...properties
-}: React.ComponentPropsWithoutRef<typeof BaseTabs.List> & {
+}: ComponentPropsWithoutRef<typeof BaseTabs.List> & {
 	readonly variant?: TabsVariant;
-	readonly ref?: React.Ref<HTMLDivElement>;
+	readonly ref?: Ref<HTMLDivElement>;
 }) {
 	const listClasses =
 		variant === 'segmented'
@@ -64,10 +64,10 @@ function TabsTrigger({
 	ref,
 	children,
 	...properties
-}: React.ComponentPropsWithoutRef<typeof BaseTabs.Tab> & {
-	readonly ref?: React.Ref<HTMLButtonElement>;
+}: ComponentPropsWithoutRef<typeof BaseTabs.Tab> & {
+	readonly ref?: Ref<HTMLButtonElement>;
 }) {
-	const variant = React.useContext(TabsVariantContext);
+	const variant = useContext(TabsVariantContext);
 
 	return (
 		<BaseTabs.Tab
@@ -108,8 +108,8 @@ function TabsContent({
 	className,
 	ref,
 	...properties
-}: React.ComponentPropsWithoutRef<typeof BaseTabs.Panel> & {
-	readonly ref?: React.Ref<HTMLDivElement>;
+}: ComponentPropsWithoutRef<typeof BaseTabs.Panel> & {
+	readonly ref?: Ref<HTMLDivElement>;
 }) {
 	return <BaseTabs.Panel ref={ref} className={cn(`neo-focus-ring outline-hidden`, className)} {...properties} />;
 }

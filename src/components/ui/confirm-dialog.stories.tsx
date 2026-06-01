@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, within } from 'storybook/test';

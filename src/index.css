@@ -363,3 +363,79 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
 	-moz-appearance: textfield;
 }
+
+/* Border Beam Experiment (SVG stroke-dashoffset) styles */
+.border-beam-svg {
+	--offset: var(--border-beam-offset, 12px);
+	--stroke-width: var(--border-beam-stroke-width, 4px);
+
+	inset: calc(-1 * var(--offset));
+	height: calc(100% + (var(--offset) * 2));
+	width: calc(100% + (var(--offset) * 2));
+}
+
+.border-beam {
+	--half-stroke: calc(var(--stroke-width) / 2);
+
+	x: var(--half-stroke);
+	y: var(--half-stroke);
+	width: calc(100% - var(--stroke-width));
+	height: calc(100% - var(--stroke-width));
+	stroke: var(--border-beam-color, currentColor);
+	stroke-width: var(--stroke-width);
+
+	animation: beam-animation var(--border-beam-duration, 6s) linear infinite;
+}
+
+@keyframes beam-animation {
+	0% {
+		stroke-dashoffset: var(--border-beam-stroke-offset-start, 200);
+	}
+	100% {
+		stroke-dashoffset: var(--border-beam-stroke-offset-end, 0);
+	}
+}
+
+.border-beam-once {
+	--half-stroke: calc(var(--stroke-width) / 2);
+
+	x: var(--half-stroke);
+	y: var(--half-stroke);
+	width: calc(100% - var(--stroke-width));
+	height: calc(100% - var(--stroke-width));
+	stroke: var(--border-beam-color, currentColor);
+	stroke-width: var(--stroke-width);
+
+	animation: beam-animation-once var(--border-beam-duration, 6s) cubic-bezier(0.37, 0, 0.63, 1) forwards;
+}
+
+@keyframes beam-animation-once {
+	0% {
+		stroke-dasharray: 0 100;
+	}
+	100% {
+		stroke-dasharray: 100 0;
+	}
+}
+
+.border-beam-multiple {
+	--half-stroke: calc(var(--stroke-width) / 2);
+
+	x: var(--half-stroke);
+	y: var(--half-stroke);
+	width: calc(100% - var(--stroke-width));
+	height: calc(100% - var(--stroke-width));
+	stroke: var(--border-beam-color, currentColor);
+	stroke-width: var(--stroke-width);
+
+	animation: beam-animation-multiple var(--border-beam-duration, 6s) cubic-bezier(0.37, 0, 0.63, 1) forwards;
+}
+
+@keyframes beam-animation-multiple {
+	0% {
+		stroke-dasharray: 0 50 0 50;
+	}
+	100% {
+		stroke-dasharray: 50 0 50 0;
+	}
+}

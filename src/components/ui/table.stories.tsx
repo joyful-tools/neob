@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { Table } from './table';
 
 import type { Meta } from '@storybook/react-vite';

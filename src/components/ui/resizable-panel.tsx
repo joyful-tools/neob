@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import * as React from 'react';
+import { useCallback, useEffect, useRef, useState, AriaAttributes, MouseEvent as ReactMouseEvent, ReactNode } from 'react';
 
 import { cn } from '@/lib/utilities';
 
 export interface ResizablePanelProperties {
-	children?: React.ReactNode;
+	children?: ReactNode;
 	direction?: 'horizontal' | 'vertical';
 	defaultSize?: number;
 	minSize?: number;
@@ -32,7 +31,7 @@ export function ResizablePanel({
 	const startSizeReference = useRef(0);
 
 	const handleMouseDown = useCallback(
-		(event: React.MouseEvent) => {
+		(event: ReactMouseEvent) => {
 			event.preventDefault();
 			setIsResizing(true);
 			startPositionReference.current = direction === 'horizontal' ? event.clientX : event.clientY;
@@ -88,7 +87,7 @@ export function ResizablePanel({
 	const isHorizontal = direction === 'horizontal';
 	const sizeStyle = isHorizontal ? { width: size } : { height: size };
 
-	const handleOrientation: React.AriaAttributes['aria-orientation'] = isHorizontal ? 'vertical' : 'horizontal';
+	const handleOrientation: AriaAttributes['aria-orientation'] = isHorizontal ? 'vertical' : 'horizontal';
 
 	const handleProperties = {
 		role: 'separator' as const,

@@ -1,5 +1,5 @@
 import { CaretUpDown } from '@phosphor-icons/react';
-import * as React from 'react';
+import { ReactNode, useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
@@ -98,7 +98,7 @@ function Text({
 	className,
 	as: Component = 'span',
 }: {
-	readonly children: React.ReactNode;
+	readonly children: ReactNode;
 	readonly variant?: 'secondary';
 	readonly size?: 'xs';
 	readonly className?: string;
@@ -339,7 +339,7 @@ export const Default: StoryObj<FruitComboboxStoryProperties> = {
 		},
 	},
 	render: (args: FruitComboboxStoryProperties) => {
-		const [value, setValue] = React.useState<string | null>(args.initialValue);
+		const [value, setValue] = useState<string | null>(args.initialValue);
 
 		return (
 			<div className="w-[300px]">
@@ -391,7 +391,7 @@ export const SearchableInside: StoryObj<LanguageComboboxStoryProperties> = {
 		},
 	},
 	render: (args: LanguageComboboxStoryProperties) => {
-		const [value, setValue] = React.useState<Language | null>(args.initialValue);
+		const [value, setValue] = useState<Language | null>(args.initialValue);
 
 		return (
 			<div className="size-[300px]">
@@ -448,7 +448,7 @@ export const SearchableSelect: StoryObj<LanguageComboboxStoryProperties> = {
 		},
 	},
 	render: (args: LanguageComboboxStoryProperties) => {
-		const [value, setValue] = React.useState<Language | null>(args.initialValue);
+		const [value, setValue] = useState<Language | null>(args.initialValue);
 
 		return (
 			<div className="size-[300px]">
@@ -502,7 +502,7 @@ export const Grouped: StoryObj<GroupedComboboxStoryProperties> = {
 		},
 	},
 	render: (args: GroupedComboboxStoryProperties) => {
-		const [value, setValue] = React.useState<ServerLocation | null>(args.initialValue);
+		const [value, setValue] = useState<ServerLocation | null>(args.initialValue);
 
 		return (
 			<div className="size-[300px]">
@@ -561,7 +561,7 @@ export const Multiple: StoryObj<MultipleComboboxStoryProperties> = {
 		},
 	},
 	render: (args: MultipleComboboxStoryProperties) => {
-		const [value, setValue] = React.useState<WorkspaceAppItem[]>(args.initialValue);
+		const [value, setValue] = useState<WorkspaceAppItem[]>(args.initialValue);
 
 		return (
 			<div className="w-[400px]">
@@ -622,7 +622,7 @@ export const WithField: StoryObj<FieldComboboxStoryProperties> = {
 		},
 	},
 	render: (args: FieldComboboxStoryProperties) => {
-		const [value, setValue] = React.useState<DatabaseItem | null>(args.initialValue);
+		const [value, setValue] = useState<DatabaseItem | null>(args.initialValue);
 
 		return (
 			<div className="w-80">
@@ -728,7 +728,7 @@ export const DisabledItems: StoryObj<DisabledItemsComboboxStoryProperties> = {
 		},
 	},
 	render: (args: DisabledItemsComboboxStoryProperties) => {
-		const [value, setValue] = React.useState<DisabledItemDatabase | null>(args.initialValue);
+		const [value, setValue] = useState<DisabledItemDatabase | null>(args.initialValue);
 
 		return (
 			<div className="h-[300px] w-80">
@@ -794,7 +794,7 @@ export const Error: StoryObj<ErrorComboboxStoryProperties> = {
 		},
 	},
 	render: (args: ErrorComboboxStoryProperties) => {
-		const [value, setValue] = React.useState<DatabaseItem | null>(args.initialValue);
+		const [value, setValue] = useState<DatabaseItem | null>(args.initialValue);
 
 		return (
 			<div className="w-80">
@@ -849,8 +849,8 @@ export const Sizes: StoryObj<SizesComboboxStoryProperties> = {
 		},
 	},
 	render: (args: SizesComboboxStoryProperties) => {
-		const [smValue, setSmValue] = React.useState<string | null>(args.smInitialValue);
-		const [baseValue, setBaseValue] = React.useState<string | null>(args.baseInitialValue);
+		const [smValue, setSmValue] = useState<string | null>(args.smInitialValue);
+		const [baseValue, setBaseValue] = useState<string | null>(args.baseInitialValue);
 
 		return (
 			<div className="flex w-[500px] flex-wrap items-center gap-4">
@@ -924,8 +924,8 @@ export const SizesSearchableInside: StoryObj<SizesSearchableStoryProperties> = {
 		},
 	},
 	render: (args: SizesSearchableStoryProperties) => {
-		const [smValue, setSmValue] = React.useState<Language | null>(args.smInitialValue);
-		const [baseValue, setBaseValue] = React.useState<Language | null>(args.baseInitialValue);
+		const [smValue, setSmValue] = useState<Language | null>(args.smInitialValue);
+		const [baseValue, setBaseValue] = useState<Language | null>(args.baseInitialValue);
 
 		return (
 			<div className="flex h-[300px] w-[500px] flex-wrap items-center gap-4">
@@ -1000,7 +1000,7 @@ export const CustomTrigger: StoryObj<CustomTriggerComboboxStoryProperties> = {
 		},
 	},
 	render: (args: CustomTriggerComboboxStoryProperties) => {
-		const [value, setValue] = React.useState<Language | null>(args.initialValue);
+		const [value, setValue] = useState<Language | null>(args.initialValue);
 
 		return (
 			<div className="size-[300px]">

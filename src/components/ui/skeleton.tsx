@@ -1,8 +1,8 @@
-import * as React from 'react';
+import { HTMLAttributes } from 'react';
 
 import { cn } from '@/lib/utilities';
 
-interface SkeletonProperties extends React.HTMLAttributes<HTMLDivElement> {
+interface SkeletonProperties extends HTMLAttributes<HTMLDivElement> {
 	className?: string;
 }
 
@@ -11,7 +11,7 @@ function SkeletonRoot({ className, ...properties }: SkeletonProperties) {
 }
 SkeletonRoot.displayName = 'Skeleton';
 
-interface ListSkeletonProperties extends React.HTMLAttributes<HTMLDivElement> {
+interface ListSkeletonProperties extends HTMLAttributes<HTMLDivElement> {
 	itemCount?: number;
 	className?: string;
 	showLeadingIcon?: boolean;

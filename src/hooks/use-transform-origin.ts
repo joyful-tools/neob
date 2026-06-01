@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Ref, useCallback, useLayoutEffect, useRef } from 'react';
 
 /**
  * A React hook that calculates and applies a dynamic transform-origin on a popup/floating element
@@ -9,10 +9,10 @@ import * as React from 'react';
  * @param forwardedRef An optional forwarded ref to merge with the internal popup ref.
  * @returns A callback ref to be attached to the popup/floating element.
  */
-export function useTransformOrigin<T extends HTMLElement>(anchorElement: HTMLElement | null, forwardedRef?: React.Ref<T> | null) {
-	const popupRef = React.useRef<T | null>(null);
+export function useTransformOrigin<T extends HTMLElement>(anchorElement: HTMLElement | null, forwardedRef?: Ref<T> | null) {
+	const popupRef = useRef<T | null>(null);
 
-	React.useLayoutEffect(() => {
+	useLayoutEffect(() => {
 		if (!anchorElement) return;
 
 		const popup = popupRef.current;
@@ -74,12 +74,12 @@ export function useTransformOrigin<T extends HTMLElement>(anchorElement: HTMLEle
 		};
 	}, [anchorElement]);
 
-	const forwardedRefRef = React.useRef(forwardedRef);
-	React.useLayoutEffect(() => {
+	const forwardedRefRef = useRef(forwardedRef);
+	useLayoutEffect(() => {
 		forwardedRefRef.current = forwardedRef;
 	}, [forwardedRef]);
 
-	const mergedRef = React.useCallback((node: T | null) => {
+	const mergedRef = useCallback((node: T | null) => {
 		popupRef.current = node;
 		const currentForwardedRef = forwardedRefRef.current;
 		if (currentForwardedRef) {

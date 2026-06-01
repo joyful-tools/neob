@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
@@ -42,8 +42,8 @@ export const DefaultCompound: { [key: string]: unknown } & import('@storybook/re
 		},
 	},
 	render: (args) => {
-		const [page, setPage] = React.useState(args.initialPage);
-		const [perPage, setPerPage] = React.useState(args.initialPerPage);
+		const [page, setPage] = useState(args.initialPage);
+		const [perPage, setPerPage] = useState(args.initialPerPage);
 
 		return (
 			<div className="w-full max-w-3xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
@@ -91,7 +91,7 @@ export const SimpleControls: { [key: string]: unknown } & import('@storybook/rea
 		},
 	},
 	render: (args) => {
-		const [page, setPage] = React.useState(args.initialPage);
+		const [page, setPage] = useState(args.initialPage);
 
 		return (
 			<div className="w-full max-w-xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
@@ -134,7 +134,7 @@ export const DropdownSelector: { [key: string]: unknown } & import('@storybook/r
 		},
 	},
 	render: (args) => {
-		const [page, setPage] = React.useState(args.initialPage);
+		const [page, setPage] = useState(args.initialPage);
 
 		return (
 			<div className="w-full max-w-xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
@@ -176,8 +176,8 @@ export const InputClampingAndPageSize: { [key: string]: unknown } & import('@sto
 		},
 	},
 	render: (args) => {
-		const [page, setPage] = React.useState(args.initialPage);
-		const [perPage, setPerPage] = React.useState(args.initialPerPage);
+		const [page, setPage] = useState(args.initialPage);
+		const [perPage, setPerPage] = useState(args.initialPerPage);
 
 		return (
 			<div className="w-full max-w-3xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
@@ -247,7 +247,7 @@ export const DropdownSelectionAndLabels: { [key: string]: unknown } & import('@s
 			},
 		},
 		render: (args) => {
-			const [page, setPage] = React.useState(args.initialPage);
+			const [page, setPage] = useState(args.initialPage);
 
 			return (
 				<div className="w-full max-w-xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
@@ -312,7 +312,7 @@ export const SinglePageDisabledState: { [key: string]: unknown } & import('@stor
 		},
 	},
 	render: (args) => {
-		const [page, setPage] = React.useState(args.initialPage);
+		const [page, setPage] = useState(args.initialPage);
 
 		return (
 			<div className="w-full max-w-xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">

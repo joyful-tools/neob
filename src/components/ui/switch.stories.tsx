@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, within } from 'storybook/test';
 
@@ -101,7 +101,7 @@ export const DisabledState: Story = {
 
 export const ValidationError: Story = {
 	render: (arguments_) => {
-		const [checked, setChecked] = React.useState(false);
+		const [checked, setChecked] = useState(false);
 		const error = checked ? undefined : 'You must agree to the privacy policy.';
 
 		return (

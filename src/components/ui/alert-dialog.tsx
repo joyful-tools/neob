@@ -1,8 +1,18 @@
 import { AlertDialog as AlertDialogPrimitive } from '@base-ui/react/alert-dialog';
 import { type VariantProps } from 'class-variance-authority';
 import { AnimatePresence, motion } from 'motion/react';
-import * as React from 'react';
-import { createContext, useCallback, useContext, useRef, useState } from 'react';
+import {
+	HTMLAttributes,
+	isValidElement,
+	MouseEventHandler,
+	ReactNode,
+	Ref,
+	createContext,
+	useCallback,
+	useContext,
+	useRef,
+	useState,
+} from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -30,50 +40,50 @@ const MOTION_VARIANTS = {
 const AlertDialogContext = createContext<{ open: boolean }>({ open: false });
 
 interface AlertDialogProperties extends Omit<AlertDialogPrimitive.Root.Props, 'children' | 'open' | 'defaultOpen' | 'onOpenChange'> {
-	readonly children?: React.ReactNode;
+	readonly children?: ReactNode;
 	readonly open?: boolean;
 	readonly defaultOpen?: boolean;
 	readonly onOpenChange?: (open: boolean) => void;
 }
 
 interface AlertDialogContentProperties {
-	readonly ref?: React.Ref<HTMLDivElement>;
+	readonly ref?: Ref<HTMLDivElement>;
 	readonly className?: string;
-	readonly children?: React.ReactNode;
+	readonly children?: ReactNode;
 	readonly onAnimationEnd?: () => void;
 }
 
 interface AlertDialogTitleProperties {
-	readonly ref?: React.Ref<HTMLHeadingElement>;
+	readonly ref?: Ref<HTMLHeadingElement>;
 	readonly className?: string;
-	readonly children?: React.ReactNode;
+	readonly children?: ReactNode;
 }
 
 interface AlertDialogDescriptionProperties {
-	readonly ref?: React.Ref<HTMLParagraphElement>;
+	readonly ref?: Ref<HTMLParagraphElement>;
 	readonly className?: string;
-	readonly children?: React.ReactNode;
+	readonly children?: ReactNode;
 }
 
 interface AlertDialogActionProperties extends VariantProps<typeof buttonVariants> {
-	readonly ref?: React.Ref<HTMLButtonElement>;
+	readonly ref?: Ref<HTMLButtonElement>;
 	readonly className?: string;
-	readonly children?: React.ReactNode;
-	readonly onClick?: React.MouseEventHandler<HTMLButtonElement>;
+	readonly children?: ReactNode;
+	readonly onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 interface AlertDialogCancelProperties {
-	readonly ref?: React.Ref<HTMLButtonElement>;
+	readonly ref?: Ref<HTMLButtonElement>;
 	readonly className?: string;
-	readonly children?: React.ReactNode;
-	readonly onClick?: React.MouseEventHandler<HTMLButtonElement>;
+	readonly children?: ReactNode;
+	readonly onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 interface AlertDialogTriggerProperties {
-	readonly children?: React.ReactNode;
+	readonly children?: ReactNode;
 	readonly className?: string;
 	readonly asChild?: boolean;
-	readonly ref?: React.Ref<HTMLButtonElement>;
+	readonly ref?: Ref<HTMLButtonElement>;
 }
 
 /** Alert dialog root with controllable open state. */
@@ -105,7 +115,7 @@ function AlertDialogRoot({ children, open: controlledOpen, defaultOpen, onOpenCh
 
 /** Button that opens the alert dialog. Supports asChild via render prop. */
 function AlertDialogTrigger({ children, asChild, ref, ...properties }: AlertDialogTriggerProperties) {
-	if (asChild && React.isValidElement<Record<string, unknown>>(children)) {
+	if (asChild && isValidElement<Record<string, unknown>>(children)) {
 		return <AlertDialogPrimitive.Trigger ref={ref} render={children} {...properties} />;
 	}
 	return (
@@ -150,13 +160,13 @@ function AlertDialogContent({ className, children, ref, onAnimationEnd, ...prope
 AlertDialogContent.displayName = 'AlertDialog.Content';
 
 /** Alert dialog header for title and description. */
-function AlertDialogHeader({ className, ...properties }: React.HTMLAttributes<HTMLDivElement>) {
+function AlertDialogHeader({ className, ...properties }: HTMLAttributes<HTMLDivElement>) {
 	return <div className={cn(`flex flex-col space-y-2 text-center sm:text-left`, className)} {...properties} />;
 }
 AlertDialogHeader.displayName = 'AlertDialog.Header';
 
 /** Alert dialog footer for action buttons. */
-function AlertDialogFooter({ className, ...properties }: React.HTMLAttributes<HTMLDivElement>) {
+function AlertDialogFooter({ className, ...properties }: HTMLAttributes<HTMLDivElement>) {
 	return <div className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', className)} {...properties} />;
 }
 AlertDialogFooter.displayName = 'AlertDialog.Footer';

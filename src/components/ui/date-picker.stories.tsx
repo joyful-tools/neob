@@ -1,5 +1,5 @@
 /* eslint-disable better-tailwindcss/no-unknown-classes */
-import * as React from 'react';
+import { useState } from 'react';
 import { type DateRange } from 'react-day-picker';
 import { action } from 'storybook/actions';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
@@ -43,7 +43,7 @@ export const Single = {
 		initialSelected: new Date(2026, 4, 15),
 	},
 	render: (args: DatePickerSingleStoryProperties) => {
-		const [date, setDate] = React.useState<Date | undefined>(args.initialSelected);
+		const [date, setDate] = useState<Date | undefined>(args.initialSelected);
 		return (
 			<div className="flex flex-col items-center gap-4">
 				<DatePicker
@@ -79,7 +79,7 @@ export const Range = {
 		},
 	},
 	render: (args: DatePickerRangeStoryProperties) => {
-		const [range, setRange] = React.useState<DateRange | undefined>(args.initialSelected);
+		const [range, setRange] = useState<DateRange | undefined>(args.initialSelected);
 		return (
 			<div className="flex flex-col items-center gap-4">
 				<DatePicker
@@ -119,7 +119,7 @@ export const Multiple = {
 		max: 5,
 	},
 	render: (args: DatePickerMultipleStoryProperties) => {
-		const [dates, setDates] = React.useState<Date[] | undefined>(args.initialSelected);
+		const [dates, setDates] = useState<Date[] | undefined>(args.initialSelected);
 		return (
 			<div className="flex flex-col items-center gap-4">
 				<DatePicker
@@ -159,7 +159,7 @@ export const DarkMode = {
 		},
 	},
 	render: (args: DatePickerRangeStoryProperties) => {
-		const [range, setRange] = React.useState<DateRange | undefined>(args.initialSelected);
+		const [range, setRange] = useState<DateRange | undefined>(args.initialSelected);
 		return (
 			<div className="dark flex flex-col items-center gap-4 rounded-2xl border-4 border-black bg-black p-8">
 				<DatePicker
@@ -192,7 +192,7 @@ export const MonthYearNavigation = {
 		},
 	},
 	render: (args: DatePickerSingleStoryProperties) => {
-		const [date, setDate] = React.useState<Date | undefined>(args.initialSelected);
+		const [date, setDate] = useState<Date | undefined>(args.initialSelected);
 		return (
 			<div className="flex flex-col items-center gap-4">
 				<DatePicker

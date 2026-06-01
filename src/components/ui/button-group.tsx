@@ -1,6 +1,6 @@
 import { Radio } from '@base-ui/react/radio';
 import { RadioGroup as RadioGroupPrimitive } from '@base-ui/react/radio-group';
-import * as React from 'react';
+import { Children, cloneElement, ComponentPropsWithoutRef, createContext, isValidElement, Ref, useContext, useMemo } from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -15,10 +15,10 @@ interface ButtonGroupContextProps {
 	size?: 'default' | 'sm' | 'lg' | 'xl' | 'icon';
 }
 
-const ButtonGroupContext = React.createContext<ButtonGroupContextProps>({});
+const ButtonGroupContext = createContext<ButtonGroupContextProps>({});
 
-export interface ButtonGroupProps extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive> {
-	readonly ref?: React.Ref<HTMLDivElement>;
+export interface ButtonGroupProps extends ComponentPropsWithoutRef<typeof RadioGroupPrimitive> {
+	readonly ref?: Ref<HTMLDivElement>;
 	readonly size?: ButtonGroupContextProps['size'];
 }
 
@@ -27,14 +27,14 @@ export interface ButtonGroupProps extends React.ComponentPropsWithoutRef<typeof 
  * Flex container that provides radio-group keyboard navigation and accessibility semantics.
  */
 function ButtonGroupRoot({ className, size, ref, children, ...properties }: ButtonGroupProps) {
-	const contextValue = React.useMemo(() => ({ size }), [size]);
+	const contextValue = useMemo(() => ({ size }), [size]);
 
-	const childrenArray = React.Children.toArray(children);
+	const childrenArray = Children.toArray(children);
 	const totalChildren = childrenArray.length;
 
-	const modifiedChildren = React.Children.map(children, (child, index) => {
-		if (React.isValidElement<InternalButtonGroupButtonProperties>(child)) {
-			return React.cloneElement(child, {
+	const modifiedChildren = Children.map(children, (child, index) => {
+		if (isValidElement<InternalButtonGroupButtonProperties>(child)) {
+			return cloneElement(child, {
 				_isFirst: index === 0,
 				_isLast: index === totalChildren - 1,
 			});
@@ -50,9 +50,9 @@ function ButtonGroupRoot({ className, size, ref, children, ...properties }: Butt
 }
 ButtonGroupRoot.displayName = 'ButtonGroup';
 
-export interface ButtonGroupButtonProperties extends Omit<React.ComponentPropsWithoutRef<'button'>, 'value'> {
+export interface ButtonGroupButtonProperties extends Omit<ComponentPropsWithoutRef<'button'>, 'value'> {
 	readonly value: string;
-	readonly ref?: React.Ref<HTMLButtonElement>;
+	readonly ref?: Ref<HTMLButtonElement>;
 	readonly size?: ButtonGroupContextProps['size'];
 }
 
@@ -61,7 +61,7 @@ export interface ButtonGroupButtonProperties extends Omit<React.ComponentPropsWi
  * Individual option button within the group. Reuses `buttonVariants` styling.
  */
 function ButtonGroupButton({ className, value, size, children, ref, ...properties }: InternalButtonGroupButtonProperties) {
-	const context = React.useContext(ButtonGroupContext);
+	const context = useContext(ButtonGroupContext);
 	const resolvedSize = size ?? context.size ?? 'default';
 
 	const { _isFirst, _isLast, ...restProperties } = properties;

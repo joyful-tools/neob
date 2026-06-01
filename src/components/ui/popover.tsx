@@ -1,5 +1,5 @@
 import { Popover as PopoverPrimitive } from '@base-ui/react/popover';
-import * as React from 'react';
+import { ComponentProps, createContext, ReactNode, Ref, RefCallback, useCallback, useContext, useMemo, useState } from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -18,15 +18,15 @@ const POPOVER_CONTENT_CLASS_NAME = `
 	dark:border-black dark:shadow-cel
 `;
 
-const PopoverContext = React.createContext<{
-	readonly anchorRef: React.RefCallback<HTMLDivElement | null>;
+const PopoverContext = createContext<{
+	readonly anchorRef: RefCallback<HTMLDivElement | null>;
 	readonly anchorElement: HTMLDivElement | null;
 } | null>(null);
 
 interface PopoverContentProperties {
-	readonly ref?: React.Ref<HTMLDivElement>;
+	readonly ref?: Ref<HTMLDivElement>;
 	readonly className?: string;
-	readonly children?: React.ReactNode;
+	readonly children?: ReactNode;
 	readonly align?: 'start' | 'center' | 'end';
 	readonly sideOffset?: number;
 	readonly side?: 'top' | 'bottom' | 'left' | 'right';
@@ -34,10 +34,10 @@ interface PopoverContentProperties {
 }
 
 /** Popover root component. Wraps Base UI Popover primitive with a stable anchor context. */
-function PopoverRoot({ children, ...properties }: React.ComponentProps<typeof PopoverPrimitive.Root>) {
-	const [anchorElement, setAnchorElement] = React.useState<HTMLDivElement | null>(null);
+function PopoverRoot({ children, ...properties }: ComponentProps<typeof PopoverPrimitive.Root>) {
+	const [anchorElement, setAnchorElement] = useState<HTMLDivElement | null>(null);
 
-	const contextValue = React.useMemo(() => {
+	const contextValue = useMemo(() => {
 		return {
 			anchorRef: setAnchorElement,
 			anchorElement,
@@ -59,13 +59,13 @@ function PopoverAnchor({
 	ref,
 	...properties
 }: {
-	readonly children?: React.ReactNode;
+	readonly children?: ReactNode;
 	readonly className?: string;
-	readonly ref?: React.Ref<HTMLDivElement>;
+	readonly ref?: Ref<HTMLDivElement>;
 }) {
-	const context = React.useContext(PopoverContext);
+	const context = useContext(PopoverContext);
 
-	const handleRef = React.useCallback(
+	const handleRef = useCallback(
 		(node: HTMLDivElement | null) => {
 			if (context) {
 				context.anchorRef(node);
@@ -90,8 +90,8 @@ function PopoverAnchor({
 PopoverAnchor.displayName = 'Popover.Anchor';
 
 /** Button that triggers the popover. Wrapped in a stable anchor context. */
-function PopoverTrigger({ children, ...properties }: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
-	const context = React.useContext(PopoverContext);
+function PopoverTrigger({ children, ...properties }: ComponentProps<typeof PopoverPrimitive.Trigger>) {
+	const context = useContext(PopoverContext);
 	return (
 		<div ref={context?.anchorRef} className="inline-flex">
 			<PopoverPrimitive.Trigger {...properties}>{children}</PopoverPrimitive.Trigger>
@@ -111,10 +111,10 @@ function PopoverContent({
 	children,
 	...properties
 }: PopoverContentProperties) {
-	const context = React.useContext(PopoverContext);
+	const context = useContext(PopoverContext);
 	const transformOriginRef = useTransformOrigin(context?.anchorElement || null, ref);
 
-	const resolvedSideOffset = React.useCallback(
+	const resolvedSideOffset = useCallback(
 		(data: { side: string }) => {
 			if (sideOffset !== undefined) {
 				return sideOffset;

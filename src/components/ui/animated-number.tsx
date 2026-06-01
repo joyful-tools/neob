@@ -1,5 +1,4 @@
 import { animate, motion, useMotionValue, useTransform } from 'motion/react';
-import * as React from 'react';
 import { useEffect } from 'react';
 
 interface AnimatedNumberProperties {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { expect, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
@@ -83,10 +83,10 @@ export const WithRefAndCustomAttributes: Story = {
 		rounded: 'full',
 	},
 	render: (args) => {
-		const pillReference = React.useRef<HTMLSpanElement>(null);
-		const [refStatus, setRefStatus] = React.useState('missing');
+		const pillReference = useRef<HTMLSpanElement>(null);
+		const [refStatus, setRefStatus] = useState('missing');
 
-		React.useEffect(() => {
+		useEffect(() => {
 			setRefStatus(pillReference.current ? pillReference.current.tagName.toLowerCase() : 'missing');
 		}, []);
 

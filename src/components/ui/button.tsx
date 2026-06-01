@@ -1,12 +1,12 @@
 import { type VariantProps } from 'class-variance-authority';
-import * as React from 'react';
+import { ButtonHTMLAttributes, cloneElement, HTMLAttributes, isValidElement, Ref } from 'react';
 
 import { cn } from '@/lib/utilities';
 
 import { buttonVariants } from './button-variants';
 import { Spinner } from './spinner';
 
-export interface ButtonProperties extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
+export interface ButtonProperties extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
 	asChild?: boolean;
 	isLoading?: boolean;
 }
@@ -16,10 +16,10 @@ export interface ButtonProperties extends React.ButtonHTMLAttributes<HTMLButtonE
  * merging the parent's props (className, style, ref, etc.) onto it.
  * Replaces the Radix `Slot` primitive for the `asChild` pattern.
  */
-function Slot({ children, ...properties }: React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }) {
-	if (React.isValidElement<Record<string, unknown>>(children)) {
+function Slot({ children, ...properties }: HTMLAttributes<HTMLElement> & { ref?: Ref<HTMLElement> }) {
+	if (isValidElement<Record<string, unknown>>(children)) {
 		const childProperties = children.props;
-		return React.cloneElement(children, {
+		return cloneElement(children, {
 			...properties,
 			...childProperties,
 			className: cn(properties.className, String(childProperties.className ?? '')),
@@ -38,7 +38,7 @@ export function Button({
 	disabled,
 	ref,
 	...properties
-}: ButtonProperties & { ref?: React.Ref<HTMLButtonElement> }) {
+}: ButtonProperties & { ref?: Ref<HTMLButtonElement> }) {
 	const Comp = asChild ? Slot : 'button';
 	const isDisabledOrLoading = disabled || isLoading;
 

@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { cn } from '@/lib/utilities';
 
 import type { CSSProperties } from 'react';

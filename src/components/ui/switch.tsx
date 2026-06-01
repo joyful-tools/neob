@@ -1,12 +1,12 @@
 import { Switch as BaseSwitch } from '@base-ui/react/switch';
-import * as React from 'react';
+import { ComponentPropsWithoutRef, ReactNode, Ref, useId } from 'react';
 
 import { cn } from '@/lib/utilities';
 
-export interface SwitchProperties extends React.ComponentPropsWithoutRef<typeof BaseSwitch.Root> {
-	readonly ref?: React.Ref<HTMLButtonElement>;
-	readonly label?: React.ReactNode;
-	readonly description?: React.ReactNode;
+export interface SwitchProperties extends ComponentPropsWithoutRef<typeof BaseSwitch.Root> {
+	readonly ref?: Ref<HTMLButtonElement>;
+	readonly label?: ReactNode;
+	readonly description?: ReactNode;
 	readonly controlFirst?: boolean;
 	readonly error?: string;
 	readonly variant?: 'default' | 'accent' | 'success';
@@ -56,8 +56,8 @@ export function Switch({
 	ref,
 	...properties
 }: SwitchProperties) {
-	const descriptionId = React.useId();
-	const errorId = React.useId();
+	const descriptionId = useId();
+	const errorId = useId();
 	const hasDescription = Boolean(description);
 	const hasError = Boolean(error);
 

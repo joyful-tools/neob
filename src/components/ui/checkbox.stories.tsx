@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, within } from 'storybook/test';
 
@@ -85,7 +85,7 @@ export const ValidationError: Story = {
 		checked: false,
 	},
 	render: (args) => {
-		const [checked, setChecked] = React.useState(args.checked === true);
+		const [checked, setChecked] = useState(args.checked === true);
 
 		return (
 			<div className="min-h-[72px] w-80">
@@ -142,7 +142,7 @@ export const Group: StoryObj<{ initialValues: string[] }> = {
 		initialValues: ['email'],
 	},
 	render: (args) => {
-		const [values, setValues] = React.useState<string[]>(args.initialValues);
+		const [values, setValues] = useState<string[]>(args.initialValues);
 
 		return (
 			<Checkbox.Group

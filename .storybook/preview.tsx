@@ -1,5 +1,5 @@
 import { Description, Primary, Stories, Subtitle, Title } from '@storybook/addon-docs/blocks';
-import * as React from 'react';
+import { ReactNode, useEffect } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import type { Preview } from '@storybook/react-vite';
@@ -11,12 +11,12 @@ function PreviewFrame({
 	isCentered,
 	isDocs,
 }: {
-	children: React.ReactNode;
+	children: ReactNode;
 	theme: string;
 	isCentered: boolean;
 	isDocs: boolean;
 }) {
-	React.useEffect(() => {
+	useEffect(() => {
 		const htmlElement = document.documentElement;
 		htmlElement.classList.toggle('dark', theme === 'dark');
 	}, [theme]);
@@ -24,7 +24,7 @@ function PreviewFrame({
 	return (
 		<MemoryRouter>
 			<div
-				className={`bg-background text-foreground transition-colors duration-200 ${isDocs ? 'p-4' : 'min-h-full p-8'} ${isCentered ? 'flex items-center justify-center' : ''}`}
+				className={`bg-background text-foreground transition-colors duration-200 ${isDocs ? 'p-4' : 'min-h-full'} ${isCentered ? 'flex items-center justify-center' : ''}`}
 			>
 				{children}
 			</div>

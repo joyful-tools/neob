@@ -1,13 +1,12 @@
 import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
 import { AnimatePresence, motion, type Transition } from 'motion/react';
-import * as React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { PointerEvent as ReactPointerEvent, ReactElement, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utilities';
 
 export interface HoverPreviewProps {
-	readonly children?: React.ReactElement<Record<string, unknown>>;
-	readonly preview?: React.ReactNode;
+	readonly children?: ReactElement<Record<string, unknown>>;
+	readonly preview?: ReactNode;
 	readonly className?: string;
 	readonly delayDuration?: number;
 	readonly forceOpen?: boolean;
@@ -101,7 +100,7 @@ export function HoverPreview({ children, preview, className, delayDuration = 200
 		[forceOpen],
 	);
 
-	const handlePointerMove = useCallback((event: React.PointerEvent) => {
+	const handlePointerMove = useCallback((event: ReactPointerEvent) => {
 		if (event.pointerType === 'mouse') {
 			setCoords({ x: event.clientX, y: event.clientY });
 		}

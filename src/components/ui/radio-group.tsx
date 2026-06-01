@@ -1,7 +1,7 @@
 import { Radio } from '@base-ui/react/radio';
 import { RadioGroup as RadioGroupPrimitive } from '@base-ui/react/radio-group';
 import { Check } from '@phosphor-icons/react';
-import * as React from 'react';
+import { ComponentPropsWithoutRef, CSSProperties, Ref } from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -15,17 +15,17 @@ const RADIO_ITEM_CLASS_NAME = `
 	dark:data-[checked]:text-black
 `;
 
-interface RadioGroupProperties extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive> {
-	readonly ref?: React.Ref<HTMLDivElement>;
+interface RadioGroupProperties extends ComponentPropsWithoutRef<typeof RadioGroupPrimitive> {
+	readonly ref?: Ref<HTMLDivElement>;
 }
 
 interface RadioGroupItemProperties {
-	readonly ref?: React.Ref<HTMLButtonElement>;
+	readonly ref?: Ref<HTMLButtonElement>;
 	readonly value: string;
 	readonly id?: string;
 	readonly className?: string;
 	readonly disabled?: boolean;
-	readonly style?: React.CSSProperties & Record<string, string>;
+	readonly style?: CSSProperties & Record<string, string>;
 }
 
 /** Radio group container. Wraps Base UI RadioGroup primitive. */

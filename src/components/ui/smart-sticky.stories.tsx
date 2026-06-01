@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { expect, fireEvent, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';

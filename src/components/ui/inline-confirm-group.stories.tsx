@@ -1,6 +1,5 @@
 import { Archive, DownloadSimple, Trash } from '@phosphor-icons/react';
-import * as React from 'react';
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
@@ -41,7 +40,7 @@ interface FileItem {
 
 function getActionProperties(kind: FileAction): {
 	actionLabel: string;
-	actionIcon: React.ReactElement<{ className?: string }>;
+	actionIcon: ReactElement<{ className?: string }>;
 	intent: InlineConfirmGroupIntent;
 } {
 	switch (kind) {
@@ -167,7 +166,7 @@ export const KeyboardAndOutsideCancel: Story = {
 		onConfirm: () => {},
 	},
 	render: () => {
-		const [cancelCount, setCancelCount] = React.useState(0);
+		const [cancelCount, setCancelCount] = useState(0);
 		return (
 			<div className="flex min-h-40 items-start justify-start p-8">
 				<div className="flex flex-col gap-4">
@@ -230,7 +229,7 @@ export const ConfirmAndLoadingState: Story = {
 		onConfirm: () => {},
 	},
 	render: () => {
-		const [confirmed, setConfirmed] = React.useState(false);
+		const [confirmed, setConfirmed] = useState(false);
 		return (
 			<div className="flex flex-col gap-6 p-8">
 				<div className="flex items-center gap-4">

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, within } from 'storybook/test';
 
@@ -66,7 +66,7 @@ export const Basic: Story = {
 		overscan: 5,
 	},
 	render: (args: VirtualizedViewportProps<Slab>) => {
-		const [items, setItems] = React.useState<Slab[]>(args.items);
+		const [items, setItems] = useState<Slab[]>(args.items);
 
 		return (
 			<div className="flex w-[480px] flex-col gap-4">
@@ -126,7 +126,7 @@ export const DynamicHeights: Story = {
 		overscan: 5,
 	},
 	render: (args: VirtualizedViewportProps<Slab>) => {
-		const [items, setItems] = React.useState<Slab[]>(args.items);
+		const [items, setItems] = useState<Slab[]>(args.items);
 
 		return (
 			<div className="flex w-[480px] flex-col gap-4">
@@ -202,8 +202,8 @@ export const VisualBufferDebugger: Story = {
 		overscan: 4,
 	},
 	render: (args: VirtualizedViewportProps<Slab>) => {
-		const [items] = React.useState<Slab[]>(args.items);
-		const [range, setRange] = React.useState({
+		const [items] = useState<Slab[]>(args.items);
+		const [range, setRange] = useState({
 			startIndex: 0,
 			endIndex: -1,
 			firstVisibleIndex: 0,

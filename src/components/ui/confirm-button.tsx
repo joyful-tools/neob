@@ -1,6 +1,5 @@
 import { AnimatePresence, motion, type Transition } from 'motion/react';
-import * as React from 'react';
-import { useEffect, useId, useState } from 'react';
+import { useCallback, useEffect, useId, useState } from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -56,7 +55,7 @@ export function ConfirmButton({
 	const descriptionId = useId();
 	const layoutId = useId();
 
-	const handleOpenChange = React.useCallback(
+	const handleOpenChange = useCallback(
 		(nextOpen: boolean) => {
 			if (!nextOpen && isConfirming) {
 				return;

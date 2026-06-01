@@ -1,7 +1,6 @@
 import { Trash, X } from '@phosphor-icons/react';
 import { AnimatePresence, motion, Transition } from 'motion/react';
-import * as React from 'react';
-import { useCallback, useEffect, useRef, useState, useId } from 'react';
+import { cloneElement, KeyboardEvent, MouseEvent, ReactElement, useCallback, useEffect, useRef, useState, useId } from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -13,7 +12,7 @@ export type InlineConfirmGroupIntent = 'danger' | 'info' | 'success';
 export interface InlineConfirmGroupProperties {
 	readonly itemName: string;
 	readonly actionLabel?: string;
-	readonly actionIcon?: React.ReactElement<{ className?: string }>;
+	readonly actionIcon?: ReactElement<{ className?: string }>;
 	readonly intent?: InlineConfirmGroupIntent;
 	readonly onConfirm: () => void;
 	readonly onCancel?: () => void;
@@ -55,7 +54,7 @@ export function InlineConfirmGroup({
 	const transformOrigin = direction;
 	const actionLabelLowercase = actionLabel.toLowerCase();
 	const renderActionIcon = useCallback(
-		(sizeClassName: string) => React.cloneElement(actionIcon, { className: cn(sizeClassName, actionIcon.props.className) }),
+		(sizeClassName: string) => cloneElement(actionIcon, { className: cn(sizeClassName, actionIcon.props.className) }),
 		[actionIcon],
 	);
 
@@ -79,7 +78,7 @@ export function InlineConfirmGroup({
 	}, [open, onCancel]);
 
 	const handleKeyDown = useCallback(
-		(event: React.KeyboardEvent) => {
+		(event: KeyboardEvent) => {
 			switch (event.key) {
 				case 'Escape': {
 					event.preventDefault();
@@ -109,7 +108,7 @@ export function InlineConfirmGroup({
 	);
 
 	const handleConfirmClick = useCallback(
-		(event: React.MouseEvent) => {
+		(event: MouseEvent) => {
 			event.stopPropagation();
 			onConfirm();
 			setOpen(false);
@@ -118,7 +117,7 @@ export function InlineConfirmGroup({
 	);
 
 	const handleCancelClick = useCallback(
-		(event: React.MouseEvent) => {
+		(event: MouseEvent) => {
 			event.stopPropagation();
 			setOpen(false);
 			onCancel?.();

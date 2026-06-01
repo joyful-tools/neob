@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { ReactNode } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
@@ -20,7 +20,7 @@ const meta = {
 } satisfies Meta<typeof Input>;
 
 export default meta;
-type StoryProps = Omit<InputProperties, 'children'> & { children?: React.ReactNode };
+type StoryProps = Omit<InputProperties, 'children'> & { children?: ReactNode };
 type Story = StoryObj<StoryProps>;
 
 export const DefaultInput: Story = {

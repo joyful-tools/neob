@@ -1,15 +1,15 @@
 import { CaretDown } from '@phosphor-icons/react';
-import * as React from 'react';
+import { ButtonHTMLAttributes, ReactNode, useLayoutEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utilities';
 
 import { Button } from './button';
 import { DropdownMenu } from './dropdown-menu';
 
-export interface SplitButtonProperties extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface SplitButtonProperties extends ButtonHTMLAttributes<HTMLButtonElement> {
 	readonly variant?: 'default' | 'accent' | 'danger' | 'subtle';
 	readonly size?: 'default' | 'sm' | 'lg';
-	readonly menuContent: React.ReactNode;
+	readonly menuContent: ReactNode;
 }
 
 export function SplitButton({
@@ -22,10 +22,10 @@ export function SplitButton({
 	disabled,
 	...properties
 }: SplitButtonProperties) {
-	const containerReference = React.useRef<HTMLDivElement>(null);
-	const [width, setWidth] = React.useState(0);
+	const containerReference = useRef<HTMLDivElement>(null);
+	const [width, setWidth] = useState(0);
 
-	React.useLayoutEffect(() => {
+	useLayoutEffect(() => {
 		const element = containerReference.current;
 
 		if (!element) {

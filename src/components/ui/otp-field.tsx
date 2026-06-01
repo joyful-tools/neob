@@ -1,5 +1,18 @@
-import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import * as React from 'react';
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useLayoutEffect,
+	useMemo,
+	useRef,
+	useState,
+	ClipboardEvent,
+	KeyboardEvent,
+	PointerEvent,
+	ReactNode,
+	RefObject,
+} from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -12,17 +25,17 @@ interface OTPContextValue {
 	readonly validationMode: ValidationMode;
 	readonly name?: string;
 	readonly activeInputIndex: number;
-	readonly inputReferences: React.RefObject<(HTMLInputElement | null)[]>;
+	readonly inputReferences: RefObject<(HTMLInputElement | null)[]>;
 	readonly onFocus: (index: number) => void;
 	readonly onBlur: () => void;
-	readonly onPaste: (event: React.ClipboardEvent) => void;
-	readonly onKeyDown: (index: number, event: React.KeyboardEvent) => void;
+	readonly onPaste: (event: ClipboardEvent) => void;
+	readonly onKeyDown: (index: number, event: KeyboardEvent) => void;
 	readonly onChange: (index: number, char: string) => void;
 	readonly registerInput: (index: number, element: HTMLInputElement | null) => void;
 }
 
 interface RootProperties {
-	readonly children?: React.ReactNode;
+	readonly children?: ReactNode;
 	readonly length?: number;
 	readonly name?: string;
 	readonly defaultValue?: string;
@@ -202,7 +215,7 @@ function OTPFieldRoot({
 	);
 
 	const handleKeyDown = useCallback(
-		(index: number, event: React.KeyboardEvent) => {
+		(index: number, event: KeyboardEvent) => {
 			const lastFilledIndex = findLastFilledIndex(valueArray);
 			const boundary = Math.min(lastFilledIndex + 1, length - 1);
 
@@ -251,7 +264,7 @@ function OTPFieldRoot({
 	);
 
 	const handlePaste = useCallback(
-		(event: React.ClipboardEvent) => {
+		(event: ClipboardEvent) => {
 			event.preventDefault();
 			const pastedData = event.clipboardData.getData('text').trim();
 			if (!pastedData) return;
@@ -361,7 +374,7 @@ function OTPFieldInput({ index, className }: InputProperties) {
 	const char = value[index] ?? '';
 
 	const handlePointerDown = useCallback(
-		(event: React.PointerEvent<HTMLInputElement>) => {
+		(event: PointerEvent<HTMLInputElement>) => {
 			if (disabled) return;
 			event.preventDefault();
 

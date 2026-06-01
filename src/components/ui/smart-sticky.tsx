@@ -1,12 +1,11 @@
-import * as React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { HTMLAttributes, ReactNode, useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utilities';
 
-export interface SmartStickyProps extends React.HTMLAttributes<HTMLDivElement> {
-	readonly sticky?: (props: { stuck: boolean }) => React.ReactNode;
+export interface SmartStickyProps extends HTMLAttributes<HTMLDivElement> {
+	readonly sticky?: (props: { stuck: boolean }) => ReactNode;
 	readonly onStickyChange?: (stuck: boolean) => void;
-	readonly children?: React.ReactNode;
+	readonly children?: ReactNode;
 }
 
 function debounceAnimationFrame<TArgs extends unknown[]>(callback: (...args: TArgs) => void) {

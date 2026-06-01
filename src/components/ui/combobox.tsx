@@ -1,6 +1,19 @@
 import { Combobox as BaseCombobox } from '@base-ui/react/combobox';
 import { CaretDown, Check, X } from '@phosphor-icons/react';
-import * as React from 'react';
+import {
+	ComponentPropsWithoutRef,
+	createContext,
+	Fragment,
+	JSX,
+	ReactNode,
+	Ref,
+	RefCallback,
+	RefObject,
+	useContext,
+	useId,
+	useMemo,
+	useState,
+} from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -8,11 +21,11 @@ import { Input as NeoInput } from './input';
 
 export type ComboboxSize = 'xs' | 'sm' | 'base' | 'lg';
 
-const ComboboxContext = React.createContext<{
+const ComboboxContext = createContext<{
 	readonly size: ComboboxSize;
 	readonly hasError: boolean;
 	readonly multiple: boolean;
-	readonly anchorRef: React.RefCallback<HTMLDivElement | null>;
+	readonly anchorRef: RefCallback<HTMLDivElement | null>;
 	readonly anchorElement: HTMLDivElement | null;
 	readonly describedBy?: string;
 	readonly ariaInvalid?: boolean;
@@ -47,10 +60,10 @@ export interface ComboboxProps<Value = unknown, Multiple extends boolean | undef
 > {
 	readonly 'aria-label'?: string;
 	readonly 'aria-labelledby'?: string;
-	readonly label?: React.ReactNode;
+	readonly label?: ReactNode;
 	readonly required?: boolean;
-	readonly labelTooltip?: React.ReactNode;
-	readonly description?: React.ReactNode;
+	readonly labelTooltip?: ReactNode;
+	readonly description?: ReactNode;
 	readonly error?: string;
 	readonly size?: ComboboxSize;
 	readonly containerClassName?: string;
@@ -74,10 +87,10 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 	...props
 }: ComboboxProps<Value, Multiple>) {
 	const hasError = Boolean(error);
-	const [anchorElement, setAnchorElement] = React.useState<HTMLDivElement | null>(null);
+	const [anchorElement, setAnchorElement] = useState<HTMLDivElement | null>(null);
 
-	const descriptionId = React.useId();
-	const errorId = React.useId();
+	const descriptionId = useId();
+	const errorId = useId();
 	const hasDescription = Boolean(description);
 
 	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
@@ -121,13 +134,13 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 }
 Root.displayName = 'Combobox.Root';
 
-export interface ComboboxContentProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Popup> {
+export interface ComboboxContentProps extends ComponentPropsWithoutRef<typeof BaseCombobox.Popup> {
 	readonly align?: BaseCombobox.Positioner.Props['align'];
 	readonly alignOffset?: BaseCombobox.Positioner.Props['alignOffset'];
 	readonly side?: BaseCombobox.Positioner.Props['side'];
 	readonly sideOffset?: BaseCombobox.Positioner.Props['sideOffset'];
-	readonly container?: HTMLElement | null | React.RefObject<HTMLElement | null>;
-	readonly ref?: React.Ref<HTMLDivElement>;
+	readonly container?: HTMLElement | null | RefObject<HTMLElement | null>;
+	readonly ref?: Ref<HTMLDivElement>;
 }
 
 /**
@@ -145,9 +158,9 @@ function Content({
 	ref,
 	...properties
 }: ComboboxContentProps) {
-	const { multiple, anchorElement } = React.useContext(ComboboxContext);
+	const { multiple, anchorElement } = useContext(ComboboxContext);
 
-	const resolvedSideOffset = React.useMemo(() => {
+	const resolvedSideOffset = useMemo(() => {
 		const extraOffset = multiple ? 6 : 0;
 
 		if (typeof sideOffset === 'function') {
@@ -191,9 +204,9 @@ const triggerValueIconStyles: Record<ComboboxSize, { padding: string; iconSize: 
 	lg: { padding: 'pr-12', iconSize: 18, iconRight: 'right-3' },
 };
 
-export interface ComboboxTriggerValueProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Trigger> {
+export interface ComboboxTriggerValueProps extends ComponentPropsWithoutRef<typeof BaseCombobox.Trigger> {
 	readonly placeholder?: string;
-	readonly ref?: React.Ref<HTMLButtonElement>;
+	readonly ref?: Ref<HTMLButtonElement>;
 }
 
 /**
@@ -201,7 +214,7 @@ export interface ComboboxTriggerValueProps extends React.ComponentPropsWithoutRe
  * Dropdown trigger button displaying the selected value.
  */
 function TriggerValue({ className, ref, placeholder, ...props }: ComboboxTriggerValueProps) {
-	const { size, hasError, describedBy, ariaInvalid, anchorRef, ariaLabel, ariaLabelledby } = React.useContext(ComboboxContext);
+	const { size, hasError, describedBy, ariaInvalid, anchorRef, ariaLabel, ariaLabelledby } = useContext(ComboboxContext);
 	const iconStyles = triggerValueIconStyles[size];
 
 	return (
@@ -231,12 +244,12 @@ function TriggerValue({ className, ref, placeholder, ...props }: ComboboxTrigger
 }
 TriggerValue.displayName = 'Combobox.TriggerValue';
 
-export interface ComboboxTriggerProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Trigger> {
-	readonly ref?: React.Ref<HTMLButtonElement>;
+export interface ComboboxTriggerProps extends ComponentPropsWithoutRef<typeof BaseCombobox.Trigger> {
+	readonly ref?: Ref<HTMLButtonElement>;
 }
 
 function Trigger({ children, ref, ...props }: ComboboxTriggerProps) {
-	const { ariaLabel, ariaLabelledby } = React.useContext(ComboboxContext);
+	const { ariaLabel, ariaLabelledby } = useContext(ComboboxContext);
 
 	return (
 		<BaseCombobox.Trigger ref={ref} aria-label={ariaLabel} aria-labelledby={ariaLabelledby} {...props}>
@@ -273,8 +286,8 @@ const triggerInputIconStyles: Record<ComboboxSize, { padding: string; iconSize: 
 	},
 };
 
-export interface ComboboxTriggerInputProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Input> {
-	readonly ref?: React.Ref<HTMLInputElement>;
+export interface ComboboxTriggerInputProps extends ComponentPropsWithoutRef<typeof BaseCombobox.Input> {
+	readonly ref?: Ref<HTMLInputElement>;
 	readonly clearLabel?: string;
 	readonly showOptionsLabel?: string;
 }
@@ -291,7 +304,7 @@ function TriggerInput({
 	showOptionsLabel = 'Show options',
 	...props
 }: ComboboxTriggerInputProps) {
-	const { size, hasError, describedBy, ariaInvalid, anchorRef } = React.useContext(ComboboxContext);
+	const { size, hasError, describedBy, ariaInvalid, anchorRef } = useContext(ComboboxContext);
 	const iconStyles = triggerInputIconStyles[size];
 
 	return (
@@ -348,7 +361,7 @@ function getChipsContainerStyles(size: ComboboxSize, hasError: boolean) {
 
 export interface ComboboxTriggerMultipleWithInputProps<ValueType> {
 	readonly placeholder?: string;
-	readonly renderItem: (value: ValueType) => React.ReactNode;
+	readonly renderItem: (value: ValueType) => ReactNode;
 	readonly className?: string;
 	readonly inputSide?: 'right' | 'top';
 	readonly value?: ValueType[];
@@ -365,7 +378,7 @@ function TriggerMultipleWithInput<ValueType>({
 	inputSide = 'right',
 	value: controlledValue,
 }: ComboboxTriggerMultipleWithInputProps<ValueType>) {
-	const { size, hasError, describedBy, ariaInvalid } = React.useContext(ComboboxContext);
+	const { size, hasError, describedBy, ariaInvalid } = useContext(ComboboxContext);
 	const chipsToRender = controlledValue;
 
 	const sizeToMinHeight: Record<ComboboxSize, string> = {
@@ -399,7 +412,7 @@ function TriggerMultipleWithInput<ValueType>({
 				<BaseCombobox.Value>
 					{(internalValue: ValueType[]) => {
 						if (chipsToRender !== undefined) return null;
-						return <React.Fragment>{internalValue.map((item) => renderItem(item))}</React.Fragment>;
+						return <Fragment>{internalValue.map((item) => renderItem(item))}</Fragment>;
 					}}
 				</BaseCombobox.Value>
 				{inputSide === 'right' && (
@@ -416,9 +429,9 @@ function TriggerMultipleWithInput<ValueType>({
 }
 TriggerMultipleWithInput.displayName = 'Combobox.TriggerMultipleWithInput';
 
-export interface ComboboxChipProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Chip> {
+export interface ComboboxChipProps extends ComponentPropsWithoutRef<typeof BaseCombobox.Chip> {
 	readonly removeLabel?: string;
-	readonly ref?: React.Ref<HTMLDivElement>;
+	readonly ref?: Ref<HTMLDivElement>;
 }
 
 /**
@@ -447,8 +460,8 @@ function Chip({ removeLabel = 'Remove', className, children, ref, ...props }: Co
 }
 Chip.displayName = 'Combobox.Chip';
 
-export interface ComboboxItemProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Item> {
-	readonly ref?: React.Ref<HTMLDivElement>;
+export interface ComboboxItemProps extends ComponentPropsWithoutRef<typeof BaseCombobox.Item> {
+	readonly ref?: Ref<HTMLDivElement>;
 }
 
 /**
@@ -476,8 +489,8 @@ function Item({ children, className, ref, ...props }: ComboboxItemProps) {
 }
 Item.displayName = 'Combobox.Item';
 
-export interface ComboboxEmptyProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Empty> {
-	readonly ref?: React.Ref<HTMLDivElement>;
+export interface ComboboxEmptyProps extends ComponentPropsWithoutRef<typeof BaseCombobox.Empty> {
+	readonly ref?: Ref<HTMLDivElement>;
 }
 
 /**
@@ -497,8 +510,8 @@ function Empty({ className, children, ref, ...props }: ComboboxEmptyProps) {
 }
 Empty.displayName = 'Combobox.Empty';
 
-export interface ComboboxInputProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Input> {
-	readonly ref?: React.Ref<HTMLInputElement>;
+export interface ComboboxInputProps extends ComponentPropsWithoutRef<typeof BaseCombobox.Input> {
+	readonly ref?: Ref<HTMLInputElement>;
 }
 
 /**
@@ -519,8 +532,8 @@ function Input({ className, ref, ...props }: ComboboxInputProps) {
 }
 Input.displayName = 'Combobox.Input';
 
-export interface ComboboxListProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.List> {
-	readonly ref?: React.Ref<HTMLDivElement>;
+export interface ComboboxListProps extends ComponentPropsWithoutRef<typeof BaseCombobox.List> {
+	readonly ref?: Ref<HTMLDivElement>;
 }
 
 /**
@@ -540,8 +553,8 @@ function List({ className, children, ref, ...props }: ComboboxListProps) {
 }
 List.displayName = 'Combobox.List';
 
-export interface ComboboxGroupProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.Group> {
-	readonly ref?: React.Ref<HTMLDivElement>;
+export interface ComboboxGroupProps extends ComponentPropsWithoutRef<typeof BaseCombobox.Group> {
+	readonly ref?: Ref<HTMLDivElement>;
 }
 
 /**
@@ -559,8 +572,8 @@ function Group({ className, ref, ...props }: ComboboxGroupProps) {
 }
 Group.displayName = 'Combobox.Group';
 
-export interface ComboboxGroupLabelProps extends React.ComponentPropsWithoutRef<typeof BaseCombobox.GroupLabel> {
-	readonly ref?: React.Ref<HTMLDivElement>;
+export interface ComboboxGroupLabelProps extends ComponentPropsWithoutRef<typeof BaseCombobox.GroupLabel> {
+	readonly ref?: Ref<HTMLDivElement>;
 }
 
 /**
@@ -579,11 +592,11 @@ function GroupLabel({ className, ref, ...props }: ComboboxGroupLabelProps) {
 GroupLabel.displayName = 'Combobox.GroupLabel';
 
 export interface ComboboxComponent {
-	<Value, Multiple extends boolean | undefined = false>(props: ComboboxProps<Value, Multiple>): React.JSX.Element;
+	<Value, Multiple extends boolean | undefined = false>(props: ComboboxProps<Value, Multiple>): JSX.Element;
 	Content: typeof Content;
 	TriggerValue: typeof TriggerValue;
 	TriggerInput: typeof TriggerInput;
-	TriggerMultipleWithInput: <ValueType>(props: ComboboxTriggerMultipleWithInputProps<ValueType>) => React.JSX.Element;
+	TriggerMultipleWithInput: <ValueType>(props: ComboboxTriggerMultipleWithInputProps<ValueType>) => JSX.Element;
 	Chip: typeof Chip;
 	Item: typeof Item;
 	Input: typeof Input;

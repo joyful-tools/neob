@@ -1,13 +1,13 @@
 import { Eye, EyeSlash } from '@phosphor-icons/react';
-import * as React from 'react';
+import { ComponentProps, Ref, useState } from 'react';
 
 import { cn } from '@/lib/utilities';
 
 import { Input } from './input';
 import { InputGroup } from './input-group';
 
-export interface SensitiveInputProperties extends React.ComponentProps<typeof Input> {
-	readonly ref?: React.Ref<HTMLInputElement>;
+export interface SensitiveInputProperties extends ComponentProps<typeof Input> {
+	readonly ref?: Ref<HTMLInputElement>;
 }
 
 /**
@@ -28,7 +28,7 @@ export function SensitiveInput({
 	containerClassName,
 	...properties
 }: SensitiveInputProperties) {
-	const [isVisible, setIsVisible] = React.useState(false);
+	const [isVisible, setIsVisible] = useState(false);
 	return (
 		<InputGroup
 			label={label}

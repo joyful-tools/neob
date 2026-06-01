@@ -1,7 +1,16 @@
 import { FileArrowDown } from '@phosphor-icons/react';
 import { AnimatePresence, motion } from 'motion/react';
-import * as React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+	ChangeEvent,
+	DragEvent as ReactDragEvent,
+	HTMLAttributes,
+	ReactNode,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 import { createPortal } from 'react-dom';
 
 import { cn } from '@/lib/utilities';
@@ -126,16 +135,16 @@ export function validateFiles(files: FileList, options: ValidationOptions): Drop
 	};
 }
 
-export function isDragEventWithFiles(event: React.DragEvent | DragEvent): boolean {
+export function isDragEventWithFiles(event: ReactDragEvent | DragEvent): boolean {
 	if ('dataTransfer' in event && event.dataTransfer) {
 		return Array.prototype.some.call(event.dataTransfer.types, (type) => type === 'Files' || type === 'application/x-moz-file');
 	}
 	return false;
 }
 
-export interface DropZoneProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
-	readonly children?: (props: { dragging: boolean; openFilePicker: () => void }) => React.ReactNode;
-	readonly info?: React.ReactNode;
+export interface DropZoneProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
+	readonly children?: (props: { dragging: boolean; openFilePicker: () => void }) => ReactNode;
+	readonly info?: ReactNode;
 	readonly fullscreen?: boolean | string | HTMLElement;
 	readonly accept?: string[];
 	readonly multiple?: boolean;
@@ -186,7 +195,7 @@ export function DropZone({
 	}, []);
 
 	const handleInputChange = useCallback(
-		(evt: React.ChangeEvent<HTMLInputElement>) => {
+		(evt: ChangeEvent<HTMLInputElement>) => {
 			const { files } = evt.target;
 			if (!files || files.length === 0) return;
 
@@ -201,7 +210,7 @@ export function DropZone({
 		[accept, minSize, maxSize, onFileDrop],
 	);
 
-	const handleDragEnter = useCallback((event: React.DragEvent<HTMLDivElement> | DragEvent) => {
+	const handleDragEnter = useCallback((event: ReactDragEvent<HTMLDivElement> | DragEvent) => {
 		if (!isDragEventWithFiles(event)) return;
 		setDragging(true);
 	}, []);
@@ -216,7 +225,7 @@ export function DropZone({
 		}
 	}, []);
 
-	const handleDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+	const handleDragOver = useCallback((event: ReactDragEvent<HTMLDivElement>) => {
 		if (!isDragEventWithFiles(event)) return;
 		event.preventDefault();
 		try {
@@ -227,7 +236,7 @@ export function DropZone({
 	}, []);
 
 	const handleDrop = useCallback(
-		(event: React.DragEvent<HTMLDivElement>) => {
+		(event: ReactDragEvent<HTMLDivElement>) => {
 			setDragging(false);
 			if (!isDragEventWithFiles(event)) return;
 			event.preventDefault();

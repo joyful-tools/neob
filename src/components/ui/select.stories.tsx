@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { ComponentProps, ReactNode, useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, within } from 'storybook/test';
 
@@ -12,10 +12,10 @@ type SelectStoryProperties = {
 	initialValue?: string;
 	placeholder?: string;
 	'aria-label'?: string;
-	label?: React.ReactNode;
-	description?: React.ReactNode;
+	label?: ReactNode;
+	description?: ReactNode;
 	disabled?: boolean;
-	items?: React.ComponentProps<typeof Select>['items'];
+	items?: ComponentProps<typeof Select>['items'];
 };
 
 const meta = {
@@ -42,7 +42,7 @@ export const Default: Story = {
 		},
 	},
 	render: (args) => {
-		const [val, setVal] = React.useState(args.initialValue ?? '');
+		const [val, setVal] = useState(args.initialValue ?? '');
 		return (
 			<div className="w-64">
 				<Select
@@ -109,7 +109,7 @@ export const ItemsProp: Story = {
 		},
 	},
 	render: (args) => {
-		const [val, setVal] = React.useState(args.initialValue ?? '');
+		const [val, setVal] = useState(args.initialValue ?? '');
 		return (
 			<div className="w-64">
 				<Select
@@ -148,7 +148,7 @@ export const Labeled: Story = {
 		},
 	},
 	render: (args) => {
-		const [val, setVal] = React.useState(args.initialValue ?? '');
+		const [val, setVal] = useState(args.initialValue ?? '');
 		return (
 			<div className="w-64">
 				<Select

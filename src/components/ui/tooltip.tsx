@@ -1,7 +1,6 @@
 import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
 import { AnimatePresence, motion, type Transition } from 'motion/react';
-import * as React from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { ReactElement, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -76,15 +75,15 @@ function useTouchGatedTooltip() {
 }
 
 interface TooltipProperties {
-	children?: React.ReactElement<Record<string, unknown>>;
-	content?: React.ReactNode;
+	children?: ReactElement<Record<string, unknown>>;
+	content?: ReactNode;
 	side?: 'top' | 'right' | 'bottom' | 'left';
 	delayDuration?: number;
 	className?: string;
 	forceOpen?: boolean;
 }
 
-function TooltipProvider({ children }: { children: React.ReactNode }) {
+function TooltipProvider({ children }: { children: ReactNode }) {
 	return <BaseTooltip.Provider delay={300}>{children}</BaseTooltip.Provider>;
 }
 TooltipProvider.displayName = 'Tooltip.Provider';

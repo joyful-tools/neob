@@ -1,7 +1,7 @@
 import { Accordion as BaseAccordion } from '@base-ui/react/accordion';
 import { CaretDown } from '@phosphor-icons/react';
 import { motion } from 'motion/react';
-import * as React from 'react';
+import { ComponentPropsWithoutRef, Ref } from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -14,8 +14,8 @@ function AccordionRoot({
 	ref,
 	multiple = false,
 	...properties
-}: React.ComponentPropsWithoutRef<typeof BaseAccordion.Root> & {
-	readonly ref?: React.Ref<HTMLDivElement>;
+}: ComponentPropsWithoutRef<typeof BaseAccordion.Root> & {
+	readonly ref?: Ref<HTMLDivElement>;
 }) {
 	return <BaseAccordion.Root ref={ref} multiple={multiple} className={cn('w-full', className)} {...properties} />;
 }
@@ -29,8 +29,8 @@ function AccordionItem({
 	className,
 	ref,
 	...properties
-}: React.ComponentPropsWithoutRef<typeof BaseAccordion.Item> & {
-	readonly ref?: React.Ref<HTMLDivElement>;
+}: ComponentPropsWithoutRef<typeof BaseAccordion.Item> & {
+	readonly ref?: Ref<HTMLDivElement>;
 }) {
 	return <BaseAccordion.Item ref={ref} className={className} {...properties} />;
 }
@@ -45,8 +45,8 @@ function AccordionTrigger({
 	children,
 	ref,
 	...properties
-}: React.ComponentPropsWithoutRef<typeof BaseAccordion.Trigger> & {
-	readonly ref?: React.Ref<HTMLButtonElement>;
+}: ComponentPropsWithoutRef<typeof BaseAccordion.Trigger> & {
+	readonly ref?: Ref<HTMLButtonElement>;
 }) {
 	return (
 		<BaseAccordion.Header className="flex">
@@ -89,8 +89,8 @@ function AccordionContent({
 	children,
 	ref,
 	...properties
-}: React.ComponentPropsWithoutRef<typeof BaseAccordion.Panel> & {
-	readonly ref?: React.Ref<HTMLDivElement>;
+}: ComponentPropsWithoutRef<typeof BaseAccordion.Panel> & {
+	readonly ref?: Ref<HTMLDivElement>;
 }) {
 	return (
 		<BaseAccordion.Panel

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { ComponentProps } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, within } from 'storybook/test';
 
@@ -26,7 +26,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const PublishButton = ({ children, menuContent: _menuContent, ...props }: React.ComponentProps<typeof SplitButton>) => {
+const PublishButton = ({ children, menuContent: _menuContent, ...props }: ComponentProps<typeof SplitButton>) => {
 	const menuContent = (
 		<>
 			<DropdownMenu.Item

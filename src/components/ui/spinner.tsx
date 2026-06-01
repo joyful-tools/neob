@@ -1,6 +1,5 @@
 import { CircleNotch } from '@phosphor-icons/react';
 import { motion, useTime, useTransform } from 'motion/react';
-import * as React from 'react';
 
 import { cn } from '@/lib/utilities';
 

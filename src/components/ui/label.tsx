@@ -1,5 +1,5 @@
 import { type VariantProps, cva } from 'class-variance-authority';
-import * as React from 'react';
+import { LabelHTMLAttributes, Ref } from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -12,9 +12,9 @@ export function Label({
 	className,
 	ref,
 	...properties
-}: React.LabelHTMLAttributes<HTMLLabelElement> &
+}: LabelHTMLAttributes<HTMLLabelElement> &
 	VariantProps<typeof labelVariants> & {
-		ref?: React.Ref<HTMLLabelElement>;
+		ref?: Ref<HTMLLabelElement>;
 	}) {
 	return <label ref={ref} className={cn(labelVariants(), className)} {...properties} />;
 }

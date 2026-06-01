@@ -1,9 +1,9 @@
-import * as React from 'react';
+import { CSSProperties, HTMLAttributes, ReactNode, useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utilities';
 
-export interface MarqueeProps extends React.HTMLAttributes<HTMLDivElement> {
-	readonly children?: React.ReactNode;
+export interface MarqueeProps extends HTMLAttributes<HTMLDivElement> {
+	readonly children?: ReactNode;
 	readonly pauseOnHover?: boolean;
 	readonly vertical?: boolean;
 	readonly reverse?: boolean;
@@ -24,11 +24,11 @@ export function Marquee({
 	style,
 	...properties
 }: MarqueeProps) {
-	const containerRef = React.useRef<HTMLDivElement>(null);
-	const trackRef = React.useRef<HTMLDivElement>(null);
-	const [repeatCount, setRepeatCount] = React.useState(2);
+	const containerRef = useRef<HTMLDivElement>(null);
+	const trackRef = useRef<HTMLDivElement>(null);
+	const [repeatCount, setRepeatCount] = useState(2);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const container = containerRef.current;
 		const track = trackRef.current;
 		if (!container || !track) {
@@ -65,7 +65,7 @@ export function Marquee({
 		};
 	}, [vertical]);
 
-	const customStyle: React.CSSProperties = {
+	const customStyle: CSSProperties = {
 		...(duration ? { '--duration': duration } : {}),
 		...style,
 	};

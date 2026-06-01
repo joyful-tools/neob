@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useMemo } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
@@ -22,7 +22,7 @@ type Story = StoryObj<typeof meta>;
 
 export const FiveMinutesAgo: Story = {
 	render: () => {
-		const dateVal = React.useMemo(() => new Date(Date.now() - 5 * 60 * 1000), []);
+		const dateVal = useMemo(() => new Date(Date.now() - 5 * 60 * 1000), []);
 		return (
 			<Tooltip.Provider>
 				<div className="p-8">
@@ -54,7 +54,7 @@ export const FiveMinutesAgo: Story = {
 
 export const JustNow: Story = {
 	render: () => {
-		const dateVal = React.useMemo(() => new Date(), []);
+		const dateVal = useMemo(() => new Date(), []);
 		return (
 			<Tooltip.Provider>
 				<div className="p-8">

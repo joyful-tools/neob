@@ -1,5 +1,5 @@
 import { CaretDoubleLeft, CaretDoubleRight, CaretLeft, CaretRight } from '@phosphor-icons/react';
-import * as React from 'react';
+import { createContext, KeyboardEvent, ReactNode, useContext, useMemo, useState } from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -49,10 +49,10 @@ interface PaginationContextValue {
 	labels: Required<PaginationLabels>;
 }
 
-const PaginationContext = React.createContext<PaginationContextValue | null>(null);
+const PaginationContext = createContext<PaginationContextValue | null>(null);
 
 function usePaginationContext() {
-	const context = React.useContext(PaginationContext);
+	const context = useContext(PaginationContext);
 	if (!context) {
 		throw new Error('Pagination compound components must be used within a Pagination component');
 	}
@@ -61,7 +61,7 @@ function usePaginationContext() {
 
 export interface PaginationInfoProps {
 	/** Custom render function for the info text */
-	readonly children?: (props: { page: number; perPage?: number; totalCount?: number; pageShowingRange: string }) => React.ReactNode;
+	readonly children?: (props: { page: number; perPage?: number; totalCount?: number; pageShowingRange: string }) => ReactNode;
 	/** Additional CSS classes */
 	readonly className?: string;
 }
@@ -98,7 +98,7 @@ export interface PaginationPageSizeProps {
 	 * Label text shown before the selector.
 	 * @default "Per page:"
 	 */
-	readonly label?: React.ReactNode;
+	readonly label?: ReactNode;
 	/** Additional CSS classes */
 	readonly className?: string;
 }
@@ -246,7 +246,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 									setPage(clamped);
 									setEditingPage(clamped);
 								}}
-								onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+								onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
 									if (e.key === 'Enter') {
 										const clamped = clamp(editingPage || 1, 1, maxPage);
 										setPage(clamped);
@@ -334,23 +334,23 @@ export interface PaginationProps {
 	 * Compound component children for custom layouts.
 	 * Use Pagination.Info, Pagination.PageSize, Pagination.Controls, and Pagination.Separator.
 	 */
-	readonly children: React.ReactNode;
+	readonly children: ReactNode;
 }
 
 function PaginationRoot(props: PaginationProps) {
 	const { page = 1, perPage, totalCount, setPage, children, className, labels: labelsProp } = props;
 
-	const [prevPage, setPrevPage] = React.useState(page);
-	const [editingPage, setEditingPage] = React.useState(page);
+	const [prevPage, setPrevPage] = useState(page);
+	const [editingPage, setEditingPage] = useState(page);
 
 	if (page !== prevPage) {
 		setPrevPage(page);
 		setEditingPage(page);
 	}
 
-	const labels = React.useMemo<Required<PaginationLabels>>(() => ({ ...DEFAULT_LABELS, ...labelsProp }), [labelsProp]);
+	const labels = useMemo<Required<PaginationLabels>>(() => ({ ...DEFAULT_LABELS, ...labelsProp }), [labelsProp]);
 
-	const pageShowingRange = React.useMemo(() => {
+	const pageShowingRange = useMemo(() => {
 		let lower = page * (perPage ?? 1) - (perPage ?? 0) + 1;
 		let upper = Math.min(page * (perPage ?? 0), totalCount ?? 0);
 
@@ -360,7 +360,7 @@ function PaginationRoot(props: PaginationProps) {
 		return `${lower}-${upper}`;
 	}, [page, perPage, totalCount]);
 
-	const maxPage = React.useMemo(() => {
+	const maxPage = useMemo(() => {
 		return Math.ceil((totalCount ?? 1) / (perPage ?? 1));
 	}, [totalCount, perPage]);
 

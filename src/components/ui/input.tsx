@@ -1,39 +1,39 @@
 import { Field as BaseField } from '@base-ui/react/field';
 import { Fieldset as BaseFieldset } from '@base-ui/react/fieldset';
 import { Info } from '@phosphor-icons/react';
-import * as React from 'react';
+import { ComponentProps, ComponentPropsWithoutRef, ReactNode, Ref, useId } from 'react';
 
 import { cn } from '@/lib/utilities';
 
 import { Tooltip } from './tooltip';
 
-export interface InputWrapperProperties extends React.ComponentPropsWithoutRef<typeof BaseField.Root> {
-	readonly label?: React.ReactNode;
-	readonly description?: React.ReactNode;
+export interface InputWrapperProperties extends ComponentPropsWithoutRef<typeof BaseField.Root> {
+	readonly label?: ReactNode;
+	readonly description?: ReactNode;
 	readonly error?: string;
 	readonly required?: boolean;
-	readonly labelTooltip?: React.ReactNode;
+	readonly labelTooltip?: ReactNode;
 	readonly controlFirst?: boolean;
 	readonly hideLabel?: boolean;
-	readonly children: React.ReactNode;
+	readonly children: ReactNode;
 	readonly descriptionId?: string;
 	readonly errorId?: string;
 }
 
-export interface FieldsetProperties extends React.ComponentPropsWithoutRef<typeof BaseFieldset.Root> {
-	readonly legend?: React.ReactNode;
-	readonly description?: React.ReactNode;
+export interface FieldsetProperties extends ComponentPropsWithoutRef<typeof BaseFieldset.Root> {
+	readonly legend?: ReactNode;
+	readonly description?: ReactNode;
 	readonly error?: string;
-	readonly children: React.ReactNode;
+	readonly children: ReactNode;
 }
 
-export interface InputProperties extends Omit<React.ComponentProps<'input'>, 'required'> {
-	readonly ref?: React.Ref<HTMLInputElement>;
-	readonly label?: React.ReactNode;
-	readonly description?: React.ReactNode;
+export interface InputProperties extends Omit<ComponentProps<'input'>, 'required'> {
+	readonly ref?: Ref<HTMLInputElement>;
+	readonly label?: ReactNode;
+	readonly description?: ReactNode;
 	readonly error?: string;
 	readonly required?: boolean;
-	readonly labelTooltip?: React.ReactNode;
+	readonly labelTooltip?: ReactNode;
 	readonly controlFirst?: boolean;
 	readonly hideLabel?: boolean;
 	readonly containerClassName?: string;
@@ -98,8 +98,8 @@ function InputWrapper({
 InputWrapper.displayName = 'Input.Wrapper';
 
 function Fieldset({ legend, description, error, className, children, ...properties }: FieldsetProperties) {
-	const descriptionId = React.useId();
-	const errorId = React.useId();
+	const descriptionId = useId();
+	const errorId = useId();
 	const hasDescription = Boolean(description);
 	const hasError = Boolean(error);
 
@@ -149,8 +149,8 @@ function InputRoot({
 	containerClassName,
 	...properties
 }: InputProperties) {
-	const descriptionId = React.useId();
-	const errorId = React.useId();
+	const descriptionId = useId();
+	const errorId = useId();
 	const hasDescription = Boolean(description);
 	const hasError = Boolean(error);
 

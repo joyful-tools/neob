@@ -1,7 +1,7 @@
 /* eslint-disable better-tailwindcss/no-unknown-classes, @typescript-eslint/no-unsafe-function-type */
 import { CaretDown, CaretLeft, CaretRight, CaretUp } from '@phosphor-icons/react';
 import { AnimatePresence, motion } from 'motion/react';
-import * as React from 'react';
+import { KeyboardEvent, MouseEvent, useState } from 'react';
 import {
 	DayPicker,
 	type CustomComponents,
@@ -139,7 +139,7 @@ function invokeCallback(
 	selected: Date | Date[] | import('react-day-picker').DateRange | undefined,
 	triggerDate: Date,
 	modifiers: Modifiers,
-	e: React.MouseEvent | React.KeyboardEvent,
+	e: MouseEvent | KeyboardEvent,
 ) {
 	fn(selected, triggerDate, modifiers, e);
 }
@@ -168,11 +168,11 @@ function invokeCallback(
 export function DatePicker(fullProps: DatePickerProps) {
 	const { className, classNames, components, fixedWeeks = true } = fullProps;
 
-	const [view, setView] = React.useState<'days' | 'months' | 'years'>('days');
-	const [pageDirection, setPageDirection] = React.useState<PageDirection>('none');
+	const [view, setView] = useState<'days' | 'months' | 'years'>('days');
+	const [pageDirection, setPageDirection] = useState<PageDirection>('none');
 
 	// Selected displayed month tracking (controlled or uncontrolled fallback)
-	const [internalMonth, setInternalMonth] = React.useState<Date>(() => {
+	const [internalMonth, setInternalMonth] = useState<Date>(() => {
 		const sel = fullProps.selected;
 		if (sel) {
 			if (sel instanceof Date) {
@@ -191,7 +191,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 	const displayedMonth = fullProps.month || internalMonth;
 
 	// Page starting year for Year grid selection
-	const [yearsStart, setYearsStart] = React.useState<number>(displayedMonth.getFullYear() - 4);
+	const [yearsStart, setYearsStart] = useState<number>(displayedMonth.getFullYear() - 4);
 
 	const handleMonthChange = (newMonth: Date) => {
 		setInternalMonth(newMonth);
@@ -302,12 +302,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 
 		if (fullProps.mode === 'single') {
 			const { className: _, classNames: __, components: ___, onChange, ...singleProps } = fullProps;
-			const handleSelect = (
-				selected: Date | undefined,
-				triggerDate: Date,
-				modifiers: Modifiers,
-				e: React.MouseEvent | React.KeyboardEvent,
-			) => {
+			const handleSelect = (selected: Date | undefined, triggerDate: Date, modifiers: Modifiers, e: MouseEvent | KeyboardEvent) => {
 				if (onChange) {
 					invokeCallback(onChange, selected, triggerDate, modifiers, e);
 				}
@@ -317,12 +312,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 
 		if (fullProps.mode === 'multiple') {
 			const { className: _, classNames: __, components: ___, onChange, ...multiProps } = fullProps;
-			const handleSelect = (
-				selected: Date[] | undefined,
-				triggerDate: Date,
-				modifiers: Modifiers,
-				e: React.MouseEvent | React.KeyboardEvent,
-			) => {
+			const handleSelect = (selected: Date[] | undefined, triggerDate: Date, modifiers: Modifiers, e: MouseEvent | KeyboardEvent) => {
 				if (onChange) {
 					invokeCallback(onChange, selected, triggerDate, modifiers, e);
 				}
@@ -336,7 +326,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 				selected: import('react-day-picker').DateRange | undefined,
 				triggerDate: Date,
 				modifiers: Modifiers,
-				e: React.MouseEvent | React.KeyboardEvent,
+				e: MouseEvent | KeyboardEvent,
 			) => {
 				if (onChange) {
 					invokeCallback(onChange, selected, triggerDate, modifiers, e);

@@ -1,5 +1,5 @@
 import { CaretUpDown } from '@phosphor-icons/react';
-import * as React from 'react';
+import { PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -9,12 +9,12 @@ export interface NumericSliderProperties {
 }
 
 export function NumericSlider({ onChange, className }: NumericSliderProperties) {
-	const [pointerLockActive, setPointerLockActive] = React.useState(false);
-	const [pointerId, setPointerId] = React.useState<number | null>(null);
-	const targetReference = React.useRef<HTMLDivElement>(null);
+	const [pointerLockActive, setPointerLockActive] = useState(false);
+	const [pointerId, setPointerId] = useState<number | null>(null);
+	const targetReference = useRef<HTMLDivElement>(null);
 
-	const handlePointerDown = React.useCallback(
-		async (event: React.PointerEvent<HTMLDivElement>) => {
+	const handlePointerDown = useCallback(
+		async (event: ReactPointerEvent<HTMLDivElement>) => {
 			if (pointerId !== null) return;
 
 			const id = event.pointerId;
@@ -36,7 +36,7 @@ export function NumericSlider({ onChange, className }: NumericSliderProperties) 
 		[pointerId],
 	);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const handlePointerMove = (event: PointerEvent) => {
 			if (pointerLockActive) {
 				const delta = -event.movementY / window.devicePixelRatio;
@@ -53,7 +53,7 @@ export function NumericSlider({ onChange, className }: NumericSliderProperties) 
 		};
 	}, [pointerId, pointerLockActive, onChange]);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const handlePointerLockChange = () => {
 			if (document.pointerLockElement === targetReference.current) {
 				setPointerLockActive(true);
@@ -69,7 +69,7 @@ export function NumericSlider({ onChange, className }: NumericSliderProperties) 
 		};
 	}, []);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const handlePointerUp = (event: PointerEvent) => {
 			if (pointerId === event.pointerId) {
 				setPointerId(null);

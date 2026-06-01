@@ -1,5 +1,5 @@
 import { Envelope, MagnifyingGlass, X } from '@phosphor-icons/react';
-import * as React from 'react';
+import { useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, within } from 'storybook/test';
 
@@ -70,7 +70,7 @@ export const WithSuffix: Story = {
 
 export const Clearable: Story = {
 	render: (args) => {
-		const [value, setValue] = React.useState('');
+		const [value, setValue] = useState('');
 		return (
 			<div className="w-80">
 				<InputGroup {...args}>
@@ -107,7 +107,7 @@ export const Clearable: Story = {
 
 export const Numeric: Story = {
 	render: (args) => {
-		const [value, setValue] = React.useState(50);
+		const [value, setValue] = useState(50);
 		return (
 			<div className="w-80">
 				<InputGroup {...args}>

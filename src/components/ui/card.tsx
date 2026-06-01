@@ -1,8 +1,8 @@
-import * as React from 'react';
+import { HTMLAttributes, Ref } from 'react';
 
 import { cn } from '@/lib/utilities';
 
-function CardRoot({ className, ref, ...properties }: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
+function CardRoot({ className, ref, ...properties }: HTMLAttributes<HTMLDivElement> & { ref?: Ref<HTMLDivElement> }) {
 	return (
 		<div
 			ref={ref}
@@ -16,17 +16,17 @@ function CardRoot({ className, ref, ...properties }: React.HTMLAttributes<HTMLDi
 }
 CardRoot.displayName = 'Card';
 
-function CardHeader({ className, ref, ...properties }: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
+function CardHeader({ className, ref, ...properties }: HTMLAttributes<HTMLDivElement> & { ref?: Ref<HTMLDivElement> }) {
 	return <div ref={ref} className={cn('flex flex-col space-y-1.5 p-6', className)} {...properties} />;
 }
 CardHeader.displayName = 'Card.Header';
 
-function CardTitle({ className, ref, ...properties }: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
+function CardTitle({ className, ref, ...properties }: HTMLAttributes<HTMLDivElement> & { ref?: Ref<HTMLDivElement> }) {
 	return <div ref={ref} className={cn('font-display text-xl leading-none font-bold tracking-tight', className)} {...properties} />;
 }
 CardTitle.displayName = 'Card.Title';
 
-function CardContent({ className, ref, ...properties }: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
+function CardContent({ className, ref, ...properties }: HTMLAttributes<HTMLDivElement> & { ref?: Ref<HTMLDivElement> }) {
 	return <div ref={ref} className={cn('p-6 pt-0', className)} {...properties} />;
 }
 CardContent.displayName = 'Card.Content';

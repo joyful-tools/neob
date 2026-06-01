@@ -1,5 +1,4 @@
 import { Envelope, ArrowRight, Plus } from '@phosphor-icons/react';
-import * as React from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, within } from 'storybook/test';
 

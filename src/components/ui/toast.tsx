@@ -1,5 +1,4 @@
 import { X } from '@phosphor-icons/react';
-import * as React from 'react';
 import { toast as sonnerToast } from 'sonner';
 
 import { Button } from './button';

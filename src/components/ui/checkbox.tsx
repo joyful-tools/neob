@@ -1,11 +1,11 @@
 import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';
 import { CheckboxGroup as BaseCheckboxGroup } from '@base-ui/react/checkbox-group';
 import { Check, Minus } from '@phosphor-icons/react';
-import * as React from 'react';
+import { ComponentPropsWithoutRef, createContext, ReactNode, Ref, useContext, useId } from 'react';
 
 import { cn } from '@/lib/utilities';
 
-const CheckboxGroupContext = React.createContext<{ controlFirst?: boolean }>({ controlFirst: true });
+const CheckboxGroupContext = createContext<{ controlFirst?: boolean }>({ controlFirst: true });
 
 const CHECKBOX_ROOT_CLASSES = `
 	peer relative flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center
@@ -20,22 +20,22 @@ const CHECKBOX_ROOT_CLASSES = `
 	dark:data-[indeterminate]:text-black
 `;
 
-export interface CheckboxProperties extends React.ComponentPropsWithoutRef<typeof BaseCheckbox.Root> {
-	readonly ref?: React.Ref<HTMLElement>;
-	readonly label?: React.ReactNode;
-	readonly description?: React.ReactNode;
+export interface CheckboxProperties extends ComponentPropsWithoutRef<typeof BaseCheckbox.Root> {
+	readonly ref?: Ref<HTMLElement>;
+	readonly label?: ReactNode;
+	readonly description?: ReactNode;
 	readonly controlFirst?: boolean;
 	readonly error?: string;
 }
 
-export interface CheckboxItemProperties extends React.ComponentPropsWithoutRef<typeof BaseCheckbox.Root> {
-	readonly ref?: React.Ref<HTMLElement>;
-	readonly label: React.ReactNode;
+export interface CheckboxItemProperties extends ComponentPropsWithoutRef<typeof BaseCheckbox.Root> {
+	readonly ref?: Ref<HTMLElement>;
+	readonly label: ReactNode;
 }
 
-export interface CheckboxGroupProperties extends React.ComponentPropsWithoutRef<typeof BaseCheckboxGroup> {
-	readonly legend?: React.ReactNode;
-	readonly description?: React.ReactNode;
+export interface CheckboxGroupProperties extends ComponentPropsWithoutRef<typeof BaseCheckboxGroup> {
+	readonly legend?: ReactNode;
+	readonly description?: ReactNode;
 	readonly error?: string;
 	readonly controlFirst?: boolean;
 }
@@ -45,8 +45,8 @@ export interface CheckboxGroupProperties extends React.ComponentPropsWithoutRef<
  * Can be used standalone or with a label and helper states.
  */
 function CheckboxRoot({ label, description, controlFirst = true, error, className, ref, ...properties }: CheckboxProperties) {
-	const descriptionId = React.useId();
-	const errorId = React.useId();
+	const descriptionId = useId();
+	const errorId = useId();
 	const hasDescription = Boolean(description);
 	const hasError = Boolean(error);
 
@@ -108,7 +108,7 @@ CheckboxRoot.displayName = 'Checkbox';
  * Leverages the CheckboxGroup context to determine layouts.
  */
 function CheckboxItem({ label, className, ref, ...properties }: CheckboxItemProperties) {
-	const { controlFirst } = React.useContext(CheckboxGroupContext);
+	const { controlFirst } = useContext(CheckboxGroupContext);
 
 	return <CheckboxRoot ref={ref} label={label} controlFirst={controlFirst} className={className} {...properties} />;
 }
@@ -119,8 +119,8 @@ CheckboxItem.displayName = 'Checkbox.Item';
  * Groups multiple CheckboxItems inside an accessible fieldset.
  */
 function CheckboxGroup({ legend, description, error, controlFirst = true, className, children, ...properties }: CheckboxGroupProperties) {
-	const descriptionId = React.useId();
-	const errorId = React.useId();
+	const descriptionId = useId();
+	const errorId = useId();
 	const hasDescription = Boolean(description);
 	const hasError = Boolean(error);
 

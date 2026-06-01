@@ -1,39 +1,39 @@
-import * as React from 'react';
+import { HTMLAttributes, Ref, TdHTMLAttributes, ThHTMLAttributes } from 'react';
 
 import { cn } from '@/lib/utilities';
 
-export interface TableProperties extends React.HTMLAttributes<HTMLTableElement> {
-	readonly ref?: React.Ref<HTMLTableElement>;
+export interface TableProperties extends HTMLAttributes<HTMLTableElement> {
+	readonly ref?: Ref<HTMLTableElement>;
 }
 
-export interface TableHeaderProperties extends React.HTMLAttributes<HTMLTableSectionElement> {
-	readonly ref?: React.Ref<HTMLTableSectionElement>;
+export interface TableHeaderProperties extends HTMLAttributes<HTMLTableSectionElement> {
+	readonly ref?: Ref<HTMLTableSectionElement>;
 }
 
-export interface TableBodyProperties extends React.HTMLAttributes<HTMLTableSectionElement> {
-	readonly ref?: React.Ref<HTMLTableSectionElement>;
+export interface TableBodyProperties extends HTMLAttributes<HTMLTableSectionElement> {
+	readonly ref?: Ref<HTMLTableSectionElement>;
 }
 
-export interface TableFooterProperties extends React.HTMLAttributes<HTMLTableSectionElement> {
-	readonly ref?: React.Ref<HTMLTableSectionElement>;
+export interface TableFooterProperties extends HTMLAttributes<HTMLTableSectionElement> {
+	readonly ref?: Ref<HTMLTableSectionElement>;
 }
 
-export interface TableRowProperties extends React.HTMLAttributes<HTMLTableRowElement> {
-	readonly ref?: React.Ref<HTMLTableRowElement>;
+export interface TableRowProperties extends HTMLAttributes<HTMLTableRowElement> {
+	readonly ref?: Ref<HTMLTableRowElement>;
 }
 
-export interface TableHeadProperties extends React.ThHTMLAttributes<HTMLTableCellElement> {
-	readonly ref?: React.Ref<HTMLTableCellElement>;
+export interface TableHeadProperties extends ThHTMLAttributes<HTMLTableCellElement> {
+	readonly ref?: Ref<HTMLTableCellElement>;
 }
 
-export interface TableCellProperties extends React.TdHTMLAttributes<HTMLTableCellElement> {
-	readonly ref?: React.Ref<HTMLTableCellElement>;
+export interface TableCellProperties extends TdHTMLAttributes<HTMLTableCellElement> {
+	readonly ref?: Ref<HTMLTableCellElement>;
 }
 
 /**
  * Responsive scroll container for Tables.
  */
-function TableRoot({ className, children, ...properties }: React.HTMLAttributes<HTMLDivElement>) {
+function TableRoot({ className, children, ...properties }: HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div className="w-full overflow-auto rounded-lg border-2 border-black shadow-cel-sm">
 			<table className={cn('w-full border-collapse text-sm', className)} {...properties}>

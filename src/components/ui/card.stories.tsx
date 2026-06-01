@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { Card } from './card';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';

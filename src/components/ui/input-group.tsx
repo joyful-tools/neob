@@ -1,4 +1,16 @@
-import * as React from 'react';
+import {
+	ComponentProps,
+	createContext,
+	MouseEvent,
+	ReactNode,
+	Ref,
+	RefObject,
+	useCallback,
+	useContext,
+	useId,
+	useMemo,
+	useRef,
+} from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -13,29 +25,29 @@ interface InputGroupContextValue {
 	disabled?: boolean;
 	error?: boolean;
 	inputId: string;
-	inputRef: React.RefObject<HTMLInputElement | null>;
+	inputRef: RefObject<HTMLInputElement | null>;
 	describedBy?: string;
 	ariaInvalid?: boolean;
 }
 
-const InputGroupContext = React.createContext<InputGroupContextValue | null>(null);
+const InputGroupContext = createContext<InputGroupContextValue | null>(null);
 
 function useInputGroup() {
-	const context = React.useContext(InputGroupContext);
+	const context = useContext(InputGroupContext);
 	if (!context) {
 		throw new Error('InputGroup compound components must be rendered within an InputGroup provider.');
 	}
 	return context;
 }
 
-export interface InputGroupRootProps extends Omit<React.ComponentProps<'div'>, 'error'> {
+export interface InputGroupRootProps extends Omit<ComponentProps<'div'>, 'error'> {
 	size?: InputGroupSize;
 	disabled?: boolean;
 	error?: boolean | string;
-	label?: React.ReactNode;
-	description?: React.ReactNode;
+	label?: ReactNode;
+	description?: ReactNode;
 	required?: boolean;
-	labelTooltip?: React.ReactNode;
+	labelTooltip?: ReactNode;
 	controlFirst?: boolean;
 	hideLabel?: boolean;
 	containerClassName?: string;
@@ -56,19 +68,19 @@ export function InputGroup({
 	containerClassName,
 	...properties
 }: InputGroupRootProps) {
-	const generatedId = React.useId();
+	const generatedId = useId();
 	const inputId = properties.id ?? generatedId;
-	const inputRef = React.useRef<HTMLInputElement | null>(null);
+	const inputRef = useRef<HTMLInputElement | null>(null);
 
-	const descriptionId = React.useId();
-	const errorId = React.useId();
+	const descriptionId = useId();
+	const errorId = useId();
 	const hasDescription = Boolean(description);
 	const hasError = !!error;
 	const errorMessage = typeof error === 'string' ? error : undefined;
 
 	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
 
-	const contextValue = React.useMemo(
+	const contextValue = useMemo(
 		() => ({
 			size,
 			disabled,
@@ -81,7 +93,7 @@ export function InputGroup({
 		[size, disabled, hasError, inputId, describedBy],
 	);
 
-	const handleContainerClick = (event: React.MouseEvent<HTMLDivElement>) => {
+	const handleContainerClick = (event: MouseEvent<HTMLDivElement>) => {
 		if (event.target instanceof HTMLElement) {
 			const target = event.target;
 			const isInteractive = target.closest('button, a, input, select, textarea');
@@ -133,14 +145,14 @@ export function InputGroup({
 	return rawControl;
 }
 
-export interface InputGroupInputProps extends Omit<React.ComponentProps<'input'>, 'size' | 'disabled'> {
-	ref?: React.Ref<HTMLInputElement>;
+export interface InputGroupInputProps extends Omit<ComponentProps<'input'>, 'size' | 'disabled'> {
+	ref?: Ref<HTMLInputElement>;
 }
 
 function InputGroupInput({ className, type = 'text', ref, onBlur, ...properties }: InputGroupInputProps) {
 	const { inputId, disabled, inputRef, describedBy, ariaInvalid } = useInputGroup();
 
-	const handleRef = React.useCallback(
+	const handleRef = useCallback(
 		(node: HTMLInputElement | null) => {
 			Object.assign(inputRef, { current: node });
 
@@ -174,7 +186,7 @@ function InputGroupInput({ className, type = 'text', ref, onBlur, ...properties 
 	);
 }
 
-export interface InputGroupAddonProps extends React.ComponentProps<'div'> {
+export interface InputGroupAddonProps extends ComponentProps<'div'> {
 	align?: 'start' | 'end';
 }
 
@@ -196,8 +208,8 @@ function InputGroupAddon({ children, className, align = 'start', ...properties }
 	);
 }
 
-export interface InputGroupButtonProps extends React.ComponentProps<typeof BaseButton> {
-	tooltip?: React.ReactNode;
+export interface InputGroupButtonProps extends ComponentProps<typeof BaseButton> {
+	tooltip?: ReactNode;
 }
 
 function InputGroupButton({ children, className, tooltip, ...properties }: InputGroupButtonProps) {
@@ -234,7 +246,7 @@ function InputGroupButton({ children, className, tooltip, ...properties }: Input
 	return button;
 }
 
-export type InputGroupSuffixProps = React.ComponentProps<'span'>;
+export type InputGroupSuffixProps = ComponentProps<'span'>;
 
 function InputGroupSuffix({ children, className, ...properties }: InputGroupSuffixProps) {
 	const { size } = useInputGroup();

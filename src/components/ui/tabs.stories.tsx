@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, within } from 'storybook/test';
 
@@ -31,7 +31,7 @@ export const Segmented: Story = {
 		listVariant: 'segmented',
 	},
 	render: (args) => {
-		const [value, setValue] = React.useState(args.initialValue);
+		const [value, setValue] = useState(args.initialValue);
 		return (
 			<div className="w-96">
 				<Tabs
@@ -72,7 +72,7 @@ export const Subtle: Story = {
 		listVariant: 'subtle',
 	},
 	render: (args) => {
-		const [value, setValue] = React.useState(args.initialValue);
+		const [value, setValue] = useState(args.initialValue);
 		return (
 			<div className="w-96">
 				<Tabs
