@@ -14,7 +14,7 @@ export default mergeConfig(
 	defineConfig({
 		plugins: [
 			storybookTest({
-				configDir: path.join(rootDirectory, '.storybook'),
+				configDir: path.resolve(rootDirectory, '../../.storybook'),
 				storybookScript: 'bun run storybook --ci',
 			}),
 		],
@@ -26,11 +26,11 @@ export default mergeConfig(
 				headless: true,
 				instances: [{ browser: 'chromium' }],
 			},
-			setupFiles: ['./.storybook/vitest.setup.ts'],
+			setupFiles: [path.resolve(rootDirectory, '../../.storybook/vitest.setup.ts')],
 			coverage: {
 				provider: 'v8',
 				reporter: ['text', 'html', 'lcov', 'json-summary'],
-				reportsDirectory: './coverage/storybook',
+				reportsDirectory: path.resolve(rootDirectory, '../../coverage/storybook'),
 				exclude: ['dist/**', 'storybook-static/**', '**/*.stories.*', '.storybook/**', 'src/lib/storybook-interactions.ts'],
 			},
 		},

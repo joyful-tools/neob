@@ -25,8 +25,8 @@
 		/* Path Aliases */
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./packages/ui/src/*"]
 		}
 	},
-	"include": ["src", ".storybook/**/*.ts", ".storybook/**/*.tsx", "vitest.config.ts", "vitest.workspace.ts"]
+	"include": ["packages/ui/src", ".storybook/**/*.ts", ".storybook/**/*.tsx", "packages/ui/vitest.config.ts", "vitest.workspace.ts"]
 }

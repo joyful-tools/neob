@@ -38,14 +38,14 @@ export const buttonVariants = cva(
 				`,
 				subtle: `
 					bg-primary-foreground text-primary
-					hover:-translate-y-0.5 hover:bg-muted hover:shadow-cel-sm
+					hover:-translate-y-0.5 hover:shadow-cel-sm
 					hover:after:translate-y-0.5
 					active:translate-y-0.5 active:shadow-cel-inset-md
 				`,
 				ghost: `
 					border-transparent
-					hover:border-black hover:bg-muted
-					active:translate-y-0.5 active:border-black active:bg-muted
+					hover:border-black hover:bg-primary-foreground
+					active:translate-y-0.5 active:border-black active:bg-primary-foreground
 					active:shadow-cel-inset-md aria-expanded:border-black
 					data-pressed:border-black
 				`,
@@ -68,14 +68,14 @@ export const buttonVariants = cva(
 				`,
 				'dark-subtle': `
 					border-black bg-black text-white
-					hover:-translate-y-0.5 hover:bg-zinc/80 hover:shadow-cel-sm
+					hover:-translate-y-0.5 hover:shadow-cel-sm
 					hover:after:translate-y-0.5
 					active:translate-y-0.5 active:shadow-cel-inset-md
 				`,
 				'dark-ghost': `
 					border-transparent text-white
-					hover:border-black hover:bg-zinc/80
-					active:translate-y-0.5 active:border-black active:bg-zinc/80
+					hover:border-black
+					active:translate-y-0.5 active:border-black
 					active:shadow-cel-inset-md aria-expanded:border-black
 					data-pressed:border-black
 				`,

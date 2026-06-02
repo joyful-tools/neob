@@ -1,10 +1,14 @@
 {
-	"name": "neob",
-	"version": "1.0.0",
-	"main": "./dist/index.cjs",
-	"module": "./dist/index.js",
+	"name": "neob-workspace",
+	"private": true,
+	"type": "module",
+	"workspaces": [
+		"packages/*"
+	],
 	"devDependencies": {
 		"@base-ui/react": "^1.3.0",
+		"@changesets/changelog-github": "latest",
+		"@changesets/cli": "latest",
 		"@eslint/js": "^9.39.4",
 		"@phosphor-icons/react": "^2.1.10",
 		"@storybook/addon-a11y": "^10.4.1",
@@ -52,43 +56,20 @@
 		"vitest": "^4.1.7",
 		"wrangler": "^4.21.0"
 	},
-	"peerDependencies": {
-		"react": "^19.0.0",
-		"react-dom": "^19.0.0"
-	},
-	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js",
-			"require": "./dist/index.cjs"
-		},
-		"./*": {
-			"types": "./dist/*.d.ts",
-			"import": "./dist/*.js",
-			"require": "./dist/*.cjs"
-		},
-		"./dist/index.css": "./dist/index.css"
-	},
-	"files": [
-		"dist"
-	],
 	"scripts": {
-		"build": "vite build",
+		"build": "bun --filter @neob/ui build",
 		"format": "prettier --write . && eslint --fix .",
-		"typecheck": "tsc --noEmit",
+		"typecheck": "bun --filter @neob/ui typecheck",
 		"lint": "prettier --check . && eslint .",
 		"storybook": "storybook dev -p 6006",
 		"storybook:build": "storybook build",
-		"storybook:test": "vitest run --config vitest.config.ts",
-		"storybook:test:coverage": "vitest run --coverage --config vitest.config.ts",
-		"storybook:test:watch": "vitest --config vitest.config.ts",
+		"storybook:test": "vitest run --config packages/ui/vitest.config.ts",
+		"storybook:test:coverage": "vitest run --coverage --config packages/ui/vitest.config.ts",
+		"storybook:test:watch": "vitest --config packages/ui/vitest.config.ts",
 		"check": "bun run lint && bun run typecheck && bun run storybook:test:coverage",
 		"storybook:deploy": "wrangler deploy",
-		"prepare": "husky"
-	},
-	"sideEffects": [
-		"**/*.css"
-	],
-	"type": "module",
-	"types": "./dist/index.d.ts"
+		"prepare": "husky",
+		"changeset:version": "changeset version",
+		"changeset:publish": "bun run build && changeset publish"
+	}
 }

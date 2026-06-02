@@ -15,7 +15,7 @@ import tseslint from 'typescript-eslint';
 
 export default defineConfig(
 	{
-		ignores: ['dist', 'storybook-static', 'coverage', 'vite.config.ts', 'raw_pagination.tsx'],
+		ignores: ['**/dist', '**/storybook-static', '**/coverage', 'vite.config.ts', 'packages/ui/vite.config.ts', 'raw_pagination.tsx'],
 	},
 
 	js.configs.recommended,
@@ -158,7 +158,7 @@ export default defineConfig(
 		},
 		settings: {
 			'better-tailwindcss': {
-				entryPoint: 'src/index.css',
+				entryPoint: 'packages/ui/src/index.css',
 			},
 		},
 	},

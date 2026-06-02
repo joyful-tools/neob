@@ -1,1 +1,1 @@
-export default ['./vitest.config.ts'];
+export default ['./packages/ui/vitest.config.ts'];

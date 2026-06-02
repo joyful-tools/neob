@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import type { Preview } from '@storybook/react-vite';
-import type { ReactNode } from 'react';
 
-import '../src/index.css';
+import '../packages/ui/src/index.css';
+import './storybook.css';
 
 if (
 	globalThis.window !== undefined &&
@@ -15,47 +15,10 @@ if (
 	MotionGlobalConfig.skipAnimations = true;
 }
 
-function PreviewFrame({
-	children,
-	theme,
-	isCentered,
-	isDocs,
-}: {
-	children: ReactNode;
-	theme: string;
-	isCentered: boolean;
-	isDocs: boolean;
-}) {
-	useEffect(() => {
-		const htmlElement = document.documentElement;
-		htmlElement.classList.toggle('dark', theme === 'dark');
-	}, [theme]);
-
-	return (
-		<MemoryRouter>
-			<div
-				className={`bg-background text-foreground transition-colors duration-200 ${isDocs ? 'p-4' : 'min-h-full'} ${isCentered ? 'flex items-center justify-center' : ''}`}
-			>
-				{children}
-			</div>
-		</MemoryRouter>
-	);
-}
-
 const preview: Preview = {
 	parameters: {
 		backgrounds: {
-			default: 'light',
-			values: [
-				{
-					name: 'light',
-					value: '#faf7f2',
-				},
-				{
-					name: 'dark',
-					value: '#1b1b1b',
-				},
-			],
+			disable: true,
 		},
 		controls: {
 			matchers: {
@@ -102,13 +65,15 @@ const preview: Preview = {
 		(Story, context) => {
 			const theme = context.globals.theme || 'light';
 
-			const isCentered = context.parameters.layout === 'centered';
-			const isDocs = context.viewMode === 'docs';
+			useEffect(() => {
+				const htmlElement = document.documentElement;
+				htmlElement.classList.toggle('dark', theme === 'dark');
+			}, [theme]);
 
 			return (
-				<PreviewFrame theme={theme} isCentered={isCentered} isDocs={isDocs}>
+				<MemoryRouter>
 					<Story />
-				</PreviewFrame>
+				</MemoryRouter>
 			);
 		},
 	],

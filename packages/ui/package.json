@@ -1,0 +1,49 @@
+{
+	"name": "@neob/ui",
+	"version": "1.0.0",
+	"type": "module",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
+		},
+		"./*": {
+			"types": "./dist/*.d.ts",
+			"import": "./dist/*.js",
+			"require": "./dist/*.cjs"
+		},
+		"./dist/index.css": "./dist/index.css"
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "vite build",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@base-ui/react": "^1.3.0",
+		"@phosphor-icons/react": "^2.1.10",
+		"class-variance-authority": "^0.7.1",
+		"clsx": "^2.1.1",
+		"motion": "^12.26.1",
+		"react-day-picker": "^10.0.1",
+		"react-router-dom": "^7.12.0",
+		"sonner": "^2.0.7",
+		"tailwind-merge": "^3.4.0"
+	},
+	"peerDependencies": {
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0"
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com"
+	},
+	"sideEffects": [
+		"**/*.css"
+	]
+}

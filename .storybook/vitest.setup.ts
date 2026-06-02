@@ -1,6 +1,6 @@
 import '@storybook/addon-vitest/internal/setup-file';
 
-import { INTERACTION_STORAGE_KEY, STORYBOOK_INTERACTIONS_FORCE_ENABLE } from '../src/lib/storybook-interactions';
+import { INTERACTION_STORAGE_KEY, STORYBOOK_INTERACTIONS_FORCE_ENABLE } from '../packages/ui/src/lib/storybook-interactions';
 
 const originalMatchMedia = globalThis.window.matchMedia.bind(globalThis.window);
 
