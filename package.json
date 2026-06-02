@@ -57,9 +57,9 @@
 		"wrangler": "^4.21.0"
 	},
 	"scripts": {
-		"build": "bun --filter @neob/ui build",
+		"build": "bun --filter @timowilhelm/neob build",
 		"format": "prettier --write . && eslint --fix .",
-		"typecheck": "bun --filter @neob/ui typecheck",
+		"typecheck": "bun --filter @timowilhelm/neob typecheck",
 		"lint": "prettier --check . && eslint .",
 		"storybook": "storybook dev -p 6006",
 		"storybook:build": "storybook build",
