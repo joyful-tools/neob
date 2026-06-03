@@ -25,8 +25,14 @@
 		/* Path Aliases */
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./packages/ui/src/*"]
+			"@/*": ["./packages/neob-ui/src/*"]
 		}
 	},
-	"include": ["packages/ui/src", ".storybook/**/*.ts", ".storybook/**/*.tsx", "packages/ui/vitest.config.ts", "vitest.workspace.ts"]
+	"include": [
+		"packages/neob-ui/src",
+		".storybook/**/*.ts",
+		".storybook/**/*.tsx",
+		"packages/neob-ui/vitest.config.ts",
+		"vitest.workspace.ts"
+	]
 }

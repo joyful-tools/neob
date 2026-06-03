@@ -3,7 +3,7 @@ import { PlayIcon, StopIcon } from '@storybook/icons';
 import React, { useCallback, useState } from 'react';
 import { IconButton } from 'storybook/internal/components';
 
-import { INTERACTION_STORAGE_KEY } from '../packages/ui/src/lib/storybook-interactions';
+import { INTERACTION_STORAGE_KEY } from '../packages/neob-ui/src/lib/storybook-interactions';
 
 export const ADDON_ID = 'toggle-interaction';
 export const TOOL_ID = `${ADDON_ID}/tool`;

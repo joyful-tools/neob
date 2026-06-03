@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import type { Preview } from '@storybook/react-vite';
 
-import '../packages/ui/src/index.css';
+import '../packages/neob-ui/src/index.css';
 import './storybook.css';
 
 if (

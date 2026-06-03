@@ -38,6 +38,6 @@ jobs:
         uses: davelosert/vitest-coverage-report-action@v2.12.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          vite-config-path: ./packages/ui/vitest.config.ts
+          vite-config-path: ./packages/neob-ui/vitest.config.ts
           json-summary-path: ./coverage/storybook/coverage-summary.json
           file-coverage-mode: changes
