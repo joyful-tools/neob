@@ -16,6 +16,21 @@ type PaginationStoryProperties = {
 	pageSelector?: 'input' | 'dropdown';
 };
 
+/**
+ * Pagination is a paginator navigation strip.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { Pagination } from 'neob';
+ *
+ * <Pagination
+ *   currentPage={page}
+ *   totalItems={100}
+ *   pageSize={10}
+ *   onPageChange={setPage}
+ * />
+ * ```
+ */
 const meta = {
 	title: 'Navigation/Pagination',
 	component: Pagination,

@@ -1,4 +1,4 @@
-import { CaretUpDown } from '@phosphor-icons/react';
+import { CaretUpDownIcon } from '@phosphor-icons/react';
 import { PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utilities';
@@ -106,7 +106,7 @@ export function NumericSlider({ onChange, className }: NumericSliderProperties) 
 			)}
 			title="Drag vertically to change value"
 		>
-			<CaretUpDown className="size-4.5" />
+			<CaretUpDownIcon className="size-4.5" />
 		</div>
 	);
 }

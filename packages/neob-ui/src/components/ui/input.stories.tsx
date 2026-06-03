@@ -10,6 +10,16 @@ import { RadioGroup } from './radio-group';
 import type { InputProperties, FieldsetProperties } from './input';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+/**
+ * Input provides standard brutalist form input elements and wrapper styling.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { Input } from 'neob';
+ *
+ * <Input placeholder="Enter username..." />
+ * ```
+ */
 const meta = {
 	title: 'Inputs/Input',
 	component: Input,

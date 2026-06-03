@@ -1,4 +1,4 @@
-import { X } from '@phosphor-icons/react';
+import { XIcon } from '@phosphor-icons/react';
 import { toast as sonnerToast } from 'sonner';
 
 import { Button } from './button';
@@ -18,7 +18,7 @@ export const toast = {
 						{options?.description && <p className="text-sm/snug text-muted-foreground">{options.description}</p>}
 					</div>
 					<Button variant="ghost" size="icon" className="-mt-3 -mr-3 shrink-0" onClick={() => sonnerToast.dismiss(t)}>
-						<X className="size-4" />
+						<XIcon className="size-4" />
 					</Button>
 				</div>
 				{options?.action && (
@@ -38,7 +38,7 @@ export const toast = {
 						{options?.description && <p className="text-sm/snug text-green-dark dark:text-green-light">{options.description}</p>}
 					</div>
 					<Button variant="ghost" size="icon" className="-mt-3 -mr-3 shrink-0" onClick={() => sonnerToast.dismiss(t)}>
-						<X className="size-4" />
+						<XIcon className="size-4" />
 					</Button>
 				</div>
 				{options?.action && (
@@ -58,7 +58,7 @@ export const toast = {
 						{options?.description && <p className="text-sm/snug text-red-dark dark:text-red-light">{options.description}</p>}
 					</div>
 					<Button variant="ghost" size="icon" className="-mt-3 -mr-3 shrink-0" onClick={() => sonnerToast.dismiss(t)}>
-						<X className="size-4" />
+						<XIcon className="size-4" />
 					</Button>
 				</div>
 				{options?.action && (
@@ -78,7 +78,7 @@ export const toast = {
 						{options?.description && <p className="text-sm/snug text-blue-dark dark:text-blue-light">{options.description}</p>}
 					</div>
 					<Button variant="ghost" size="icon" className="-mt-3 -mr-3 shrink-0" onClick={() => sonnerToast.dismiss(t)}>
-						<X className="size-4" />
+						<XIcon className="size-4" />
 					</Button>
 				</div>
 				{options?.action && (
@@ -98,7 +98,7 @@ export const toast = {
 						{options?.description && <p className="text-sm/snug text-yellow-dark dark:text-yellow-light">{options.description}</p>}
 					</div>
 					<Button variant="ghost" size="icon" className="-mt-3 -mr-3 shrink-0" onClick={() => sonnerToast.dismiss(t)}>
-						<X className="size-4" />
+						<XIcon className="size-4" />
 					</Button>
 				</div>
 				{options?.action && (

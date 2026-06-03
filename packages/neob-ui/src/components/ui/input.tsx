@@ -1,6 +1,6 @@
 import { Field as BaseField } from '@base-ui/react/field';
 import { Fieldset as BaseFieldset } from '@base-ui/react/fieldset';
-import { Info } from '@phosphor-icons/react';
+import { InfoIcon } from '@phosphor-icons/react';
 import { ComponentProps, ComponentPropsWithoutRef, ReactNode, Ref, useId } from 'react';
 
 import { cn } from '@/lib/utilities';
@@ -70,7 +70,7 @@ function InputWrapper({
 									type="button"
 									className="cursor-pointer text-muted-foreground transition-colors select-none hover:text-black focus:outline-hidden dark:hover:text-white"
 								>
-									<Info className="size-4" />
+									<InfoIcon className="size-4" />
 									<span className="sr-only">Information</span>
 								</button>
 							</Tooltip>

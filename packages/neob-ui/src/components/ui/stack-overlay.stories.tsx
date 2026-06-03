@@ -1,9 +1,17 @@
-import { XCircle } from '@phosphor-icons/react';
+import { XCircleIcon } from '@phosphor-icons/react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState, useEffect, useRef } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+/**
+ * StackOverlay showcases complex multi-dialog overlay stacking interactions.
+ *
+ * ### General Usage
+ * ```tsx
+ * // Check story file for implementation details
+ * ```
+ */
 const meta = {
 	title: 'Experiments/StackOverlay',
 	parameters: {
@@ -214,7 +222,7 @@ function StackOverlayDemo() {
 									aria-label="Close overlay"
 									onClick={() => setDismissed(true)}
 								>
-									<XCircle size={24} weight="bold" />
+									<XCircleIcon size={24} weight="bold" />
 								</button>
 							</div>
 							<div className="flex flex-1 flex-col items-center justify-center p-6 text-center font-bold">

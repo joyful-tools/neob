@@ -1,6 +1,6 @@
 import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';
 import { CheckboxGroup as BaseCheckboxGroup } from '@base-ui/react/checkbox-group';
-import { Check, Minus } from '@phosphor-icons/react';
+import { CheckIcon, MinusIcon } from '@phosphor-icons/react';
 import { ComponentPropsWithoutRef, createContext, ReactNode, Ref, useContext, useId } from 'react';
 
 import { cn } from '@/lib/utilities';
@@ -64,8 +64,8 @@ function CheckboxRoot({ label, description, controlFirst = true, error, classNam
 				className="flex items-center justify-center text-current data-indeterminate:[&>svg:first-child]:hidden data-unchecked:[&>svg:first-child]:hidden data-indeterminate:[&>svg:last-child]:block"
 				keepMounted
 			>
-				<Check className="size-3.5 stroke-3" />
-				<Minus className="hidden size-3.5 stroke-3" />
+				<CheckIcon className="size-3.5 stroke-3" />
+				<MinusIcon className="hidden size-3.5 stroke-3" />
 			</BaseCheckbox.Indicator>
 		</BaseCheckbox.Root>
 	);

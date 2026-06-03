@@ -7,6 +7,18 @@ import { Tooltip } from './tooltip';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+/**
+ * Tooltip provides descriptive hover text popovers.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { Tooltip } from 'neob';
+ *
+ * <Tooltip content="Important context">
+ *   <span>Hover Me</span>
+ * </Tooltip>
+ * ```
+ */
 const meta = {
 	title: 'Feedback/Tooltip',
 	component: Tooltip,

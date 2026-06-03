@@ -17,6 +17,18 @@ interface CustomCSSProperties extends CSSProperties {
 	[key: `--${string}`]: string | number;
 }
 
+/**
+ * BorderBeam is a decorative glowing/animated border beam effect.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { BorderBeam } from 'neob';
+ *
+ * <div className="relative overflow-hidden rounded-xl">
+ *   <BorderBeam duration={8} size={100} />
+ * </div>
+ * ```
+ */
 const meta: Meta<BorderBeamStoryProps> = {
 	title: 'Experiments/BorderBeam',
 	parameters: {

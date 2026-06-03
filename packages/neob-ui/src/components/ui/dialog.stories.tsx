@@ -16,6 +16,27 @@ type DialogStoryProperties = {
 	body: string;
 };
 
+/**
+ * Dialog is a standard modal dialog component with backdrop animation.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { Dialog } from 'neob';
+ *
+ * <Dialog>
+ *   <Dialog.Trigger>Open Modal</Dialog.Trigger>
+ *   <Dialog.Content>
+ *     <Dialog.Header>
+ *       <Dialog.Title>Modal Heading</Dialog.Title>
+ *     </Dialog.Header>
+ *     <Dialog.Body>Modal Body Content</Dialog.Body>
+ *     <Dialog.Footer>
+ *       <Dialog.Close>Close</Dialog.Close>
+ *     </Dialog.Footer>
+ *   </Dialog.Content>
+ * </Dialog>
+ * ```
+ */
 const meta = {
 	title: 'Surfaces/Dialog',
 	component: Dialog,

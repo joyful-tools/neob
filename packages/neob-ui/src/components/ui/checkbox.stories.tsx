@@ -8,6 +8,18 @@ import { Checkbox } from './checkbox';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+/**
+ * Checkbox is a stateful toggle control for boolean values, supporting group contexts.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { Checkbox } from 'neob';
+ *
+ * <Checkbox checked={checked} onChange={setChecked}>
+ *   Accept Terms
+ * </Checkbox>
+ * ```
+ */
 const meta = {
 	title: 'Inputs/Checkbox',
 	component: Checkbox,

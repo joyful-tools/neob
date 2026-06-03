@@ -1,5 +1,5 @@
 import { Accordion as BaseAccordion } from '@base-ui/react/accordion';
-import { CaretDown } from '@phosphor-icons/react';
+import { CaretDownIcon } from '@phosphor-icons/react';
 import { motion } from 'motion/react';
 import { ComponentPropsWithoutRef, Ref } from 'react';
 
@@ -60,12 +60,12 @@ function AccordionTrigger({
 							{...triggerProps}
 							type="button"
 							className={cn(
-								'neo-focus-ring flex w-full cursor-pointer items-center justify-between py-4 text-left outline-hidden transition-colors select-none',
+								'neo-focus-ring isolate flex w-full cursor-pointer items-center justify-between py-4 text-left outline-hidden transition-colors select-none',
 								className,
 							)}
 						>
 							<span className="font-sans font-bold text-black dark:text-white">{children}</span>
-							<CaretDown
+							<CaretDownIcon
 								className={cn(
 									'ml-2 size-5 shrink-0 text-muted-foreground transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)]',
 									isOpen && 'rotate-180',

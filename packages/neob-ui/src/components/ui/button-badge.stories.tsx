@@ -3,6 +3,19 @@ import { Pill } from './pill';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+/**
+ * ButtonBadge demonstrates how to compose Buttons and Pills to create badges.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { Button, Pill } from 'neob';
+ *
+ * <Button className="relative">
+ *   Hello World
+ *   <Pill color="yellow" className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2">NEW</Pill>
+ * </Button>
+ * ```
+ */
 const meta = {
 	title: 'Experiments/ButtonBadge',
 	parameters: {

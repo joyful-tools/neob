@@ -8,6 +8,16 @@ import { NumericSlider } from './numeric-slider';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+/**
+ * NumericSlider is a slider widget for selecting numeric ranges or levels.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { NumericSlider } from 'neob';
+ *
+ * <NumericSlider min={0} max={100} value={value} onChange={setValue} />
+ * ```
+ */
 const meta = {
 	title: 'Inputs/NumericSlider',
 	component: NumericSlider,

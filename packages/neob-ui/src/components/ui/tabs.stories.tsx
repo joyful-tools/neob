@@ -13,6 +13,23 @@ type TabsStoryProperties = {
 	listVariant: 'segmented' | 'subtle';
 };
 
+/**
+ * Tabs is an animated tab switcher list.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { Tabs } from 'neob';
+ *
+ * <Tabs defaultValue="tab1">
+ *   <Tabs.List>
+ *     <Tabs.Trigger value="tab1">Tab One</Tabs.Trigger>
+ *     <Tabs.Trigger value="tab2">Tab Two</Tabs.Trigger>
+ *   </Tabs.List>
+ *   <Tabs.Content value="tab1">Content One</Tabs.Content>
+ *   <Tabs.Content value="tab2">Content Two</Tabs.Content>
+ * </Tabs>
+ * ```
+ */
 const meta = {
 	title: 'Navigation/Tabs',
 	component: Tabs,

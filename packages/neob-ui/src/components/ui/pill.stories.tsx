@@ -15,6 +15,16 @@ type PillCollectionStoryProperties = {
 	}>;
 };
 
+/**
+ * Pill is a small tag / label capsule component.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { Pill } from 'neob';
+ *
+ * <Pill variant="accent">New</Pill>
+ * ```
+ */
 const meta = {
 	title: 'Data Display/Pill',
 	component: Pill,

@@ -1,4 +1,4 @@
-import { Envelope, ArrowRight, Plus } from '@phosphor-icons/react';
+import { EnvelopeIcon, ArrowRightIcon, PlusIcon } from '@phosphor-icons/react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, within } from 'storybook/test';
 
@@ -9,11 +9,18 @@ import { Spinner } from './spinner';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-type ButtonCollectionStoryProperties = {
-	lightVariants: Array<{ label: string; variant: 'default' | 'accent' | 'danger' | 'subtle' | 'ghost' | 'link' }>;
-	darkVariants: Array<{ label: string; variant: 'dark-default' | 'dark-accent' | 'dark-subtle' | 'dark-ghost' }>;
-};
-
+/**
+ * Button is a brutalist button component with various variants, sizes, and states.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { Button } from 'neob';
+ *
+ * <Button variant="accent" size="lg" isLoading={false} onClick={handleClick}>
+ *   Submit
+ * </Button>
+ * ```
+ */
 const meta = {
 	title: 'Inputs/Button',
 	component: Button,
@@ -240,7 +247,7 @@ export const WithPrefixIcon: Story = {
 	args: {
 		children: (
 			<>
-				<Envelope className="size-4" />
+				<EnvelopeIcon className="size-4" />
 				Email Login
 			</>
 		),
@@ -263,7 +270,7 @@ export const WithSuffixIcon: Story = {
 		children: (
 			<>
 				Next Step
-				<ArrowRight className="size-4" />
+				<ArrowRightIcon className="size-4" />
 			</>
 		),
 	},
@@ -284,9 +291,9 @@ export const WithBothIcons: Story = {
 	args: {
 		children: (
 			<>
-				<Plus className="size-4" />
+				<PlusIcon className="size-4" />
 				Add Item
-				<ArrowRight className="size-4" />
+				<ArrowRightIcon className="size-4" />
 			</>
 		),
 	},

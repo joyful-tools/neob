@@ -1,4 +1,4 @@
-import { CaretDown } from '@phosphor-icons/react';
+import { CaretDownIcon } from '@phosphor-icons/react';
 import { ButtonHTMLAttributes, ReactNode, useLayoutEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utilities';
@@ -72,7 +72,7 @@ export function SplitButton({
 						aria-label="more options"
 						className="ml-[-2px] flex items-center justify-center rounded-l-none px-2.5 focus:z-10"
 					>
-						<CaretDown className="size-4" />
+						<CaretDownIcon className="size-4" />
 					</Button>
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Content align="end" className="p-1" style={{ minWidth: width }}>

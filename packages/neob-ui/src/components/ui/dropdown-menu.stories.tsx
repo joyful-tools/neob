@@ -12,6 +12,22 @@ type DropdownMenuStoryProperties = {
 	triggerLabel: string;
 };
 
+/**
+ * DropdownMenu is a popover menu displaying standard list options.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { DropdownMenu } from 'neob';
+ *
+ * <DropdownMenu>
+ *   <DropdownMenu.Trigger>Actions</DropdownMenu.Trigger>
+ *   <DropdownMenu.Content>
+ *     <DropdownMenu.Item onClick={edit}>Edit</DropdownMenu.Item>
+ *     <DropdownMenu.Item onClick={remove} className="text-red">Delete</DropdownMenu.Item>
+ *   </DropdownMenu.Content>
+ * </DropdownMenu>
+ * ```
+ */
 const meta = {
 	title: 'Navigation/DropdownMenu',
 	component: DropdownMenu,

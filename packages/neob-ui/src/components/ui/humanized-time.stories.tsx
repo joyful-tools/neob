@@ -8,6 +8,16 @@ import { Tooltip } from './tooltip';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+/**
+ * HumanizedTime renders dynamic and readable relative/elapsed times.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { HumanizedTime } from 'neob';
+ *
+ * <HumanizedTime date={new Date()} />
+ * ```
+ */
 const meta = {
 	title: 'Data Display/HumanizedTime',
 	component: HumanizedTime,

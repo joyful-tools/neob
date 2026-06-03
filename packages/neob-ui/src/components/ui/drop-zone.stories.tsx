@@ -1,4 +1,4 @@
-import { Plus, UploadSimple } from '@phosphor-icons/react';
+import { PlusIcon, UploadSimpleIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, fireEvent, within } from 'storybook/test';
@@ -10,6 +10,18 @@ import { DropZone, type DropZoneResult } from './drop-zone';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+/**
+ * DropZone is an interactive area for file dragging, dropping, and validation.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { DropZone } from 'neob';
+ *
+ * <DropZone onDrop={handleFiles} accept={{ 'image/*': ['.png', '.jpg'] }}>
+ *   <p>Drag images here or click to select</p>
+ * </DropZone>
+ * ```
+ */
 const meta = {
 	title: 'Inputs/DropZone',
 	component: DropZone,
@@ -101,10 +113,10 @@ export const Default: Story = {
 				>
 					{({ openFilePicker }) => (
 						<div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-black bg-white p-12 text-black select-none dark:border-black dark:bg-zinc dark:text-white">
-							<UploadSimple className="mb-2 size-10 text-orange" />
+							<UploadSimpleIcon className="mb-2 size-10 text-orange" />
 							<span className="mb-4 text-center font-sans text-sm font-bold">Drag images here to upload or</span>
 							<Button type="button" variant="accent" size="sm" onClick={openFilePicker}>
-								<Plus className="size-4" />
+								<PlusIcon className="size-4" />
 								<span>Select File</span>
 							</Button>
 						</div>
@@ -170,10 +182,10 @@ export const InvalidFileRejection: Story = {
 				>
 					{({ openFilePicker }) => (
 						<div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-black bg-white p-12 text-black select-none dark:bg-zinc dark:text-white">
-							<UploadSimple className="mb-2 size-10 text-orange" />
+							<UploadSimpleIcon className="mb-2 size-10 text-orange" />
 							<span className="mb-4 text-center font-sans text-sm font-bold">Drag file here (Requires PNG, size: 100B - 1KB)</span>
 							<Button type="button" variant="accent" size="sm" onClick={openFilePicker}>
-								<Plus className="size-4" />
+								<PlusIcon className="size-4" />
 								<span>Select File</span>
 							</Button>
 						</div>
@@ -241,10 +253,10 @@ export const FullPageDropZone: Story = {
 				>
 					{({ openFilePicker }) => (
 						<div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-black bg-white p-12 text-black select-none dark:border-black dark:bg-zinc dark:text-white">
-							<UploadSimple className="mb-2 size-10 text-orange" />
+							<UploadSimpleIcon className="mb-2 size-10 text-orange" />
 							<span className="mb-4 text-center font-sans text-sm font-bold">Drag files anywhere on the page</span>
 							<Button type="button" variant="accent" size="sm" onClick={openFilePicker}>
-								<Plus className="size-4" />
+								<PlusIcon className="size-4" />
 								<span>Select File</span>
 							</Button>
 						</div>

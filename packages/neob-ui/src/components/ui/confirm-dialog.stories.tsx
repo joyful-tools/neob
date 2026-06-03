@@ -18,6 +18,18 @@ type ConfirmDialogStoryProperties = {
 	confirmLabel?: string;
 };
 
+/**
+ * ConfirmDialog is a quick confirmation modal utility.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { ConfirmDialog, Button } from 'neob';
+ *
+ * <ConfirmDialog open={isOpen} onOpenChange={setIsOpen} onConfirm={handleConfirm} title="Are you sure?" description="This deletes files permanently.">
+ *   <Button>Delete Folder</Button>
+ * </ConfirmDialog>
+ * ```
+ */
 const meta = {
 	title: 'Surfaces/ConfirmDialog',
 	component: ConfirmDialog,

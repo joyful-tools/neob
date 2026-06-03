@@ -1,4 +1,4 @@
-import { CaretDoubleLeft, CaretDoubleRight, CaretLeft, CaretRight } from '@phosphor-icons/react';
+import { CaretDoubleLeftIcon, CaretDoubleRightIcon, CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
 import { createContext, KeyboardEvent, ReactNode, useContext, useMemo, useState } from 'react';
 
 import { cn } from '@/lib/utilities';
@@ -79,7 +79,7 @@ function PaginationInfo({ children, className }: PaginationInfoProps) {
 	) : null;
 
 	return (
-		<div data-slot="pagination-info" className={cn('text-sm font-semibold text-muted-foreground select-none', className)}>
+		<div data-slot="pagination-info" className={cn('grow text-sm font-semibold text-muted-foreground select-none', className)}>
 			{content}
 		</div>
 	);
@@ -176,7 +176,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						}}
 						className="size-8 rounded-r-none p-0 shadow-cel-sm focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]"
 					>
-						<CaretDoubleLeft className={cn('size-4', isFirstPageDisabled && 'opacity-30')} />
+						<CaretDoubleLeftIcon className={cn('size-4', isFirstPageDisabled && 'opacity-30')} />
 					</Button>
 				)}
 				<Button
@@ -195,7 +195,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						controls === 'full' ? 'ml-[-2px] rounded-none' : 'rounded-r-none',
 					)}
 				>
-					<CaretLeft className={cn('size-4', isFirstPageDisabled && 'opacity-30')} />
+					<CaretLeftIcon className={cn('size-4', isFirstPageDisabled && 'opacity-30')} />
 				</Button>
 				{controls === 'full' &&
 					(pageSelector === 'dropdown' ? (
@@ -276,7 +276,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						controls === 'full' ? 'rounded-none' : 'rounded-l-none',
 					)}
 				>
-					<CaretRight className={cn('size-4', isLastPageDisabled && 'opacity-30')} />
+					<CaretRightIcon className={cn('size-4', isLastPageDisabled && 'opacity-30')} />
 				</Button>
 				{controls === 'full' && (
 					<Button
@@ -291,7 +291,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						}}
 						className="ml-[-2px] size-8 rounded-l-none p-0 shadow-cel-sm focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]"
 					>
-						<CaretDoubleRight className={cn('size-4', isLastPageDisabled && 'opacity-30')} />
+						<CaretDoubleRightIcon className={cn('size-4', isLastPageDisabled && 'opacity-30')} />
 					</Button>
 				)}
 			</nav>

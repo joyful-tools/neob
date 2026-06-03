@@ -24,6 +24,17 @@ type ToastStoryProperties = {
 	buttons: ToastButtonConfiguration[];
 };
 
+/**
+ * toast provides imperative toaster alerts functions.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { toast } from 'neob';
+ *
+ * toast.success('Operation completed!');
+ * toast.error('Something went wrong.');
+ * ```
+ */
 const meta = {
 	title: 'Feedback/Toast',
 	parameters: {

@@ -18,6 +18,19 @@ type SelectStoryProperties = {
 	items?: ComponentProps<typeof Select>['items'];
 };
 
+/**
+ * Select is a customizable trigger and list overlay select component.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { Select } from 'neob';
+ *
+ * <Select value={value} onValueChange={setValue}>
+ *   <Select.Option value="first">First Option</Select.Option>
+ *   <Select.Option value="second">Second Option</Select.Option>
+ * </Select>
+ * ```
+ */
 const meta = {
 	title: 'Inputs/Select',
 	component: Select,

@@ -8,6 +8,27 @@ type TableStoryProperties = {
 	total?: string;
 };
 
+/**
+ * Table is a tabular data container with brutalist borders.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { Table } from 'neob';
+ *
+ * <Table>
+ *   <Table.Header>
+ *     <Table.Row>
+ *       <Table.Head>Name</Table.Head>
+ *     </Table.Row>
+ *   </Table.Header>
+ *   <Table.Body>
+ *     <Table.Row>
+ *       <Table.Cell>Alice</Table.Cell>
+ *     </Table.Row>
+ *   </Table.Body>
+ * </Table>
+ * ```
+ */
 const meta = {
 	title: 'Data Display/Table',
 	component: Table,

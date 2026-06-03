@@ -1,36 +1,4 @@
-/* Storybook Docs dark mode overrides */
-.sbdocs-wrapper {
-	background-color: hsl(var(--muted)) !important;
-}
-
-.sbdocs-content {
-	background-color: hsl(var(--muted)) !important;
-	color: hsl(var(--foreground)) !important;
-}
-
-/* Ensure all types of headers, paragraphs, and text elements have high contrast */
-.sbdocs-wrapper h1,
-.sbdocs-wrapper h2,
-.sbdocs-wrapper h3,
-.sbdocs-wrapper h4,
-.sbdocs-wrapper h5,
-.sbdocs-wrapper h6,
-.sbdocs-wrapper p,
-.sbdocs-wrapper li,
-.sbdocs-wrapper table,
-.sbdocs-wrapper td,
-.sbdocs-wrapper th,
-.sbdocs-wrapper span,
-.sbdocs-wrapper a {
-	color: hsl(var(--foreground)) !important;
-}
-
-/* Fix heading anchors */
-.sbdocs-wrapper a.anchor svg {
-	fill: hsl(var(--foreground)) !important;
-}
-
-/* Story preview container/canvas card */
+/* Story preview container/canvas card styled with design system tokens */
 .sbdocs-preview {
 	background-color: hsl(var(--card)) !important;
 	border-color: hsl(var(--border)) !important;
@@ -43,13 +11,13 @@
 }
 
 /* Story preview toolbar controls (reload, zoom, open in new tab) */
-.sbdocs-preview button,
-.sbdocs-preview a,
-.sbdocs-preview span {
+.sbdocs-preview > div:first-child button,
+.sbdocs-preview > div:first-child a,
+.sbdocs-preview > div:first-child span {
 	color: hsl(var(--foreground)) !important;
 }
 
-.sbdocs-preview svg {
+.sbdocs-preview > div:first-child svg {
 	fill: hsl(var(--foreground)) !important;
 }
 

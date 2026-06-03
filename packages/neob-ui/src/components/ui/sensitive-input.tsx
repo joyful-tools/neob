@@ -1,4 +1,4 @@
-import { Eye, EyeSlash } from '@phosphor-icons/react';
+import { EyeIcon, EyeSlashIcon } from '@phosphor-icons/react';
 import { ComponentProps, Ref, useState } from 'react';
 
 import { cn } from '@/lib/utilities';
@@ -57,7 +57,7 @@ export function SensitiveInput({
 				aria-label={isVisible ? 'Hide value' : 'Show value'}
 				className="px-0"
 			>
-				{isVisible ? <EyeSlash className="size-5" /> : <Eye className="size-5" />}
+				{isVisible ? <EyeSlashIcon className="size-5" /> : <EyeIcon className="size-5" />}
 				<span className="sr-only">{isVisible ? 'Hide value' : 'Show value'}</span>
 			</InputGroup.Button>
 		</InputGroup>

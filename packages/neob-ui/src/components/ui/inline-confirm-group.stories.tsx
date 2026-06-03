@@ -1,4 +1,4 @@
-import { Archive, DownloadSimple, Trash } from '@phosphor-icons/react';
+import { ArchiveIcon, DownloadSimpleIcon, TrashIcon } from '@phosphor-icons/react';
 import { ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
@@ -14,6 +14,18 @@ type InlineConfirmGroupStoryProperties = {
 	initialFiles: FileItem[];
 };
 
+/**
+ * InlineConfirmGroup provides an inline action confirmation panel inside normal content blocks.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { InlineConfirmGroup, Button } from 'neob';
+ *
+ * <InlineConfirmGroup onConfirm={handleConfirm} onCancel={handleCancel}>
+ *   <Button>Confirm Delete</Button>
+ * </InlineConfirmGroup>
+ * ```
+ */
 const meta = {
 	title: 'Inputs/InlineConfirmGroup',
 	component: InlineConfirmGroup,
@@ -47,21 +59,21 @@ function getActionProperties(kind: FileAction): {
 		case 'archive': {
 			return {
 				actionLabel: 'Archive',
-				actionIcon: <Archive />,
+				actionIcon: <ArchiveIcon />,
 				intent: 'info',
 			};
 		}
 		case 'download': {
 			return {
 				actionLabel: 'Download',
-				actionIcon: <DownloadSimple />,
+				actionIcon: <DownloadSimpleIcon />,
 				intent: 'success',
 			};
 		}
 		default: {
 			return {
 				actionLabel: 'Delete',
-				actionIcon: <Trash />,
+				actionIcon: <TrashIcon />,
 				intent: 'danger',
 			};
 		}
@@ -173,7 +185,7 @@ export const KeyboardAndOutsideCancel: Story = {
 					<InlineConfirmGroup
 						itemName="package.json"
 						actionLabel="Archive"
-						actionIcon={<Archive />}
+						actionIcon={<ArchiveIcon />}
 						intent="info"
 						direction="right"
 						onConfirm={() => {
@@ -236,7 +248,7 @@ export const ConfirmAndLoadingState: Story = {
 					<InlineConfirmGroup
 						itemName="README.md"
 						actionLabel="Delete"
-						actionIcon={<Trash />}
+						actionIcon={<TrashIcon />}
 						intent="danger"
 						onConfirm={() => {
 							action('inline-confirm-confirm')();
@@ -252,7 +264,7 @@ export const ConfirmAndLoadingState: Story = {
 					<InlineConfirmGroup
 						itemName="locked-file.txt"
 						actionLabel="Delete"
-						actionIcon={<Trash />}
+						actionIcon={<TrashIcon />}
 						intent="danger"
 						isLoading
 						onConfirm={() => {

@@ -6,6 +6,21 @@ import { Accordion } from './accordion';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+/**
+ * Accordion is a collapsible panel component built on Base UI with custom spring animations.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { Accordion } from 'neob';
+ *
+ * <Accordion type="single" collapsible defaultValue="item-1">
+ *   <Accordion.Item value="item-1">
+ *     <Accordion.Trigger>Is it brutalist?</Accordion.Trigger>
+ *     <Accordion.Content>Yes, stark borders and spring motion.</Accordion.Content>
+ *   </Accordion.Item>
+ * </Accordion>
+ * ```
+ */
 const meta = {
 	title: 'Data Display/Accordion',
 	component: Accordion,

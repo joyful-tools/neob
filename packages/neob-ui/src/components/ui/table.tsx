@@ -79,13 +79,7 @@ TableFooter.displayName = 'Table.Footer';
  * Table row (tr).
  */
 function TableRow({ className, ref, ...properties }: TableRowProperties) {
-	return (
-		<tr
-			ref={ref}
-			className={cn(`border-b-2 border-black/10 transition-colors hover:bg-muted/50 dark:border-white/10`, className)}
-			{...properties}
-		/>
-	);
+	return <tr ref={ref} className={cn(`border-b-2 border-black/10 dark:border-white/10`, className)} {...properties} />;
 }
 TableRow.displayName = 'Table.Row';
 
@@ -96,7 +90,7 @@ function TableHead({ className, ref, ...properties }: TableHeadProperties) {
 	return (
 		<th
 			ref={ref}
-			className={cn('h-10 px-4 text-left align-middle font-display text-sm font-black tracking-wider uppercase', className)}
+			className={cn('h-10 px-4 text-left align-middle font-display text-sm font-black tracking-wider text-white uppercase', className)}
 			{...properties}
 		/>
 	);

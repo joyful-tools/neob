@@ -8,6 +8,16 @@ import { OTPField } from './otp-field';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+/**
+ * OTPField is a one-time passcode grid input field.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { OTPField } from 'neob';
+ *
+ * <OTPField value={otp} onChange={setOtp} maxLength={6} />
+ * ```
+ */
 const meta = {
 	title: 'Inputs/OTPField',
 	component: OTPField,

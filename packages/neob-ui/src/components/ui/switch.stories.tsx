@@ -8,6 +8,18 @@ import { Switch } from './switch';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+/**
+ * Switch is a brutalist styled togglable switch control.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { Switch } from 'neob';
+ *
+ * <Switch checked={checked} onChange={setChecked}>
+ *   Enable Settings
+ * </Switch>
+ * ```
+ */
 const meta = {
 	title: 'Inputs/Switch',
 	component: Switch,

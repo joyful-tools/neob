@@ -7,6 +7,18 @@ import { Skeleton } from './skeleton';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+/**
+ * HoverPreview is a container preview popup triggered on cursor hover.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { HoverPreview } from 'neob';
+ *
+ * <HoverPreview previewContent={<div>Preview UI</div>}>
+ *   <span>Hover Me</span>
+ * </HoverPreview>
+ * ```
+ */
 const meta = {
 	title: 'Feedback/HoverPreview',
 	component: HoverPreview,

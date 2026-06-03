@@ -6,6 +6,16 @@ type SkeletonListStoryProperties = {
 	itemCount: number;
 };
 
+/**
+ * Skeleton displays pulsing placeholders shown while data is loading.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { Skeleton } from 'neob';
+ *
+ * <Skeleton className="h-10 w-full" />
+ * ```
+ */
 const meta = {
 	title: 'Feedback/Skeleton',
 	component: Skeleton,

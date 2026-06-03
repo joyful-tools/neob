@@ -1,4 +1,4 @@
-import { FileArrowDown } from '@phosphor-icons/react';
+import { FileArrowDownIcon } from '@phosphor-icons/react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
 	ChangeEvent,
@@ -293,7 +293,7 @@ export function DropZone({
 					onDrop={handleDrop}
 				>
 					<div className="animate-bounce">
-						<FileArrowDown className="size-16" />
+						<FileArrowDownIcon className="size-16" />
 					</div>
 					{info || <div className="font-sans text-xl font-bold">Drop files here</div>}
 				</motion.div>

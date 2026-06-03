@@ -1,5 +1,5 @@
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
-import { X } from '@phosphor-icons/react';
+import { XIcon } from '@phosphor-icons/react';
 import { AnimatePresence, motion } from 'motion/react';
 import { createContext, useCallback, useContext, useRef, useState } from 'react';
 
@@ -145,7 +145,7 @@ function DialogHeader({ className, children, ...properties }: HTMLAttributes<HTM
 			<div className="flex flex-1 flex-col space-y-1.5 text-center sm:text-left">{children}</div>
 			{!preventClose && (
 				<DialogPrimitive.Close className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }), '-mt-3 -mr-3 shrink-0')}>
-					<X className="size-4" />
+					<XIcon className="size-4" />
 					<span className="sr-only">Close</span>
 				</DialogPrimitive.Close>
 			)}

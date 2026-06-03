@@ -7,6 +7,18 @@ import { ConfirmButton } from './confirm-button';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+/**
+ * ConfirmButton is a button that requires double clicking / secondary confirmation before execution.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { ConfirmButton } from 'neob';
+ *
+ * <ConfirmButton onConfirm={handleDelete} variant="danger">
+ *   Delete Resource
+ * </ConfirmButton>
+ * ```
+ */
 const meta = {
 	title: 'Inputs/ConfirmButton',
 	component: ConfirmButton,

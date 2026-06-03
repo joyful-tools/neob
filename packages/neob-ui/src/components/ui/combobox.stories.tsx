@@ -1,4 +1,4 @@
-import { CaretUpDown } from '@phosphor-icons/react';
+import { CaretUpDownIcon } from '@phosphor-icons/react';
 import { ReactNode, useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
@@ -118,6 +118,16 @@ function Text({
 	);
 }
 
+/**
+ * Combobox is a robust searchable select/autocomplete component.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { Combobox } from 'neob';
+ *
+ * <Combobox value={value} onChange={setValue} options={options} placeholder="Search options..." />
+ * ```
+ */
 const meta = {
 	title: 'Inputs/Combobox',
 	component: Combobox,
@@ -1025,7 +1035,7 @@ export const CustomTrigger: StoryObj<CustomTriggerComboboxStoryProperties> = {
 						<Combobox.Value>
 							<span className="truncate">{value ? `${value.emoji} ${value.label}` : args.emptyLabel}</span>
 						</Combobox.Value>
-						<CaretUpDown size={14} className="shrink-0 text-black/60 dark:text-white/60" />
+						<CaretUpDownIcon size={14} className="shrink-0 text-black/60 dark:text-white/60" />
 					</Combobox.Trigger>
 					<Combobox.Content>
 						<Combobox.Input placeholder={args.searchPlaceholder} />

@@ -1,4 +1,4 @@
-import { Envelope, MagnifyingGlass, X } from '@phosphor-icons/react';
+import { EnvelopeIcon, MagnifyingGlassIcon, XIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, within } from 'storybook/test';
@@ -10,6 +10,20 @@ import { NumericSlider } from './numeric-slider';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+/**
+ * InputGroup is a layout pattern combining inputs, labels, and prepended/appended text/button addons.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { InputGroup } from 'neob';
+ *
+ * <InputGroup>
+ *   <InputGroup.Addon>$</InputGroup.Addon>
+ *   <InputGroup.Input type="number" placeholder="0.00" />
+ *   <InputGroup.Button>Submit</InputGroup.Button>
+ * </InputGroup>
+ * ```
+ */
 const meta = {
 	title: 'Inputs/InputGroup',
 	component: InputGroup,
@@ -49,7 +63,7 @@ export const WithLeftIcon: Story = {
 		<div className="w-80">
 			<InputGroup {...args}>
 				<InputGroup.Addon align="start">
-					<MagnifyingGlass className="size-4" />
+					<MagnifyingGlassIcon className="size-4" />
 				</InputGroup.Addon>
 				<InputGroup.Input placeholder="Search logs..." />
 			</InputGroup>
@@ -90,7 +104,7 @@ export const Clearable: Story = {
 							}}
 							aria-label="Clear field"
 						>
-							<X className="size-3.5" />
+							<XIcon className="size-3.5" />
 						</InputGroup.Button>
 					)}
 				</InputGroup>
@@ -141,7 +155,7 @@ export const ComplexComposition: Story = {
 			<div className="flex w-96 flex-col gap-4">
 				<InputGroup {...args}>
 					<InputGroup.Addon align="start">
-						<Envelope className="size-4" />
+						<EnvelopeIcon className="size-4" />
 					</InputGroup.Addon>
 					<InputGroup.Input type="email" placeholder="username" />
 					<InputGroup.Suffix>@gmail.com</InputGroup.Suffix>
@@ -159,7 +173,7 @@ export const Disabled: Story = {
 		<div className="w-80">
 			<InputGroup {...args}>
 				<InputGroup.Addon align="start">
-					<Envelope className="size-4" />
+					<EnvelopeIcon className="size-4" />
 				</InputGroup.Addon>
 				<InputGroup.Input placeholder="disabled@neob.dev" />
 			</InputGroup>
@@ -180,7 +194,7 @@ export const Error: Story = {
 				</label>
 				<InputGroup {...args}>
 					<InputGroup.Addon align="start">
-						<Envelope className="size-4" />
+						<EnvelopeIcon className="size-4" />
 					</InputGroup.Addon>
 					<InputGroup.Input id="input-group-error" placeholder="invalid-email" defaultValue="invalid-email" aria-label="Email address" />
 				</InputGroup>

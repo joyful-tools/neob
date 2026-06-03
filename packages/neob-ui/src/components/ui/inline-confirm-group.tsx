@@ -1,4 +1,4 @@
-import { Trash, X } from '@phosphor-icons/react';
+import { TrashIcon, XIcon } from '@phosphor-icons/react';
 import { AnimatePresence, motion, Transition } from 'motion/react';
 import { cloneElement, KeyboardEvent, MouseEvent, ReactElement, useCallback, useEffect, useRef, useState, useId } from 'react';
 
@@ -36,7 +36,7 @@ const intentClassNames: Record<InlineConfirmGroupIntent, string> = {
 export function InlineConfirmGroup({
 	itemName,
 	actionLabel = 'Delete',
-	actionIcon = <Trash />,
+	actionIcon = <TrashIcon />,
 	intent = 'danger',
 	onConfirm,
 	onCancel,
@@ -152,7 +152,7 @@ export function InlineConfirmGroup({
 			className="neo-focus-ring isolate flex size-7 cursor-pointer items-center justify-center rounded-md border border-black bg-zinc/10 text-black outline-hidden transition-all select-none hover:bg-black hover:text-white disabled:pointer-events-none disabled:opacity-50 dark:border-white dark:bg-zinc/20 dark:text-white dark:hover:bg-white dark:hover:text-black"
 			aria-label={`Cancel ${actionLabelLowercase} ${itemName}`}
 		>
-			<X className="size-4" />
+			<XIcon className="size-4" />
 		</button>
 	);
 	const confirmationButtons = direction === 'left' ? [confirmButton, cancelButton] : [cancelButton, confirmButton];

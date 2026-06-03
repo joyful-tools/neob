@@ -2,6 +2,21 @@ import { Card } from './card';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+/**
+ * Card is a brutalist content container with optional headers, titles, and body content.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { Card } from 'neob';
+ *
+ * <Card>
+ *   <Card.Header>
+ *     <Card.Title>Card Title</Card.Title>
+ *   </Card.Header>
+ *   <Card.Content>Card Body Content</Card.Content>
+ * </Card>
+ * ```
+ */
 const meta = {
 	title: 'Surfaces/Card',
 	component: Card,

@@ -26,6 +26,16 @@ type DatePickerMultipleStoryProperties = {
 	max?: number;
 };
 
+/**
+ * DatePicker is a brutalist date selection calendar component built on react-day-picker.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { DatePicker } from 'neob';
+ *
+ * <DatePicker mode="single" selected={date} onChange={setDate} />
+ * ```
+ */
 const meta = {
 	title: 'Inputs/DatePicker',
 	component: DatePicker,

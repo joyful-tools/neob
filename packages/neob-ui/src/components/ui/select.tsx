@@ -1,5 +1,5 @@
 import { Select as BaseSelect } from '@base-ui/react/select';
-import { CaretUpDown, Check } from '@phosphor-icons/react';
+import { CaretUpDownIcon, CheckIcon } from '@phosphor-icons/react';
 import { ReactNode, Ref, RefObject, useId } from 'react';
 
 import { cn } from '@/lib/utilities';
@@ -150,7 +150,6 @@ export function Select<T = unknown, Multiple extends boolean | undefined = false
 			<BaseSelect.Trigger
 				className={cn(
 					buttonVariants({ size }),
-					'neo-focus-ring isolate outline-hidden',
 					'w-full justify-between bg-white font-bold text-black dark:bg-zinc dark:text-white',
 					'hover:-translate-y-0.5 hover:shadow-cel-md active:translate-y-0.5 active:shadow-cel-inset-md',
 					props.disabled && 'cursor-not-allowed opacity-50 hover:translate-y-0 hover:shadow-cel-sm',
@@ -170,7 +169,7 @@ export function Select<T = unknown, Multiple extends boolean | undefined = false
 					</BaseSelect.Value>
 				)}
 				<BaseSelect.Icon className="ml-2 flex shrink-0 items-center opacity-70">
-					<CaretUpDown className="size-4" />
+					<CaretUpDownIcon className="size-4" />
 				</BaseSelect.Icon>
 			</BaseSelect.Trigger>
 			<BaseSelect.Portal container={container}>
@@ -233,7 +232,7 @@ function Option<T>({ children, value, disabled, className }: SelectOptionProps<T
 		>
 			<BaseSelect.ItemText className="truncate">{children}</BaseSelect.ItemText>
 			<BaseSelect.ItemIndicator className="ml-2 shrink-0">
-				<Check className="size-4 stroke-3" />
+				<CheckIcon className="size-4 stroke-3" />
 			</BaseSelect.ItemIndicator>
 		</BaseSelect.Item>
 	);

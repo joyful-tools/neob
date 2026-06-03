@@ -1,5 +1,5 @@
 import { Combobox as BaseCombobox } from '@base-ui/react/combobox';
-import { CaretDown, Check, X } from '@phosphor-icons/react';
+import { CaretDownIcon, CheckIcon, XIcon } from '@phosphor-icons/react';
 import {
 	ComponentPropsWithoutRef,
 	createContext,
@@ -224,7 +224,7 @@ function TriggerValue({ className, ref, placeholder, ...props }: ComboboxTrigger
 				ref={ref}
 				className={cn(
 					getInputStyles(size, hasError, 'neo-focus-ring'),
-					'relative flex w-full cursor-pointer items-center overflow-hidden shadow-cel-sm transition-all duration-300 ease-spring hover:-translate-y-0.5 hover:shadow-cel-md active:translate-y-0.5 active:shadow-cel-inset-md disabled:hover:translate-y-0 disabled:hover:shadow-cel-sm aria-expanded:translate-y-0.5 aria-expanded:shadow-cel-inset-md data-pressed:translate-y-0.5 data-pressed:shadow-cel-inset-md',
+					'relative flex w-full cursor-pointer items-center shadow-cel-sm transition-all duration-300 ease-spring hover:-translate-y-0.5 hover:shadow-cel-md active:translate-y-0.5 active:shadow-cel-inset-md disabled:hover:translate-y-0 disabled:hover:shadow-cel-sm aria-expanded:translate-y-0.5 aria-expanded:shadow-cel-inset-md data-pressed:translate-y-0.5 data-pressed:shadow-cel-inset-md',
 					iconStyles.padding,
 				)}
 				aria-describedby={describedBy}
@@ -233,11 +233,13 @@ function TriggerValue({ className, ref, placeholder, ...props }: ComboboxTrigger
 				aria-invalid={ariaInvalid ? true : undefined}
 				{...props}
 			>
-				<BaseCombobox.Value placeholder={placeholder} />
+				<span className="min-w-0 flex-1 truncate text-left">
+					<BaseCombobox.Value placeholder={placeholder} />
+				</span>
 				<BaseCombobox.Icon
 					className={cn('absolute top-1/2 flex -translate-y-1/2 items-center text-black/60 dark:text-white/60', iconStyles.iconRight)}
 				>
-					<CaretDown size={iconStyles.iconSize} className="fill-current" />
+					<CaretDownIcon size={iconStyles.iconSize} className="fill-current" />
 				</BaseCombobox.Icon>
 			</BaseCombobox.Trigger>
 		</div>
@@ -326,7 +328,7 @@ function TriggerInput({
 					iconStyles.clearRight,
 				)}
 			>
-				<X size={iconStyles.iconSize} className="stroke-3" />
+				<XIcon size={iconStyles.iconSize} className="stroke-3" />
 			</BaseCombobox.Clear>
 
 			<BaseCombobox.Trigger
@@ -337,7 +339,7 @@ function TriggerInput({
 				)}
 			>
 				<BaseCombobox.Icon>
-					<CaretDown size={iconStyles.iconSize} className="stroke-3" />
+					<CaretDownIcon size={iconStyles.iconSize} className="stroke-3" />
 				</BaseCombobox.Icon>
 			</BaseCombobox.Trigger>
 		</div>
@@ -454,7 +456,7 @@ function Chip({ removeLabel = 'Remove', className, children, ref, ...props }: Co
 				aria-label={removeLabel}
 				className="flex cursor-pointer rounded-sm border-0 bg-transparent p-0.5 hover:bg-black/10 data-disabled:pointer-events-none dark:hover:bg-white/10"
 			>
-				<X size={10} className="stroke-3" />
+				<XIcon size={10} className="stroke-3" />
 			</BaseCombobox.ChipRemove>
 		</BaseCombobox.Chip>
 	);
@@ -483,7 +485,7 @@ function Item({ children, className, ref, ...props }: ComboboxItemProps) {
 		>
 			<span className="min-w-0 flex-1 wrap-break-word">{children}</span>
 			<BaseCombobox.ItemIndicator className="ml-2 shrink-0">
-				<Check className="size-4 stroke-3" />
+				<CheckIcon className="size-4 stroke-3" />
 			</BaseCombobox.ItemIndicator>
 		</BaseCombobox.Item>
 	);

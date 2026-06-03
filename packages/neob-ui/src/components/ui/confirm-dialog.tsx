@@ -1,4 +1,4 @@
-import { Check, Copy } from '@phosphor-icons/react';
+import { CheckIcon, CopyIcon } from '@phosphor-icons/react';
 import { useState, type ReactNode } from 'react';
 
 import { Button } from './button';
@@ -72,7 +72,7 @@ export function ConfirmDialog({
 										className="mx-0.5 h-6 px-2 font-mono text-xs"
 									>
 										{resourceName}
-										{copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+										{copied ? <CheckIcon className="size-3" /> : <CopyIcon className="size-3" />}
 									</Button>{' '}
 									to confirm:
 								</p>

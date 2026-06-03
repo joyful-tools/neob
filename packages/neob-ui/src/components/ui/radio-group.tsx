@@ -1,6 +1,6 @@
 import { Radio } from '@base-ui/react/radio';
 import { RadioGroup as RadioGroupPrimitive } from '@base-ui/react/radio-group';
-import { Check } from '@phosphor-icons/react';
+import { CheckIcon } from '@phosphor-icons/react';
 import { ComponentPropsWithoutRef, CSSProperties, Ref } from 'react';
 
 import { cn } from '@/lib/utilities';
@@ -39,7 +39,7 @@ function RadioGroupItem({ className, ref, ...properties }: RadioGroupItemPropert
 	return (
 		<Radio.Root ref={ref} className={cn(RADIO_ITEM_CLASS_NAME, className)} nativeButton render={<button type="button" />} {...properties}>
 			<Radio.Indicator className="flex items-center justify-center text-current select-none" keepMounted>
-				<Check className="size-3" />
+				<CheckIcon className="size-3" />
 			</Radio.Indicator>
 		</Radio.Root>
 	);

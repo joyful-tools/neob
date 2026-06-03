@@ -1,4 +1,4 @@
-import { CircleNotch } from '@phosphor-icons/react';
+import { CircleNotchIcon } from '@phosphor-icons/react';
 import { motion, useTime, useTransform } from 'motion/react';
 
 import { cn } from '@/lib/utilities';
@@ -35,7 +35,7 @@ export function Spinner({ className, size = 'md' }: SpinnerProperties) {
 			style={{ rotate }}
 			className={cn(SIZE_CLASSES[size], className)}
 		>
-			<CircleNotch className="size-full" />
+			<CircleNotchIcon className="size-full" />
 		</motion.div>
 	);
 }

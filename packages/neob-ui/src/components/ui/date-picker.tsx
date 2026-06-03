@@ -1,5 +1,5 @@
 /* eslint-disable better-tailwindcss/no-unknown-classes, @typescript-eslint/no-unsafe-function-type */
-import { CaretDown, CaretLeft, CaretRight, CaretUp } from '@phosphor-icons/react';
+import { CaretDownIcon, CaretLeftIcon, CaretRightIcon, CaretUpIcon } from '@phosphor-icons/react';
 import { AnimatePresence, motion } from 'motion/react';
 import { KeyboardEvent, MouseEvent, useState } from 'react';
 import {
@@ -23,7 +23,8 @@ import { Button } from './button';
  * Custom Chevron component using Phosphor icons
  */
 const Chevron: CustomComponents['Chevron'] = ({ orientation, ...props }) => {
-	const Icon = orientation === 'left' ? CaretLeft : orientation === 'right' ? CaretRight : orientation === 'up' ? CaretUp : CaretDown;
+	const Icon =
+		orientation === 'left' ? CaretLeftIcon : orientation === 'right' ? CaretRightIcon : orientation === 'up' ? CaretUpIcon : CaretDownIcon;
 	return <Icon size={14} {...props} />;
 };
 
@@ -440,7 +441,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 						aria-label={view === 'days' ? 'Previous month' : view === 'months' ? 'Previous year' : 'Previous years'}
 						className="size-7 rounded-md"
 					>
-						<CaretLeft size={14} />
+						<CaretLeftIcon size={14} />
 					</Button>
 					<Button
 						type="button"
@@ -450,7 +451,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 						aria-label={view === 'days' ? 'Next month' : view === 'months' ? 'Next year' : 'Next years'}
 						className="size-7 rounded-md"
 					>
-						<CaretRight size={14} />
+						<CaretRightIcon size={14} />
 					</Button>
 				</div>
 			</div>

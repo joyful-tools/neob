@@ -6,6 +6,16 @@ import { SensitiveInput } from './sensitive-input';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+/**
+ * SensitiveInput is a text input supporting toggled visibility states (e.g. passwords).
+ *
+ * ### General Usage
+ * ```tsx
+ * import { SensitiveInput } from 'neob';
+ *
+ * <SensitiveInput value={password} onChange={(e) => setPassword(e.target.value)} />
+ * ```
+ */
 const meta = {
 	title: 'Inputs/SensitiveInput',
 	component: SensitiveInput,

@@ -47,6 +47,20 @@ const SlabItem = ({ slab }: { slab: Slab }) => (
 	</div>
 );
 
+/**
+ * VirtualizedViewport is a viewport for high-performance list virtualization.
+ *
+ * ### General Usage
+ * ```tsx
+ * import { VirtualizedViewport } from 'neob';
+ *
+ * <VirtualizedViewport
+ *   items={items}
+ *   itemHeight={50}
+ *   renderItem={(item) => <div>{item.name}</div>}
+ * />
+ * ```
+ */
 const meta = {
 	title: 'Utility/VirtualizedViewport',
 	component: VirtualizedViewport,

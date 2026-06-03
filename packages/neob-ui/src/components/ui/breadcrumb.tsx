@@ -1,4 +1,4 @@
-import { CaretRight, Check, Copy, DotsThree } from '@phosphor-icons/react';
+import { CaretRightIcon, CheckIcon, CopyIcon, DotsThreeIcon } from '@phosphor-icons/react';
 import {
 	AnchorHTMLAttributes,
 	ButtonHTMLAttributes,
@@ -106,7 +106,7 @@ function BreadcrumbSeparator({ className, ...props }: BreadcrumbSeparatorProps) 
 			aria-hidden="true"
 			{...props}
 		>
-			<CaretRight className="size-4" weight="bold" />
+			<CaretRightIcon className="size-4" weight="bold" />
 		</span>
 	);
 }
@@ -119,7 +119,7 @@ function BreadcrumbEllipsis({ className, ...props }: BreadcrumbEllipsisProps) {
 			aria-hidden="true"
 			{...props}
 		>
-			<DotsThree className="size-4" weight="bold" />
+			<DotsThreeIcon className="size-4" weight="bold" />
 		</span>
 	);
 }
@@ -164,7 +164,7 @@ function BreadcrumbClipboard({ text, className, onClick, ...props }: BreadcrumbC
 			title="Copy"
 			{...props}
 		>
-			{isCopied ? <Check className="size-4" /> : <Copy className="size-4" />}
+			{isCopied ? <CheckIcon className="size-4" /> : <CopyIcon className="size-4" />}
 		</Button>
 	);
 }
