@@ -90,10 +90,10 @@ function DropdownMenuContent({ children, className, align = 'end', sideOffset, r
 				<Menu.Popup
 					ref={transformOriginRef}
 					className={cn(
-						`min-w-40 overflow-hidden rounded-xl border-2 border-black bg-white p-1.5 shadow-sm outline-hidden select-none dark:bg-zinc dark:text-white`,
-						`animate-popover-in data-closed:animate-popover-out`,
-						`origin-(--transform-origin)`,
+						`z-50 min-w-40 origin-(--transform-origin) rounded-xl border-2 border-black bg-popover p-1.5 text-popover-foreground shadow-cel-md outline-hidden select-none`,
+						`data-closed:animate-popover-out data-open:animate-popover-in`,
 						`data-[side=bottom]:[--tw-enter-translate-y:-0.5rem] data-[side=left]:[--tw-enter-translate-x:0.5rem] data-[side=right]:[--tw-enter-translate-x:-0.5rem] data-[side=top]:[--tw-enter-translate-y:0.5rem]`,
+						`dark:border-black dark:shadow-cel-md`,
 						className,
 					)}
 					{...properties}

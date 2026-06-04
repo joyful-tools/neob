@@ -1,6 +1,5 @@
-/** @jsxRuntime classic */
 import { PlayIcon, StopIcon } from '@storybook/icons';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { IconButton } from 'storybook/internal/components';
 
 import { INTERACTION_STORAGE_KEY } from '../packages/neob-ui/src/lib/storybook-interactions';
@@ -17,9 +16,9 @@ function getInitialDisableInteractions() {
 }
 
 export function InteractionToggle() {
-	const [disableInteractions, setDisableInteractions] = useState(getInitialDisableInteractions);
+	const [disableInteractions, setDisableInteractions] = React.useState(getInitialDisableInteractions);
 
-	const toggleInteractions = useCallback(() => {
+	const toggleInteractions = React.useCallback(() => {
 		const nextValue = !disableInteractions;
 		globalThis.window.localStorage.setItem(INTERACTION_STORAGE_KEY, `${nextValue}`);
 		setDisableInteractions(nextValue);

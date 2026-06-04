@@ -160,3 +160,10 @@ export { HumanizedTime } from './components/ui/humanized-time';
 export type { HumanizedTimeProps } from './components/ui/humanized-time';
 export { Marquee } from './components/ui/marquee';
 export type { MarqueeProps } from './components/ui/marquee';
+
+export { useScrollPercentage, ScrollPercentage } from './components/ui/scroll-percentage';
+export { TypeWords } from './components/ui/type-words';
+export { DropMenu, DropMenuItem } from './components/ui/drop-menu';
+export { RollingDigits } from './components/ui/rolling-digits';
+export { TextScramble, TextShake, TextSkew } from './components/ui/text-animations';
+export { InView } from './components/ui/in-view';

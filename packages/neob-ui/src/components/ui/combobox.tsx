@@ -231,6 +231,21 @@ function TriggerValue({ className, ref, placeholder, ...props }: ComboboxTrigger
 				aria-label={ariaLabel}
 				aria-labelledby={ariaLabelledby}
 				aria-invalid={ariaInvalid ? true : undefined}
+				onKeyDown={(e) => {
+					if (e.key === ' ') {
+						e.preventDefault();
+						e.stopPropagation();
+						e.currentTarget.click();
+					}
+					props.onKeyDown?.(e);
+				}}
+				onKeyUp={(e) => {
+					if (e.key === ' ' || e.key === 'Enter') {
+						e.preventDefault();
+						e.stopPropagation();
+					}
+					props.onKeyUp?.(e);
+				}}
 				{...props}
 			>
 				<span className="min-w-0 flex-1 truncate text-left">

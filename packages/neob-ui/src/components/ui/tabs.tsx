@@ -1,17 +1,27 @@
 import { Tabs as BaseTabs } from '@base-ui/react/tabs';
-import { ComponentPropsWithoutRef, createContext, Ref, useContext } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import { ComponentPropsWithoutRef, createContext, Ref, useContext, useId } from 'react';
 
 import { cn } from '@/lib/utilities';
 
 export type TabsVariant = 'segmented' | 'subtle';
 
 const TabsVariantContext = createContext<TabsVariant>('segmented');
+const TabsIdContext = createContext<string>('');
 
 /**
  * Root Tabs container.
  * Wraps Base UI Tabs.Root.
  */
-const TabsRoot = BaseTabs.Root;
+function TabsRoot({ children, ...properties }: ComponentPropsWithoutRef<typeof BaseTabs.Root>) {
+	const id = useId();
+
+	return (
+		<TabsIdContext.Provider value={id}>
+			<BaseTabs.Root {...properties}>{children}</BaseTabs.Root>
+		</TabsIdContext.Provider>
+	);
+}
 
 /**
  * TabsList component.
@@ -31,24 +41,10 @@ function TabsList({
 			? 'relative inline-flex items-center gap-1 border-2 border-black bg-muted/40 p-2 rounded-xl dark:border-black dark:bg-zinc/30'
 			: 'relative flex w-full space-x-1 border-b-2 border-zinc-200 pb-px dark:border-zinc-800';
 
-	const indicatorClasses =
-		variant === 'segmented'
-			? 'absolute rounded-md border-2 border-black bg-white shadow-cel-sm dark:bg-zinc dark:border-black z-0'
-			: 'absolute border-b-4 border-black dark:border-white bg-transparent z-10';
-
-	const indicatorStyle = {
-		left: 'var(--active-tab-left)',
-		width: 'var(--active-tab-width)',
-		top: 'var(--active-tab-top)',
-		height: 'var(--active-tab-height)',
-		transition: 'all 200ms cubic-bezier(0.16, 1, 0.3, 1.03)', // Significantly reduced spring overshoot (3% max bounce)
-	};
-
 	return (
 		<TabsVariantContext.Provider value={variant}>
 			<BaseTabs.List ref={ref} className={cn(listClasses, className)} {...properties}>
 				{properties.children}
-				<BaseTabs.Indicator className={indicatorClasses} style={indicatorStyle} />
 			</BaseTabs.List>
 		</TabsVariantContext.Provider>
 	);
@@ -68,6 +64,12 @@ function TabsTrigger({
 	readonly ref?: Ref<HTMLButtonElement>;
 }) {
 	const variant = useContext(TabsVariantContext);
+	const rootId = useContext(TabsIdContext);
+
+	const indicatorClasses =
+		variant === 'segmented'
+			? 'absolute inset-0 rounded-lg border-2 border-black bg-white dark:bg-zinc dark:border-black z-0'
+			: 'absolute left-0 right-0 bottom-0 h-[4px] bg-black dark:bg-white z-10';
 
 	return (
 		<BaseTabs.Tab
@@ -91,6 +93,19 @@ function TabsTrigger({
 
 				return (
 					<button {...buttonProps} className={triggerClasses}>
+						<AnimatePresence initial={false}>
+							{isSelected && (
+								<motion.div
+									layoutId={`${rootId}-active-indicator`}
+									layout="x"
+									initial={{ opacity: 0, scale: 0.9 }}
+									animate={{ opacity: 1, scale: 1 }}
+									exit={{ opacity: 0, scale: 0.9 }}
+									transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+									className={indicatorClasses}
+								/>
+							)}
+						</AnimatePresence>
 						<span className="relative z-20">{children}</span>
 					</button>
 				);

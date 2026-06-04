@@ -4,6 +4,7 @@ import { expect, userEvent, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 
+import { Button } from './button';
 import { Tabs } from './tabs';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
@@ -48,9 +49,9 @@ export const Segmented: Story = {
 		listVariant: 'segmented',
 	},
 	render: (args) => {
-		const [value, setValue] = useState(args.initialValue);
+		const [value, setValue] = useState<string | null>(args.initialValue);
 		return (
-			<div className="w-96">
+			<div className="flex w-96 flex-col items-center gap-5">
 				<Tabs
 					value={value}
 					onValueChange={(nextValue) => {
@@ -73,6 +74,7 @@ export const Segmented: Story = {
 						<p className="text-sm font-medium text-muted-foreground">Manage your system preferences here.</p>
 					</Tabs.Content>
 				</Tabs>
+				<Button onClick={() => setValue(null)}>Reset</Button>
 			</div>
 		);
 	},
@@ -89,7 +91,7 @@ export const Subtle: Story = {
 		listVariant: 'subtle',
 	},
 	render: (args) => {
-		const [value, setValue] = useState(args.initialValue);
+		const [value, setValue] = useState<string | null>(args.initialValue);
 		return (
 			<div className="w-96">
 				<Tabs
@@ -114,6 +116,7 @@ export const Subtle: Story = {
 						<p className="text-sm font-medium text-muted-foreground">Manage your system preferences here.</p>
 					</Tabs.Content>
 				</Tabs>
+				<Button onClick={() => setValue(null)}>Reset</Button>
 			</div>
 		);
 	},
