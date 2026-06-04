@@ -4,14 +4,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 /**
  * HoverClip demonstrates interactive background clips/reveal designs.
- *
- * ### General Usage
- * ```tsx
- * // Check story file for specific clip styling and implementation details
- * ```
  */
 const meta = {
 	title: 'Experiments/HoverClip',
+	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',
 	},

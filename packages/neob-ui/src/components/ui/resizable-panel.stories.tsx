@@ -9,9 +9,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * ResizablePanel is a height/width animating container that transitions content layout shifts.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { ResizablePanel } from 'neob';
+ * import { ResizablePanel } from '@timowilhelm/neob';
  *
  * <ResizablePanel>
  *   <div>Dynamic Animated Height Content</div>

@@ -9,9 +9,9 @@ type SkeletonListStoryProperties = {
 /**
  * Skeleton displays pulsing placeholders shown while data is loading.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { Skeleton } from 'neob';
+ * import { Skeleton } from '@timowilhelm/neob';
  *
  * <Skeleton className="h-10 w-full" />
  * ```

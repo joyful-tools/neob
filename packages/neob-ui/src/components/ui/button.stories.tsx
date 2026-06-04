@@ -12,9 +12,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * Button is a brutalist button component with various variants, sizes, and states.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { Button } from 'neob';
+ * import { Button } from '@timowilhelm/neob';
  *
  * <Button variant="accent" size="lg" isLoading={false} onClick={handleClick}>
  *   Submit

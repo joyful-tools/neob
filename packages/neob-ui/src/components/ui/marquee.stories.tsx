@@ -9,9 +9,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * Marquee is a fast, performant infinite scrolling marquee element.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { Marquee } from 'neob';
+ * import { Marquee } from '@timowilhelm/neob';
  *
  * <Marquee speed={30}>
  *   <span>Item 1</span>

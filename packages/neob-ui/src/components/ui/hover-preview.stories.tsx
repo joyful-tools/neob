@@ -10,9 +10,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * HoverPreview is a container preview popup triggered on cursor hover.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { HoverPreview } from 'neob';
+ * import { HoverPreview } from '@timowilhelm/neob';
  *
  * <HoverPreview previewContent={<div>Preview UI</div>}>
  *   <span>Hover Me</span>

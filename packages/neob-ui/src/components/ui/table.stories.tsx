@@ -11,9 +11,9 @@ type TableStoryProperties = {
 /**
  * Table is a tabular data container with brutalist borders.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { Table } from 'neob';
+ * import { Table } from '@timowilhelm/neob';
  *
  * <Table>
  *   <Table.Header>

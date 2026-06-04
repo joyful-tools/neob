@@ -9,9 +9,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * ButtonGroup provides a cohesive layout for grouping related buttons with shared brutalist borders.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { ButtonGroup } from 'neob';
+ * import { ButtonGroup } from '@timowilhelm/neob';
  *
  * <ButtonGroup>
  *   <ButtonGroup.Button active>Left</ButtonGroup.Button>

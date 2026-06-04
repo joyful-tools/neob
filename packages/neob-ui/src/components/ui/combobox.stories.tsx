@@ -121,9 +121,9 @@ function Text({
 /**
  * Combobox is a robust searchable select/autocomplete component.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { Combobox } from 'neob';
+ * import { Combobox } from '@timowilhelm/neob';
  *
  * <Combobox value={value} onChange={setValue} options={options} placeholder="Search options..." />
  * ```

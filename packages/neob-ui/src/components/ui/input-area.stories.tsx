@@ -16,9 +16,9 @@ type StoryProps = InputAreaProperties & {
 /**
  * InputArea is an auto-resizing brutalist textarea component.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { InputArea } from 'neob';
+ * import { InputArea } from '@timowilhelm/neob';
  *
  * <InputArea value={text} onChange={(e) => setText(e.target.value)} maxRows={10} />
  * ```

@@ -6,9 +6,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * ButtonBadge demonstrates how to compose Buttons and Pills to create badges.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { Button, Pill } from 'neob';
+ * import { Button, Pill } from '@timowilhelm/neob';
  *
  * <Button className="relative">
  *   Hello World
@@ -18,6 +18,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  */
 const meta = {
 	title: 'Experiments/ButtonBadge',
+	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',
 	},

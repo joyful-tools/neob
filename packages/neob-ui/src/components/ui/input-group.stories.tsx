@@ -13,9 +13,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * InputGroup is a layout pattern combining inputs, labels, and prepended/appended text/button addons.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { InputGroup } from 'neob';
+ * import { InputGroup } from '@timowilhelm/neob';
  *
  * <InputGroup>
  *   <InputGroup.Addon>$</InputGroup.Addon>

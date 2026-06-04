@@ -19,9 +19,9 @@ type PaginationStoryProperties = {
 /**
  * Pagination is a paginator navigation strip.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { Pagination } from 'neob';
+ * import { Pagination } from '@timowilhelm/neob';
  *
  * <Pagination
  *   currentPage={page}

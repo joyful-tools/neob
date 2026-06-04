@@ -4,14 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-/**
- * StackOverlay showcases complex multi-dialog overlay stacking interactions.
- *
- * ### General Usage
- * ```tsx
- * // Check story file for implementation details
- * ```
- */
 const meta = {
 	title: 'Experiments/StackOverlay',
 	parameters: {

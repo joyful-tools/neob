@@ -7,9 +7,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * Meter is a visual scale tracker (progress bar or meter metrics).
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { Meter } from 'neob';
+ * import { Meter } from '@timowilhelm/neob';
  *
  * <Meter value={60} max={100} />
  * ```

@@ -5,9 +5,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * LoadingBars is an animated loader showing jumping/pulsing bars.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { LoadingBars } from 'neob';
+ * import { LoadingBars } from '@timowilhelm/neob';
  *
  * <LoadingBars />
  * ```
@@ -15,6 +15,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 const meta = {
 	title: 'Feedback/LoadingBars',
 	component: LoadingBars,
+	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',
 	},

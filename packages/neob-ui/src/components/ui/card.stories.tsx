@@ -5,9 +5,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * Card is a brutalist content container with optional headers, titles, and body content.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { Card } from 'neob';
+ * import { Card } from '@timowilhelm/neob';
  *
  * <Card>
  *   <Card.Header>

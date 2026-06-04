@@ -9,9 +9,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * Accordion is a collapsible panel component built on Base UI with custom spring animations.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { Accordion } from 'neob';
+ * import { Accordion } from '@timowilhelm/neob';
  *
  * <Accordion type="single" collapsible defaultValue="item-1">
  *   <Accordion.Item value="item-1">

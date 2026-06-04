@@ -13,9 +13,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * DropZone is an interactive area for file dragging, dropping, and validation.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { DropZone } from 'neob';
+ * import { DropZone } from '@timowilhelm/neob';
  *
  * <DropZone onDrop={handleFiles} accept={{ 'image/*': ['.png', '.jpg'] }}>
  *   <p>Drag images here or click to select</p>

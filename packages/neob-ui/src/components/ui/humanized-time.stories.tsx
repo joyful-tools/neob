@@ -11,9 +11,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * HumanizedTime renders dynamic and readable relative/elapsed times.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { HumanizedTime } from 'neob';
+ * import { HumanizedTime } from '@timowilhelm/neob';
  *
  * <HumanizedTime date={new Date()} />
  * ```

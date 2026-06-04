@@ -10,9 +10,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * Breadcrumb is a hierarchy path indicator with copying features.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { Breadcrumb } from 'neob';
+ * import { Breadcrumb } from '@timowilhelm/neob';
  *
  * <Breadcrumb value="/projects/neob/components">
  *   <Breadcrumb.Link href="/projects">Projects</Breadcrumb.Link>

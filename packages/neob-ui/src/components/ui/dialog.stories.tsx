@@ -19,9 +19,9 @@ type DialogStoryProperties = {
 /**
  * Dialog is a standard modal dialog component with backdrop animation.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { Dialog } from 'neob';
+ * import { Dialog } from '@timowilhelm/neob';
  *
  * <Dialog>
  *   <Dialog.Trigger>Open Modal</Dialog.Trigger>

@@ -27,9 +27,9 @@ type ToastStoryProperties = {
 /**
  * toast provides imperative toaster alerts functions.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { toast } from 'neob';
+ * import { toast } from '@timowilhelm/neob';
  *
  * toast.success('Operation completed!');
  * toast.error('Something went wrong.');
@@ -37,6 +37,7 @@ type ToastStoryProperties = {
  */
 const meta = {
 	title: 'Feedback/Toast',
+	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',
 	},

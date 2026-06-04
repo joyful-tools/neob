@@ -16,9 +16,9 @@ type TabsStoryProperties = {
 /**
  * Tabs is an animated tab switcher list.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { Tabs } from 'neob';
+ * import { Tabs } from '@timowilhelm/neob';
  *
  * <Tabs defaultValue="tab1">
  *   <Tabs.List>

@@ -21,9 +21,9 @@ type SelectStoryProperties = {
 /**
  * Select is a customizable trigger and list overlay select component.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { Select } from 'neob';
+ * import { Select } from '@timowilhelm/neob';
  *
  * <Select value={value} onValueChange={setValue}>
  *   <Select.Option value="first">First Option</Select.Option>

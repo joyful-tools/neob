@@ -13,9 +13,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * Input provides standard brutalist form input elements and wrapper styling.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { Input } from 'neob';
+ * import { Input } from '@timowilhelm/neob';
  *
  * <Input placeholder="Enter username..." />
  * ```

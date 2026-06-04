@@ -9,9 +9,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * SmartSticky is a smart sticky header wrapper that hides/reveals itself based on scroll direction.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { SmartSticky } from 'neob';
+ * import { SmartSticky } from '@timowilhelm/neob';
  *
  * <SmartSticky>
  *   <nav>Header Navigation</nav>

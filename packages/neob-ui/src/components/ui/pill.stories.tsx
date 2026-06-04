@@ -18,9 +18,9 @@ type PillCollectionStoryProperties = {
 /**
  * Pill is a small tag / label capsule component.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { Pill } from 'neob';
+ * import { Pill } from '@timowilhelm/neob';
  *
  * <Pill variant="accent">New</Pill>
  * ```
@@ -28,6 +28,7 @@ type PillCollectionStoryProperties = {
 const meta = {
 	title: 'Data Display/Pill',
 	component: Pill,
+	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',
 	},
@@ -55,7 +56,7 @@ export const Default: Story = {
 		children: 'Beta',
 		color: 'orange',
 		size: 'sm',
-		rounded: 'md',
+		rounded: 'full',
 	},
 };
 

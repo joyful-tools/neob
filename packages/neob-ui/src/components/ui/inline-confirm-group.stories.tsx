@@ -17,9 +17,9 @@ type InlineConfirmGroupStoryProperties = {
 /**
  * InlineConfirmGroup provides an inline action confirmation panel inside normal content blocks.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { InlineConfirmGroup, Button } from 'neob';
+ * import { InlineConfirmGroup, Button } from '@timowilhelm/neob';
  *
  * <InlineConfirmGroup onConfirm={handleConfirm} onCancel={handleCancel}>
  *   <Button>Confirm Delete</Button>
@@ -29,6 +29,7 @@ type InlineConfirmGroupStoryProperties = {
 const meta = {
 	title: 'Inputs/InlineConfirmGroup',
 	component: InlineConfirmGroup,
+	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',
 	},

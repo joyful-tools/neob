@@ -2,14 +2,6 @@ import { useEffect, useRef } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-/**
- * StackHeader shows headers used in complex dialogue/modal overlays.
- *
- * ### General Usage
- * ```tsx
- * // Check story file for implementation details
- * ```
- */
 const meta = {
 	title: 'Experiments/StackHeader',
 	parameters: {

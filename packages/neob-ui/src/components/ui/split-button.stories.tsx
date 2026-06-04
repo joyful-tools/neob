@@ -12,9 +12,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /**
  * SplitButton is a compound button splitting primary actions and menu dropdown selections.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { SplitButton, DropdownMenu } from 'neob';
+ * import { SplitButton, DropdownMenu } from '@timowilhelm/neob';
  *
  * <SplitButton label="Save" onClick={handleSave}>
  *   <DropdownMenu.Item onClick={handleSaveAs}>Save As</DropdownMenu.Item>

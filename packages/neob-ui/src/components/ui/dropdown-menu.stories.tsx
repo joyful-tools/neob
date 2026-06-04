@@ -15,9 +15,9 @@ type DropdownMenuStoryProperties = {
 /**
  * DropdownMenu is a popover menu displaying standard list options.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { DropdownMenu } from 'neob';
+ * import { DropdownMenu } from '@timowilhelm/neob';
  *
  * <DropdownMenu>
  *   <DropdownMenu.Trigger>Actions</DropdownMenu.Trigger>

@@ -21,9 +21,9 @@ type ConfirmDialogStoryProperties = {
 /**
  * ConfirmDialog is a quick confirmation modal utility.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { ConfirmDialog, Button } from 'neob';
+ * import { ConfirmDialog, Button } from '@timowilhelm/neob';
  *
  * <ConfirmDialog open={isOpen} onOpenChange={setIsOpen} onConfirm={handleConfirm} title="Are you sure?" description="This deletes files permanently.">
  *   <Button>Delete Folder</Button>
@@ -33,6 +33,7 @@ type ConfirmDialogStoryProperties = {
 const meta = {
 	title: 'Surfaces/ConfirmDialog',
 	component: ConfirmDialog,
+	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',
 	},

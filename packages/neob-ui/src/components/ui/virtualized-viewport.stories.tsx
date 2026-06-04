@@ -50,9 +50,9 @@ const SlabItem = ({ slab }: { slab: Slab }) => (
 /**
  * VirtualizedViewport is a viewport for high-performance list virtualization.
  *
- * ### General Usage
+ * ### Usage
  * ```tsx
- * import { VirtualizedViewport } from 'neob';
+ * import { VirtualizedViewport } from '@timowilhelm/neob';
  *
  * <VirtualizedViewport
  *   items={items}
