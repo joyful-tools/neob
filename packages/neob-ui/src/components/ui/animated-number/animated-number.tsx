@@ -1,0 +1,31 @@
+import { animate, motion, useMotionValue, useTransform } from 'motion/react';
+import { useEffect } from 'react';
+
+interface AnimatedNumberProperties {
+	readonly value: number;
+	readonly className?: string;
+	readonly duration?: number;
+	readonly instant?: boolean;
+}
+
+/**
+ * Animated number component that tweens between values using motion
+ */
+export function AnimatedNumber({ value, className, duration = 0.6, instant = false }: AnimatedNumberProperties) {
+	const motionValue = useMotionValue(value);
+	const display = useTransform(motionValue, (current: number) => Math.round(current));
+
+	useEffect(() => {
+		if (instant) {
+			motionValue.set(value);
+			return;
+		}
+		const controls = animate(motionValue, value, {
+			duration,
+			ease: 'easeOut',
+		});
+		return () => controls.stop();
+	}, [motionValue, value, duration, instant]);
+
+	return <motion.span className={className}>{display}</motion.span>;
+}

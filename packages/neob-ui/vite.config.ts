@@ -6,19 +6,22 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
-// Find only source component TSX files dynamically (excluding stories and tests)
+// Find component directories dynamically and register their index.ts as entry points
 const componentsDir = path.resolve(__dirname, 'src/components/ui');
-const componentFiles = fs
-	.readdirSync(componentsDir)
-	.filter((file) => file.endsWith('.tsx') && !file.endsWith('.stories.tsx') && !file.endsWith('.test.tsx'));
+const dirs = fs.readdirSync(componentsDir).filter((file) => {
+	const fullPath = path.join(componentsDir, file);
+	return fs.statSync(fullPath).isDirectory() && file !== 'experiments';
+});
 
 const entryPoints: Record<string, string> = {
 	index: path.resolve(__dirname, 'src/index.ts'),
 };
 
-for (const file of componentFiles) {
-	const name = path.basename(file, '.tsx');
-	entryPoints[name] = path.resolve(componentsDir, file);
+for (const dir of dirs) {
+	const indexPath = path.resolve(componentsDir, dir, 'index.ts');
+	if (fs.existsSync(indexPath)) {
+		entryPoints[dir] = indexPath;
+	}
 }
 
 export default defineConfig({

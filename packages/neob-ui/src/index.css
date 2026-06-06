@@ -283,14 +283,21 @@
 		transparent calc(100% - var(--underline-slide-thickness-value)),
 		currentColor var(--underline-slide-thickness-value)
 	);
-	background-position-x: left;
+	background-position-x: right;
 	background-repeat: no-repeat;
-	background-size: 100% 100%;
+	background-size: 0 100%;
 	transition: background-size var(--underline-slide-duration-value);
 
-	&:hover {
-		background-position-x: 100%;
-		background-size: 0 100%;
+	@media (hover: hover) and (pointer: fine) {
+		&:hover,
+		&:focus-visible {
+			background-position-x: left;
+			background-size: 100% 100%;
+		}
+	}
+
+	@media (pointer: coarse) {
+		background-size: 100% 100%;
 	}
 }
 
@@ -547,5 +554,23 @@ input[type='number'] {
 	50% {
 		transform: translateY(-15%);
 		animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+	}
+}
+
+@utility neo-wave {
+	display: inline-block;
+	animation: waving 1.3s ease-in-out infinite;
+	position: relative;
+	top: 0;
+	left: 0;
+}
+
+@keyframes waving {
+	0%,
+	100% {
+		top: -0.15em;
+	}
+	50% {
+		top: 0.15em;
 	}
 }

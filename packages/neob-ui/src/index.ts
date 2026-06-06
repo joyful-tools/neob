@@ -38,7 +38,7 @@ export { RadioGroup } from './components/ui/radio-group';
 export { Spinner } from './components/ui/spinner';
 
 export { toast } from './components/ui/toast';
-export { Toaster } from './components/ui/toaster';
+export { Toaster } from './components/ui/toast';
 
 export { Toggle } from './components/ui/toggle';
 
@@ -82,8 +82,8 @@ export { LoadingBars } from './components/ui/loading-bars';
 export { Pill } from './components/ui/pill';
 export type { PillProperties } from './components/ui/pill';
 
-export { GlobalDialogBackdrop } from './components/ui/global-dialog-backdrop';
-export { useDialogStackPresence, closeTopDialog } from './components/ui/dialog-stack';
+export { GlobalDialogBackdrop } from './components/ui/dialog';
+export { useDialogStackPresence, closeTopDialog } from './components/ui/dialog';
 
 export { useInputAreaAutoResize } from './hooks/use-input-area-auto-resize';
 export type { UseInputAreaAutoResizeOptions } from './hooks/use-input-area-auto-resize';
