@@ -1,4 +1,3 @@
-/* eslint-disable better-tailwindcss/no-unknown-classes */
 import { useState } from 'react';
 import { type DateRange } from 'react-day-picker';
 import { action } from 'storybook/actions';
@@ -158,37 +157,6 @@ export const Multiple = {
 			expect(canvas.getByText(/Selected Dates:/i)).toHaveTextContent(nextDate);
 		});
 	}),
-};
-
-export const DarkMode = {
-	args: {
-		mode: 'range',
-		initialSelected: {
-			from: new Date(2026, 4, 14),
-			to: new Date(2026, 4, 22),
-		},
-	},
-	render: (args: DatePickerRangeStoryProperties) => {
-		const [range, setRange] = useState<DateRange | undefined>(args.initialSelected);
-		return (
-			<div className="dark flex flex-col items-center gap-4 rounded-2xl border-4 border-black bg-black p-8">
-				<DatePicker
-					mode={args.mode}
-					selected={range}
-					onChange={(selected, triggerDate, modifiers, event_) => {
-						setRange(selected);
-						action('date-picker-dark-mode-change')(selected, triggerDate, modifiers, event_);
-					}}
-					onMonthChange={(month) => {
-						action('date-picker-dark-mode-month-change')(month);
-					}}
-				/>
-				<div className="rounded-lg border-2 border-white bg-zinc px-3 py-1.5 font-mono text-sm font-bold text-white">
-					Selected Range: {range?.from ? range.from.toLocaleDateString() : 'None'} – {range?.to ? range.to.toLocaleDateString() : 'None'}
-				</div>
-			</div>
-		);
-	},
 };
 
 export const MonthYearNavigation = {

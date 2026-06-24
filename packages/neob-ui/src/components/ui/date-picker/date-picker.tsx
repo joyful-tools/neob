@@ -1,5 +1,6 @@
 /* eslint-disable better-tailwindcss/no-unknown-classes, @typescript-eslint/no-unsafe-function-type */
 import { CaretDownIcon, CaretLeftIcon, CaretRightIcon, CaretUpIcon } from '@phosphor-icons/react';
+import { useDrag } from '@use-gesture/react';
 import { AnimatePresence, motion } from 'motion/react';
 import { KeyboardEvent, MouseEvent, useState } from 'react';
 import {
@@ -47,6 +48,11 @@ const layoutTransition = {
 } as const;
 
 type PageDirection = 'forward' | 'backward' | 'none';
+
+/** Minimum horizontal drag distance (px) to commit a swipe navigation. */
+const SWIPE_DISTANCE_THRESHOLD = 60;
+/** Minimum fling velocity (px/ms) to commit a swipe with a shorter drag distance. */
+const SWIPE_VELOCITY_THRESHOLD = 0.5;
 
 const bodyVariants = {
 	enter: (direction: PageDirection) => {
@@ -254,6 +260,28 @@ export function DatePicker(fullProps: DatePickerProps) {
 		}
 	};
 
+	const bindSwipe = useDrag(
+		({ last, axis, movement: [mx], velocity: [vx], direction: [dx] }) => {
+			if (!last || axis !== 'x') {
+				return;
+			}
+
+			const flung = vx > SWIPE_VELOCITY_THRESHOLD && Math.abs(mx) > SWIPE_DISTANCE_THRESHOLD / 2;
+			const swipedLeft = mx < -SWIPE_DISTANCE_THRESHOLD || (flung && dx < 0);
+			const swipedRight = mx > SWIPE_DISTANCE_THRESHOLD || (flung && dx > 0);
+
+			if (swipedLeft) {
+				handleNextClick();
+				return;
+			}
+
+			if (swipedRight) {
+				handlePrevClick();
+			}
+		},
+		{ axis: 'x', filterTaps: true, pointer: { touch: true } },
+	);
+
 	const containerClassName = cn(
 		'rdp-root relative box-border flex h-[376px] w-[312px] flex-col justify-between rounded-xl border-2 border-black bg-white p-4 text-black shadow-sm select-none dark:border-black dark:bg-zinc dark:text-white',
 		className,
@@ -273,23 +301,23 @@ export function DatePicker(fullProps: DatePickerProps) {
 				month: 'space-y-4 relative flex-1 flex flex-col justify-between',
 				month_caption: 'hidden',
 				month_grid: 'w-full border-collapse space-y-1 flex-1',
-				weekdays: 'flex justify-between w-full',
+				weekdays: 'flex w-full',
 				weekday:
-					'text-xs font-black tracking-wider text-muted-foreground dark:text-white/80 w-9 h-9 flex items-center justify-center uppercase',
+					'text-xs font-black tracking-wider text-muted-foreground dark:text-white/80 flex-1 h-9 flex items-center justify-center uppercase',
 				weeks: 'space-y-1 mt-1 flex-1 flex flex-col justify-between',
-				week: 'flex w-full mt-1 justify-between',
-				day: 'h-9 w-9 p-0 relative flex items-center justify-center',
+				week: 'flex w-full mt-1',
+				day: 'h-9 flex-1 p-0 relative flex items-center justify-center',
 				day_button:
 					'neo-focus-ring isolate cursor-pointer flex h-9 w-9 items-center justify-center rounded-lg border-2 border-transparent text-sm font-bold text-black outline-hidden transition-all duration-200 select-none hover:bg-black/10 hover:border-black dark:text-white dark:hover:bg-white/10 dark:hover:border-black',
 				today: '[&_button]:border-2 [&_button]:border-dashed [&_button]:border-black dark:[&_button]:border-black',
 				selected:
 					'[&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-black dark:[&_button]:bg-orange dark:[&_button]:text-black dark:[&_button]:border-black hover:[&_button]:bg-orange/90',
 				range_start:
-					'rounded-lg bg-orange/20 dark:bg-orange/15 [&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-black dark:[&_button]:border-black',
+					'rounded-l-lg bg-orange/25 dark:bg-orange/20 [&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-black dark:[&_button]:border-black hover:[&_button]:bg-orange/90',
 				range_end:
-					'rounded-lg bg-orange/20 dark:bg-orange/15 [&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-black dark:[&_button]:border-black',
+					'rounded-r-lg bg-orange/25 dark:bg-orange/20 [&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-black dark:[&_button]:border-black hover:[&_button]:bg-orange/90',
 				range_middle:
-					'bg-orange/20 dark:bg-orange/15 [&_button]:border-transparent [&_button]:rounded-none [&_button]:bg-transparent dark:[&_button]:bg-transparent [&_button]:text-black dark:[&_button]:text-white',
+					'bg-orange/25 dark:bg-orange/20 [&_button]:border-2 [&_button]:border-transparent [&_button]:rounded-none [&_button]:bg-transparent dark:[&_button]:bg-transparent [&_button]:text-black dark:[&_button]:text-white hover:[&_button]:bg-black/10 hover:[&_button]:border-black dark:hover:[&_button]:bg-white/10',
 				outside: 'text-black/65 dark:text-white/65 opacity-100',
 				disabled: 'text-muted-foreground opacity-30 cursor-not-allowed pointer-events-none',
 				...classNames,
@@ -455,8 +483,8 @@ export function DatePicker(fullProps: DatePickerProps) {
 				</div>
 			</div>
 
-			{/* Views Content Grid */}
-			<motion.div className="relative flex flex-1 flex-col justify-between">
+			{/* Views Content Grid — supports swipe navigation in addition to the prev/next buttons */}
+			<div {...bindSwipe()} className="relative flex flex-1 cursor-grab touch-pan-y flex-col justify-between active:cursor-grabbing">
 				<AnimatePresence
 					mode={pageDirection === 'none' ? 'wait' : 'sync'}
 					initial={false}
@@ -505,7 +533,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 						</motion.div>
 					)}
 				</AnimatePresence>
-			</motion.div>
+			</div>
 		</div>
 	);
 }
