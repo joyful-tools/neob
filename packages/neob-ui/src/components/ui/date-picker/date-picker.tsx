@@ -288,6 +288,13 @@ export function DatePicker(fullProps: DatePickerProps) {
 	);
 
 	const renderDays = () => {
+		// When a range starts and ends on the same day, both range_start and range_end
+		// apply to one cell — the endpoint button must stay fully rounded in that case.
+		const rangeValue = fullProps.mode === 'range' ? fullProps.selected : undefined;
+		const sameDayRange = Boolean(rangeValue?.from && rangeValue.to && rangeValue.from.toDateString() === rangeValue.to.toDateString());
+		const startButtonRadius = sameDayRange ? '[&_button]:rounded-lg' : '[&_button]:rounded-l-lg [&_button]:rounded-r-sm';
+		const endButtonRadius = sameDayRange ? '[&_button]:rounded-lg' : '[&_button]:rounded-r-lg [&_button]:rounded-l-sm';
+
 		const dayPickerProps = {
 			showOutsideDays: true,
 			fixedWeeks,
@@ -311,13 +318,17 @@ export function DatePicker(fullProps: DatePickerProps) {
 					'neo-focus-ring isolate cursor-pointer flex h-9 w-9 items-center justify-center rounded-lg border-2 border-transparent text-sm font-bold text-black outline-hidden transition-all duration-200 select-none hover:bg-black/10 hover:border-black dark:text-white dark:hover:bg-white/10 dark:hover:border-black',
 				today: '[&_button]:border-2 [&_button]:border-dashed [&_button]:border-black dark:[&_button]:border-black',
 				selected:
-					'[&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-black dark:[&_button]:bg-orange dark:[&_button]:text-black dark:[&_button]:border-black hover:[&_button]:bg-orange/90',
-				range_start:
-					'rounded-l-lg bg-orange/25 dark:bg-orange/20 [&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-black dark:[&_button]:border-black hover:[&_button]:bg-orange/90',
-				range_end:
-					'rounded-r-lg bg-orange/25 dark:bg-orange/20 [&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-black dark:[&_button]:border-black hover:[&_button]:bg-orange/90',
+					'[&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-black dark:[&_button]:bg-orange dark:[&_button]:text-black dark:[&_button]:border-black hover:[&_button]:bg-orange/90 dark:hover:[&_button]:bg-orange/90',
+				range_start: cn(
+					'rounded-l-lg bg-orange/25 dark:bg-orange/20 [&_button]:border-2 [&_button]:border-black [&_button]:bg-orange [&_button]:text-black hover:[&_button]:bg-orange/90 dark:[&_button]:border-black dark:hover:[&_button]:bg-orange/90',
+					startButtonRadius,
+				),
+				range_end: cn(
+					'rounded-r-lg bg-orange/25 dark:bg-orange/20 [&_button]:border-2 [&_button]:border-black [&_button]:bg-orange [&_button]:text-black hover:[&_button]:bg-orange/90 dark:[&_button]:border-black dark:hover:[&_button]:bg-orange/90',
+					endButtonRadius,
+				),
 				range_middle:
-					'bg-orange/25 dark:bg-orange/20 [&_button]:border-2 [&_button]:border-transparent [&_button]:rounded-none [&_button]:bg-transparent dark:[&_button]:bg-transparent [&_button]:text-black dark:[&_button]:text-white hover:[&_button]:bg-black/10 hover:[&_button]:border-black dark:hover:[&_button]:bg-white/10',
+					'bg-orange/25 dark:bg-orange/20 [&_button]:border-2 [&_button]:border-transparent! [&_button]:rounded-none [&_button]:bg-transparent dark:[&_button]:bg-transparent [&_button]:text-black dark:[&_button]:text-white hover:[&_button]:bg-black/10 hover:[&_button]:border-black! dark:hover:[&_button]:bg-white/10',
 				outside: 'text-black/65 dark:text-white/65 opacity-100',
 				disabled: 'text-muted-foreground opacity-30 cursor-not-allowed pointer-events-none',
 				...classNames,
