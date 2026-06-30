@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, AriaAttributes, MouseEvent as ReactMouseEvent, ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, AriaAttributes, PointerEvent as ReactPointerEvent, ReactNode } from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -30,9 +30,10 @@ export function ResizablePanel({
 	const startPositionReference = useRef(0);
 	const startSizeReference = useRef(0);
 
-	const handleMouseDown = useCallback(
-		(event: ReactMouseEvent) => {
+	const handlePointerDown = useCallback(
+		(event: ReactPointerEvent) => {
 			event.preventDefault();
+			event.currentTarget.setPointerCapture(event.pointerId);
 			setIsResizing(true);
 			startPositionReference.current = direction === 'horizontal' ? event.clientX : event.clientY;
 			startSizeReference.current = size;
@@ -43,7 +44,7 @@ export function ResizablePanel({
 	useEffect(() => {
 		if (!isResizing) return;
 
-		const handleMouseMove = (event: MouseEvent) => {
+		const handlePointerMove = (event: PointerEvent) => {
 			const currentPosition = direction === 'horizontal' ? event.clientX : event.clientY;
 			const delta = currentPosition - startPositionReference.current;
 
@@ -55,16 +56,18 @@ export function ResizablePanel({
 			onSizeChange?.(newSize);
 		};
 
-		const handleMouseUp = () => {
+		const handlePointerUp = () => {
 			setIsResizing(false);
 		};
 
-		document.addEventListener('mousemove', handleMouseMove);
-		document.addEventListener('mouseup', handleMouseUp);
+		document.addEventListener('pointermove', handlePointerMove);
+		document.addEventListener('pointerup', handlePointerUp);
+		document.addEventListener('pointercancel', handlePointerUp);
 
 		return () => {
-			document.removeEventListener('mousemove', handleMouseMove);
-			document.removeEventListener('mouseup', handleMouseUp);
+			document.removeEventListener('pointermove', handlePointerMove);
+			document.removeEventListener('pointerup', handlePointerUp);
+			document.removeEventListener('pointercancel', handlePointerUp);
 		};
 	}, [isResizing, direction, minSize, maxSize, onSizeChange, handlePosition]);
 
@@ -118,10 +121,10 @@ export function ResizablePanel({
 				/>
 				<div
 					className={cn(
-						'absolute z-20 -translate-1/2 bg-transparent',
+						'absolute z-20 -translate-1/2 touch-none bg-transparent',
 						isHorizontal ? 'top-1/2 left-1/2 h-full w-4 cursor-col-resize' : 'top-1/2 left-1/2 h-4 w-full cursor-row-resize',
 					)}
-					onMouseDown={handleMouseDown}
+					onPointerDown={handlePointerDown}
 					onMouseEnter={() => setIsHandleHovered(true)}
 					onMouseLeave={() => setIsHandleHovered(false)}
 					{...handleProperties}

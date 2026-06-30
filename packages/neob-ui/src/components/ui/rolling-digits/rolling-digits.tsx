@@ -141,7 +141,10 @@ export function RollingDigits({ value = 0, separator = true, className }: Rollin
 			<span className="sr-only">{value}</span>
 
 			<div aria-hidden="true" className={cn('inline-block font-mono text-black dark:text-white', className)}>
-				<motion.div style={{ width: outerWidth, height: outerHeight }} className="relative overflow-hidden">
+				<motion.div
+					style={{ width: outerWidth, height: outerHeight }}
+					className="relative overflow-hidden mask-[linear-gradient(to_bottom,transparent,black_0.15em,black_calc(100%-0.15em),transparent)]"
+				>
 					<div ref={innerRef} className="absolute top-1/2 left-1/2 flex -translate-1/2 items-center text-center">
 						{isNegative && <div className="px-0.5">-</div>}
 						{digits.map((digit) => (
