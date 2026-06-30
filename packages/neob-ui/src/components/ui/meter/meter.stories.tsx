@@ -43,7 +43,7 @@ export const Animated: Story = {
 
 		useEffect(() => {
 			const interval = setInterval(() => {
-				setValue((prev) => (prev >= 100 ? 0 : prev + 15));
+				setValue((prev) => (prev >= 100 ? 0 : Math.min(prev + 15, 100)));
 			}, 1000);
 			return () => clearInterval(interval);
 		}, []);
