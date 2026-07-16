@@ -165,7 +165,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 				{controls === 'full' && (
 					<Button
 						type="button"
-						variant="subtle"
+						variant="default"
 						size="sm"
 						aria-label={labels.firstPage}
 						disabled={isFirstPageDisabled}
@@ -173,14 +173,14 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							setPage(1);
 							setEditingPage(1);
 						}}
-						className="size-8 rounded-r-none p-0 shadow-cel-sm focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]"
+						className="size-8 rounded-r-none p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]"
 					>
 						<CaretDoubleLeftIcon className={cn('size-4', isFirstPageDisabled && 'opacity-30')} />
 					</Button>
 				)}
 				<Button
 					type="button"
-					variant="subtle"
+					variant="default"
 					size="sm"
 					aria-label={labels.previousPage}
 					disabled={isFirstPageDisabled}
@@ -190,7 +190,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						setEditingPage(previousPage);
 					}}
 					className={cn(
-						'size-8 p-0 shadow-cel-sm focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]',
+						'size-8 p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]',
 						controls === 'full' ? 'ml-[-2px] rounded-none' : 'rounded-r-none',
 					)}
 				>
@@ -261,7 +261,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 					))}
 				<Button
 					type="button"
-					variant="subtle"
+					variant="default"
 					size="sm"
 					aria-label={labels.nextPage}
 					disabled={isLastPageDisabled}
@@ -271,7 +271,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						setEditingPage(nextPage);
 					}}
 					className={cn(
-						'ml-[-2px] size-8 p-0 shadow-cel-sm focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]',
+						'ml-[-2px] size-8 p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]',
 						controls === 'full' ? 'rounded-none' : 'rounded-l-none',
 					)}
 				>
@@ -280,7 +280,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 				{controls === 'full' && (
 					<Button
 						type="button"
-						variant="subtle"
+						variant="default"
 						size="sm"
 						aria-label={labels.lastPage}
 						disabled={isLastPageDisabled}
@@ -288,7 +288,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							setPage(maxPage);
 							setEditingPage(maxPage);
 						}}
-						className="ml-[-2px] size-8 rounded-l-none p-0 shadow-cel-sm focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]"
+						className="ml-[-2px] size-8 rounded-l-none p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]"
 					>
 						<CaretDoubleRightIcon className={cn('size-4', isLastPageDisabled && 'opacity-30')} />
 					</Button>
