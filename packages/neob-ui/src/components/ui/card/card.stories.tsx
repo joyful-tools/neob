@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { Card } from '@timowilhelm/neob';
+ * import { Card } from '@joyful-tools/neob';
  *
  * <Card>
  *   <Card.Header>

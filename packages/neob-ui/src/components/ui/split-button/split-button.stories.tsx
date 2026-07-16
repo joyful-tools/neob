@@ -14,7 +14,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { SplitButton, DropdownMenu } from '@timowilhelm/neob';
+ * import { SplitButton, DropdownMenu } from '@joyful-tools/neob';
  *
  * <SplitButton label="Save" onClick={handleSave}>
  *   <DropdownMenu.Item onClick={handleSaveAs}>Save As</DropdownMenu.Item>

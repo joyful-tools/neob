@@ -13,7 +13,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { Switch } from '@timowilhelm/neob';
+ * import { Switch } from '@joyful-tools/neob';
  *
  * <Switch checked={checked} onChange={setChecked}>
  *   Enable Settings

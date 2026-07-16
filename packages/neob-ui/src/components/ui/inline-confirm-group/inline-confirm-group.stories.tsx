@@ -19,7 +19,7 @@ type InlineConfirmGroupStoryProperties = {
  *
  * ### Usage
  * ```tsx
- * import { InlineConfirmGroup, Button } from '@timowilhelm/neob';
+ * import { InlineConfirmGroup, Button } from '@joyful-tools/neob';
  *
  * <InlineConfirmGroup onConfirm={handleConfirm} onCancel={handleCancel}>
  *   <Button>Confirm Delete</Button>

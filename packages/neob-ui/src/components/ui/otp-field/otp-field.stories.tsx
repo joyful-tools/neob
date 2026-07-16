@@ -13,7 +13,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { OTPField } from '@timowilhelm/neob';
+ * import { OTPField } from '@joyful-tools/neob';
  *
  * <OTPField value={otp} onChange={setOtp} maxLength={6} />
  * ```

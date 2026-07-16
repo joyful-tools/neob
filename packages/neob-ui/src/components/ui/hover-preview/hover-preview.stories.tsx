@@ -12,7 +12,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { HoverPreview } from '@timowilhelm/neob';
+ * import { HoverPreview } from '@joyful-tools/neob';
  *
  * <HoverPreview previewContent={<div>Preview UI</div>}>
  *   <span>Hover Me</span>

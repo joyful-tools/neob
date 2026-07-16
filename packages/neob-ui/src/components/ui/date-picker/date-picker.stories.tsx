@@ -30,7 +30,7 @@ type DatePickerMultipleStoryProperties = {
  *
  * ### Usage
  * ```tsx
- * import { DatePicker } from '@timowilhelm/neob';
+ * import { DatePicker } from '@joyful-tools/neob';
  *
  * <DatePicker mode="single" selected={date} onChange={setDate} />
  * ```

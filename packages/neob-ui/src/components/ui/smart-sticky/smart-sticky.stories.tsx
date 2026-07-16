@@ -11,7 +11,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { SmartSticky } from '@timowilhelm/neob';
+ * import { SmartSticky } from '@joyful-tools/neob';
  *
  * <SmartSticky>
  *   <nav>Header Navigation</nav>

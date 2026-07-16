@@ -11,7 +11,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { SensitiveInput } from '@timowilhelm/neob';
+ * import { SensitiveInput } from '@joyful-tools/neob';
  *
  * <SensitiveInput value={password} onChange={(e) => setPassword(e.target.value)} />
  * ```

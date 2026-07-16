@@ -22,7 +22,7 @@ interface CustomCSSProperties extends CSSProperties {
  *
  * ### Usage
  * ```tsx
- * import { BorderBeam } from '@timowilhelm/neob';
+ * import { BorderBeam } from '@joyful-tools/neob';
  *
  * <div className="relative overflow-hidden rounded-xl">
  *   <BorderBeam duration={8} size={100} />

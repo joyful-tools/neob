@@ -13,7 +13,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { HumanizedTime } from '@timowilhelm/neob';
+ * import { HumanizedTime } from '@joyful-tools/neob';
  *
  * <HumanizedTime date={new Date()} />
  * ```

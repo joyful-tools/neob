@@ -13,7 +13,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { Checkbox } from '@timowilhelm/neob';
+ * import { Checkbox } from '@joyful-tools/neob';
  *
  * <Checkbox checked={checked} onChange={setChecked}>
  *   Accept Terms

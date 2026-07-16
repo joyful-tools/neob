@@ -23,7 +23,7 @@ type ConfirmDialogStoryProperties = {
  *
  * ### Usage
  * ```tsx
- * import { ConfirmDialog, Button } from '@timowilhelm/neob';
+ * import { ConfirmDialog, Button } from '@joyful-tools/neob';
  *
  * <ConfirmDialog open={isOpen} onOpenChange={setIsOpen} onConfirm={handleConfirm} title="Are you sure?" description="This deletes files permanently.">
  *   <Button>Delete Folder</Button>

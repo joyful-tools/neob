@@ -11,7 +11,7 @@ type SkeletonListStoryProperties = {
  *
  * ### Usage
  * ```tsx
- * import { Skeleton } from '@timowilhelm/neob';
+ * import { Skeleton } from '@joyful-tools/neob';
  *
  * <Skeleton className="h-10 w-full" />
  * ```

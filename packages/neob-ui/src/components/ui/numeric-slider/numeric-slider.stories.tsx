@@ -13,7 +13,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { NumericSlider } from '@timowilhelm/neob';
+ * import { NumericSlider } from '@joyful-tools/neob';
  *
  * <NumericSlider min={0} max={100} value={value} onChange={setValue} />
  * ```

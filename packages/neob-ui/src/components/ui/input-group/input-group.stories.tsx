@@ -15,7 +15,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { InputGroup } from '@timowilhelm/neob';
+ * import { InputGroup } from '@joyful-tools/neob';
  *
  * <InputGroup>
  *   <InputGroup.Addon>$</InputGroup.Addon>

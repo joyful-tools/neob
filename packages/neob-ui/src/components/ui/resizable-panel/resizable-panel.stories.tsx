@@ -11,7 +11,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { ResizablePanel } from '@timowilhelm/neob';
+ * import { ResizablePanel } from '@joyful-tools/neob';
  *
  * <ResizablePanel>
  *   <div>Dynamic Animated Height Content</div>

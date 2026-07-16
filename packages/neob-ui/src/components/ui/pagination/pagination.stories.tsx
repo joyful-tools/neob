@@ -21,7 +21,7 @@ type PaginationStoryProperties = {
  *
  * ### Usage
  * ```tsx
- * import { Pagination } from '@timowilhelm/neob';
+ * import { Pagination } from '@joyful-tools/neob';
  *
  * <Pagination
  *   currentPage={page}

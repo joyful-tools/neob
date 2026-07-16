@@ -12,7 +12,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { ConfirmButton } from '@timowilhelm/neob';
+ * import { ConfirmButton } from '@joyful-tools/neob';
  *
  * <ConfirmButton onConfirm={handleDelete} variant="danger">
  *   Delete Resource

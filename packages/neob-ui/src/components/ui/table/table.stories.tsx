@@ -13,7 +13,7 @@ type TableStoryProperties = {
  *
  * ### Usage
  * ```tsx
- * import { Table } from '@timowilhelm/neob';
+ * import { Table } from '@joyful-tools/neob';
  *
  * <Table>
  *   <Table.Header>

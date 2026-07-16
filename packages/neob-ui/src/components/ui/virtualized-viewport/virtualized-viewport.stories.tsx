@@ -52,7 +52,7 @@ const SlabItem = ({ slab }: { slab: Slab }) => (
  *
  * ### Usage
  * ```tsx
- * import { VirtualizedViewport } from '@timowilhelm/neob';
+ * import { VirtualizedViewport } from '@joyful-tools/neob';
  *
  * <VirtualizedViewport
  *   items={items}

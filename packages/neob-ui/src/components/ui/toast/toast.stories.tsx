@@ -29,7 +29,7 @@ type ToastStoryProperties = {
  *
  * ### Usage
  * ```tsx
- * import { toast } from '@timowilhelm/neob';
+ * import { toast } from '@joyful-tools/neob';
  *
  * toast.success('Operation completed!');
  * toast.error('Something went wrong.');

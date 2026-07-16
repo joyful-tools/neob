@@ -17,7 +17,7 @@ type DropdownMenuStoryProperties = {
  *
  * ### Usage
  * ```tsx
- * import { DropdownMenu } from '@timowilhelm/neob';
+ * import { DropdownMenu } from '@joyful-tools/neob';
  *
  * <DropdownMenu>
  *   <DropdownMenu.Trigger>Actions</DropdownMenu.Trigger>

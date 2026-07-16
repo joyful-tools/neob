@@ -12,7 +12,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { Breadcrumb } from '@timowilhelm/neob';
+ * import { Breadcrumb } from '@joyful-tools/neob';
  *
  * <Breadcrumb value="/projects/neob/components">
  *   <Breadcrumb.Link href="/projects">Projects</Breadcrumb.Link>

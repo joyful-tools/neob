@@ -123,7 +123,7 @@ function Text({
  *
  * ### Usage
  * ```tsx
- * import { Combobox } from '@timowilhelm/neob';
+ * import { Combobox } from '@joyful-tools/neob';
  *
  * <Combobox value={value} onChange={setValue} options={options} placeholder="Search options..." />
  * ```

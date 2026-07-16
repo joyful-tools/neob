@@ -9,7 +9,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { Meter } from '@timowilhelm/neob';
+ * import { Meter } from '@joyful-tools/neob';
  *
  * <Meter value={60} max={100} />
  * ```

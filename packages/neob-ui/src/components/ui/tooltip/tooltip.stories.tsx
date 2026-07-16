@@ -12,7 +12,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { Tooltip } from '@timowilhelm/neob';
+ * import { Tooltip } from '@joyful-tools/neob';
  *
  * <Tooltip content="Important context">
  *   <span>Hover Me</span>

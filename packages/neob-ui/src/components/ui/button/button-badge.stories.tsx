@@ -9,7 +9,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { Button, Pill } from '@timowilhelm/neob';
+ * import { Button, Pill } from '@joyful-tools/neob';
  *
  * <Button className="relative">
  *   Hello World

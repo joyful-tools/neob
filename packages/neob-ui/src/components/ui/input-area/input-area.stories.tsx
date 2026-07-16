@@ -18,7 +18,7 @@ type StoryProps = InputAreaProperties & {
  *
  * ### Usage
  * ```tsx
- * import { InputArea } from '@timowilhelm/neob';
+ * import { InputArea } from '@joyful-tools/neob';
  *
  * <InputArea value={text} onChange={(e) => setText(e.target.value)} maxRows={10} />
  * ```

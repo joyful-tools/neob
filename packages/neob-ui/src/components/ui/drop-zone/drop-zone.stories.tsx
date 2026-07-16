@@ -15,7 +15,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { DropZone } from '@timowilhelm/neob';
+ * import { DropZone } from '@joyful-tools/neob';
  *
  * <DropZone onDrop={handleFiles} accept={{ 'image/*': ['.png', '.jpg'] }}>
  *   <p>Drag images here or click to select</p>

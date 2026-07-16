@@ -21,7 +21,7 @@ type DialogStoryProperties = {
  *
  * ### Usage
  * ```tsx
- * import { Dialog } from '@timowilhelm/neob';
+ * import { Dialog } from '@joyful-tools/neob';
  *
  * <Dialog>
  *   <Dialog.Trigger>Open Modal</Dialog.Trigger>

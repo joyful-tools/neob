@@ -11,7 +11,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { ButtonGroup } from '@timowilhelm/neob';
+ * import { ButtonGroup } from '@joyful-tools/neob';
  *
  * <ButtonGroup>
  *   <ButtonGroup.Button active>Left</ButtonGroup.Button>

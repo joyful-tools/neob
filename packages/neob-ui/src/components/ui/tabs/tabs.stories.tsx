@@ -19,7 +19,7 @@ type TabsStoryProperties = {
  *
  * ### Usage
  * ```tsx
- * import { Tabs } from '@timowilhelm/neob';
+ * import { Tabs } from '@joyful-tools/neob';
  *
  * <Tabs defaultValue="tab1">
  *   <Tabs.List>

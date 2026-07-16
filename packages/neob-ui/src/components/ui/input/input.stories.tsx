@@ -15,7 +15,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { Input } from '@timowilhelm/neob';
+ * import { Input } from '@joyful-tools/neob';
  *
  * <Input placeholder="Enter username..." />
  * ```

@@ -11,7 +11,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { Accordion } from '@timowilhelm/neob';
+ * import { Accordion } from '@joyful-tools/neob';
  *
  * <Accordion type="single" collapsible defaultValue="item-1">
  *   <Accordion.Item value="item-1">

@@ -14,7 +14,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { Button } from '@timowilhelm/neob';
+ * import { Button } from '@joyful-tools/neob';
  *
  * <Button variant="accent" size="lg" isLoading={false} onClick={handleClick}>
  *   Submit

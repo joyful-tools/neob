@@ -23,7 +23,7 @@ type SelectStoryProperties = {
  *
  * ### Usage
  * ```tsx
- * import { Select } from '@timowilhelm/neob';
+ * import { Select } from '@joyful-tools/neob';
  *
  * <Select value={value} onValueChange={setValue}>
  *   <Select.Option value="first">First Option</Select.Option>

@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { LoadingBars } from '@timowilhelm/neob';
+ * import { LoadingBars } from '@joyful-tools/neob';
  *
  * <LoadingBars />
  * ```

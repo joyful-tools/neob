@@ -11,7 +11,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { Marquee } from '@timowilhelm/neob';
+ * import { Marquee } from '@joyful-tools/neob';
  *
  * <Marquee speed={30}>
  *   <span>Item 1</span>

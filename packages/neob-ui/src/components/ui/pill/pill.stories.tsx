@@ -20,7 +20,7 @@ type PillCollectionStoryProperties = {
  *
  * ### Usage
  * ```tsx
- * import { Pill } from '@timowilhelm/neob';
+ * import { Pill } from '@joyful-tools/neob';
  *
  * <Pill variant="accent">New</Pill>
  * ```
