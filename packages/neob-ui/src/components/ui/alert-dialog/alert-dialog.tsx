@@ -129,7 +129,7 @@ function AlertDialogContent({ className, children, ref, onAnimationEnd, ...prope
 	const { open } = useContext(AlertDialogContext);
 
 	return (
-		<AnimatePresence>
+		<AnimatePresence onExitComplete={onAnimationEnd}>
 			{open && (
 				<AlertDialogPrimitive.Portal keepMounted>
 					<AlertDialogPrimitive.Backdrop className={OVERLAY_CLASS_NAME} />
@@ -143,7 +143,6 @@ function AlertDialogContent({ className, children, ref, onAnimationEnd, ...prope
 									animate={MOTION_VARIANTS.animate}
 									exit={MOTION_VARIANTS.exit}
 									transition={MOTION_VARIANTS.transition}
-									onAnimationComplete={() => !open && onAnimationEnd?.()}
 								/>
 							}
 							{...properties}

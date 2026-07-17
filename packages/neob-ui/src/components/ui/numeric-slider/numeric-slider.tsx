@@ -1,5 +1,5 @@
 import { CaretUpDownIcon } from '@phosphor-icons/react';
-import { PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { KeyboardEvent, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -34,6 +34,20 @@ export function NumericSlider({ onChange, className }: NumericSliderProperties) 
 			}
 		},
 		[pointerId],
+	);
+
+	const handleKeyDown = useCallback(
+		(event: KeyboardEvent<HTMLDivElement>) => {
+			const multiplier = event.shiftKey ? 10 : 1;
+			if (event.key === 'ArrowUp' || event.key === 'ArrowRight') {
+				event.preventDefault();
+				onChange(multiplier);
+			} else if (event.key === 'ArrowDown' || event.key === 'ArrowLeft') {
+				event.preventDefault();
+				onChange(-multiplier);
+			}
+		},
+		[onChange],
 	);
 
 	useEffect(() => {
@@ -97,7 +111,11 @@ export function NumericSlider({ onChange, className }: NumericSliderProperties) 
 	return (
 		<div
 			ref={targetReference}
+			role="button"
+			tabIndex={0}
+			aria-label="Adjust value"
 			onPointerDown={handlePointerDown}
+			onKeyDown={handleKeyDown}
 			style={{ touchAction: 'none' }}
 			className={cn(
 				`flex size-8 cursor-ns-resize items-center justify-center text-black/40 transition-all duration-75 select-none hover:scale-110 hover:text-black dark:text-white/40 dark:hover:text-white`,

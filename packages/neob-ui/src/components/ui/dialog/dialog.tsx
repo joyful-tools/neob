@@ -107,7 +107,7 @@ function DialogContent({ className, children, ref, onAnimationEnd, ...properties
 	const { open } = useContext(DialogContext);
 
 	return (
-		<AnimatePresence>
+		<AnimatePresence onExitComplete={onAnimationEnd}>
 			{open && (
 				<DialogPrimitive.Portal keepMounted>
 					<DialogPrimitive.Backdrop className={OVERLAY_CLASS_NAME} />
@@ -121,7 +121,6 @@ function DialogContent({ className, children, ref, onAnimationEnd, ...properties
 									animate={MOTION_VARIANTS.animate}
 									exit={MOTION_VARIANTS.exit}
 									transition={springSnappy}
-									onAnimationComplete={() => !open && onAnimationEnd?.()}
 								/>
 							}
 							{...properties}

@@ -1,4 +1,13 @@
-import { useCallback, useEffect, useRef, useState, AriaAttributes, PointerEvent as ReactPointerEvent, ReactNode } from 'react';
+import {
+	useCallback,
+	useEffect,
+	useRef,
+	useState,
+	AriaAttributes,
+	KeyboardEvent,
+	PointerEvent as ReactPointerEvent,
+	ReactNode,
+} from 'react';
 
 import { cn } from '@/lib/utilities';
 
@@ -73,17 +82,16 @@ export function ResizablePanel({
 
 	// Prevent text selection during resize
 	useEffect(() => {
-		if (isResizing) {
-			document.body.style.userSelect = 'none';
-			document.body.style.cursor = direction === 'horizontal' ? 'col-resize' : 'row-resize';
-		} else {
-			document.body.style.userSelect = '';
-			document.body.style.cursor = '';
-		}
+		if (!isResizing) return;
+
+		const previousUserSelect = document.body.style.userSelect;
+		const previousCursor = document.body.style.cursor;
+		document.body.style.userSelect = 'none';
+		document.body.style.cursor = direction === 'horizontal' ? 'col-resize' : 'row-resize';
 
 		return () => {
-			document.body.style.userSelect = '';
-			document.body.style.cursor = '';
+			document.body.style.userSelect = previousUserSelect;
+			document.body.style.cursor = previousCursor;
 		};
 	}, [isResizing, direction]);
 
@@ -92,13 +100,48 @@ export function ResizablePanel({
 
 	const handleOrientation: AriaAttributes['aria-orientation'] = isHorizontal ? 'vertical' : 'horizontal';
 
+	const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+		const step = event.shiftKey ? 10 : 1;
+		let nextSize = size;
+
+		switch (event.key) {
+			case 'Home': {
+				nextSize = minSize;
+				break;
+			}
+			case 'End': {
+				nextSize = maxSize;
+				break;
+			}
+			case 'ArrowLeft':
+			case 'ArrowUp': {
+				nextSize = Math.max(minSize, size - step);
+				break;
+			}
+			case 'ArrowRight':
+			case 'ArrowDown': {
+				nextSize = Math.min(maxSize, size + step);
+				break;
+			}
+			default: {
+				return;
+			}
+		}
+
+		event.preventDefault();
+		setSize(nextSize);
+		onSizeChange?.(nextSize);
+	};
+
 	const handleProperties = {
 		role: 'separator' as const,
+		tabIndex: 0,
 		'aria-orientation': handleOrientation,
 		'aria-valuemin': minSize,
 		'aria-valuemax': maxSize,
 		'aria-valuenow': size,
 		'aria-label': isHorizontal ? 'Resize panel width' : 'Resize panel height',
+		onKeyDown: handleKeyDown,
 	};
 
 	const handleStateClasses = isResizing || isHandleHovered ? 'bg-orange' : 'bg-black';

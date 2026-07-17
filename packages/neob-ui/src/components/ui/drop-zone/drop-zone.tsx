@@ -244,15 +244,17 @@ export function DropZone({
 			const { dataTransfer } = event;
 			if (!dataTransfer) return;
 
-			onFileDrop?.(
-				validateFiles(dataTransfer.files, {
-					acceptedFileTypes: accept,
-					minSize,
-					maxSize,
-				}),
-			);
+			const result = validateFiles(dataTransfer.files, {
+				acceptedFileTypes: accept,
+				minSize,
+				maxSize,
+			});
+			onFileDrop?.({
+				acceptedFiles: multiple ? result.acceptedFiles : result.acceptedFiles.slice(0, 1),
+				rejectedFiles: result.rejectedFiles,
+			});
 		},
-		[accept, minSize, maxSize, onFileDrop],
+		[accept, minSize, maxSize, multiple, onFileDrop],
 	);
 
 	useEffect(() => {

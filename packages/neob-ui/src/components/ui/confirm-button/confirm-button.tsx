@@ -54,22 +54,36 @@ export function ConfirmButton({
 	const descriptionId = useId();
 	const layoutId = useId();
 	const wasOpen = useRef(false);
-	const confirmButtonRef = useRef<HTMLButtonElement>(null);
+	const confirmButtonRef = useRef<HTMLButtonElement | null>(null);
 	const cancelButtonRef = useRef<HTMLButtonElement>(null);
 	const triggerButtonRef = useRef<HTMLButtonElement>(null);
 
 	useEffect(() => {
 		if (open) {
 			wasOpen.current = true;
-			// Focus confirm button when opened
-			confirmButtonRef.current?.focus();
-		} else {
-			if (wasOpen.current) {
-				triggerButtonRef.current?.focus();
-				wasOpen.current = false;
-			}
 		}
 	}, [open]);
+
+	const setConfirmButtonRef = useCallback(
+		(node: HTMLButtonElement | null) => {
+			confirmButtonRef.current = node;
+			if (node && open) {
+				node.focus();
+			}
+		},
+		[open],
+	);
+
+	const setTriggerButtonRef = useCallback(
+		(node: HTMLButtonElement | null) => {
+			triggerButtonRef.current = node;
+			if (node && !open && wasOpen.current) {
+				node.focus();
+				wasOpen.current = false;
+			}
+		},
+		[open],
+	);
 
 	useEffect(() => {
 		if (!open && triggerButtonRef.current) {
@@ -142,7 +156,7 @@ export function ConfirmButton({
 			<span className="pointer-events-none opacity-0 select-none" aria-hidden="true">
 				&#x200b;
 			</span>
-			<AnimatePresence initial={false}>
+			<AnimatePresence initial={false} mode="wait">
 				{open ? (
 					<motion.div
 						key="popover"
@@ -188,7 +202,7 @@ export function ConfirmButton({
 									{cancelLabel}
 								</Button>
 								<Button
-									ref={confirmButtonRef}
+									ref={setConfirmButtonRef}
 									type="button"
 									variant={confirmVariant}
 									size="sm"
@@ -203,7 +217,7 @@ export function ConfirmButton({
 					</motion.div>
 				) : (
 					<motion.button
-						ref={triggerButtonRef}
+						ref={setTriggerButtonRef}
 						key="trigger"
 						type="button"
 						layoutId={layoutId}
