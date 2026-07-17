@@ -1,4 +1,4 @@
-import { type HTMLAttributes, type ReactNode, type Ref } from 'react';
+import { type HTMLAttributes, type ReactNode, type Ref, useId } from 'react';
 
 import { usePrefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';
 import { cn } from '@/lib/utilities';
@@ -7,14 +7,35 @@ export interface FreehandProperties extends HTMLAttributes<HTMLDivElement> {
 	readonly ref?: Ref<HTMLDivElement>;
 	readonly children?: ReactNode;
 	readonly variant?: 'freehand' | 'fuzzy';
+	readonly speed?: number;
+	readonly intensity?: number;
+}
+
+export interface FreehandFiltersProperties {
+	readonly id?: string;
+	readonly speed?: number;
+	readonly intensity?: number;
 }
 
 /**
  * FreehandFilters renders the SVG filter definitions used for generating sketch/hand-drawn and fuzzy borders.
  * It is rendered automatically by the Freehand wrapper, but can also be used directly.
  */
-export function FreehandFilters() {
+export function FreehandFilters({ id, speed = 1, intensity = 1 }: FreehandFiltersProperties) {
+	const generatedId = useId();
 	const prefersReducedMotion = usePrefersReducedMotion();
+	const filterId = id ?? generatedId;
+	const freehandId = `${filterId}-freehand`;
+	const freehandShapeId = `${filterId}-freehand-shape`;
+	const freehandEdgeId = `${filterId}-freehand-edge`;
+	const fuzzyId = `${filterId}-fuzzy`;
+	const fuzzyTurbulenceId = `${filterId}-fuzzy-turbulence`;
+	const normalizedSpeed = Number.isFinite(speed) ? Math.max(speed, 0.01) : 1;
+	const normalizedIntensity = Number.isFinite(intensity) ? Math.max(intensity, 0) : 1;
+	const duration = `${0.42 / normalizedSpeed}s`;
+	const padding = Math.max(12, normalizedIntensity * 12);
+	const filterOffset = `-${padding}%`;
+	const filterSize = `${100 + padding * 2}%`;
 
 	return (
 		<svg
@@ -26,27 +47,47 @@ export function FreehandFilters() {
 			aria-hidden="true"
 		>
 			<defs>
-				<filter id="freehand">
-					<feTurbulence id="freehand--turbulence" type="fractalNoise" baseFrequency="0.005" numOctaves="3" seed="1" result="noise" />
-					<feDisplacementMap in2="noise" in="SourceGraphic" scale="12" result="displaced" />
-					<feConvolveMatrix in="displaced" order="3" kernelMatrix="1 1 1 1 2 1 1 1 1" edgeMode="duplicate" result="smoothed" />
+				<filter id={freehandId} x={filterOffset} y={filterOffset} width={filterSize} height={filterSize} colorInterpolationFilters="sRGB">
+					<feTurbulence id={freehandShapeId} type="fractalNoise" baseFrequency="0.018 0.025" numOctaves="2" seed="2" result="shapeNoise" />
+					<feDisplacementMap in="SourceGraphic" in2="shapeNoise" scale={12 * normalizedIntensity} result="shaped" />
+					<feTurbulence id={freehandEdgeId} type="fractalNoise" baseFrequency="0.065" numOctaves="1" seed="11" result="edgeNoise" />
+					<feDisplacementMap in="shaped" in2="edgeNoise" scale={4 * normalizedIntensity} result="displaced" />
+					<feGaussianBlur in="displaced" stdDeviation="0.12" />
 					{!prefersReducedMotion && (
-						<animate href="#freehand--turbulence" attributeName="seed" from="1" to="5" dur="2s" repeatCount="indefinite" />
+						<>
+							<animate
+								href={`#${freehandShapeId}`}
+								attributeName="seed"
+								values="2;5;9"
+								dur={duration}
+								calcMode="discrete"
+								repeatCount="indefinite"
+							/>
+							<animate
+								href={`#${freehandEdgeId}`}
+								attributeName="seed"
+								values="11;17;23"
+								dur={duration}
+								calcMode="discrete"
+								repeatCount="indefinite"
+							/>
+						</>
 					)}
 				</filter>
 
-				<filter id="fuzzy">
-					<feTurbulence id="fuzzy--turbulence" type="fractalNoise" baseFrequency="0.95" numOctaves="3" seed="1" result="noise" />
-					<feDisplacementMap in2="noise" in="SourceGraphic" scale="8" result="displaced" />
-					<feConvolveMatrix
-						in="displaced"
-						order="3"
-						kernelMatrix="0.3 0.3 0.3 0.3 2 0.3 0.3 0.3 0.3"
-						edgeMode="duplicate"
-						result="smoothed"
-					/>
+				<filter id={fuzzyId} x={filterOffset} y={filterOffset} width={filterSize} height={filterSize} colorInterpolationFilters="sRGB">
+					<feTurbulence id={fuzzyTurbulenceId} type="fractalNoise" baseFrequency="0.14" numOctaves="2" seed="3" result="noise" />
+					<feDisplacementMap in="SourceGraphic" in2="noise" scale={7 * normalizedIntensity} result="displaced" />
+					<feGaussianBlur in="displaced" stdDeviation="0.15" />
 					{!prefersReducedMotion && (
-						<animate href="#fuzzy--turbulence" attributeName="seed" from="1" to="5" dur="2s" repeatCount="indefinite" />
+						<animate
+							href={`#${fuzzyTurbulenceId}`}
+							attributeName="seed"
+							values="3;7;13"
+							dur={duration}
+							calcMode="discrete"
+							repeatCount="indefinite"
+						/>
 					)}
 				</filter>
 			</defs>
@@ -58,15 +99,26 @@ FreehandFilters.displayName = 'FreehandFilters';
 /**
  * Freehand is a wrapper element that applies sketch-like SVG filter effects to its background/borders.
  */
-export function Freehand({ children, variant = 'freehand', className, style, ref, ...properties }: FreehandProperties) {
+export function Freehand({
+	children,
+	variant = 'freehand',
+	speed = 1,
+	intensity = 1,
+	className,
+	style,
+	ref,
+	...properties
+}: FreehandProperties) {
+	const filterId = useId();
+
 	return (
 		<>
-			<FreehandFilters />
+			<FreehandFilters id={filterId} speed={speed} intensity={intensity} />
 			<div
 				ref={ref}
 				className={cn(className)}
 				style={{
-					filter: `url(#${variant})`,
+					filter: `url(#${filterId}-${variant})`,
 					...style,
 				}}
 				{...properties}

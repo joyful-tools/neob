@@ -21,7 +21,7 @@ export const Default: Story = {
 		<div className="flex flex-col gap-12 p-8">
 			<div className="relative flex size-56 items-center justify-center rounded-xl">
 				{/* Apply Freehand filter only to background to prevent text from wiggling */}
-				<Freehand variant="freehand" className="absolute inset-0 -z-10 rounded-xl border-4 border-black bg-orange shadow-cel-lg" />
+				<Freehand variant="freehand" className="absolute inset-0 -z-10 rounded-xl border-4 border-black bg-orange" />
 				<div>
 					<div className="m-4 text-center font-display text-4xl font-black text-black">Hello World</div>
 				</div>

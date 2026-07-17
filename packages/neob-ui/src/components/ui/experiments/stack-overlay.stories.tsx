@@ -202,7 +202,7 @@ function StackOverlayDemo() {
 							animate={{ opacity: 1, scale: 1 }}
 							exit={{ opacity: 0, scale: 1.08 }}
 							transition={{ type: 'spring', stiffness: 550, damping: 28 }}
-							className="absolute left-1/2 z-10 flex h-96 w-64 -translate-x-1/2 flex-col rounded-xl border-4 border-black bg-white shadow-xl dark:bg-zinc"
+							className="absolute left-1/2 z-10 flex h-96 max-h-[90vh] w-64 -translate-x-1/2 flex-col rounded-xl border-4 border-black bg-white shadow-xl dark:bg-zinc"
 							style={{
 								top: `${initialMinOverlayTop}px`,
 							}}
