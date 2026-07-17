@@ -283,7 +283,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 	);
 
 	const containerClassName = cn(
-		'rdp-root relative box-border flex h-[376px] w-[312px] flex-col justify-between rounded-xl border-2 border-black bg-white p-4 text-black shadow-sm select-none dark:border-black dark:bg-zinc dark:text-white',
+		'rdp-root relative box-border flex h-94 w-78 flex-col justify-between rounded-xl border-2 border-black bg-white p-4 text-black shadow-sm select-none dark:border-black dark:bg-zinc dark:text-white',
 		className,
 	);
 
@@ -382,7 +382,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 		const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 		return (
-			<div className="box-border grid h-[276px] flex-1 grid-cols-3 items-center gap-2 py-1">
+			<div className="box-border grid h-69 flex-1 grid-cols-3 items-center gap-2 py-1">
 				{months.map((monthName, idx) => {
 					const isSelected = displayedMonth.getMonth() === idx;
 					return (
@@ -409,7 +409,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 		const years = Array.from({ length: 12 }, (_, i) => yearsStart + i);
 
 		return (
-			<div className="box-border grid h-[276px] flex-1 grid-cols-3 items-center gap-2 py-1">
+			<div className="box-border grid h-69 flex-1 grid-cols-3 items-center gap-2 py-1">
 				{years.map((y) => {
 					const isSelected = currentYear === y;
 					return (

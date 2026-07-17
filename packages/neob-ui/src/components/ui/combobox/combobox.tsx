@@ -435,7 +435,7 @@ function TriggerMultipleWithInput<ValueType>({
 				{inputSide === 'right' && (
 					<BaseCombobox.Input
 						placeholder={placeholder}
-						className="min-w-[80px] flex-1 border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black outline-hidden dark:text-white"
+						className="min-w-20 flex-1 border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black outline-hidden dark:text-white"
 						aria-describedby={describedBy}
 						aria-invalid={ariaInvalid ? true : undefined}
 					/>
@@ -460,7 +460,7 @@ function Chip({ removeLabel = 'Remove', className, children, ref, ...props }: Co
 		<BaseCombobox.Chip
 			ref={ref}
 			className={cn(
-				'flex h-6 items-center gap-1.5 rounded-md border border-black bg-muted pr-[3px] pl-2 text-xs font-bold text-black shadow-cel-sm dark:border-white dark:bg-zinc dark:text-white',
+				'flex h-6 items-center gap-1.5 rounded-md border border-black bg-muted pr-0.75 pl-2 text-xs font-bold text-black shadow-cel-sm dark:border-white dark:bg-zinc dark:text-white',
 				className,
 			)}
 			{...props}

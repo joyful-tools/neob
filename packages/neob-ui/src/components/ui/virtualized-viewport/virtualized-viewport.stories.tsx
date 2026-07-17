@@ -83,7 +83,7 @@ export const Basic: Story = {
 		const [items, setItems] = useState<Slab[]>(args.items);
 
 		return (
-			<div className="flex w-[480px] flex-col gap-4">
+			<div className="flex w-120 flex-col gap-4">
 				<div className="flex items-center justify-between rounded-xl border-2 border-black bg-muted/40 p-3">
 					<h3 className="font-display text-base">Basic</h3>
 					<div className="flex gap-2">
@@ -96,7 +96,7 @@ export const Basic: Story = {
 					</div>
 				</div>
 
-				<Card className="h-[400px] overflow-hidden border-2 border-black p-0">
+				<Card className="h-100 overflow-hidden border-2 border-black p-0">
 					<VirtualizedViewport
 						items={items}
 						estimatedItemHeight={args.estimatedItemHeight}
@@ -143,7 +143,7 @@ export const DynamicHeights: Story = {
 		const [items, setItems] = useState<Slab[]>(args.items);
 
 		return (
-			<div className="flex w-[480px] flex-col gap-4">
+			<div className="flex w-120 flex-col gap-4">
 				<div className="flex items-center justify-between rounded-xl border-2 border-black bg-muted/40 p-3">
 					<h3 className="font-display text-base">Dynamic Heights</h3>
 					<div className="flex gap-2">
@@ -174,7 +174,7 @@ export const DynamicHeights: Story = {
 					</div>
 				</div>
 
-				<Card className="h-[450px] overflow-hidden border-2 border-black p-0 shadow-cel-md">
+				<Card className="h-112.5 overflow-hidden border-2 border-black p-0 shadow-cel-md">
 					<VirtualizedViewport
 						items={items}
 						estimatedItemHeight={args.estimatedItemHeight}
@@ -225,13 +225,13 @@ export const VisualBufferDebugger: Story = {
 		});
 
 		return (
-			<div className="flex w-[680px] flex-col gap-4">
+			<div className="flex w-170 flex-col gap-4">
 				<div className="rounded-xl border-2 border-black bg-muted/40 p-3">
 					<h3 className="font-display text-base">Buffer Debugger</h3>
 				</div>
 
 				<div className="flex gap-4">
-					<Card className="h-[450px] w-[380px] overflow-hidden border-2 border-black p-0 shadow-cel-md">
+					<Card className="h-112.5 w-95 overflow-hidden border-2 border-black p-0 shadow-cel-md">
 						<VirtualizedViewport
 							items={items}
 							estimatedItemHeight={args.estimatedItemHeight}
@@ -258,7 +258,7 @@ export const VisualBufferDebugger: Story = {
 							</div>
 						</div>
 
-						<div className="grid max-h-[300px] flex-1 grid-cols-10 gap-1 overflow-y-auto pr-1">
+						<div className="grid max-h-75 flex-1 grid-cols-10 gap-1 overflow-y-auto pr-1">
 							{items.map((_, i) => {
 								const isVisible = i >= range.firstVisibleIndex && i <= range.lastVisibleIndex;
 								const isRendered = i >= range.startIndex && i <= range.endIndex;

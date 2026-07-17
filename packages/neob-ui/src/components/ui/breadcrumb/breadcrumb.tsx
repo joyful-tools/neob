@@ -58,7 +58,7 @@ function BreadcrumbLink({ href, icon, className, children, ...props }: Breadcrum
 			data-slot="breadcrumb-link"
 			href={href}
 			className={cn(
-				'inline-flex max-w-full min-w-0 items-center gap-1 rounded-[2px] font-semibold text-muted-foreground no-underline transition-colors hover:text-foreground focus:outline-hidden focus-visible:neo-focus-ring',
+				'inline-flex max-w-full min-w-0 items-center gap-1 rounded-xs font-semibold text-muted-foreground no-underline transition-colors hover:text-foreground focus:outline-hidden focus-visible:neo-focus-ring',
 				className,
 			)}
 			{...props}
@@ -74,7 +74,7 @@ function BreadcrumbCurrent({ icon, loading = false, className, children, ...prop
 		return (
 			<div
 				data-slot="breadcrumb-current"
-				className={cn('inline-flex w-[125px] min-w-0 items-center gap-1', className)}
+				className={cn('inline-flex w-31.25 min-w-0 items-center gap-1', className)}
 				aria-current="page"
 				{...props}
 			>

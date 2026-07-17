@@ -51,7 +51,7 @@ export const Default: Story = {
 					</div>
 				)}
 			>
-				<div className="h-[400px] bg-muted/10 p-4 font-sans text-sm/relaxed">
+				<div className="h-100 bg-muted/10 p-4 font-sans text-sm/relaxed">
 					This is some scrollable text area inside the sticky observer.
 					<br />
 					<br />

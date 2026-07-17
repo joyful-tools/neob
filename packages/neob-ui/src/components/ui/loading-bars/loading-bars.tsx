@@ -11,7 +11,7 @@ interface LoadingBarsProperties {
 
 export function LoadingBars({ className, colorClassName = 'bg-orange' }: LoadingBarsProperties) {
 	return (
-		<div className={cn('flex h-8 items-end gap-[4px]', className)} role="status" aria-label="Loading">
+		<div className={cn('flex h-8 items-end gap-1', className)} role="status" aria-label="Loading">
 			{Array.from({ length: BAR_COUNT }, (_, index) => (
 				<motion.div
 					key={index}

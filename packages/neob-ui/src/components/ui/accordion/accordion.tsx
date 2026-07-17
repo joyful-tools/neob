@@ -32,7 +32,7 @@ function AccordionItem({
 }: ComponentPropsWithoutRef<typeof BaseAccordion.Item> & {
 	readonly ref?: Ref<HTMLDivElement>;
 }) {
-	return <BaseAccordion.Item ref={ref} className={className} {...properties} />;
+	return <BaseAccordion.Item ref={ref} className={cn('border-t border-border first:border-t-0', className)} {...properties} />;
 }
 AccordionItem.displayName = 'Accordion.Item';
 
@@ -60,7 +60,7 @@ function AccordionTrigger({
 							{...triggerProps}
 							type="button"
 							className={cn(
-								'neo-focus-ring isolate flex w-full cursor-pointer items-center justify-between py-3 text-left outline-hidden transition-colors select-none',
+								'neo-focus-ring isolate flex w-full cursor-pointer items-center justify-between py-2 text-left outline-hidden transition-colors select-none',
 								className,
 							)}
 						>
@@ -128,11 +128,15 @@ function AccordionContent({
 					>
 						<motion.div
 							variants={{
-								open: { y: 0, opacity: 1 },
-								closed: { y: 20, opacity: 0 },
+								open: { y: 0, scale: 1, opacity: [0, 1] },
+								closed: { y: 33, scale: 0.99, opacity: 0 },
 							}}
-							transition={{ type: 'spring', stiffness: 800, damping: 57 }}
-							className={cn('pb-4 text-sm/relaxed text-muted-foreground', className)}
+							transition={{
+								y: { type: 'spring', stiffness: 800, damping: 57 },
+								scale: { duration: 0.33, ease: 'easeInOut' },
+								opacity: { duration: 0.33, ease: 'easeInOut' },
+							}}
+							className={cn('origin-top pb-1 text-sm/relaxed', className)}
 						>
 							{children}
 						</motion.div>

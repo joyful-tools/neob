@@ -69,7 +69,7 @@ export function SplitButton({
 						size={size}
 						disabled={disabled}
 						aria-label="more options"
-						className="ml-[-2px] flex items-center justify-center rounded-l-none px-2.5 focus:z-10"
+						className="-ml-0.5 flex items-center justify-center rounded-l-none px-2.5 focus:z-10"
 					>
 						<CaretDownIcon className="size-4" />
 					</Button>

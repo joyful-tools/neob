@@ -8,11 +8,11 @@ const BAR_COUNT = 5;
 
 function LoadingBars({ className }: { readonly className?: string }) {
 	return (
-		<div className={cn('flex h-7 items-end gap-[3px]', className)} role="status" aria-label="Loading">
+		<div className={cn('flex h-7 items-end gap-0.75', className)} role="status" aria-label="Loading">
 			{Array.from({ length: BAR_COUNT }, (_, index) => (
 				<motion.div
 					key={index}
-					className="w-[3px] rounded-full bg-orange"
+					className="w-0.75 rounded-full bg-orange"
 					animate={{
 						height: [8 + index * 3, 16 + index * 2, 8 + index * 3],
 						opacity: [0.3, 1, 0.3],

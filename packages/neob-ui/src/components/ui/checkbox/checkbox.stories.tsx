@@ -100,7 +100,7 @@ export const ValidationError: Story = {
 		const [checked, setChecked] = useState(args.checked === true);
 
 		return (
-			<div className="min-h-[72px] w-80">
+			<div className="min-h-18 w-80">
 				<Checkbox
 					label={args.label}
 					description={args.description}

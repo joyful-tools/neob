@@ -352,7 +352,7 @@ export const Default: StoryObj<FruitComboboxStoryProperties> = {
 		const [value, setValue] = useState<string | null>(args.initialValue);
 
 		return (
-			<div className="w-[300px]">
+			<div className="w-75">
 				<Combobox
 					value={value}
 					onValueChange={(nextValue) => {
@@ -404,7 +404,7 @@ export const SearchableInside: StoryObj<LanguageComboboxStoryProperties> = {
 		const [value, setValue] = useState<Language | null>(args.initialValue);
 
 		return (
-			<div className="size-[300px]">
+			<div className="size-75">
 				<Combobox
 					aria-label={args.ariaLabel}
 					value={value}
@@ -461,7 +461,7 @@ export const SearchableSelect: StoryObj<LanguageComboboxStoryProperties> = {
 		const [value, setValue] = useState<Language | null>(args.initialValue);
 
 		return (
-			<div className="size-[300px]">
+			<div className="size-75">
 				<Combobox
 					aria-label={args.ariaLabel}
 					value={value}
@@ -515,7 +515,7 @@ export const Grouped: StoryObj<GroupedComboboxStoryProperties> = {
 		const [value, setValue] = useState<ServerLocation | null>(args.initialValue);
 
 		return (
-			<div className="size-[300px]">
+			<div className="size-75">
 				<Combobox
 					value={value}
 					onValueChange={(nextValue) => {
@@ -524,7 +524,7 @@ export const Grouped: StoryObj<GroupedComboboxStoryProperties> = {
 					}}
 					items={servers}
 				>
-					<Combobox.TriggerInput className="w-[200px]" placeholder={args.placeholder} />
+					<Combobox.TriggerInput className="w-50" placeholder={args.placeholder} />
 					<Combobox.Content>
 						<Combobox.Empty />
 						<Combobox.List>
@@ -574,7 +574,7 @@ export const Multiple: StoryObj<MultipleComboboxStoryProperties> = {
 		const [value, setValue] = useState<WorkspaceAppItem[]>(args.initialValue);
 
 		return (
-			<div className="w-[400px]">
+			<div className="w-100">
 				<Combobox
 					value={value}
 					onValueChange={(nextValue) => {
@@ -591,7 +591,7 @@ export const Multiple: StoryObj<MultipleComboboxStoryProperties> = {
 						renderItem={(selected: WorkspaceAppItem) => <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>}
 						inputSide="right"
 					/>
-					<Combobox.Content className="max-h-[200px] overflow-y-auto">
+					<Combobox.Content className="max-h-50 overflow-y-auto">
 						<Combobox.Empty />
 						<Combobox.List>
 							{(item: WorkspaceAppItem) => (
@@ -684,9 +684,9 @@ export const Disabled: StoryObj<DisabledComboboxStoryProperties> = {
 	},
 	render: (args: DisabledComboboxStoryProperties) => {
 		return (
-			<div className="flex w-[500px] flex-wrap items-start gap-4">
+			<div className="flex w-125 flex-wrap items-start gap-4">
 				<Combobox value={args.fruitInitialValue} items={fruits} disabled>
-					<Combobox.TriggerInput className="w-[200px]" placeholder={args.fruitPlaceholder} />
+					<Combobox.TriggerInput className="w-50" placeholder={args.fruitPlaceholder} />
 					<Combobox.Content>
 						<Combobox.Empty />
 						<Combobox.List>
@@ -700,7 +700,7 @@ export const Disabled: StoryObj<DisabledComboboxStoryProperties> = {
 				</Combobox>
 
 				<Combobox aria-label={args.languageAriaLabel} value={args.languageInitialValue} items={languages} disabled>
-					<Combobox.TriggerValue className="w-[200px]" />
+					<Combobox.TriggerValue className="w-50" />
 					<Combobox.Content>
 						<Combobox.Input placeholder={args.languageSearchPlaceholder} />
 						<Combobox.Empty />
@@ -741,7 +741,7 @@ export const DisabledItems: StoryObj<DisabledItemsComboboxStoryProperties> = {
 		const [value, setValue] = useState<DisabledItemDatabase | null>(args.initialValue);
 
 		return (
-			<div className="h-[300px] w-80">
+			<div className="h-75 w-80">
 				<Combobox
 					value={value}
 					onValueChange={(nextValue) => {
@@ -863,7 +863,7 @@ export const Sizes: StoryObj<SizesComboboxStoryProperties> = {
 		const [baseValue, setBaseValue] = useState<string | null>(args.baseInitialValue);
 
 		return (
-			<div className="flex w-[500px] flex-wrap items-center gap-4">
+			<div className="flex w-125 flex-wrap items-center gap-4">
 				<Combobox
 					size="sm"
 					value={smValue}
@@ -938,7 +938,7 @@ export const SizesSearchableInside: StoryObj<SizesSearchableStoryProperties> = {
 		const [baseValue, setBaseValue] = useState<Language | null>(args.baseInitialValue);
 
 		return (
-			<div className="flex h-[300px] w-[500px] flex-wrap items-center gap-4">
+			<div className="flex h-75 w-125 flex-wrap items-center gap-4">
 				<Combobox
 					aria-label={args.smAriaLabel}
 					size="sm"
@@ -1013,7 +1013,7 @@ export const CustomTrigger: StoryObj<CustomTriggerComboboxStoryProperties> = {
 		const [value, setValue] = useState<Language | null>(args.initialValue);
 
 		return (
-			<div className="size-[300px]">
+			<div className="size-75">
 				<Combobox
 					aria-label={args.ariaLabel}
 					value={value}

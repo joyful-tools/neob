@@ -191,14 +191,14 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 					}}
 					className={cn(
 						'size-8 p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]',
-						controls === 'full' ? 'ml-[-2px] rounded-none' : 'rounded-r-none',
+						controls === 'full' ? '-ml-0.5 rounded-none' : 'rounded-r-none',
 					)}
 				>
 					<CaretLeftIcon className={cn('size-4', isFirstPageDisabled && 'opacity-30')} />
 				</Button>
 				{controls === 'full' &&
 					(pageSelector === 'dropdown' ? (
-						<div className="ml-[-2px] w-[72px] shadow-cel-sm focus-within:z-10">
+						<div className="-ml-0.5 w-18 shadow-cel-sm focus-within:z-10">
 							<Select
 								value={String(page)}
 								onValueChange={(value) => {
@@ -219,7 +219,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							</Select>
 						</div>
 					) : (
-						<div className="neo-focus-ring-focus isolate ml-[-2px] flex h-8 items-center justify-center rounded-none border-2 border-black bg-white shadow-cel-sm outline-hidden transition-all duration-300 ease-spring select-none focus-within:z-10 dark:border-black dark:bg-zinc">
+						<div className="neo-focus-ring-focus isolate -ml-0.5 flex h-8 items-center justify-center rounded-none border-2 border-black bg-white shadow-cel-sm outline-hidden transition-all duration-300 ease-spring select-none focus-within:z-10 dark:border-black dark:bg-zinc">
 							<input
 								type="number"
 								disabled={maxPage <= 1}
@@ -271,7 +271,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						setEditingPage(nextPage);
 					}}
 					className={cn(
-						'ml-[-2px] size-8 p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]',
+						'-ml-0.5 size-8 p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]',
 						controls === 'full' ? 'rounded-none' : 'rounded-l-none',
 					)}
 				>
@@ -288,7 +288,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							setPage(maxPage);
 							setEditingPage(maxPage);
 						}}
-						className="ml-[-2px] size-8 rounded-l-none p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]"
+						className="-ml-0.5 size-8 rounded-l-none p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]"
 					>
 						<CaretDoubleRightIcon className={cn('size-4', isLastPageDisabled && 'opacity-30')} />
 					</Button>

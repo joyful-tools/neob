@@ -39,7 +39,7 @@ const Item = ({ text }: { text: string }) => (
 
 export const Horizontal: Story = {
 	render: () => (
-		<div className="w-[500px] overflow-hidden rounded-2xl border border-black/10 bg-muted/10 p-4">
+		<div className="w-125 overflow-hidden rounded-2xl border border-black/10 bg-muted/10 p-4">
 			<Marquee duration="10s">
 				<Item text="BRUTAL" />
 				<Item text="STARK" />
@@ -63,7 +63,7 @@ export const Horizontal: Story = {
 
 export const Vertical: Story = {
 	render: () => (
-		<div className="flex h-[300px] items-center justify-center overflow-hidden rounded-2xl border border-black/10 bg-muted/10 p-4">
+		<div className="flex h-75 items-center justify-center overflow-hidden rounded-2xl border border-black/10 bg-muted/10 p-4">
 			<Marquee vertical duration="12s">
 				<Item text="VERTICAL" />
 				<Item text="SCROLL" />
@@ -84,7 +84,7 @@ export const Vertical: Story = {
 
 export const PauseOnHover: Story = {
 	render: () => (
-		<div className="w-[500px] overflow-hidden rounded-2xl border border-black/10 bg-muted/10 p-4">
+		<div className="w-125 overflow-hidden rounded-2xl border border-black/10 bg-muted/10 p-4">
 			<Marquee pauseOnHover duration="8s">
 				<Item text="PAUSE" />
 				<Item text="ON" />

@@ -115,7 +115,7 @@ function ButtonGroupButton({ className, value, size, children, ref, ...propertie
 						type="button"
 						className={cn(
 							buttonVariants({ variant: 'default', size: resolvedSize }),
-							'relative ml-[-2px] shrink-0 first:ml-0 focus-visible:z-20',
+							'relative -ml-0.5 shrink-0 first:ml-0 focus-visible:z-20',
 							!checked && 'hover:z-20',
 							cornerClass,
 							checked && checkedClass,

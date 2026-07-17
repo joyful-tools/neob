@@ -117,7 +117,7 @@ export const ValidationError: Story = {
 		const error = checked ? undefined : 'You must agree to the privacy policy.';
 
 		return (
-			<div className="min-h-[76px] w-80">
+			<div className="min-h-19 w-80">
 				<Switch
 					{...arguments_}
 					checked={checked}

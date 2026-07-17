@@ -86,7 +86,7 @@ function TabsTrigger({
 								className,
 							)
 						: cn(
-								`neo-focus-ring relative z-10 mb-[-3px] inline-flex cursor-pointer items-center justify-center border-2 border-transparent px-4 py-2 font-sans text-sm font-semibold text-muted-foreground outline-hidden transition-colors duration-150 select-none hover:text-black dark:hover:text-white`,
+								`neo-focus-ring relative z-10 -mb-0.75 inline-flex cursor-pointer items-center justify-center border-2 border-transparent px-4 py-2 font-sans text-sm font-semibold text-muted-foreground outline-hidden transition-colors duration-150 select-none hover:text-black dark:hover:text-white`,
 								isSelected && 'z-20 text-black dark:text-white',
 								className,
 							);

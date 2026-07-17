@@ -97,7 +97,7 @@ const RealWorldList = ({ initialFiles }: InlineConfirmGroupStoryProperties) => {
 	};
 
 	return (
-		<div className="w-[450px] rounded-xl border-4 border-black bg-white p-6 text-black shadow-cel-md dark:bg-zinc dark:text-white">
+		<div className="w-112.5 rounded-xl border-4 border-black bg-white p-6 text-black shadow-cel-md dark:bg-zinc dark:text-white">
 			<h3 className="mb-4 border-b-2 border-black pb-2 font-display text-lg font-bold">Project Directory Files</h3>
 			<p className="mb-4 text-xs text-muted-foreground">
 				Each file supports delete, while only some files also expose archive or download actions.

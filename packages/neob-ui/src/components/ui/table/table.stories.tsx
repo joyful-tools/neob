@@ -54,7 +54,7 @@ export const Default: import('@storybook/react-vite').StoryObj<TableStoryPropert
 	},
 	render: (args) => {
 		return (
-			<div className="w-[500px]">
+			<div className="w-125">
 				<Table>
 					<Table.Header>
 						<Table.Row>
@@ -88,7 +88,7 @@ export const WithFooter: import('@storybook/react-vite').StoryObj<TableStoryProp
 	},
 	render: (args) => {
 		return (
-			<div className="w-[500px]">
+			<div className="w-125">
 				<Table>
 					<Table.Header>
 						<Table.Row>

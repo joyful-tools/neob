@@ -103,7 +103,7 @@ export const Default: Story = {
 		const [results, setResults] = useState<DropZoneResult | null>(null);
 
 		return (
-			<div className="flex w-[450px] flex-col gap-4">
+			<div className="flex w-112.5 flex-col gap-4">
 				<DropZone
 					accept={['image/*']}
 					onFileDrop={(res) => {
@@ -171,7 +171,7 @@ export const InvalidFileRejection: Story = {
 		const [results, setResults] = useState<DropZoneResult | null>(null);
 
 		return (
-			<div className="flex w-[450px] flex-col gap-4">
+			<div className="flex w-112.5 flex-col gap-4">
 				<DropZone
 					accept={['.png']}
 					minSize={100}
@@ -242,7 +242,7 @@ export const FullPageDropZone: Story = {
 		const [results, setResults] = useState<DropZoneResult | null>(null);
 
 		return (
-			<div className="flex w-[450px] flex-col gap-4">
+			<div className="flex w-112.5 flex-col gap-4">
 				<DropZone
 					fullscreen={true}
 					accept={['image/*']}

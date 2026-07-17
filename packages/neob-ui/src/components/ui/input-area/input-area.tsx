@@ -59,7 +59,7 @@ export function InputArea({
 		<textarea
 			required={required}
 			className={cn(
-				`neo-focus-ring-focus isolate flex min-h-[80px] w-full rounded-lg border-2 border-black bg-white px-4 py-2 text-base font-medium shadow-cel-inset-md outline-hidden transition-[color,background-color,border-color,text-decoration-color,fill,stroke,box-shadow] duration-300 ease-spring placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
+				`neo-focus-ring-focus isolate flex min-h-20 w-full rounded-lg border-2 border-black bg-white px-4 py-2 text-base font-medium shadow-cel-inset-md outline-hidden transition-[color,background-color,border-color,text-decoration-color,fill,stroke,box-shadow] duration-300 ease-spring placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
 				autoResize && 'h-full min-h-0 resize-none',
 				className,
 			)}
@@ -71,7 +71,7 @@ export function InputArea({
 	);
 
 	const control = autoResize ? (
-		<div ref={autoResizeRef} className="relative flex min-h-[80px] w-full flex-col">
+		<div ref={autoResizeRef} className="relative flex min-h-20 w-full flex-col">
 			{textarea}
 		</div>
 	) : (

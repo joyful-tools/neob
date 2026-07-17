@@ -66,7 +66,7 @@ export function SmartSticky({ sticky, onStickyChange, children, className, style
 
 	return (
 		<div ref={containerRef} className={cn('relative', className)} style={{ paddingTop: '1px', ...style }} {...properties}>
-			<div ref={stickyRef} className="sticky top-(--smartStickyTop,0px) z-10 mt-[-2px]">
+			<div ref={stickyRef} className="sticky top-(--smartStickyTop,0px) z-10 -mt-0.5">
 				{sticky({ stuck })}
 			</div>
 			{children}
