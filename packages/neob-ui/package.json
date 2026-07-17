@@ -22,7 +22,9 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "vite build",
+		"build": "bun run typecheck && vite build && bun run package:verify",
+		"package:verify": "bun scripts/verify-package.ts",
+		"test:unit": "vitest run --config vitest.unit.config.ts",
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {

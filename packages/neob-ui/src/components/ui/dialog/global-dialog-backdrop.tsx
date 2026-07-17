@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import { useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 
-import { closeTopDialog, getDialogStackSnapshot, subscribeDialogStack } from './dialog-stack';
+import { useDialogStackStore } from './dialog-stack';
 
 /**
  * Single global backdrop element. Mount once at the app root.
@@ -12,7 +12,8 @@ import { closeTopDialog, getDialogStackSnapshot, subscribeDialogStack } from './
  * during handoff between sibling modals.
  */
 export function GlobalDialogBackdrop() {
-	const count = useSyncExternalStore(subscribeDialogStack, getDialogStackSnapshot, getDialogStackSnapshot);
+	const store = useDialogStackStore();
+	const count = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getSnapshot);
 	const visible = count > 0;
 
 	if (typeof document === 'undefined') {
@@ -27,7 +28,7 @@ export function GlobalDialogBackdrop() {
 			animate={{ opacity: visible ? 1 : 0 }}
 			transition={{ duration: 0.15, ease: 'easeOut' }}
 			style={{ pointerEvents: visible ? 'auto' : 'none' }}
-			onClick={closeTopDialog}
+			onClick={store.closeTop}
 			className="fixed inset-0 z-40 bg-black/60"
 		/>,
 		document.body,

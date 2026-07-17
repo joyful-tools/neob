@@ -1,29 +1,69 @@
-import { useEffect, useRef, useState } from 'react';
+import { createContext, createElement, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 type DialogStackListener = () => void;
 
-const dialogStackListeners = new Set<DialogStackListener>();
-const openDialogIds = new Set<number>();
-const dialogCloseCallbacks = new Map<number, () => void>();
-
-let nextDialogId = 0;
-let openDialogCount = 0;
-
-function emit(): void {
-	for (const listener of dialogStackListeners) {
-		listener();
-	}
+export interface DialogStackStore {
+	readonly subscribe: (listener: DialogStackListener) => () => void;
+	readonly getSnapshot: () => number;
+	readonly register: (dialogId: number, onClose: () => void) => () => void;
+	readonly closeTop: () => void;
 }
 
-export function subscribeDialogStack(listener: DialogStackListener): () => void {
-	dialogStackListeners.add(listener);
-	return () => {
-		dialogStackListeners.delete(listener);
+export function createDialogStackStore(): DialogStackStore {
+	const listeners = new Set<DialogStackListener>();
+	const openDialogIds = new Set<number>();
+	const closeCallbacks = new Map<number, () => void>();
+
+	const emit = () => {
+		for (const listener of listeners) {
+			listener();
+		}
+	};
+
+	return {
+		subscribe: (listener) => {
+			listeners.add(listener);
+			return () => listeners.delete(listener);
+		},
+		getSnapshot: () => openDialogIds.size,
+		register: (dialogId, onClose) => {
+			openDialogIds.add(dialogId);
+			closeCallbacks.set(dialogId, onClose);
+			emit();
+			return () => {
+				if (openDialogIds.delete(dialogId)) {
+					closeCallbacks.delete(dialogId);
+					emit();
+				}
+			};
+		},
+		closeTop: () => {
+			if (openDialogIds.size === 0) return;
+			const topId = Math.max(...openDialogIds);
+			closeCallbacks.get(topId)?.();
+		},
 	};
 }
 
+const defaultDialogStackStore = createDialogStackStore();
+const DialogStackContext = createContext<DialogStackStore>(defaultDialogStackStore);
+let nextDialogId = 0;
+
+export function DialogStackProvider({ children }: { readonly children: ReactNode }) {
+	const store = useMemo(() => createDialogStackStore(), []);
+	return createElement(DialogStackContext.Provider, { value: store }, children);
+}
+
+export function useDialogStackStore(): DialogStackStore {
+	return useContext(DialogStackContext);
+}
+
+export function subscribeDialogStack(listener: DialogStackListener): () => void {
+	return defaultDialogStackStore.subscribe(listener);
+}
+
 export function getDialogStackSnapshot(): number {
-	return openDialogCount;
+	return defaultDialogStackStore.getSnapshot();
 }
 
 /**
@@ -31,9 +71,7 @@ export function getDialogStackSnapshot(): number {
  * Called by the global backdrop on click.
  */
 export function closeTopDialog(): void {
-	if (openDialogIds.size === 0) return;
-	const topId = Math.max(...openDialogIds);
-	dialogCloseCallbacks.get(topId)?.();
+	defaultDialogStackStore.closeTop();
 }
 
 /**
@@ -47,6 +85,7 @@ export function closeTopDialog(): void {
  * Omit it (e.g. for AlertDialog / ConfirmDialog) to keep it non-dismissible.
  */
 export function useDialogStackPresence(open: boolean, onClose?: () => void): void {
+	const store = useDialogStackStore();
 	const [dialogId] = useState(() => {
 		const resolvedDialogId = nextDialogId;
 		nextDialogId += 1;
@@ -64,18 +103,6 @@ export function useDialogStackPresence(open: boolean, onClose?: () => void): voi
 			return;
 		}
 
-		openDialogIds.add(dialogId);
-		// Register a stable wrapper that always invokes the latest callback.
-		dialogCloseCallbacks.set(dialogId, () => onCloseReference.current?.());
-		openDialogCount = openDialogIds.size;
-		emit();
-
-		return () => {
-			if (openDialogIds.delete(dialogId)) {
-				dialogCloseCallbacks.delete(dialogId);
-				openDialogCount = openDialogIds.size;
-				emit();
-			}
-		};
-	}, [open, dialogId]);
+		return store.register(dialogId, () => onCloseReference.current?.());
+	}, [open, dialogId, store]);
 }

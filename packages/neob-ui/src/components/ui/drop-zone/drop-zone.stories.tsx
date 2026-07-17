@@ -166,6 +166,41 @@ export const Default: Story = {
 	}),
 };
 
+export const RepeatedFileSelection: Story = {
+	render: () => {
+		const [selectionCount, setSelectionCount] = useState(0);
+
+		return (
+			<div>
+				<DropZone onFileDrop={() => setSelectionCount((count) => count + 1)}>
+					{({ openFilePicker }) => (
+						<Button type="button" onClick={openFilePicker}>
+							Select File
+						</Button>
+					)}
+				</DropZone>
+				<span>Selections: {selectionCount}</span>
+			</div>
+		);
+	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const input = canvasElement.querySelector('input[type="file"]');
+		if (!(input instanceof HTMLInputElement)) {
+			throw new TypeError('File input not found');
+		}
+
+		const file = new File(['content'], 'repeat.txt', { type: 'text/plain' });
+		fireEvent.change(input, { target: { files: new MockFileList([file]) } });
+		await expect(canvas.getByText('Selections: 1')).toBeInTheDocument();
+		await expect(input).toHaveValue('');
+
+		fireEvent.change(input, { target: { files: new MockFileList([file]) } });
+		await expect(canvas.getByText('Selections: 2')).toBeInTheDocument();
+		await expect(input).toHaveValue('');
+	}),
+};
+
 export const InvalidFileRejection: Story = {
 	render: () => {
 		const [results, setResults] = useState<DropZoneResult | null>(null);

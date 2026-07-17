@@ -1,4 +1,3 @@
-import fs from 'node:fs';
 import path from 'node:path';
 
 import tailwindcss from '@tailwindcss/vite';
@@ -6,22 +5,18 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
-// Find component directories dynamically and register their index.ts as entry points
+import packageJson from './package.json' with { type: 'json' };
+import { publicComponentEntries } from './public-api';
+
 const componentsDir = path.resolve(__dirname, 'src/components/ui');
-const dirs = fs.readdirSync(componentsDir).filter((file) => {
-	const fullPath = path.join(componentsDir, file);
-	return fs.statSync(fullPath).isDirectory() && file !== 'experiments';
-});
+const externalDependencies = [...Object.keys(packageJson.dependencies), ...Object.keys(packageJson.peerDependencies)];
 
 const entryPoints: Record<string, string> = {
 	index: path.resolve(__dirname, 'src/index.ts'),
 };
 
-for (const dir of dirs) {
-	const indexPath = path.resolve(componentsDir, dir, 'index.ts');
-	if (fs.existsSync(indexPath)) {
-		entryPoints[dir] = indexPath;
-	}
+for (const entry of publicComponentEntries) {
+	entryPoints[entry] = path.resolve(componentsDir, entry, 'index.ts');
 }
 
 export default defineConfig({
@@ -31,6 +26,8 @@ export default defineConfig({
 		dts({
 			insertTypesEntry: true,
 			tsconfigPath: './tsconfig.json',
+			include: ['src'],
+			exclude: ['src/**/*.stories.tsx', 'src/**/*.test.ts'],
 		}),
 	],
 	resolve: {
@@ -46,7 +43,7 @@ export default defineConfig({
 			fileName: (format, entryName) => `${entryName}.${format === 'es' ? 'js' : 'cjs'}`,
 		},
 		rollupOptions: {
-			external: ['react', 'react-dom', 'react/jsx-runtime'],
+			external: (id) => externalDependencies.some((dependency) => id === dependency || id.startsWith(`${dependency}/`)),
 			output: {
 				globals: {
 					react: 'React',

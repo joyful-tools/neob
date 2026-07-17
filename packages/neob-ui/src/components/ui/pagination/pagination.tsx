@@ -360,7 +360,7 @@ function PaginationRoot(props: PaginationProps) {
 	}, [page, perPage, totalCount]);
 
 	const maxPage = useMemo(() => {
-		return Math.ceil((totalCount ?? 1) / (perPage ?? 1));
+		return Math.max(1, Math.ceil((totalCount ?? 1) / (perPage ?? 1)));
 	}, [totalCount, perPage]);
 
 	const contextValue: PaginationContextValue = {

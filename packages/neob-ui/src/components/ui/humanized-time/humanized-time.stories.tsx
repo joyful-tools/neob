@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 
 import { Tooltip } from '@/components/ui/tooltip';
@@ -59,6 +59,32 @@ export const FiveMinutesAgo: Story = {
 		const bodyCanvas = within(canvasElement.ownerDocument.body);
 		const tooltip = bodyCanvas.getByRole('tooltip');
 		await expect(tooltip).toBeInTheDocument();
+	}),
+};
+
+export const EpochAndLocaleChanges: Story = {
+	render: () => {
+		const [locale, setLocale] = useState('en');
+		return (
+			<Tooltip.Provider>
+				<div>
+					<button type="button" onClick={() => setLocale('de')}>
+						Use German
+					</button>
+					<HumanizedTime data-testid="epoch-time" date={0} locale={locale} />
+				</div>
+			</Tooltip.Provider>
+		);
+	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const timeElement = canvas.getByTestId('epoch-time');
+		await expect(timeElement).toBeInTheDocument();
+		await expect(timeElement).toHaveAttribute('datetime', new Date(0).toISOString());
+		await expect(timeElement).toHaveTextContent(/ago/i);
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Use German' }));
+		await expect(timeElement).toHaveTextContent(/vor/i);
 	}),
 };
 

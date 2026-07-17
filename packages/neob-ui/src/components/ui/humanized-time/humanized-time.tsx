@@ -70,17 +70,19 @@ export function getFullDateTimeString(dateInput: Date | number | string, locale 
  */
 export function HumanizedTime({ date, updateInterval = 60_000, locale = 'en', placement = 'top', ...properties }: HumanizedTimeProps) {
 	const [lastDate, setLastDate] = useState(date);
-	const [relativeTime, setRelativeTime] = useState(() => (date ? getHumanizedTimeString(date, locale) : ''));
+	const [lastLocale, setLastLocale] = useState(locale);
+	const [relativeTime, setRelativeTime] = useState(() => (date === undefined ? '' : getHumanizedTimeString(date, locale)));
 
-	// Sync state when date prop changes during rendering (React-recommended pattern)
-	if (date !== lastDate) {
+	// Sync state when date or locale props change during rendering (React-recommended pattern)
+	if (date !== lastDate || locale !== lastLocale) {
 		setLastDate(date);
-		setRelativeTime(date ? getHumanizedTimeString(date, locale) : '');
+		setLastLocale(locale);
+		setRelativeTime(date === undefined ? '' : getHumanizedTimeString(date, locale));
 	}
 
-	const fullDateTime = useMemo(() => (date ? getFullDateTimeString(date, locale) : ''), [date, locale]);
+	const fullDateTime = useMemo(() => (date === undefined ? '' : getFullDateTimeString(date, locale)), [date, locale]);
 	const datetimeAttribute = useMemo(() => {
-		if (!date) return '';
+		if (date === undefined) return '';
 		const parsedDate = new Date(date);
 		return Number.isNaN(parsedDate.getTime()) ? '' : parsedDate.toISOString();
 	}, [date]);
@@ -96,7 +98,7 @@ export function HumanizedTime({ date, updateInterval = 60_000, locale = 'en', pl
 	}, [updateInterval]);
 
 	useEffect(() => {
-		if (!date) return;
+		if (date === undefined) return;
 
 		const timer = setInterval(() => {
 			setRelativeTime(getHumanizedTimeString(date, locale));
@@ -105,7 +107,7 @@ export function HumanizedTime({ date, updateInterval = 60_000, locale = 'en', pl
 		return () => clearInterval(timer);
 	}, [date, locale, intervalMs]);
 
-	if (!date) {
+	if (date === undefined) {
 		return null;
 	}
 

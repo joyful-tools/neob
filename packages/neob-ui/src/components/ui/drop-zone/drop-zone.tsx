@@ -199,13 +199,13 @@ export function DropZone({
 			const { files } = evt.target;
 			if (!files || files.length === 0) return;
 
-			onFileDrop?.(
-				validateFiles(files, {
-					acceptedFileTypes: accept,
-					minSize,
-					maxSize,
-				}),
-			);
+			const result = validateFiles(files, {
+				acceptedFileTypes: accept,
+				minSize,
+				maxSize,
+			});
+			evt.target.value = '';
+			onFileDrop?.(result);
 		},
 		[accept, minSize, maxSize, onFileDrop],
 	);

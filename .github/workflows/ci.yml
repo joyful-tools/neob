@@ -30,7 +30,7 @@ jobs:
       - name: Install Playwright Chromium
         run: bunx playwright install --with-deps chromium
 
-      - name: Lint, typecheck, and validate Storybook interactions and accessibility
+      - name: Validate source, unit tests, Storybook, and distributable package
         run: bun run check
 
       - name: Report Storybook coverage

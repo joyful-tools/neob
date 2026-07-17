@@ -10,43 +10,44 @@ Install `neob` using your favorite package manager:
 
 ```bash
 # Using bun (recommended)
-bun add neob
+bun add @joyful-tools/neob
 
 # Using npm
-npm install neob
+npm install @joyful-tools/neob
 
 # Using pnpm
-pnpm add neob
+pnpm add @joyful-tools/neob
 ```
 
 ### Peer Dependencies
 
-Ensure the following peer dependencies are installed:
+Ensure the React peer dependencies are installed:
 
 ```bash
 # Using bun
-bun add react react-dom motion @phosphor-icons/react sonner
+bun add react react-dom
 
 # Using npm
-npm install react react-dom motion @phosphor-icons/react sonner
+npm install react react-dom
 ```
 
 ## Usage
 
-Import components and styles directly at the root of your application:
+Import components and the global stylesheet directly at the root of your application. The stylesheet is always an explicit import, regardless of whether components use root or granular imports:
 
 ```tsx
-import { Button, Card, Dialog } from 'neob';
-import 'neob/dist/index.css';
+import { Button, Card, Dialog } from '@joyful-tools/neob';
+import '@joyful-tools/neob/dist/index.css';
 ```
 
 ### Granular Imports (Tree-Shaking)
 
-To reduce your bundle size, you can import components individually:
+To reduce your bundle size, you can import components individually. The global stylesheet is still required once at the application root:
 
 ```tsx
-import { Button } from 'neob/button';
-import { Card } from 'neob/card';
+import '@joyful-tools/neob/dist/index.css';
+import { Button } from '@joyful-tools/neob/button';
+import { Card } from '@joyful-tools/neob/card';
 ```
 
 ### Tailwind CSS v4 Configuration
@@ -57,7 +58,7 @@ import { Card } from 'neob/card';
 @import 'tailwindcss';
 
 /* Ensure Tailwind compiles neob classes from node_modules */
-@source "../node_modules/neob/dist/**/*.{js,cjs}";
+@source "../node_modules/@joyful-tools/neob/dist/**/*.{js,cjs}";
 ```
 
 ## Dark & Light Mode

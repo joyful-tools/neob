@@ -94,7 +94,7 @@ function renderOptionsFromItems<T>(items: Record<string, SelectItemValue> | Read
 		});
 }
 
-export function Select<T = unknown, Multiple extends boolean | undefined = false>({
+function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 	children,
 	className,
 	renderValue,
@@ -281,7 +281,9 @@ function Separator({ className, ref }: SelectSeparatorProps) {
 }
 Separator.displayName = 'Select.Separator';
 
-Select.Option = Option;
-Select.Group = Group;
-Select.GroupLabel = GroupLabel;
-Select.Separator = Separator;
+export const Select = Object.assign(SelectRoot, {
+	Option,
+	Group,
+	GroupLabel,
+	Separator,
+});

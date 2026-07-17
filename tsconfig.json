@@ -32,7 +32,11 @@
 		"packages/neob-ui/src",
 		".storybook/**/*.ts",
 		".storybook/**/*.tsx",
+		"packages/neob-ui/public-api.ts",
+		"packages/neob-ui/scripts/**/*.ts",
+		"packages/neob-ui/vite.config.ts",
 		"packages/neob-ui/vitest.config.ts",
+		"packages/neob-ui/vitest.unit.config.ts",
 		"vitest.workspace.ts"
 	]
 }

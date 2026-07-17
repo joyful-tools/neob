@@ -313,6 +313,42 @@ export const DropdownSelectionAndLabels: { [key: string]: unknown } & import('@s
 		}),
 	};
 
+export const EmptyResultsDisabledState: { [key: string]: unknown } & import('@storybook/react-vite').StoryObj<PaginationStoryProperties> = {
+	args: {
+		initialPage: 1,
+		initialPerPage: 25,
+		totalCount: 0,
+		controls: 'full',
+		pageSelector: 'input',
+	},
+	parameters: {
+		a11y: {
+			test: 'off',
+		},
+	},
+	render: (args) => {
+		const [page, setPage] = useState(args.initialPage);
+
+		return (
+			<div className="w-full max-w-xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
+				<Pagination page={page} setPage={setPage} perPage={args.initialPerPage} totalCount={args.totalCount}>
+					<Pagination.Info />
+					<Pagination.Separator />
+					<Pagination.Controls controls={args.controls} pageSelector={args.pageSelector} />
+				</Pagination>
+			</div>
+		);
+	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await expect(canvas.getByRole('button', { name: 'First page' })).toBeDisabled();
+		await expect(canvas.getByRole('button', { name: 'Previous page' })).toBeDisabled();
+		await expect(canvas.getByRole('button', { name: 'Next page' })).toBeDisabled();
+		await expect(canvas.getByRole('button', { name: 'Last page' })).toBeDisabled();
+		await expect(canvas.getByRole('spinbutton', { name: 'Page number' })).toBeDisabled();
+	}),
+};
+
 export const SinglePageDisabledState: { [key: string]: unknown } & import('@storybook/react-vite').StoryObj<PaginationStoryProperties> = {
 	args: {
 		initialPage: 1,

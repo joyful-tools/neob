@@ -226,13 +226,13 @@ both light and dark (toolbar toggle / `.dark` wrapper, see §3).
 ## §9 — Dialogs share one global backdrop; mount it once
 
 `neob` dialogs do **not** each render their own dismiss backdrop. There is a
-single shared backdrop coordinated through a module-level stack
+single shared backdrop coordinated through a provider-scoped stack
 (`dialog/dialog-stack.ts`) and rendered by `GlobalDialogBackdrop`
 (`dialog/global-dialog-backdrop.tsx`).
 
 Rules:
 
-- Mount `<GlobalDialogBackdrop />` **exactly once** at the app root.
+- Mount `<GlobalDialogBackdrop />` **exactly once** at the app root. Wrap independent React roots with `<DialogStackProvider>` when their dialog stacks must be isolated.
 - The backdrop is always mounted and only animates opacity, so
   dialog→dialog and menu→dialog handoffs never flicker.
 - Backdrop-click closes the **top** dialog via `closeTopDialog`. Dialogs
@@ -289,8 +289,7 @@ hover styles on touch devices that lack real hover.
   via the `"./*"` export map (`neob-ui/package.json`):
   `import { Button } from 'neob/button';`. Prefer this in size-sensitive
   apps.
-- `motion`, `@phosphor-icons/react`, and `sonner` are **peer deps** — they
-  must be installed by the consumer (`README.md`), they are not bundled.
+- React and React DOM are peer dependencies. Other runtime libraries are regular package dependencies and are externalized from the bundle, so the package manager installs one shared copy.
 - Heavier components (virtualization, charts-style widgets, date pickers)
   pull more deps; lazy-load them off the critical path where possible.
 

@@ -83,7 +83,8 @@ export { Pill } from './components/ui/pill';
 export type { PillProperties } from './components/ui/pill';
 
 export { GlobalDialogBackdrop } from './components/ui/dialog';
-export { useDialogStackPresence, closeTopDialog } from './components/ui/dialog';
+export { DialogStackProvider, createDialogStackStore, useDialogStackPresence, closeTopDialog } from './components/ui/dialog';
+export type { DialogStackStore } from './components/ui/dialog';
 
 export { useInputAreaAutoResize } from './hooks/use-input-area-auto-resize';
 export type { UseInputAreaAutoResizeOptions } from './hooks/use-input-area-auto-resize';
@@ -102,7 +103,7 @@ export { Switch } from './components/ui/switch';
 export type { SwitchProperties } from './components/ui/switch';
 
 export { Select } from './components/ui/select';
-export type { SelectProps, SelectOptionProps } from './components/ui/select';
+export type { SelectProps, SelectOptionProps, SelectGroupProps, SelectGroupLabelProps, SelectSeparatorProps } from './components/ui/select';
 
 export { Combobox } from './components/ui/combobox';
 export type { ComboboxProps, ComboboxSize } from './components/ui/combobox';
@@ -167,3 +168,6 @@ export { DropMenu, DropMenuItem } from './components/ui/drop-menu';
 export { RollingDigits } from './components/ui/rolling-digits';
 export { TextScramble, TextShake, TextSkew } from './components/ui/text-animations';
 export { InView } from './components/ui/in-view';
+
+export { Freehand, FreehandFilters } from './components/ui/freehand';
+export type { FreehandFiltersProperties, FreehandProperties } from './components/ui/freehand';

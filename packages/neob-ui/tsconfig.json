@@ -2,9 +2,12 @@
 	"extends": "../../tsconfig.json",
 	"compilerOptions": {
 		"baseUrl": ".",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"esModuleInterop": true,
 		"paths": {
 			"@/*": ["./src/*"]
 		}
 	},
-	"include": ["src"]
+	"include": ["src", "scripts", "public-api.ts", "vite.config.ts", "vitest.config.ts", "vitest.unit.config.ts"]
 }

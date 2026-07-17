@@ -62,6 +62,23 @@ export default defineConfig(
 	},
 
 	{
+		files: ['packages/neob-ui/src/{hooks,lib}/**/*.{ts,tsx}'],
+		rules: {
+			'no-restricted-imports': [
+				'error',
+				{
+					patterns: [
+						{
+							group: ['@/components/**'],
+							message: 'Shared hooks and utilities must not depend on UI components.',
+						},
+					],
+				},
+			],
+		},
+	},
+
+	{
 		files: ['**/*.{ts,tsx}'],
 		ignores: ['.storybook/**/*'],
 		rules: {
