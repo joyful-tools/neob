@@ -60,7 +60,7 @@ function AccordionTrigger({
 							{...triggerProps}
 							type="button"
 							className={cn(
-								'neo-focus-ring isolate flex w-full cursor-pointer items-center justify-between py-4 text-left outline-hidden transition-colors select-none',
+								'neo-focus-ring isolate flex w-full cursor-pointer items-center justify-between py-3 text-left outline-hidden transition-colors select-none',
 								className,
 							)}
 						>
@@ -113,18 +113,29 @@ function AccordionContent({
 					<motion.div
 						{...restProps}
 						initial={false}
-						animate={{
-							height: isOpen ? 'auto' : 0,
-							opacity: isOpen ? 1 : 0,
-						}}
-						transition={{
-							type: 'spring',
-							stiffness: 800,
-							damping: 57,
+						animate={isOpen ? 'open' : 'closed'}
+						variants={{
+							open: {
+								height: 'auto',
+								transition: { type: 'spring', stiffness: 800, damping: 57 },
+							},
+							closed: {
+								height: 0,
+								transition: { type: 'spring', stiffness: 800, damping: 57 },
+							},
 						}}
 						className="overflow-hidden"
 					>
-						<div className={cn('pb-4 text-sm/relaxed text-muted-foreground', className)}>{children}</div>
+						<motion.div
+							variants={{
+								open: { y: 0, opacity: 1 },
+								closed: { y: 20, opacity: 0 },
+							}}
+							transition={{ type: 'spring', stiffness: 800, damping: 57 }}
+							className={cn('pb-4 text-sm/relaxed text-muted-foreground', className)}
+						>
+							{children}
+						</motion.div>
 					</motion.div>
 				);
 			}}

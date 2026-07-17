@@ -159,6 +159,7 @@ export default defineConfig(
 		settings: {
 			'better-tailwindcss': {
 				entryPoint: 'packages/neob-ui/src/index.css',
+				rootFontSize: 16,
 			},
 		},
 	},
