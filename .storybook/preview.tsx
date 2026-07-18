@@ -18,6 +18,7 @@ const ThemedContainer = ({ children, context }: any) => {
 
 	React.useEffect(() => {
 		const htmlElement = document.documentElement;
+		htmlElement.classList.add('neo-theme-root');
 		htmlElement.classList.toggle('dark', isDark);
 	}, [isDark]);
 
@@ -124,6 +125,7 @@ const preview: Preview = {
 
 			useEffect(() => {
 				const htmlElement = document.documentElement;
+				htmlElement.classList.add('neo-theme-root');
 				htmlElement.classList.toggle('dark', theme === 'dark');
 			}, [theme]);
 

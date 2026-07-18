@@ -240,7 +240,7 @@ function Option<T>({ children, value, disabled, className }: SelectOptionProps<T
 		>
 			<BaseSelect.ItemText className="truncate">{children}</BaseSelect.ItemText>
 			<BaseSelect.ItemIndicator className="ml-2 shrink-0">
-				<CheckIcon className="size-4 stroke-3" />
+				<CheckIcon className="size-4" weight="bold" />
 			</BaseSelect.ItemIndicator>
 		</BaseSelect.Item>
 	);

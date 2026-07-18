@@ -160,6 +160,18 @@ export default defineConfig(
 	},
 
 	storybook.configs['flat/recommended'],
+	{
+		files: ['**/*.stories.{ts,tsx}'],
+		rules: {
+			'no-restricted-syntax': [
+				'error',
+				{
+					selector: "Property[key.name='play'] > :matches(ArrowFunctionExpression, FunctionExpression)",
+					message: 'Wrap Storybook play functions with guardPlay so the interaction toolbar preference is respected.',
+				},
+			],
+		},
+	},
 
 	eslintConfigPrettier,
 

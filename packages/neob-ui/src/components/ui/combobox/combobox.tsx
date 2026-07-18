@@ -350,7 +350,7 @@ function TriggerInput({
 					iconStyles.clearRight,
 				)}
 			>
-				<XIcon size={iconStyles.iconSize} className="stroke-3" />
+				<XIcon size={iconStyles.iconSize} weight="bold" />
 			</BaseCombobox.Clear>
 
 			<BaseCombobox.Trigger
@@ -361,7 +361,7 @@ function TriggerInput({
 				)}
 			>
 				<BaseCombobox.Icon>
-					<CaretDownIcon size={iconStyles.iconSize} className="stroke-3" />
+					<CaretDownIcon size={iconStyles.iconSize} weight="bold" />
 				</BaseCombobox.Icon>
 			</BaseCombobox.Trigger>
 		</div>
@@ -482,7 +482,7 @@ function Chip({ removeLabel = 'Remove', className, children, ref, ...props }: Co
 				aria-label={removeLabel}
 				className="flex cursor-pointer rounded-sm border-0 bg-transparent p-0.5 hover:bg-black/10 data-disabled:pointer-events-none dark:hover:bg-white/10"
 			>
-				<XIcon size={10} className="stroke-3" />
+				<XIcon size={10} weight="bold" />
 			</BaseCombobox.ChipRemove>
 		</BaseCombobox.Chip>
 	);
@@ -511,7 +511,7 @@ function Item({ children, className, ref, ...props }: ComboboxItemProps) {
 		>
 			<span className="min-w-0 flex-1 wrap-break-word">{children}</span>
 			<BaseCombobox.ItemIndicator className="ml-2 shrink-0">
-				<CheckIcon className="size-4 stroke-3" />
+				<CheckIcon className="size-4" weight="bold" />
 			</BaseCombobox.ItemIndicator>
 		</BaseCombobox.Item>
 	);

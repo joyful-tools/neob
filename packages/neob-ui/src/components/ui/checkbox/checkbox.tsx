@@ -9,7 +9,7 @@ const CheckboxGroupContext = createContext<{ controlFirst?: boolean }>({ control
 
 const CHECKBOX_ROOT_CLASSES = `
 	peer relative flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center
-	rounded-xs border-2 border-black bg-white shadow-cel-sm transition-all
+	rounded-sm border-2 border-black bg-white shadow-cel-sm transition-all
 	duration-300 ease-spring
 	outline-hidden neo-focus-ring isolate
 	data-[checked]:bg-black data-[checked]:text-white
@@ -64,8 +64,8 @@ function CheckboxRoot({ label, description, controlFirst = true, error, classNam
 				className="flex items-center justify-center text-current data-indeterminate:[&>svg:first-child]:hidden data-unchecked:[&>svg:first-child]:hidden data-indeterminate:[&>svg:last-child]:block"
 				keepMounted
 			>
-				<CheckIcon className="size-3.5 stroke-3" />
-				<MinusIcon className="hidden size-3.5 stroke-3" />
+				<CheckIcon className="size-3.5" weight="bold" />
+				<MinusIcon className="hidden size-3.5" weight="bold" />
 			</BaseCheckbox.Indicator>
 		</BaseCheckbox.Root>
 	);
