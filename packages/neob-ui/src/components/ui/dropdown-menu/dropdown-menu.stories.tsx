@@ -44,11 +44,6 @@ export const Default: Story = {
 	args: {
 		triggerLabel: 'Open Account Menu',
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args) => {
 		return (
 			<DropdownMenu>
@@ -66,7 +61,10 @@ export const Default: Story = {
 					<DropdownMenu.Separator />
 					<DropdownMenu.Item disabled>Developer API (Beta)</DropdownMenu.Item>
 					<DropdownMenu.Separator />
-					<DropdownMenu.Item className="text-red focus:bg-red focus:text-white" onSelect={() => action('dropdown-sign-out')()}>
+					<DropdownMenu.Item
+						className="text-red-dark focus:bg-red focus:text-black dark:text-red-light"
+						onSelect={() => action('dropdown-sign-out')()}
+					>
 						Sign Out
 					</DropdownMenu.Item>
 				</DropdownMenu.Content>
@@ -77,7 +75,7 @@ export const Default: Story = {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
 		await userEvent.click(canvas.getByRole('button', { name: 'Open Account Menu' }));
-		await expect(body.getByText('Account Settings')).toBeInTheDocument();
-		await expect(body.getByText('View Profile')).toBeInTheDocument();
+		await expect(await body.findByText('Account Settings')).toBeInTheDocument();
+		await expect(await body.findByText('View Profile')).toBeInTheDocument();
 	}),
 };

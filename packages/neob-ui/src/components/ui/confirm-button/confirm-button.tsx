@@ -169,8 +169,7 @@ export function ConfirmButton({
 							'origin-center',
 						)}
 						role="dialog"
-						aria-modal="true"
-						aria-labelledby={titleId}
+						aria-label={title}
 						aria-describedby={description ? descriptionId : undefined}
 						onKeyDown={handleKeyDown}
 					>

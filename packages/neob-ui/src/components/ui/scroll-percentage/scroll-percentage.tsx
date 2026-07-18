@@ -37,26 +37,14 @@ export function useScrollPercentage(axis: 'x' | 'y' = 'y', containerRef?: RefObj
 		// Initial calculation
 		calcScrollPercentage();
 
-		let timeoutId: ReturnType<typeof setTimeout> | null = null;
-		let lastCall = 0;
+		let animationFrameId: number | undefined;
 
 		const handleScroll = () => {
-			const now = Date.now();
-			const throttleMs = 50;
-
-			if (now - lastCall >= throttleMs) {
+			if (animationFrameId !== undefined) return;
+			animationFrameId = requestAnimationFrame(() => {
+				animationFrameId = undefined;
 				calcScrollPercentage();
-				lastCall = now;
-			} else {
-				if (timeoutId) clearTimeout(timeoutId);
-				timeoutId = setTimeout(
-					() => {
-						calcScrollPercentage();
-						lastCall = Date.now();
-					},
-					throttleMs - (now - lastCall),
-				);
-			}
+			});
 		};
 
 		// If element is document.documentElement, we attach the scroll listener to window
@@ -67,7 +55,7 @@ export function useScrollPercentage(axis: 'x' | 'y' = 'y', containerRef?: RefObj
 		return () => {
 			target.removeEventListener('scroll', handleScroll);
 			window.removeEventListener('resize', calcScrollPercentage);
-			if (timeoutId) clearTimeout(timeoutId);
+			if (animationFrameId !== undefined) cancelAnimationFrame(animationFrameId);
 		};
 	}, [axis, containerRef]);
 

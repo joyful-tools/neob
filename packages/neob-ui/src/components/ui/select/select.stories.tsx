@@ -49,11 +49,6 @@ export const Default: Story = {
 		placeholder: 'Select a fruit',
 		'aria-label': 'Fruit selection',
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args) => {
 		const [val, setVal] = useState(args.initialValue ?? '');
 		return (
@@ -116,11 +111,6 @@ export const ItemsProp: Story = {
 			strawberry: 'Strawberry',
 		},
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args) => {
 		const [val, setVal] = useState(args.initialValue ?? '');
 		return (
@@ -154,11 +144,6 @@ export const Labeled: Story = {
 		label: 'Fruit Selection',
 		description: 'Choose your favorite fruit from the list.',
 		placeholder: 'Select a fruit',
-	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
 	},
 	render: (args) => {
 		const [val, setVal] = useState(args.initialValue ?? '');
@@ -197,11 +182,6 @@ export const Groups: Story = {
 		initialValue: 'light',
 		placeholder: 'Select a theme',
 		'aria-label': 'Theme selection',
-	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
 	},
 	render: (args) => {
 		return (

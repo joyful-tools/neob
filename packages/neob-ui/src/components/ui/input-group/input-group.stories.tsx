@@ -137,9 +137,10 @@ export const Numeric: Story = {
 					/>
 					<InputGroup.Addon align="end">
 						<NumericSlider
-							onChange={(delta) => {
-								action('input-group-numeric-slider-change')(delta);
-								setValue((previous) => Math.round((previous + delta) * 100) / 100);
+							value={value}
+							onChange={(nextValue) => {
+								action('input-group-numeric-slider-change')(nextValue);
+								setValue(Math.round(nextValue * 100) / 100);
 							}}
 						/>
 					</InputGroup.Addon>

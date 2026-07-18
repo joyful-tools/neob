@@ -51,11 +51,6 @@ export const DefaultCompound: { [key: string]: unknown } & import('@storybook/re
 		controls: 'full',
 		pageSelector: 'input',
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args) => {
 		const [page, setPage] = useState(args.initialPage);
 		const [perPage, setPerPage] = useState(args.initialPerPage);
@@ -100,11 +95,6 @@ export const SimpleControls: { [key: string]: unknown } & import('@storybook/rea
 		totalCount: 50,
 		controls: 'simple',
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args) => {
 		const [page, setPage] = useState(args.initialPage);
 
@@ -143,11 +133,6 @@ export const DropdownSelector: { [key: string]: unknown } & import('@storybook/r
 		controls: 'full',
 		pageSelector: 'dropdown',
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args) => {
 		const [page, setPage] = useState(args.initialPage);
 
@@ -184,11 +169,6 @@ export const InputClampingAndPageSize: { [key: string]: unknown } & import('@sto
 		totalCount: 325,
 		controls: 'full',
 		pageSelector: 'input',
-	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
 	},
 	render: (args) => {
 		const [page, setPage] = useState(args.initialPage);
@@ -256,11 +236,6 @@ export const DropdownSelectionAndLabels: { [key: string]: unknown } & import('@s
 			controls: 'full',
 			pageSelector: 'dropdown',
 		},
-		parameters: {
-			a11y: {
-				test: 'off',
-			},
-		},
 		render: (args) => {
 			const [page, setPage] = useState(args.initialPage);
 
@@ -321,11 +296,6 @@ export const EmptyResultsDisabledState: { [key: string]: unknown } & import('@st
 		controls: 'full',
 		pageSelector: 'input',
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args) => {
 		const [page, setPage] = useState(args.initialPage);
 
@@ -356,11 +326,6 @@ export const SinglePageDisabledState: { [key: string]: unknown } & import('@stor
 		totalCount: 10,
 		controls: 'full',
 		pageSelector: 'input',
-	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
 	},
 	render: (args) => {
 		const [page, setPage] = useState(args.initialPage);

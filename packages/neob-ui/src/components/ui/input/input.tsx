@@ -17,6 +17,7 @@ export interface InputWrapperProperties extends ComponentPropsWithoutRef<typeof 
 	readonly children: ReactNode;
 	readonly descriptionId?: string;
 	readonly errorId?: string;
+	readonly controlId?: string;
 }
 
 export interface FieldsetProperties extends ComponentPropsWithoutRef<typeof BaseFieldset.Root> {
@@ -50,6 +51,7 @@ function InputWrapper({
 	children,
 	descriptionId,
 	errorId,
+	controlId,
 	...properties
 }: InputWrapperProperties) {
 	const showOptional = required === false;
@@ -57,7 +59,10 @@ function InputWrapper({
 	return (
 		<BaseField.Root className={cn('flex w-full flex-col gap-2', controlFirst && 'flex-col-reverse', className)} {...properties}>
 			{!hideLabel && label && (
-				<BaseField.Label className="m-0 flex items-center gap-1.5 p-0 text-sm font-bold text-black select-none dark:text-white">
+				<BaseField.Label
+					htmlFor={controlId}
+					className="m-0 flex items-center gap-1.5 p-0 text-sm font-bold text-black select-none dark:text-white"
+				>
 					<span>
 						{label}
 						{showOptional && <span className="text-xs font-normal text-muted-foreground"> (optional)</span>}
@@ -80,16 +85,15 @@ function InputWrapper({
 
 			<div className="w-full">{children}</div>
 
-			{error ? (
-				<BaseField.Error id={errorId} className="text-xs/normal font-bold text-red-dark dark:text-red-light" render={<span />}>
+			{description && (
+				<BaseField.Description id={descriptionId} className="text-xs/normal text-muted-foreground">
+					{description}
+				</BaseField.Description>
+			)}
+			{error && (
+				<BaseField.Error id={errorId} match className="text-xs/normal font-bold text-red-dark dark:text-red-light" render={<span />}>
 					{error}
 				</BaseField.Error>
-			) : (
-				description && (
-					<BaseField.Description id={descriptionId} className="text-xs/normal text-muted-foreground">
-						{description}
-					</BaseField.Description>
-				)
 			)}
 		</BaseField.Root>
 	);
@@ -148,6 +152,8 @@ function InputRoot({
 	containerClassName,
 	...properties
 }: InputProperties) {
+	const generatedInputId = useId();
+	const inputId = properties.id ?? generatedInputId;
 	const descriptionId = useId();
 	const errorId = useId();
 	const hasDescription = Boolean(description);
@@ -157,7 +163,9 @@ function InputRoot({
 
 	const rawInput = (
 		<input
+			id={inputId}
 			type={type}
+			data-neo-number-input={type === 'number' ? '' : undefined}
 			required={required}
 			onBlur={(event) => {
 				event.target.scrollLeft = 0;
@@ -186,6 +194,7 @@ function InputRoot({
 				hideLabel={hideLabel}
 				descriptionId={descriptionId}
 				errorId={errorId}
+				controlId={inputId}
 				className={containerClassName}
 			>
 				{rawInput}

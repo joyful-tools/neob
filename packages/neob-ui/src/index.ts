@@ -44,7 +44,16 @@ export { Toggle } from './components/ui/toggle';
 
 export { AnimatedNumber } from './components/ui/animated-number';
 
+export { Cursor } from './components/ui/cursor';
+export type { CursorProperties } from './components/ui/cursor';
+
+export { ExternalLink } from './components/ui/external-link';
+export type { ExternalLinkProperties } from './components/ui/external-link';
+
 export { GridBackground } from './components/ui/grid-background';
+
+export { HoverInfo } from './components/ui/hover-info';
+export type { HoverInfoProperties } from './components/ui/hover-info';
 
 export { Tooltip } from './components/ui/tooltip';
 
@@ -166,7 +175,9 @@ export { useScrollPercentage, ScrollPercentage } from './components/ui/scroll-pe
 export { TypeWords } from './components/ui/type-words';
 export { DropMenu, DropMenuItem } from './components/ui/drop-menu';
 export { RollingDigits } from './components/ui/rolling-digits';
-export { TextScramble, TextShake, TextSkew } from './components/ui/text-animations';
+export { TextScramble, TextShake, TextSkew, TextWave } from './components/ui/text-animations';
+export { TextError } from './components/ui/text-error';
+export type { TextErrorProperties } from './components/ui/text-error';
 export { InView } from './components/ui/in-view';
 
 export { Freehand, FreehandFilters } from './components/ui/freehand';

@@ -134,6 +134,7 @@ export function InputGroup({
 				hideLabel={hideLabel}
 				descriptionId={descriptionId}
 				errorId={errorId}
+				controlId={inputId}
 				className={containerClassName}
 			>
 				{rawControl}
@@ -168,6 +169,7 @@ function InputGroupInput({ className, type = 'text', ref, onBlur, ...properties 
 		<input
 			id={inputId}
 			type={type}
+			data-neo-number-input={type === 'number' ? '' : undefined}
 			disabled={disabled}
 			ref={handleRef}
 			aria-describedby={describedBy}
@@ -264,6 +266,12 @@ function InputGroupSuffix({ children, className, ...properties }: InputGroupSuff
 		</span>
 	);
 }
+
+InputGroup.displayName = 'InputGroup';
+InputGroupInput.displayName = 'InputGroup.Input';
+InputGroupAddon.displayName = 'InputGroup.Addon';
+InputGroupButton.displayName = 'InputGroup.Button';
+InputGroupSuffix.displayName = 'InputGroup.Suffix';
 
 InputGroup.Input = InputGroupInput;
 InputGroup.Addon = InputGroupAddon;

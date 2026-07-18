@@ -131,11 +131,6 @@ export const WithLabelTooltip: Story = {
 		labelTooltip: 'This is your unique government-issued identity identifier, used for tax purposes.',
 		placeholder: '000-00-0000',
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args) => (
 		<div className="w-80">
 			<Input {...args} />

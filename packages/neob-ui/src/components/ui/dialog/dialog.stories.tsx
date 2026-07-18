@@ -56,11 +56,6 @@ export const Default: Story = {
 		description: 'This is a description of what this dialog is for.',
 		body: 'Dialog content goes here.',
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args) => {
 		const [open, setOpen] = useState(false);
 		return (

@@ -89,10 +89,11 @@ export function HumanizedTime({ date, updateInterval = 60_000, locale = 'en', pl
 
 	const intervalMs = useMemo(() => {
 		if (typeof updateInterval === 'number') {
-			return updateInterval;
+			return Number.isFinite(updateInterval) ? Math.max(1000, updateInterval) : 60_000;
 		}
 		if (updateInterval && typeof updateInterval.total === 'function') {
-			return updateInterval.total({ unit: 'milliseconds' });
+			const total = updateInterval.total({ unit: 'milliseconds' });
+			return Number.isFinite(total) ? Math.max(1000, total) : 60_000;
 		}
 		return 60_000;
 	}, [updateInterval]);
@@ -100,11 +101,22 @@ export function HumanizedTime({ date, updateInterval = 60_000, locale = 'en', pl
 	useEffect(() => {
 		if (date === undefined) return;
 
-		const timer = setInterval(() => {
-			setRelativeTime(getHumanizedTimeString(date, locale));
-		}, intervalMs);
+		let timer: ReturnType<typeof setInterval> | undefined;
+		const update = () => setRelativeTime(getHumanizedTimeString(date, locale));
+		const updateTimer = () => {
+			clearInterval(timer);
+			if (!document.hidden) {
+				update();
+				timer = setInterval(update, intervalMs);
+			}
+		};
 
-		return () => clearInterval(timer);
+		updateTimer();
+		document.addEventListener('visibilitychange', updateTimer);
+		return () => {
+			clearInterval(timer);
+			document.removeEventListener('visibilitychange', updateTimer);
+		};
 	}, [date, locale, intervalMs]);
 
 	if (date === undefined) {

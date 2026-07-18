@@ -40,5 +40,6 @@ export function Meter({
 		</BaseMeter.Root>
 	);
 }
+Meter.displayName = 'Meter';
 
 export type { MeterProperties };

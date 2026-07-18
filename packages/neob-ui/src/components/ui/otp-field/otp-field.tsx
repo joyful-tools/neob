@@ -423,6 +423,9 @@ function HiddenInput() {
 	return <input type="hidden" name={name} value={value.join('')} />;
 }
 
+OTPFieldRoot.displayName = 'OTPField';
+OTPFieldInput.displayName = 'OTPField.Input';
+
 export const OTPField = Object.assign(OTPFieldRoot, {
 	Input: OTPFieldInput,
 });

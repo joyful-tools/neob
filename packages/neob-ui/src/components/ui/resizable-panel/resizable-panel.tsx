@@ -32,7 +32,7 @@ export function ResizablePanel({
 	className,
 	handlePosition = 'end',
 }: ResizablePanelProperties) {
-	const [size, setSize] = useState(defaultSize);
+	const [size, setSize] = useState(() => Math.min(maxSize, Math.max(minSize, defaultSize)));
 	const [isResizing, setIsResizing] = useState(false);
 	const [isHandleHovered, setIsHandleHovered] = useState(false);
 	const panelReference = useRef<HTMLDivElement>(null);
@@ -184,3 +184,4 @@ export function ResizablePanel({
 		</div>
 	);
 }
+ResizablePanel.displayName = 'ResizablePanel';

@@ -37,6 +37,7 @@ export interface SelectProps<T = unknown, Multiple extends boolean | undefined =
 	error?: string;
 	container?: HTMLElement | null | RefObject<HTMLElement | null>;
 	containerClassName?: string;
+	popupClassName?: string;
 	items?: Record<string, SelectItemValue> | ReadonlyArray<{ label: ReactNode; value: T }>;
 }
 
@@ -111,6 +112,7 @@ function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 	required,
 	container,
 	containerClassName,
+	popupClassName,
 	...props
 }: SelectProps<T, Multiple>) {
 	const normalizedItems = props.items ? normalizeItems(props.items) : undefined;
@@ -137,6 +139,7 @@ function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 
 	const { items: _items, ...baseProps } = props;
 
+	const triggerId = useId();
 	const descriptionId = useId();
 	const errorId = useId();
 	const hasDescription = Boolean(description);
@@ -147,6 +150,7 @@ function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 	const selectControl = (
 		<BaseSelect.Root {...baseProps} items={normalizedItems} disabled={loading || props.disabled}>
 			<BaseSelect.Trigger
+				id={triggerId}
 				className={cn(
 					buttonVariants({ size }),
 					'w-full justify-between bg-white font-bold text-black dark:bg-zinc dark:text-white',
@@ -159,6 +163,7 @@ function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 				aria-label={ariaLabel}
 				aria-labelledby={ariaLabelledby}
 				aria-invalid={hasError ? true : undefined}
+				aria-busy={loading || undefined}
 			>
 				{loading ? (
 					<Skeleton className="h-4 w-24" />
@@ -177,10 +182,13 @@ function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 						className={cn(
 							'flex flex-col overflow-hidden rounded-xl border-2 border-black bg-white p-2 text-black shadow-sm dark:bg-zinc dark:text-white',
 							'max-h-[min(300px,var(--available-height))] min-w-[calc(var(--anchor-width)+4px)]',
-							containerClassName,
+							popupClassName,
 						)}
 					>
-						<BaseSelect.List className="flex min-h-0 flex-1 scroll-py-2 flex-col gap-1 overflow-y-auto overscroll-none">
+						<BaseSelect.List
+							aria-label={ariaLabel ?? 'Options'}
+							className="flex min-h-0 flex-1 scroll-py-2 flex-col gap-1 overflow-y-auto overscroll-none"
+						>
 							{renderedChildren}
 						</BaseSelect.List>
 					</BaseSelect.Popup>
@@ -200,6 +208,7 @@ function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 				hideLabel={hideLabel}
 				descriptionId={descriptionId}
 				errorId={errorId}
+				controlId={triggerId}
 				className={containerClassName}
 			>
 				{selectControl}
@@ -277,7 +286,7 @@ export interface SelectSeparatorProps {
 }
 
 function Separator({ className, ref }: SelectSeparatorProps) {
-	return <BaseSelect.Separator ref={ref} className={cn('-mx-1 my-1 h-px bg-black/10 dark:bg-white/10', className)} />;
+	return <BaseSelect.Separator ref={ref} role="presentation" className={cn('-mx-1 my-1 h-px bg-black/10 dark:bg-white/10', className)} />;
 }
 Separator.displayName = 'Select.Separator';
 

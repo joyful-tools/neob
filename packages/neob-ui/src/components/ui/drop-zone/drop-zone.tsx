@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import {
 	ChangeEvent,
 	DragEvent as ReactDragEvent,
+	ButtonHTMLAttributes,
 	HTMLAttributes,
 	ReactNode,
 	useCallback,
@@ -143,7 +144,11 @@ export function isDragEventWithFiles(event: ReactDragEvent | DragEvent): boolean
 }
 
 export interface DropZoneProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-	readonly children?: (props: { dragging: boolean; openFilePicker: () => void }) => ReactNode;
+	readonly children?: (props: {
+		dragging: boolean;
+		openFilePicker: () => void;
+		triggerProps: ButtonHTMLAttributes<HTMLButtonElement>;
+	}) => ReactNode;
 	readonly info?: ReactNode;
 	readonly fullscreen?: boolean | string | HTMLElement;
 	readonly accept?: string[];
@@ -193,6 +198,10 @@ export function DropZone({
 	const openFilePicker = useCallback(() => {
 		fileInputRef.current?.click();
 	}, []);
+	const triggerProps: ButtonHTMLAttributes<HTMLButtonElement> = {
+		type: 'button',
+		onClick: openFilePicker,
+	};
 
 	const handleInputChange = useCallback(
 		(evt: ChangeEvent<HTMLInputElement>) => {
@@ -319,16 +328,17 @@ export function DropZone({
 				ref={fileInputRef}
 				name={name}
 				type="file"
+				aria-label="Upload files"
 				accept={accept?.join(',')}
 				multiple={multiple}
 				autoComplete="off"
 				onChange={handleInputChange}
 				tabIndex={-1}
-				className="hidden"
+				className="sr-only"
 			/>
 			{fullscreenElement ? createPortal(overlay, fullscreenElement) : overlay}
 			{/* eslint-disable-next-line react-hooks/refs */}
-			{children({ dragging, openFilePicker })}
+			{children?.({ dragging, openFilePicker, triggerProps })}
 		</div>
 	);
 }

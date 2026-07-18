@@ -222,6 +222,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						<div className="neo-focus-ring-focus isolate -ml-0.5 flex h-8 items-center justify-center rounded-none border-2 border-black bg-white shadow-cel-sm outline-hidden transition-all duration-300 ease-spring select-none focus-within:z-10 dark:border-black dark:bg-zinc">
 							<input
 								type="number"
+								data-neo-number-input=""
 								disabled={maxPage <= 1}
 								className={cn(
 									'h-full w-12 border-0 bg-transparent p-0 text-center text-xs font-bold text-foreground outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed',

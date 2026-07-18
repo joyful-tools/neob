@@ -44,11 +44,6 @@ export const Default: Story = {
 		side: 'top',
 		children: <Button variant="subtle">Hover Me</Button>,
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		await userEvent.hover(canvas.getByRole('button', { name: 'Hover Me' }));
@@ -59,11 +54,6 @@ export const Default: Story = {
 export const GatedTouch: Story = {
 	args: {
 		content: 'Success! Long press worked.',
-	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
 	},
 	render: (args) => (
 		<div className="flex flex-col items-center gap-4 p-8">
@@ -86,11 +76,6 @@ export const GatedTouch: Story = {
 export const TouchLongPressBehavior: Story = {
 	args: {
 		content: 'Long press confirmed.',
-	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
 	},
 	render: (args) => (
 		<div className="flex flex-col items-center gap-4 p-8">

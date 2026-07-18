@@ -98,11 +98,6 @@ export const AllVariants: Story = {
 			{ label: 'Warning', variant: 'default', kind: 'warning', title: 'Careful!', description: 'This action may have side effects.' },
 		],
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args) => (
 		<div className="flex flex-wrap items-center gap-3">
 			{args.buttons.map((button) => (
@@ -151,11 +146,6 @@ export const WithActions: Story = {
 			},
 		],
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args) => (
 		<div className="flex flex-wrap items-center gap-3">
 			{args.buttons.map((button) => (
@@ -181,11 +171,6 @@ export const Minimal: Story = {
 			{ label: 'Success Title Only', variant: 'accent', kind: 'success', title: 'Saved' },
 			{ label: 'Error Title Only', variant: 'danger', kind: 'error', title: 'Failed' },
 		],
-	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
 	},
 	render: (args) => (
 		<div className="flex flex-wrap items-center gap-3">
@@ -228,11 +213,6 @@ export const VariantDismissal: Story = {
 				description: 'Planned maintenance starts in 15 minutes.',
 			},
 		],
-	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
 	},
 	render: (args) => (
 		<div className="flex flex-wrap items-center gap-3">
@@ -299,11 +279,6 @@ export const MixedActionsAndClosePaths: Story = {
 				description: 'A network error interrupted the upload.',
 			},
 		],
-	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
 	},
 	render: (args) => (
 		<div className="flex flex-wrap items-center gap-3">

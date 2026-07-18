@@ -81,27 +81,17 @@ const PublishButton = ({ children, menuContent: _menuContent, ...props }: Compon
 };
 
 export const Default: Story = {
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args) => <PublishButton {...args} />,
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
 		await userEvent.click(canvas.getByRole('button', { name: 'more options' }));
-		const menuItem = body.getByText('Save as Draft');
+		const menuItem = await body.findByText('Save as Draft');
 		await expect(menuItem).toBeInTheDocument();
 	}),
 };
 
 export const Accent: Story = {
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	args: {
 		variant: 'accent',
 	},
@@ -110,17 +100,12 @@ export const Accent: Story = {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
 		await userEvent.click(canvas.getByRole('button', { name: 'more options' }));
-		const menuItem = body.getByText('Schedule Publish');
+		const menuItem = await body.findByText('Schedule Publish');
 		await expect(menuItem).toBeInTheDocument();
 	}),
 };
 
 export const Danger: Story = {
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	args: {
 		variant: 'danger',
 	},
@@ -129,17 +114,12 @@ export const Danger: Story = {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
 		await userEvent.click(canvas.getByRole('button', { name: 'more options' }));
-		const menuItem = body.getByText('Archive Post');
+		const menuItem = await body.findByText('Archive Post');
 		await expect(menuItem).toBeInTheDocument();
 	}),
 };
 
 export const Subtle: Story = {
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	args: {
 		variant: 'subtle',
 	},
@@ -148,17 +128,12 @@ export const Subtle: Story = {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
 		await userEvent.click(canvas.getByRole('button', { name: 'more options' }));
-		const menuItem = body.getByText('Save as Draft');
+		const menuItem = await body.findByText('Save as Draft');
 		await expect(menuItem).toBeInTheDocument();
 	}),
 };
 
 export const Small: Story = {
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	args: {
 		size: 'sm',
 		variant: 'accent',
@@ -168,17 +143,12 @@ export const Small: Story = {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
 		await userEvent.click(canvas.getByRole('button', { name: 'more options' }));
-		const menuItem = body.getByText('Save as Draft');
+		const menuItem = await body.findByText('Save as Draft');
 		await expect(menuItem).toBeInTheDocument();
 	}),
 };
 
 export const Large: Story = {
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	args: {
 		size: 'lg',
 	},
@@ -187,7 +157,7 @@ export const Large: Story = {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
 		await userEvent.click(canvas.getByRole('button', { name: 'more options' }));
-		const menuItem = body.getByText('Schedule Publish');
+		const menuItem = await body.findByText('Schedule Publish');
 		await expect(menuItem).toBeInTheDocument();
 	}),
 };

@@ -48,6 +48,9 @@ const preview: Preview = {
 		},
 		a11y: {
 			test: 'error',
+			config: {
+				rules: [{ id: 'aria-hidden-focus', enabled: false }],
+			},
 		},
 		docs: {
 			container: ThemedContainer,

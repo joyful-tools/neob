@@ -19,3 +19,4 @@ export function GridBackground({ className, variant = 'default' }: GridBackgroun
 		/>
 	);
 }
+GridBackground.displayName = 'GridBackground';

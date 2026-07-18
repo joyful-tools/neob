@@ -21,6 +21,7 @@ export function InView({ children, once = false, root, rootMargin = '0px', thres
 		const element = containerRef.current;
 		if (!element) return;
 
+		let visibilityTimeout: ReturnType<typeof setTimeout> | undefined;
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				if (!entry) return;
@@ -31,7 +32,8 @@ export function InView({ children, once = false, root, rootMargin = '0px', thres
 
 				if (isIntersecting) {
 					// Hack: this is a Safari workaround, otherwise the element will not be rendered before the transition starts
-					setTimeout(() => {
+					clearTimeout(visibilityTimeout);
+					visibilityTimeout = setTimeout(() => {
 						setVisibility('visible');
 					}, 0);
 
@@ -39,6 +41,7 @@ export function InView({ children, once = false, root, rootMargin = '0px', thres
 						observer.unobserve(element);
 					}
 				} else {
+					clearTimeout(visibilityTimeout);
 					setVisibility('hidden');
 				}
 			},
@@ -50,7 +53,10 @@ export function InView({ children, once = false, root, rootMargin = '0px', thres
 		);
 
 		observer.observe(element);
-		return () => observer.disconnect();
+		return () => {
+			clearTimeout(visibilityTimeout);
+			observer.disconnect();
+		};
 	}, [once, root, rootMargin, threshold, onviewchange]);
 
 	return <div ref={containerRef}>{children({ inView, visibility })}</div>;

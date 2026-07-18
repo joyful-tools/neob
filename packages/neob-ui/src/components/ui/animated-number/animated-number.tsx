@@ -1,6 +1,8 @@
 import { animate, motion, useMotionValue, useTransform } from 'motion/react';
 import { useEffect } from 'react';
 
+import { usePrefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';
+
 interface AnimatedNumberProperties {
 	readonly value: number;
 	readonly className?: string;
@@ -13,10 +15,11 @@ interface AnimatedNumberProperties {
  */
 export function AnimatedNumber({ value, className, duration = 0.6, instant = false }: AnimatedNumberProperties) {
 	const motionValue = useMotionValue(value);
+	const prefersReducedMotion = usePrefersReducedMotion();
 	const display = useTransform(motionValue, (current: number) => Math.round(current));
 
 	useEffect(() => {
-		if (instant) {
+		if (instant || prefersReducedMotion) {
 			motionValue.set(value);
 			return;
 		}
@@ -25,7 +28,8 @@ export function AnimatedNumber({ value, className, duration = 0.6, instant = fal
 			ease: 'easeOut',
 		});
 		return () => controls.stop();
-	}, [motionValue, value, duration, instant]);
+	}, [motionValue, value, duration, instant, prefersReducedMotion]);
 
 	return <motion.span className={className}>{display}</motion.span>;
 }
+AnimatedNumber.displayName = 'AnimatedNumber';

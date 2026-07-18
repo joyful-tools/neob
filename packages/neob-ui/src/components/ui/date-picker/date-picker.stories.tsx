@@ -164,11 +164,6 @@ export const MonthYearNavigation = {
 		mode: 'single',
 		initialSelected: new Date(2026, 4, 15),
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args: DatePickerSingleStoryProperties) => {
 		const [date, setDate] = useState<Date | undefined>(args.initialSelected);
 		return (

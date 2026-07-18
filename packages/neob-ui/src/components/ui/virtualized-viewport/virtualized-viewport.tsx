@@ -29,6 +29,8 @@ export interface VirtualizedViewportProps<T> {
 	readonly getItemKey?: (item: T, index: number) => string | number;
 	/** Tab index of the scroll container. Defaults to 0 for accessibility. */
 	readonly tabIndex?: number;
+	/** Accessible label for the focusable scroll region. */
+	readonly 'aria-label'?: string;
 	/** Optional callback fired when the rendered or visible item ranges change. */
 	readonly onRangeChange?: (range: { startIndex: number; endIndex: number; firstVisibleIndex: number; lastVisibleIndex: number }) => void;
 }
@@ -156,6 +158,7 @@ export function VirtualizedViewport<T>({
 	viewportRef,
 	getItemKey,
 	tabIndex = 0,
+	'aria-label': ariaLabel = 'Scrollable content',
 	onRangeChange,
 }: VirtualizedViewportProps<T>) {
 	const localViewportRef = useRef<HTMLDivElement | null>(null);
@@ -176,6 +179,15 @@ export function VirtualizedViewport<T>({
 	const [sizeMap, setSizeMap] = useState<Map<string | number, number>>(() => new Map());
 	const [viewportHeight, setViewportHeight] = useState(0);
 	const [scrollTop, setScrollTop] = useState(0);
+	const scrollRafIdRef = useRef<number | null>(null);
+
+	useEffect(() => {
+		return () => {
+			if (scrollRafIdRef.current !== null) {
+				cancelAnimationFrame(scrollRafIdRef.current);
+			}
+		};
+	}, []);
 
 	const itemsRef = useRef(items);
 	const getItemKeyRef = useRef(getItemKey || ((item: T, idx: number) => getItemKeyDefault(item, idx)));
@@ -396,7 +408,13 @@ export function VirtualizedViewport<T>({
 
 	const handleScroll = (event: UIEvent<HTMLDivElement>) => {
 		const nextScroll = event.currentTarget.scrollTop;
-		setScrollTop(nextScroll);
+		if (scrollRafIdRef.current !== null) {
+			cancelAnimationFrame(scrollRafIdRef.current);
+		}
+		scrollRafIdRef.current = requestAnimationFrame(() => {
+			scrollRafIdRef.current = null;
+			setScrollTop(nextScroll);
+		});
 		// Invalidate any captured anchor so size measurements re-anchor from the
 		// up-to-date scroll position instead of a stale offset captured earlier.
 		anchorRef.current = null;
@@ -444,6 +462,8 @@ export function VirtualizedViewport<T>({
 			style={style}
 			onScroll={handleScroll}
 			tabIndex={tabIndex}
+			role="region"
+			aria-label={ariaLabel}
 		>
 			<div style={{ height: totalHeight, position: 'relative', width: '100%' }}>
 				{/* Spacer Top */}

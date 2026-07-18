@@ -15,13 +15,8 @@ import {
 } from 'react';
 
 import { buttonVariants } from '@/components/ui/button';
+import { useDialogStackPresence } from '@/components/ui/dialog/dialog-stack';
 import { cn } from '@/lib/utilities';
-
-const OVERLAY_CLASS_NAME = `
-	fixed inset-0 z-50 bg-black/35 backdrop-blur-xs
-	data-[closed]:animate-overlay-out
-	data-[open]:animate-overlay-in
-`;
 
 const CONTENT_CLASS_NAME = `
 	relative grid w-full max-w-[calc(100vw-2rem)] gap-4 rounded-xl
@@ -93,6 +88,8 @@ function AlertDialogRoot({ children, open: controlledOpen, defaultOpen, onOpenCh
 	const isControlled = controlledOpen !== undefined;
 	const open = isControlled ? controlledOpen : uncontrolledOpen;
 
+	useDialogStackPresence(open);
+
 	const handleOpenChange = useCallback(
 		(nextOpen: boolean) => {
 			if (!isControlled) {
@@ -132,13 +129,12 @@ function AlertDialogContent({ className, children, ref, onAnimationEnd, ...prope
 		<AnimatePresence onExitComplete={onAnimationEnd}>
 			{open && (
 				<AlertDialogPrimitive.Portal keepMounted>
-					<AlertDialogPrimitive.Backdrop className={OVERLAY_CLASS_NAME} />
-					<div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4">
+					<div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4">
 						<AlertDialogPrimitive.Popup
 							ref={ref}
 							render={
 								<motion.div
-									className={cn(CONTENT_CLASS_NAME, className)}
+									className={cn(CONTENT_CLASS_NAME, 'pointer-events-auto', className)}
 									initial={MOTION_VARIANTS.initial}
 									animate={MOTION_VARIANTS.animate}
 									exit={MOTION_VARIANTS.exit}

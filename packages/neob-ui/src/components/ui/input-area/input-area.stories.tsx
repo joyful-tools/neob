@@ -136,11 +136,6 @@ export const WithValidationWrapper: Story = {
 		required: true,
 		placeholder: 'Write release notes...',
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args) => (
 		<div className="w-96">
 			<InputArea {...args} />
@@ -151,8 +146,12 @@ export const WithValidationWrapper: Story = {
 		const textarea = canvas.getByRole('textbox');
 		const describedBy = textarea.getAttribute('aria-describedby');
 
-		await expect(canvas.queryByText('Add the internal context for this release.')).not.toBeInTheDocument();
-		await expect(canvas.queryByText('Notes must include at least one deployment step.')).not.toBeInTheDocument();
+		const description = canvas.getByText('Add the internal context for this release.');
+		const error = canvas.getByText('Notes must include at least one deployment step.');
+		await expect(description).toBeInTheDocument();
+		await expect(error).toBeInTheDocument();
+		await expect(describedBy).toContain(description.id);
+		await expect(describedBy).toContain(error.id);
 		await expect(textarea).toHaveAttribute('aria-invalid', 'true');
 		await expect(textarea).toBeRequired();
 		await expect(describedBy).toBeTruthy();

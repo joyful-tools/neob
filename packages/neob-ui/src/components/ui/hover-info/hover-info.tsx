@@ -30,7 +30,7 @@ export function HoverInfo({ height = '2rem', className, children, ref, ...proper
 	const handleBlur = (event: React.FocusEvent) => {
 		// Only close if focus leaves the container entirely
 		const relatedTarget = event.relatedTarget;
-		if (relatedTarget instanceof Node && !event.currentTarget.contains(relatedTarget)) {
+		if (!(relatedTarget instanceof Node) || !event.currentTarget.contains(relatedTarget)) {
 			handleOpenChange(false);
 		}
 	};

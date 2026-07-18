@@ -14,7 +14,7 @@ Object.defineProperty(globalThis.navigator, 'clipboard', {
 });
 
 globalThis.window.matchMedia = (query: string) => {
-	if (query === '(prefers-reduced-motion)') {
+	if (query === '(prefers-reduced-motion: reduce)') {
 		return {
 			matches: true,
 			media: query,

@@ -111,6 +111,9 @@ Consequences:
 - **Never** use raw Tailwind color shades (`bg-blue-500`, `text-gray-900`).
   Use curated tokens (`bg-blue`, `bg-zinc`, `text-muted-foreground`). This
   is enforced by review and by `AGENTS.md`.
+- Apply `neo-theme-root` to an application shell to opt into page background,
+  foreground, and font-rendering defaults. Apply `neo-app-shell` only when the
+  shell intentionally needs overscroll containment.
 
 ---
 
@@ -225,10 +228,10 @@ both light and dark (toolbar toggle / `.dark` wrapper, see §3).
 
 ## §9 — Dialogs share one global backdrop; mount it once
 
-`neob` dialogs do **not** each render their own dismiss backdrop. There is a
-single shared backdrop coordinated through a provider-scoped stack
-(`dialog/dialog-stack.ts`) and rendered by `GlobalDialogBackdrop`
-(`dialog/global-dialog-backdrop.tsx`).
+`neob` dialogs use a single shared backdrop coordinated through a provider-scoped
+stack (`dialog/dialog-stack.ts`) and rendered by `GlobalDialogBackdrop`
+(`dialog/global-dialog-backdrop.tsx`). Dialog content does not render a second
+visual backdrop.
 
 Rules:
 

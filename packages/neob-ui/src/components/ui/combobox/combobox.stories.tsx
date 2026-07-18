@@ -343,11 +343,6 @@ export const Default: StoryObj<FruitComboboxStoryProperties> = {
 		initialValue: 'Apple',
 		placeholder: 'Please select',
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args: FruitComboboxStoryProperties) => {
 		const [value, setValue] = useState<string | null>(args.initialValue);
 
@@ -394,11 +389,6 @@ export const SearchableInside: StoryObj<LanguageComboboxStoryProperties> = {
 		ariaLabel: 'Language selection',
 		triggerClassName: 'w-[200px]',
 		searchPlaceholder: 'Search languages',
-	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
 	},
 	render: (args: LanguageComboboxStoryProperties) => {
 		const [value, setValue] = useState<Language | null>(args.initialValue);
@@ -452,11 +442,6 @@ export const SearchableSelect: StoryObj<LanguageComboboxStoryProperties> = {
 		placeholder: 'Select a language',
 		searchPlaceholder: 'Search languages',
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args: LanguageComboboxStoryProperties) => {
 		const [value, setValue] = useState<Language | null>(args.initialValue);
 
@@ -505,11 +490,6 @@ export const Grouped: StoryObj<GroupedComboboxStoryProperties> = {
 	args: {
 		initialValue: null,
 		placeholder: 'Select server',
-	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
 	},
 	render: (args: GroupedComboboxStoryProperties) => {
 		const [value, setValue] = useState<ServerLocation | null>(args.initialValue);
@@ -564,11 +544,6 @@ export const Multiple: StoryObj<MultipleComboboxStoryProperties> = {
 	args: {
 		initialValue: [],
 		placeholder: 'Select apps',
-	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
 	},
 	render: (args: MultipleComboboxStoryProperties) => {
 		const [value, setValue] = useState<WorkspaceAppItem[]>(args.initialValue);
@@ -625,11 +600,6 @@ export const WithField: StoryObj<FieldComboboxStoryProperties> = {
 		label: 'Database',
 		description: 'Select your preferred database',
 		placeholder: 'Select database',
-	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
 	},
 	render: (args: FieldComboboxStoryProperties) => {
 		const [value, setValue] = useState<DatabaseItem | null>(args.initialValue);
@@ -732,11 +702,6 @@ export const DisabledItems: StoryObj<DisabledItemsComboboxStoryProperties> = {
 			{ value: 'firebase-rt', label: 'Firebase Realtime Database' },
 		],
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args: DisabledItemsComboboxStoryProperties) => {
 		const [value, setValue] = useState<DisabledItemDatabase | null>(args.initialValue);
 
@@ -798,11 +763,6 @@ export const Error: StoryObj<ErrorComboboxStoryProperties> = {
 		error: 'Please select a database',
 		placeholder: 'Select database',
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args: ErrorComboboxStoryProperties) => {
 		const [value, setValue] = useState<DatabaseItem | null>(args.initialValue);
 
@@ -852,11 +812,6 @@ export const Sizes: StoryObj<SizesComboboxStoryProperties> = {
 		baseInitialValue: null,
 		smPlaceholder: 'Small (sm)',
 		basePlaceholder: 'Base (default)',
-	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
 	},
 	render: (args: SizesComboboxStoryProperties) => {
 		const [smValue, setSmValue] = useState<string | null>(args.smInitialValue);
@@ -928,11 +883,6 @@ export const SizesSearchableInside: StoryObj<SizesSearchableStoryProperties> = {
 		baseTriggerClassName: 'w-[180px]',
 		searchPlaceholder: 'Search',
 	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args: SizesSearchableStoryProperties) => {
 		const [smValue, setSmValue] = useState<Language | null>(args.smInitialValue);
 		const [baseValue, setBaseValue] = useState<Language | null>(args.baseInitialValue);
@@ -1003,11 +953,6 @@ export const CustomTrigger: StoryObj<CustomTriggerComboboxStoryProperties> = {
 		ariaLabel: 'Custom language selection',
 		searchPlaceholder: 'Search languages',
 		emptyLabel: 'Select a language',
-	},
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
 	},
 	render: (args: CustomTriggerComboboxStoryProperties) => {
 		const [value, setValue] = useState<Language | null>(args.initialValue);

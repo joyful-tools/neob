@@ -243,20 +243,15 @@
 		--destructive-foreground: 0 0% 98%;
 	}
 
-	* {
-		@apply border-border;
-	}
-
-	html {
+	.neo-theme-root {
+		@apply bg-background text-foreground;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		overscroll-behavior: none;
-	}
-
-	body {
-		@apply bg-background text-foreground;
 		font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
 		text-rendering: optimizeLegibility;
+	}
+
+	.neo-app-shell {
 		overscroll-behavior: none;
 	}
 }
@@ -361,13 +356,14 @@
 }
 
 /* Hide spin buttons from number inputs */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+[data-neo-number-input]::-webkit-outer-spin-button,
+[data-neo-number-input]::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
 
-input[type='number'] {
+[data-neo-number-input] {
+	appearance: textfield;
 	-moz-appearance: textfield;
 }
 
@@ -572,5 +568,18 @@ input[type='number'] {
 	}
 	50% {
 		top: 0.15em;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		scroll-behavior: auto !important;
+		transition-duration: 0.01ms !important;
+		transition-delay: 0ms !important;
+		animation-duration: 0.01ms !important;
+		animation-delay: 0ms !important;
+		animation-iteration-count: 1 !important;
 	}
 }

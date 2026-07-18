@@ -75,6 +75,8 @@ document.documentElement.classList.remove('dark');
 
 When active, color tokens automatically shift to their dark variant.
 
+Apply `neo-theme-root` to the application shell when you want `neob` to provide the page background, foreground, font rendering, and theme defaults. Apply `neo-app-shell` separately only when the application intentionally needs overscroll containment.
+
 ## Development & Documentation
 
 To run the Storybook server locally for interactive documentation, testing, and component previews:

@@ -2,33 +2,14 @@ import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
 import { AnimatePresence, motion, type Transition } from 'motion/react';
 import { ReactElement, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 
+import { useLastInteractionWasTouch } from '@/hooks/use-interaction-modality';
 import { cn } from '@/lib/utilities';
-
-let lastInteractionWasTouch = false;
-
-if (typeof document !== 'undefined') {
-	document.addEventListener(
-		'touchstart',
-		() => {
-			lastInteractionWasTouch = true;
-		},
-		{ passive: true, capture: true },
-	);
-	document.addEventListener(
-		'pointermove',
-		(event: PointerEvent) => {
-			if (event.pointerType !== 'touch') {
-				lastInteractionWasTouch = false;
-			}
-		},
-		{ passive: true },
-	);
-}
 
 const LONG_PRESS_DURATION = 700;
 
 function useTouchGatedTooltip() {
 	const [open, setOpen] = useState(false);
+	const getLastInteractionWasTouch = useLastInteractionWasTouch();
 	const longPressTimerReference = useRef<ReturnType<typeof setTimeout>>(undefined);
 	const longPressFiredReference = useRef(false);
 	const mountedReference = useRef(false);
@@ -60,7 +41,7 @@ function useTouchGatedTooltip() {
 		(nextOpen: boolean) => {
 			if (nextOpen) {
 				if (!mountedReference.current) return;
-				if (!lastInteractionWasTouch || longPressFiredReference.current) {
+				if (!getLastInteractionWasTouch() || longPressFiredReference.current) {
 					setOpen(true);
 				}
 			} else {
@@ -68,7 +49,7 @@ function useTouchGatedTooltip() {
 				setOpen(false);
 			}
 		},
-		[setOpen],
+		[getLastInteractionWasTouch],
 	);
 
 	return { open, onOpenChange, onTriggerTouchStart, cancelLongPress };

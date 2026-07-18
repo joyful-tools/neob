@@ -38,11 +38,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args) => (
 		<ConfirmButton {...args} onConfirm={() => action('confirm-button-default-confirm')()}>
 			{args.children}
@@ -61,11 +56,6 @@ export const Default: Story = {
 };
 
 export const SubtleAccent: Story = {
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	render: (args) => (
 		<ConfirmButton {...args} onConfirm={() => action('confirm-button-upgrade-confirm')()}>
 			{args.children}
@@ -89,11 +79,6 @@ export const SubtleAccent: Story = {
 };
 
 export const AsyncDelete: Story = {
-	parameters: {
-		a11y: {
-			test: 'off',
-		},
-	},
 	args: {
 		children: 'Delete Item Asynchronously',
 		onConfirm: () => {},

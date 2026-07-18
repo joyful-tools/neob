@@ -10,7 +10,7 @@ export interface SmartStickyProps extends HTMLAttributes<HTMLDivElement> {
 
 function debounceAnimationFrame<TArgs extends unknown[]>(callback: (...args: TArgs) => void) {
 	let id: number | null = null;
-	return (...args: TArgs) => {
+	const run = (...args: TArgs) => {
 		if (id !== null) {
 			cancelAnimationFrame(id);
 		}
@@ -19,6 +19,13 @@ function debounceAnimationFrame<TArgs extends unknown[]>(callback: (...args: TAr
 			callback(...args);
 		});
 	};
+	const cancel = () => {
+		if (id !== null) {
+			cancelAnimationFrame(id);
+			id = null;
+		}
+	};
+	return { run, cancel };
 }
 
 /**
@@ -39,23 +46,22 @@ export function SmartSticky({ sticky, onStickyChange, children, className, style
 		const stickyElement = stickyRef.current;
 		if (!container || !stickyElement) return;
 
-		const observer = new IntersectionObserver(
-			debounceAnimationFrame(([entry]) => {
-				if (entry) {
-					// When container scrolls, the stuck element moves inside the container bounds,
-					// reaching an intersectionRatio of 1.0.
-					setStuck(entry.intersectionRatio === 1);
-				}
-			}),
-			{
-				threshold: [1],
-				root: container,
-			},
-		);
+		const scheduledUpdate = debounceAnimationFrame(([entry]: IntersectionObserverEntry[]) => {
+			if (entry) {
+				// When container scrolls, the stuck element moves inside the container bounds,
+				// reaching an intersectionRatio of 1.0.
+				setStuck(entry.intersectionRatio === 1);
+			}
+		});
+		const observer = new IntersectionObserver(scheduledUpdate.run, {
+			threshold: [1],
+			root: container,
+		});
 
 		observer.observe(stickyElement);
 
 		return () => {
+			scheduledUpdate.cancel();
 			observer.disconnect();
 		};
 	}, []);

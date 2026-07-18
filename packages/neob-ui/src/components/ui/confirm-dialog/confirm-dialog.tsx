@@ -1,5 +1,5 @@
 import { CheckIcon, CopyIcon } from '@phosphor-icons/react';
-import { useState, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Dialog } from '@/components/ui/dialog';
@@ -32,11 +32,16 @@ export function ConfirmDialog({
 }: ConfirmDialogProperties) {
 	const [typedConfirmation, setTypedConfirmation] = useState('');
 	const [copied, setCopied] = useState(false);
+	const inputId = useId();
+	const copyTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+	useEffect(() => () => clearTimeout(copyTimeoutRef.current), []);
 
 	const confirmationMatches = resourceName ? typedConfirmation === resourceName : true;
 
 	function handleOpenChange(nextOpen: boolean) {
 		if (!nextOpen) {
+			clearTimeout(copyTimeoutRef.current);
 			setTypedConfirmation('');
 			setCopied(false);
 		}
@@ -47,7 +52,8 @@ export function ConfirmDialog({
 		if (!resourceName) return;
 		void navigator.clipboard.writeText(resourceName).then(() => {
 			setCopied(true);
-			setTimeout(() => setCopied(false), 2000);
+			clearTimeout(copyTimeoutRef.current);
+			copyTimeoutRef.current = setTimeout(() => setCopied(false), 2000);
 		});
 	}
 
@@ -62,7 +68,7 @@ export function ConfirmDialog({
 						<Dialog.Description>{description}</Dialog.Description>
 						{resourceName && (
 							<div className="flex flex-col gap-3">
-								<p className="text-sm text-black/80 dark:text-white/80">
+								<label htmlFor={inputId} className="text-sm text-black/80 dark:text-white/80">
 									Type in{' '}
 									<Button
 										type="button"
@@ -75,8 +81,9 @@ export function ConfirmDialog({
 										{copied ? <CheckIcon className="size-3" /> : <CopyIcon className="size-3" />}
 									</Button>{' '}
 									to confirm:
-								</p>
+								</label>
 								<Input
+									id={inputId}
 									type="text"
 									value={typedConfirmation}
 									onChange={(event) => setTypedConfirmation(event.target.value)}
@@ -112,3 +119,4 @@ export function ConfirmDialog({
 		</Dialog>
 	);
 }
+ConfirmDialog.displayName = 'ConfirmDialog';

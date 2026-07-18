@@ -11,7 +11,7 @@ export interface DialogStackStore {
 
 export function createDialogStackStore(): DialogStackStore {
 	const listeners = new Set<DialogStackListener>();
-	const openDialogIds = new Set<number>();
+	const openDialogIds: number[] = [];
 	const closeCallbacks = new Map<number, () => void>();
 
 	const emit = () => {
@@ -25,21 +25,27 @@ export function createDialogStackStore(): DialogStackStore {
 			listeners.add(listener);
 			return () => listeners.delete(listener);
 		},
-		getSnapshot: () => openDialogIds.size,
+		getSnapshot: () => openDialogIds.length,
 		register: (dialogId, onClose) => {
-			openDialogIds.add(dialogId);
+			const existingIndex = openDialogIds.indexOf(dialogId);
+			if (existingIndex !== -1) {
+				openDialogIds.splice(existingIndex, 1);
+			}
+			openDialogIds.push(dialogId);
 			closeCallbacks.set(dialogId, onClose);
 			emit();
 			return () => {
-				if (openDialogIds.delete(dialogId)) {
+				const index = openDialogIds.indexOf(dialogId);
+				if (index !== -1) {
+					openDialogIds.splice(index, 1);
 					closeCallbacks.delete(dialogId);
 					emit();
 				}
 			};
 		},
 		closeTop: () => {
-			if (openDialogIds.size === 0) return;
-			const topId = Math.max(...openDialogIds);
+			const topId = openDialogIds.at(-1);
+			if (topId === undefined) return;
 			closeCallbacks.get(topId)?.();
 		},
 	};

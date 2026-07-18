@@ -17,7 +17,13 @@ export const toast = {
 						<h3 className="text-lg/tight font-bold text-black dark:text-white">{title}</h3>
 						{options?.description && <p className="text-sm/snug text-muted-foreground">{options.description}</p>}
 					</div>
-					<Button variant="ghost" size="icon" className="-mt-3 -mr-3 shrink-0" onClick={() => sonnerToast.dismiss(t)}>
+					<Button
+						aria-label="Close notification"
+						variant="ghost"
+						size="icon"
+						className="-mt-3 -mr-3 shrink-0"
+						onClick={() => sonnerToast.dismiss(t)}
+					>
 						<XIcon className="size-4" />
 					</Button>
 				</div>
@@ -34,10 +40,16 @@ export const toast = {
 			<div className="flex w-full min-w-80 flex-col gap-2 rounded-lg border-2 border-black bg-green-light p-5 font-sans shadow-sm select-none dark:bg-green-dark">
 				<div className="flex items-start justify-between gap-4">
 					<div className="flex flex-col gap-1">
-						<h3 className="text-lg/tight font-bold text-green-dark dark:text-green-light">{title}</h3>
-						{options?.description && <p className="text-sm/snug text-green-dark dark:text-green-light">{options.description}</p>}
+						<h3 className="text-lg/tight font-bold text-black dark:text-green-light">{title}</h3>
+						{options?.description && <p className="text-sm/snug text-black dark:text-green-light">{options.description}</p>}
 					</div>
-					<Button variant="ghost" size="icon" className="-mt-3 -mr-3 shrink-0" onClick={() => sonnerToast.dismiss(t)}>
+					<Button
+						aria-label="Close notification"
+						variant="ghost"
+						size="icon"
+						className="-mt-3 -mr-3 shrink-0"
+						onClick={() => sonnerToast.dismiss(t)}
+					>
 						<XIcon className="size-4" />
 					</Button>
 				</div>
@@ -54,10 +66,16 @@ export const toast = {
 			<div className="flex w-full min-w-80 flex-col gap-2 rounded-lg border-2 border-black bg-red-light p-5 font-sans shadow-sm select-none dark:bg-red-dark">
 				<div className="flex items-start justify-between gap-4">
 					<div className="flex flex-col gap-1">
-						<h3 className="text-lg/tight font-bold text-red-dark dark:text-red-light">{title}</h3>
-						{options?.description && <p className="text-sm/snug text-red-dark dark:text-red-light">{options.description}</p>}
+						<h3 className="text-lg/tight font-bold text-black dark:text-red-light">{title}</h3>
+						{options?.description && <p className="text-sm/snug text-black dark:text-red-light">{options.description}</p>}
 					</div>
-					<Button variant="ghost" size="icon" className="-mt-3 -mr-3 shrink-0" onClick={() => sonnerToast.dismiss(t)}>
+					<Button
+						aria-label="Close notification"
+						variant="ghost"
+						size="icon"
+						className="-mt-3 -mr-3 shrink-0"
+						onClick={() => sonnerToast.dismiss(t)}
+					>
 						<XIcon className="size-4" />
 					</Button>
 				</div>
@@ -74,10 +92,16 @@ export const toast = {
 			<div className="flex w-full min-w-80 flex-col gap-2 rounded-lg border-2 border-black bg-blue-light p-5 font-sans shadow-sm select-none dark:bg-blue-dark">
 				<div className="flex items-start justify-between gap-4">
 					<div className="flex flex-col gap-1">
-						<h3 className="text-lg/tight font-bold text-blue-dark dark:text-blue-light">{title}</h3>
-						{options?.description && <p className="text-sm/snug text-blue-dark dark:text-blue-light">{options.description}</p>}
+						<h3 className="text-lg/tight font-bold text-black dark:text-blue-light">{title}</h3>
+						{options?.description && <p className="text-sm/snug text-black dark:text-blue-light">{options.description}</p>}
 					</div>
-					<Button variant="ghost" size="icon" className="-mt-3 -mr-3 shrink-0" onClick={() => sonnerToast.dismiss(t)}>
+					<Button
+						aria-label="Close notification"
+						variant="ghost"
+						size="icon"
+						className="-mt-3 -mr-3 shrink-0"
+						onClick={() => sonnerToast.dismiss(t)}
+					>
 						<XIcon className="size-4" />
 					</Button>
 				</div>
@@ -94,10 +118,16 @@ export const toast = {
 			<div className="flex w-full min-w-80 flex-col gap-2 rounded-lg border-2 border-black bg-yellow-light p-5 font-sans shadow-sm select-none dark:bg-yellow-dark">
 				<div className="flex items-start justify-between gap-4">
 					<div className="flex flex-col gap-1">
-						<h3 className="text-lg/tight font-bold text-yellow-dark dark:text-yellow-light">{title}</h3>
-						{options?.description && <p className="text-sm/snug text-yellow-dark dark:text-yellow-light">{options.description}</p>}
+						<h3 className="text-lg/tight font-bold text-black dark:text-yellow-light">{title}</h3>
+						{options?.description && <p className="text-sm/snug text-black dark:text-yellow-light">{options.description}</p>}
 					</div>
-					<Button variant="ghost" size="icon" className="-mt-3 -mr-3 shrink-0" onClick={() => sonnerToast.dismiss(t)}>
+					<Button
+						aria-label="Close notification"
+						variant="ghost"
+						size="icon"
+						className="-mt-3 -mr-3 shrink-0"
+						onClick={() => sonnerToast.dismiss(t)}
+					>
 						<XIcon className="size-4" />
 					</Button>
 				</div>

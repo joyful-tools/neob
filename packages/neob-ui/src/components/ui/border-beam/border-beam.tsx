@@ -29,4 +29,5 @@ export function BorderBeam({ className, duration = 2 }: BorderBeamProperties) {
 		</div>
 	);
 }
+BorderBeam.displayName = 'BorderBeam';
 export type { BorderBeamProperties };

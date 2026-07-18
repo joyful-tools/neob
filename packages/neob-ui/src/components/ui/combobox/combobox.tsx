@@ -30,6 +30,7 @@ const ComboboxContext = createContext<{
 	readonly ariaInvalid?: boolean;
 	readonly ariaLabel?: string;
 	readonly ariaLabelledby?: string;
+	readonly controlId?: string;
 }>({
 	size: 'base',
 	hasError: false,
@@ -89,6 +90,7 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 	const hasError = Boolean(error);
 	const [anchorElement, setAnchorElement] = useState<HTMLDivElement | null>(null);
 
+	const controlId = useId();
 	const descriptionId = useId();
 	const errorId = useId();
 	const hasDescription = Boolean(description);
@@ -107,6 +109,7 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 				ariaInvalid: hasError,
 				ariaLabel,
 				ariaLabelledby,
+				controlId,
 			}}
 		>
 			<BaseCombobox.Root {...props}>{children}</BaseCombobox.Root>
@@ -123,6 +126,7 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 				error={error}
 				descriptionId={descriptionId}
 				errorId={errorId}
+				controlId={controlId}
 				className={containerClassName}
 			>
 				{comboboxControl}
@@ -150,6 +154,7 @@ export interface ComboboxContentProps extends ComponentPropsWithoutRef<typeof Ba
 function Content({
 	children,
 	className,
+	'aria-label': ariaLabel = 'Options',
 	align = 'start',
 	sideOffset = 8,
 	alignOffset,
@@ -181,8 +186,9 @@ function Content({
 			>
 				<BaseCombobox.Popup
 					ref={ref}
+					aria-label={ariaLabel}
 					className={cn(
-						`flex max-h-[min(var(--available-height),24rem)] w-[max(var(--anchor-width),150px)] min-w-0 animate-popover-in flex-col overflow-hidden rounded-xl border-2 border-black bg-white px-0 py-1.5 text-black shadow-sm outline-hidden select-none data-closed:animate-popover-out dark:bg-zinc dark:text-white`,
+						`flex max-h-[min(var(--available-height),24rem)] w-[max(var(--anchor-width),150px)] min-w-0 animate-popover-in flex-col overflow-hidden rounded-xl border-2 border-black bg-white px-0 py-1.5 text-black shadow-sm outline-hidden select-none data-closed:hidden data-closed:animate-popover-out dark:bg-zinc dark:text-white`,
 						`origin-(--transform-origin)`,
 						`data-[side=bottom]:[--tw-enter-translate-y:-0.5rem] data-[side=left]:[--tw-enter-translate-x:0.5rem] data-[side=right]:[--tw-enter-translate-x:-0.5rem] data-[side=top]:[--tw-enter-translate-y:0.5rem]`,
 						className,
@@ -214,12 +220,13 @@ export interface ComboboxTriggerValueProps extends ComponentPropsWithoutRef<type
  * Dropdown trigger button displaying the selected value.
  */
 function TriggerValue({ className, ref, placeholder, ...props }: ComboboxTriggerValueProps) {
-	const { size, hasError, describedBy, ariaInvalid, anchorRef, ariaLabel, ariaLabelledby } = useContext(ComboboxContext);
+	const { size, hasError, describedBy, ariaInvalid, anchorRef, ariaLabel, ariaLabelledby, controlId } = useContext(ComboboxContext);
 	const iconStyles = triggerValueIconStyles[size];
 
 	return (
 		<div ref={anchorRef} className={cn('inline-flex', className)}>
 			<BaseCombobox.Trigger
+				id={controlId}
 				ref={ref}
 				className={cn(
 					getInputStyles(size, hasError, 'neo-focus-ring'),
@@ -321,12 +328,13 @@ function TriggerInput({
 	showOptionsLabel = 'Show options',
 	...props
 }: ComboboxTriggerInputProps) {
-	const { size, hasError, describedBy, ariaInvalid, anchorRef } = useContext(ComboboxContext);
+	const { size, hasError, describedBy, ariaInvalid, anchorRef, controlId } = useContext(ComboboxContext);
 	const iconStyles = triggerInputIconStyles[size];
 
 	return (
 		<div ref={anchorRef} className={cn('relative inline-block', className)}>
 			<BaseCombobox.Input
+				id={controlId}
 				ref={ref}
 				placeholder={placeholder}
 				className={cn(getInputStyles(size, hasError), 'w-full shadow-cel-inset-md', iconStyles.padding)}
@@ -395,7 +403,7 @@ function TriggerMultipleWithInput<ValueType>({
 	inputSide = 'right',
 	value: controlledValue,
 }: ComboboxTriggerMultipleWithInputProps<ValueType>) {
-	const { size, hasError, describedBy, ariaInvalid } = useContext(ComboboxContext);
+	const { size, hasError, describedBy, ariaInvalid, ariaLabel, controlId } = useContext(ComboboxContext);
 	const chipsToRender = controlledValue;
 
 	const sizeToMinHeight: Record<ComboboxSize, string> = {
@@ -418,7 +426,9 @@ function TriggerMultipleWithInput<ValueType>({
 		>
 			{inputSide === 'top' && (
 				<BaseCombobox.Input
+					id={controlId}
 					placeholder={placeholder}
+					aria-label={ariaLabel ?? 'Search options'}
 					className="w-full border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black outline-hidden dark:text-white"
 					aria-describedby={describedBy}
 					aria-invalid={ariaInvalid ? true : undefined}
@@ -434,7 +444,9 @@ function TriggerMultipleWithInput<ValueType>({
 				</BaseCombobox.Value>
 				{inputSide === 'right' && (
 					<BaseCombobox.Input
+						id={controlId}
 						placeholder={placeholder}
+						aria-label={ariaLabel ?? 'Search options'}
 						className="min-w-20 flex-1 border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black outline-hidden dark:text-white"
 						aria-describedby={describedBy}
 						aria-invalid={ariaInvalid ? true : undefined}
@@ -535,10 +547,11 @@ export interface ComboboxInputProps extends ComponentPropsWithoutRef<typeof Base
  * Input component.
  * Search input placed inside the dropdown popup.
  */
-function Input({ className, ref, ...props }: ComboboxInputProps) {
+function Input({ className, ref, 'aria-label': ariaLabel = 'Search options', ...props }: ComboboxInputProps) {
 	return (
 		<BaseCombobox.Input
 			ref={ref}
+			aria-label={ariaLabel}
 			className={cn(
 				'neo-focus-ring-focus isolate mx-2 mt-1 mb-2 flex h-9 min-w-0 self-stretch overflow-hidden rounded-md border-2 border-black bg-white px-3 py-1.5 text-sm font-medium shadow-cel-inset-md outline-hidden dark:bg-zinc dark:text-white',
 				className,
@@ -551,16 +564,18 @@ Input.displayName = 'Combobox.Input';
 
 export interface ComboboxListProps extends ComponentPropsWithoutRef<typeof BaseCombobox.List> {
 	readonly ref?: Ref<HTMLDivElement>;
+	readonly 'aria-label'?: string;
 }
 
 /**
  * List component.
  * Scrollable list container inside the dropdown popup.
  */
-function List({ className, children, ref, ...props }: ComboboxListProps) {
+function List({ className, children, ref, 'aria-label': ariaLabel = 'Options', ...props }: ComboboxListProps) {
 	return (
 		<BaseCombobox.List
 			ref={ref}
+			aria-label={ariaLabel}
 			className={cn('flex min-h-0 flex-1 scroll-py-2 flex-col gap-1 overflow-y-auto overscroll-contain', className)}
 			{...props}
 		>

@@ -34,3 +34,4 @@ export function GlobalDialogBackdrop() {
 		document.body,
 	);
 }
+GlobalDialogBackdrop.displayName = 'GlobalDialogBackdrop';

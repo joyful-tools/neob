@@ -2,6 +2,7 @@ import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
 import { AnimatePresence, motion, type Transition } from 'motion/react';
 import { PointerEvent as ReactPointerEvent, ReactElement, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { useLastInteractionWasTouch } from '@/hooks/use-interaction-modality';
 import { cn } from '@/lib/utilities';
 
 export interface HoverPreviewProps {
@@ -10,27 +11,6 @@ export interface HoverPreviewProps {
 	readonly className?: string;
 	readonly delayDuration?: number;
 	readonly forceOpen?: boolean;
-}
-
-let lastInteractionWasTouch = false;
-
-if (typeof document !== 'undefined') {
-	document.addEventListener(
-		'touchstart',
-		() => {
-			lastInteractionWasTouch = true;
-		},
-		{ passive: true, capture: true },
-	);
-	document.addEventListener(
-		'pointermove',
-		(event: PointerEvent) => {
-			if (event.pointerType !== 'touch') {
-				lastInteractionWasTouch = false;
-			}
-		},
-		{ passive: true },
-	);
 }
 
 const LONG_PRESS_DURATION = 500;
@@ -54,6 +34,7 @@ const previewVariants = {
  */
 export function HoverPreview({ children, preview, className, delayDuration = 200, forceOpen = false }: HoverPreviewProps) {
 	const [open, setOpen] = useState(false);
+	const getLastInteractionWasTouch = useLastInteractionWasTouch();
 	const [triggerElement, setTriggerElement] = useState<HTMLElement | null>(null);
 	const [coords, setCoords] = useState<{ x: number; y: number } | null>(null);
 
@@ -89,7 +70,7 @@ export function HoverPreview({ children, preview, className, delayDuration = 200
 			if (forceOpen) return;
 			if (nextOpen) {
 				if (!mountedReference.current) return;
-				if (!lastInteractionWasTouch || longPressFiredReference.current) {
+				if (!getLastInteractionWasTouch() || longPressFiredReference.current) {
 					setOpen(true);
 				}
 			} else {
@@ -97,7 +78,7 @@ export function HoverPreview({ children, preview, className, delayDuration = 200
 				setOpen(false);
 			}
 		},
-		[forceOpen],
+		[forceOpen, getLastInteractionWasTouch],
 	);
 
 	const handlePointerMove = useCallback((event: ReactPointerEvent) => {

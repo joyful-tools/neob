@@ -32,6 +32,7 @@ type Story = StoryObj<typeof meta>;
 
 export const PointerLockLifecycle: Story = {
 	args: {
+		value: 100,
 		onChange: () => {},
 	},
 	render: (args) => {
@@ -40,9 +41,10 @@ export const PointerLockLifecycle: Story = {
 			<div className="flex flex-col items-center gap-4">
 				<NumericSlider
 					{...args}
-					onChange={(delta) => {
-						action('numeric-slider-change')(delta);
-						setValue((previous) => Math.round((previous + delta) * 100) / 100);
+					value={value}
+					onChange={(nextValue) => {
+						action('numeric-slider-change')(nextValue);
+						setValue(Math.round(nextValue * 100) / 100);
 					}}
 				/>
 				<div className="rounded-lg border-2 border-black bg-muted px-3 py-1.5 font-mono text-sm font-bold dark:border-white dark:bg-zinc">
@@ -105,8 +107,9 @@ export const PointerLockLifecycle: Story = {
 			});
 
 			document.dispatchEvent(new PointerEvent('pointermove', { movementY: -12 }));
+			document.dispatchEvent(new PointerEvent('pointermove', { movementY: -12 }));
 			await waitFor(() => {
-				expect(canvas.getByText(/Current Value:/i)).toHaveTextContent('Current Value: 112');
+				expect(canvas.getByText(/Current Value:/i)).toHaveTextContent('Current Value: 124');
 			});
 
 			globalThis.dispatchEvent(new PointerEvent('pointerup', { pointerId: 1 }));
