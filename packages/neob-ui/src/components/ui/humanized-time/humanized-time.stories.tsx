@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 
+import { Button } from '@/components/ui/button';
 import { Tooltip } from '@/components/ui/tooltip';
 import { guardPlay } from '@/lib/storybook-interactions';
 
@@ -67,11 +68,16 @@ export const EpochAndLocaleChanges: Story = {
 		const [locale, setLocale] = useState('en');
 		return (
 			<Tooltip.Provider>
-				<div>
-					<button type="button" onClick={() => setLocale('de')}>
+				<div className="flex flex-col items-center gap-4 p-8">
+					<Button type="button" onClick={() => setLocale('de')}>
 						Use German
-					</button>
-					<HumanizedTime data-testid="epoch-time" date={0} locale={locale} />
+					</Button>
+					<HumanizedTime
+						data-testid="epoch-time"
+						date={0}
+						locale={locale}
+						className="cursor-pointer rounded-lg border border-black bg-muted px-3 py-1.5 font-sans text-sm font-bold"
+					/>
 				</div>
 			</Tooltip.Provider>
 		);
