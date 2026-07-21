@@ -107,7 +107,7 @@ export function DropMenu({ trigger, children, className }: DropMenuProperties) {
 	return (
 		<DropMenuContext.Provider value={{ close: closeMenu }}>
 			<Menu.Root open={isOpen} onOpenChange={setIsOpen}>
-				{triggerNode}
+				<Menu.Trigger render={triggerNode} />
 
 				<Menu.Portal keepMounted>
 					<Menu.Positioner align="center" side="bottom" sideOffset={8} anchor={anchorElement} className="z-100">
@@ -148,7 +148,7 @@ export function DropMenuItem({ children, onClick, className }: DropMenuItemPrope
 						size="sm"
 						className={cn(
 							'w-full cursor-pointer rounded-lg border-2 border-black bg-white px-4 py-2 font-mono text-sm font-black text-black shadow-sm outline-hidden transition-all',
-							'hover:-translate-y-0.5 hover:bg-yellow focus-visible:bg-yellow focus-visible:outline-hidden active:translate-y-0.5 active:shadow-none dark:bg-zinc dark:text-white dark:hover:text-black',
+							'hover:-translate-y-px hover:bg-yellow hover:shadow-cel-sm hover:after:translate-y-px focus-visible:bg-yellow focus-visible:outline-hidden active:translate-y-0.5 active:shadow-none dark:bg-zinc dark:text-white dark:hover:text-yellow-light dark:focus-visible:text-yellow-light',
 							className,
 						)}
 					/>

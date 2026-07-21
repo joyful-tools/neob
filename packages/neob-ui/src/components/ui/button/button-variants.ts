@@ -6,10 +6,11 @@ const standardButtonStyles = `
 	after:absolute after:inset-0 after:-bottom-1 after:z-[-1]
 	after:transition-transform after:duration-25 after:ease-linear
 	after:content-[''] disabled:shadow-none
-	aria-expanded:translate-y-0.5 aria-expanded:shadow-cel-inset-md
-	aria-expanded:after:translate-y-0 aria-expanded:hover:translate-y-0.5 aria-expanded:hover:shadow-cel-inset-md aria-expanded:hover:after:translate-y-0
-	data-pressed:translate-y-0.5 data-pressed:shadow-cel-inset-md
-	data-pressed:after:translate-y-0 data-pressed:hover:translate-y-0.5 data-pressed:hover:shadow-cel-inset-md data-pressed:hover:after:translate-y-0
+	active:duration-0 active:after:duration-0
+	aria-expanded:translate-y-0.5 aria-expanded:shadow-cel-inset-md aria-expanded:duration-0
+	aria-expanded:after:translate-y-0 aria-expanded:after:duration-0 aria-expanded:hover:translate-y-0.5 aria-expanded:hover:shadow-cel-inset-md aria-expanded:hover:after:translate-y-0
+	data-pressed:translate-y-0.5 data-pressed:shadow-cel-inset-md data-pressed:duration-0
+	data-pressed:after:translate-y-0 data-pressed:after:duration-0 data-pressed:hover:translate-y-0.5 data-pressed:hover:shadow-cel-inset-md data-pressed:hover:after:translate-y-0
 `;
 
 export const buttonVariants = cva(
@@ -31,17 +32,17 @@ export const buttonVariants = cva(
 				`,
 				accent: `
 					${standardButtonStyles}
-					bg-orange text-primary shadow-cel-sm
-					hover:-translate-y-0.5 hover:shadow-cel-md
-					hover:after:translate-y-0.5
-					active:translate-y-0.5 active:shadow-cel-inset-md
+					bg-orange text-primary shadow-cel-sm hover:-translate-y-0.5
+					hover:shadow-cel-md hover:after:translate-y-0.5
+					active:translate-y-0.5
+					active:shadow-cel-inset-md dark:text-orange-light
 				`,
 				danger: `
 					${standardButtonStyles}
-					bg-red text-primary shadow-cel-sm
-					hover:-translate-y-0.5 hover:shadow-cel-md
-					hover:after:translate-y-0.5
-					active:translate-y-0.5 active:shadow-cel-inset-md
+					bg-red text-primary shadow-cel-sm hover:-translate-y-0.5
+					hover:shadow-cel-md hover:after:translate-y-0.5
+					active:translate-y-0.5
+					active:shadow-cel-inset-md dark:text-red-light
 				`,
 				subtle: `
 					${standardButtonStyles}
@@ -71,7 +72,7 @@ export const buttonVariants = cva(
 				`,
 				'dark-accent': `
 					${standardButtonStyles}
-					border-4 border-black bg-orange text-black shadow-cel-md
+					border-4 border-black bg-orange text-orange-light shadow-cel-md
 					hover:-translate-y-1 hover:shadow-cel-lg
 					hover:after:translate-y-1
 					active:translate-y-1 active:shadow-cel-inset-md
@@ -101,84 +102,6 @@ export const buttonVariants = cva(
 			},
 		},
 		compoundVariants: [
-			{
-				variant: ['default', 'accent', 'danger'],
-				size: 'lg',
-				class: `
-					shadow-cel-md
-					hover:-translate-y-1 hover:shadow-cel-lg
-					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-cel-inset-md
-				`,
-			},
-			{
-				variant: 'subtle',
-				size: 'lg',
-				class: `
-					hover:-translate-y-1 hover:shadow-cel-md
-					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-cel-inset-md
-				`,
-			},
-			{
-				variant: 'dark-default',
-				size: 'lg',
-				class: `
-					shadow-cel-md
-					hover:-translate-y-1 hover:shadow-cel-lg
-					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-cel-inset-md
-				`,
-			},
-			{
-				variant: 'dark-accent',
-				size: 'lg',
-				class: `
-					shadow-cel-md
-					hover:-translate-y-1 hover:shadow-cel-lg
-					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-cel-inset-md
-				`,
-			},
-			{
-				variant: ['default', 'accent', 'danger'],
-				size: 'xl',
-				class: `
-					shadow-cel-md
-					hover:-translate-y-1 hover:shadow-cel-lg
-					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-cel-inset-md
-				`,
-			},
-			{
-				variant: 'subtle',
-				size: 'xl',
-				class: `
-					hover:-translate-y-1 hover:shadow-cel-md
-					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-cel-inset-md
-				`,
-			},
-			{
-				variant: 'dark-default',
-				size: 'xl',
-				class: `
-					shadow-cel-md
-					hover:-translate-y-1 hover:shadow-cel-lg
-					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-cel-inset-md
-				`,
-			},
-			{
-				variant: 'dark-accent',
-				size: 'xl',
-				class: `
-					shadow-cel-md
-					hover:-translate-y-1 hover:shadow-cel-lg
-					hover:after:translate-y-1
-					active:translate-y-1 active:shadow-cel-inset-md
-				`,
-			},
 			// Link variant should have no padding/height - it's inline text
 			{
 				variant: 'link',

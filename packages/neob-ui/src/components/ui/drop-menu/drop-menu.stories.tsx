@@ -1,5 +1,5 @@
 import { action } from 'storybook/actions';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { Button } from '@/components/ui/button';
 import { guardPlay } from '@/lib/storybook-interactions';
@@ -33,8 +33,8 @@ export const Default: Story = {
 		return (
 			<div className="min-h-96 p-12">
 				<DropMenu
-					trigger={({ isOpen, setIsOpen, anchor }) => (
-						<Button ref={anchor} onClick={() => setIsOpen(!isOpen)} variant="accent" aria-expanded={isOpen}>
+					trigger={({ isOpen, anchor }) => (
+						<Button ref={anchor} variant="accent" aria-expanded={isOpen}>
 							Open Menu
 						</Button>
 					)}
@@ -52,7 +52,9 @@ export const Default: Story = {
 		const canvas = within(canvasElement);
 		await userEvent.click(canvas.getByRole('button', { name: 'Open Menu' }));
 		const body = within(document.body);
-		await expect(await body.findByRole('menu')).toBeVisible();
+		await waitFor(() => expect(body.getByRole('menu')).toBeVisible());
 		await expect(body.getByRole('menuitem', { name: 'Hello 0' })).toBeVisible();
+		await userEvent.hover(canvas.getByRole('button', { name: 'Open Menu' }));
+		await expect(body.getByRole('menu')).toBeVisible();
 	}),
 };

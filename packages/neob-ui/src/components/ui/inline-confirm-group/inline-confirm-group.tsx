@@ -27,9 +27,9 @@ const spring: Transition = {
 };
 
 const intentClassNames: Record<InlineConfirmGroupIntent, string> = {
-	danger: 'bg-red/10 text-red hover:bg-red dark:bg-red/20',
-	info: 'bg-blue/10 text-blue hover:bg-blue dark:bg-blue/20',
-	success: 'bg-green/10 text-green hover:bg-green dark:bg-green/20',
+	danger: 'bg-red/10 text-red hover:bg-red dark:bg-red/20 dark:text-red-light',
+	info: 'bg-blue/10 text-blue hover:bg-blue dark:bg-blue/20 dark:text-blue-light',
+	success: 'bg-green/10 text-green hover:bg-green dark:bg-green/20 dark:text-green-light',
 };
 
 export function InlineConfirmGroup({

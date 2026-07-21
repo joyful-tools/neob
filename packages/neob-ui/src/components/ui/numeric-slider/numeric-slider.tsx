@@ -163,7 +163,7 @@ export function NumericSlider({
 			style={{ touchAction: 'none' }}
 			className={cn(
 				`flex size-8 cursor-ns-resize items-center justify-center text-black/40 transition-all duration-75 select-none hover:scale-110 hover:text-black dark:text-white/40 dark:hover:text-white`,
-				pointerLockActive && 'scale-110 text-orange dark:text-orange',
+				pointerLockActive && 'scale-110 text-orange dark:text-orange-light',
 				disabled && 'cursor-not-allowed opacity-50',
 				className,
 			)}

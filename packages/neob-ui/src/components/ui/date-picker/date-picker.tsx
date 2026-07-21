@@ -318,13 +318,13 @@ export function DatePicker(fullProps: DatePickerProps) {
 					'neo-focus-ring isolate cursor-pointer flex h-9 w-9 items-center justify-center rounded-lg border-2 border-transparent text-sm font-bold text-black outline-hidden transition-all duration-200 select-none hover:bg-black/10 hover:border-black dark:text-white dark:hover:bg-white/10 dark:hover:border-black',
 				today: '[&_button]:border-2 [&_button]:border-dashed [&_button]:border-black dark:[&_button]:border-black',
 				selected:
-					'[&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-black dark:[&_button]:bg-orange dark:[&_button]:text-black dark:[&_button]:border-black hover:[&_button]:bg-orange/90 dark:hover:[&_button]:bg-orange/90',
+					'[&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-black dark:[&_button]:bg-orange dark:[&_button]:text-orange-light dark:[&_button]:border-black hover:[&_button]:bg-orange/90 dark:hover:[&_button]:bg-orange/90',
 				range_start: cn(
-					'rounded-l-lg bg-orange/25 dark:bg-orange/20 [&_button]:border-2 [&_button]:border-black [&_button]:bg-orange [&_button]:text-black hover:[&_button]:bg-orange/90 dark:[&_button]:border-black dark:hover:[&_button]:bg-orange/90',
+					'rounded-l-lg bg-orange/25 dark:bg-orange/20 [&_button]:border-2 [&_button]:border-black [&_button]:bg-orange [&_button]:text-black hover:[&_button]:bg-orange/90 dark:[&_button]:border-black dark:[&_button]:text-orange-light dark:hover:[&_button]:bg-orange/90',
 					startButtonRadius,
 				),
 				range_end: cn(
-					'rounded-r-lg bg-orange/25 dark:bg-orange/20 [&_button]:border-2 [&_button]:border-black [&_button]:bg-orange [&_button]:text-black hover:[&_button]:bg-orange/90 dark:[&_button]:border-black dark:hover:[&_button]:bg-orange/90',
+					'rounded-r-lg bg-orange/25 dark:bg-orange/20 [&_button]:border-2 [&_button]:border-black [&_button]:bg-orange [&_button]:text-black hover:[&_button]:bg-orange/90 dark:[&_button]:border-black dark:[&_button]:text-orange-light dark:hover:[&_button]:bg-orange/90',
 					endButtonRadius,
 				),
 				range_middle:

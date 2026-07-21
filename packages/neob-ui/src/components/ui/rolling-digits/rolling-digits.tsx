@@ -62,7 +62,10 @@ function Digit({ value }: DigitProperties) {
 		return () => controls.stop();
 	}, [value, animatedValue]);
 
-	const offset = currentVal % 1;
+	const baseValue = Math.floor(currentVal);
+	const offset = currentVal - baseValue;
+	const currentDigit = ((baseValue % 10) + 10) % 10;
+	const nextDigit = (currentDigit + 1) % 10;
 
 	return (
 		<div className="relative inline-block overflow-hidden">
@@ -78,10 +81,10 @@ function Digit({ value }: DigitProperties) {
 			>
 				{/* Top/Next digit wrapper */}
 				<div className="absolute -top-full select-none" aria-hidden="true">
-					{Math.floor((currentVal + 1) % 10)}
+					{nextDigit}
 				</div>
 				{/* Current active digit */}
-				<div className="absolute">{Math.floor(currentVal % 10)}</div>
+				<div className="absolute">{currentDigit}</div>
 			</div>
 		</div>
 	);
@@ -143,7 +146,7 @@ export function RollingDigits({ value = 0, separator = true, className }: Rollin
 			<div aria-hidden="true" className={cn('inline-block font-mono text-black dark:text-white', className)}>
 				<motion.div
 					style={{ width: outerWidth, height: outerHeight }}
-					className="relative overflow-hidden mask-[linear-gradient(to_bottom,transparent,black_0.15em,black_calc(100%-0.15em),transparent)]"
+					className="relative box-content overflow-hidden mask-[linear-gradient(to_bottom,transparent,black_0.15em,black_calc(100%-0.15em),transparent),linear-gradient(to_right,transparent,black_0.15em,black_calc(100%-0.15em),transparent)] mask-intersect px-[0.2em]"
 				>
 					<div ref={innerRef} className="absolute top-1/2 left-1/2 flex -translate-1/2 items-center text-center">
 						{isNegative && <div className="px-0.5">-</div>}

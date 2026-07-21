@@ -26,7 +26,7 @@ export const Default: Story = {
 			<div className="flex flex-col items-center gap-4 p-6">
 				<div className="w-full text-center">
 					<span className="rounded-md border-2 border-black bg-yellow px-4 py-2 font-mono text-lg font-black text-black shadow-cel-sm">
-						Scroll percentage: {percentage}%
+						Scroll percentage: {percentage.toFixed(0)}%
 					</span>
 				</div>
 				<div

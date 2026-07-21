@@ -55,16 +55,16 @@
 	--color-white: #fff;
 
 	/* Base Colors */
-	--color-orange: #f48120;
-	--color-gold: #faad3f;
-	--color-zinc: #232426;
-	--color-coral: #ff6b4a;
-	--color-blue: #60a5fa;
-	--color-purple: #c084fc;
-	--color-pink: #f472b6;
-	--color-yellow: #fae315;
-	--color-red: #ef4444;
-	--color-green: #19c056;
+	--color-orange: #f7b787;
+	--color-gold: #f6d58a;
+	--color-zinc: #25232a;
+	--color-coral: #f3a6a0;
+	--color-blue: #9bc7f5;
+	--color-purple: #c7b2e8;
+	--color-pink: #eab0cd;
+	--color-yellow: #f4e58c;
+	--color-red: #d27474;
+	--color-green: #9bd3aa;
 
 	/* Light Variants (20% opacity on white) */
 	--color-orange-light: color-mix(in srgb, var(--color-orange) 20%, white);
@@ -207,40 +207,51 @@
 
 @layer base {
 	:root {
+		color-scheme: light;
 		/* Core Colors */
-		--background: 0 0% 100%;
-		--foreground: 0 0% 3.9%;
-		--primary: 0 0% 9%;
-		--primary-foreground: 0 0% 98%;
-		--muted: 0 0% 96.1%;
-		--muted-foreground: 0 0% 45.1%;
-		--border: 0 0% 89.8%;
-		--ring: 0 0% 3.9%;
-		--ring-offset: 0 0% 100%;
-		--card: 0 0% 100%;
-		--card-foreground: 0 0% 3.9%;
-		--popover: 0 0% 100%;
-		--popover-foreground: 0 0% 3.9%;
-		--destructive: 0 84.2% 60.2%;
-		--destructive-foreground: 0 0% 98%;
+		--background: 38 44% 96%;
+		--foreground: 270 9% 15%;
+		--primary: 270 9% 15%;
+		--primary-foreground: 38 44% 96%;
+		--muted: 280 22% 93%;
+		--muted-foreground: 278 7% 38%;
+		--border: 274 13% 72%;
+		--ring: 270 9% 15%;
+		--ring-offset: 38 44% 96%;
+		--card: 42 50% 98%;
+		--card-foreground: 270 9% 15%;
+		--popover: 42 50% 98%;
+		--popover-foreground: 270 9% 15%;
+		--destructive: 0 63% 72%;
+		--destructive-foreground: 270 9% 15%;
 	}
 
 	.dark {
-		--background: 0 0% 18.9%;
-		--foreground: 0 0% 98%;
-		--primary: 0 0% 98%;
-		--primary-foreground: 0 0% 20.9%;
-		--muted: 0 0% 14.9%;
-		--muted-foreground: 0 0% 63.9%;
-		--border: 0 0% 14.9%;
-		--ring: 0 0% 83.1%;
-		--ring-offset: 0 0% 3.9%;
-		--card: 0 0% 3.9%;
-		--card-foreground: 0 0% 98%;
-		--popover: 0 0% 3.9%;
-		--popover-foreground: 0 0% 98%;
-		--destructive: 0 62.8% 30.6%;
-		--destructive-foreground: 0 0% 98%;
+		color-scheme: dark;
+		--color-orange: #985536;
+		--color-gold: #876b37;
+		--color-coral: #93504c;
+		--color-blue: #456b8e;
+		--color-purple: #665184;
+		--color-pink: #89516f;
+		--color-yellow: #817331;
+		--color-red: #984951;
+		--color-green: #477455;
+		--background: 274 10% 14%;
+		--foreground: 38 44% 95%;
+		--primary: 263 52% 80%;
+		--primary-foreground: 270 9% 15%;
+		--muted: 273 9% 19%;
+		--muted-foreground: 278 13% 78%;
+		--border: 278 8% 51%;
+		--ring: 211 74% 78%;
+		--ring-offset: 274 10% 14%;
+		--card: 274 11% 17%;
+		--card-foreground: 38 44% 95%;
+		--popover: 274 11% 17%;
+		--popover-foreground: 38 44% 95%;
+		--destructive: 0 63% 72%;
+		--destructive-foreground: 270 9% 15%;
 	}
 
 	.neo-theme-root {

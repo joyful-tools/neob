@@ -65,7 +65,7 @@ function ScrollingText({ text, className }: { readonly text: ReactNode; readonly
 	}, [text]);
 
 	return (
-		<div className={cn('relative overflow-hidden border-2 border-black bg-card p-2 shadow-cel-md', className)}>
+		<div className={cn('relative overflow-hidden rounded-lg border-2 border-black bg-card p-2', className)}>
 			<span ref={measureRef} aria-hidden="true" className="invisible block h-0 overflow-hidden font-mono font-bold whitespace-nowrap">
 				{text}
 			</span>

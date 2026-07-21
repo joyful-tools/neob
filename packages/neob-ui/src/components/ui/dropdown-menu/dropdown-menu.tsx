@@ -122,7 +122,7 @@ function DropdownMenuItem({ children, className, disabled, onSelect, ref, 'aria-
 			onClick={onSelect}
 			aria-current={ariaCurrent}
 			className={cn(
-				`relative flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-bold text-black outline-hidden transition-all select-none focus:bg-orange focus:text-black data-disabled:pointer-events-none data-disabled:opacity-50 dark:text-white`,
+				`relative flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-bold text-black outline-hidden transition-all select-none focus:bg-orange focus:text-black data-disabled:pointer-events-none data-disabled:opacity-50 dark:text-white dark:focus:text-orange-light`,
 				className,
 			)}
 		>

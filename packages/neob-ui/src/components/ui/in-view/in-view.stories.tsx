@@ -50,7 +50,7 @@ function InViewDemo(args: Omit<React.ComponentProps<typeof InView>, 'root' | 'ro
 						<div
 							style={{ visibility }}
 							data-testid="target"
-							className={`rounded-lg border-2 border-black bg-pink px-4 py-2 font-mono text-sm font-black text-black shadow-cel-sm transition-all duration-700 ${
+							className={`rounded-lg border-2 border-black bg-pink px-4 py-2 font-mono text-sm font-black text-black transition-all duration-700 ${
 								inView ? 'scale-100 opacity-100' : 'scale-50 opacity-0'
 							}`}
 						>
