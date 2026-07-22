@@ -3,8 +3,6 @@ name: Deploy Storybook
 on:
   workflow_run:
     workflows: ['CI']
-    branches:
-      - main
     types:
       - completed
 
@@ -15,7 +13,7 @@ concurrency:
 jobs:
   preview:
     name: Deploy Storybook Preview
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.pull_requests[0] != null && github.event.workflow_run.head_repository.full_name == github.repository }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -58,7 +56,7 @@ jobs:
 
   deploy:
     name: Deploy Storybook to Cloudflare Workers
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read

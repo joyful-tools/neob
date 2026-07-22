@@ -185,6 +185,29 @@
 
 	--animate-marquee: marquee var(--duration, 20s) linear infinite;
 	--animate-marquee-vertical: marquee-vertical var(--duration, 20s) linear infinite;
+	--animate-shimmer-text: shimmer-text 3s infinite ease;
+	--animate-shiny-fade: shiny-fade 8s 2s infinite ease;
+
+	@keyframes shimmer-text {
+		from {
+			background-position: -100% top;
+		}
+
+		to {
+			background-position: 250% top;
+		}
+	}
+
+	@keyframes shiny-fade {
+		from {
+			background-position: 150% 0;
+		}
+
+		50%,
+		to {
+			background-position: -150% 0;
+		}
+	}
 
 	@keyframes marquee {
 		from {
@@ -265,6 +288,28 @@
 	.neo-app-shell {
 		overscroll-behavior: none;
 	}
+}
+
+@utility shimmer-text {
+	position: relative;
+	display: inline-block;
+	overflow: hidden;
+	color: transparent;
+	white-space: nowrap;
+	background-color: hsl(var(--border));
+	background-image: linear-gradient(to right, hsl(var(--border)), hsl(var(--foreground)), hsl(var(--border)));
+	background-repeat: no-repeat;
+	background-size: 50% 100%;
+	background-clip: text;
+	animation: var(--animate-shimmer-text);
+}
+
+@utility shiny-fade {
+	background-image: linear-gradient(105deg, rgb(255 255 255 / 0%) 40%, rgb(255 255 255 / 45%) 50%, rgb(255 255 255 / 0%) 60%);
+	background-repeat: no-repeat;
+	background-position: 150% 0;
+	background-size: 250% 100%;
+	animation: var(--animate-shiny-fade);
 }
 
 @utility shadow-cel-* {
