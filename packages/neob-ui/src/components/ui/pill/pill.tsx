@@ -24,6 +24,7 @@ const pillVariants = cva(
 				sm: 'rounded-sm',
 			},
 			color: {
+				default: 'bg-foreground text-background',
 				orange: 'bg-orange text-black dark:text-orange-light',
 				gold: 'bg-gold text-black dark:text-gold-light',
 				red: 'bg-red text-black dark:text-red-light',
@@ -33,13 +34,13 @@ const pillVariants = cva(
 				pink: 'bg-pink text-black dark:text-pink-light',
 				yellow: 'bg-yellow text-black dark:text-yellow-light',
 				zinc: 'bg-zinc text-white',
-				white: 'bg-white text-black dark:bg-zinc dark:text-white',
+				white: 'bg-white text-black',
 			},
 		},
 		defaultVariants: {
 			size: 'sm',
 			rounded: 'full',
-			color: 'orange',
+			color: 'default',
 		},
 	},
 );

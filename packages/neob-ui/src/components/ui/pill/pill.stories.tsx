@@ -3,14 +3,14 @@ import { expect, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 
-import { Pill } from './pill';
+import { Pill, type PillProperties } from './pill';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 type PillCollectionStoryProperties = {
 	items: Array<{
 		label: string;
-		color?: 'orange' | 'gold' | 'red' | 'green' | 'blue' | 'purple' | 'pink' | 'yellow' | 'zinc' | 'white';
+		color?: PillProperties['color'];
 		size?: 'xs' | 'sm' | 'md' | 'lg';
 	}>;
 };
@@ -22,7 +22,7 @@ type PillCollectionStoryProperties = {
  * ```tsx
  * import { Pill } from '@joyful-tools/neob';
  *
- * <Pill variant="accent">New</Pill>
+ * <Pill color="orange">New</Pill>
  * ```
  */
 const meta = {
@@ -35,7 +35,7 @@ const meta = {
 	argTypes: {
 		color: {
 			control: 'select',
-			options: ['orange', 'gold', 'red', 'green', 'blue', 'purple', 'pink', 'yellow', 'zinc', 'white'],
+			options: ['default', 'orange', 'gold', 'red', 'green', 'blue', 'purple', 'pink', 'yellow', 'zinc', 'white'],
 		},
 		size: {
 			control: 'select',
@@ -53,8 +53,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		children: 'Beta',
-		color: 'orange',
+		children: 'Default',
 		size: 'sm',
 		rounded: 'full',
 	},
@@ -63,6 +62,7 @@ export const Default: Story = {
 export const AllColors: StoryObj<PillCollectionStoryProperties> = {
 	args: {
 		items: [
+			{ label: 'Default', color: 'default' },
 			{ label: 'Orange', color: 'orange' },
 			{ label: 'Gold', color: 'gold' },
 			{ label: 'Red', color: 'red' },
@@ -89,7 +89,6 @@ export const AllColors: StoryObj<PillCollectionStoryProperties> = {
 export const WithRefAndCustomAttributes: Story = {
 	args: {
 		children: 'Interactive Tag',
-		color: 'white',
 		size: 'lg',
 		rounded: 'full',
 	},

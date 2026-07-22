@@ -55,16 +55,16 @@
 	--color-white: #fff;
 
 	/* Base Colors */
-	--color-orange: #f7b787;
-	--color-gold: #f6d58a;
+	--color-orange: #f0885a;
+	--color-gold: #e5bb59;
 	--color-zinc: #25232a;
-	--color-coral: #f3a6a0;
-	--color-blue: #9bc7f5;
-	--color-purple: #c7b2e8;
-	--color-pink: #eab0cd;
-	--color-yellow: #f4e58c;
-	--color-red: #d27474;
-	--color-green: #9bd3aa;
+	--color-coral: #e47d76;
+	--color-blue: #7ba9d5;
+	--color-purple: #aa8acd;
+	--color-pink: #d98aae;
+	--color-yellow: #ead35c;
+	--color-red: #d9717a;
+	--color-green: #75b889;
 
 	/* Light Variants (20% opacity on white) */
 	--color-orange-light: color-mix(in srgb, var(--color-orange) 20%, white);
@@ -228,15 +228,15 @@
 
 	.dark {
 		color-scheme: dark;
-		--color-orange: #985536;
-		--color-gold: #876b37;
-		--color-coral: #93504c;
-		--color-blue: #456b8e;
-		--color-purple: #665184;
-		--color-pink: #89516f;
-		--color-yellow: #817331;
-		--color-red: #984951;
-		--color-green: #477455;
+		--color-orange: #8f4f37;
+		--color-gold: #7b6438;
+		--color-coral: #874b49;
+		--color-blue: #42617f;
+		--color-purple: #5f4d78;
+		--color-pink: #7d4b65;
+		--color-yellow: #756a36;
+		--color-red: #8b454d;
+		--color-green: #426b4e;
 		--background: 274 10% 14%;
 		--foreground: 38 44% 95%;
 		--primary: 263 52% 80%;

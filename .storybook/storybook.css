@@ -12,8 +12,7 @@
 
 /* Story preview toolbar controls (reload, zoom, open in new tab) */
 .sbdocs-preview > div:first-child button,
-.sbdocs-preview > div:first-child a,
-.sbdocs-preview > div:first-child span {
+.sbdocs-preview > div:first-child a {
 	color: hsl(var(--foreground)) !important;
 }
 
