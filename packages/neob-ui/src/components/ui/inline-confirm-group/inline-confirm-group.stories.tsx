@@ -97,14 +97,14 @@ const RealWorldList = ({ initialFiles }: InlineConfirmGroupStoryProperties) => {
 	};
 
 	return (
-		<div className="w-112.5 rounded-xl border-4 border-black bg-white p-6 text-black shadow-cel-md dark:bg-zinc dark:text-white">
-			<h3 className="mb-4 border-b-2 border-black pb-2 font-display text-lg font-bold">Project Directory Files</h3>
+		<div className="w-112.5 rounded-xl border-4 border-edge bg-white p-6 text-black shadow-cel-md dark:bg-zinc dark:text-white">
+			<h3 className="mb-4 border-b-2 border-edge pb-2 font-display text-lg font-bold">Project Directory Files</h3>
 			<p className="mb-4 text-xs text-muted-foreground">
 				Each file supports delete, while only some files also expose archive or download actions.
 			</p>
 			<ul className="space-y-3">
 				{files.map((file) => (
-					<li key={file.id} className="flex items-center justify-between rounded-lg border-2 border-black bg-zinc/5 p-3">
+					<li key={file.id} className="flex items-center justify-between rounded-lg border-2 border-edge bg-zinc/5 p-3">
 						<div>
 							<p className="font-mono text-sm font-bold">{file.name}</p>
 							<p className="text-xs text-black/60 dark:text-white/60">{file.size}</p>

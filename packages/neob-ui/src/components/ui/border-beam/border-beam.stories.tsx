@@ -69,7 +69,7 @@ export const Infinite: Story = {
 				className={cn(
 					'group relative whitespace-nowrap',
 					'flex items-center justify-center',
-					'rounded-sm border border-black/10 bg-muted/20 dark:border-white/10 dark:bg-muted/10',
+					'rounded-sm border border-edge/10 bg-muted/20 dark:bg-muted/10',
 					'h-24 w-48',
 				)}
 				style={customVars}
@@ -107,7 +107,7 @@ export const Once: Story = {
 				className={cn(
 					'group relative whitespace-nowrap',
 					'flex items-center justify-center',
-					'rounded-sm border border-black/10 bg-muted/20 dark:border-white/10 dark:bg-muted/10',
+					'rounded-sm border border-edge/10 bg-muted/20 dark:bg-muted/10',
 					'h-24 w-48',
 				)}
 				style={customVars}
@@ -145,7 +145,7 @@ export const Multiple: Story = {
 				className={cn(
 					'group relative whitespace-nowrap',
 					'flex items-center justify-center',
-					'rounded-sm border border-black/10 bg-muted/20 dark:border-white/10 dark:bg-muted/10',
+					'rounded-sm border border-edge/10 bg-muted/20 dark:bg-muted/10',
 					'h-24 w-48',
 				)}
 				style={customVars}

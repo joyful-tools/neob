@@ -40,7 +40,7 @@ export const FiveMinutesAgo: Story = {
 					<HumanizedTime
 						data-testid="time-el"
 						date={dateVal}
-						className="cursor-pointer rounded-lg border border-black bg-muted px-3 py-1.5 font-sans text-sm font-bold"
+						className="cursor-pointer rounded-lg border border-edge bg-muted px-3 py-1.5 font-sans text-sm font-bold"
 					/>
 				</div>
 			</Tooltip.Provider>
@@ -76,7 +76,7 @@ export const EpochAndLocaleChanges: Story = {
 						data-testid="epoch-time"
 						date={0}
 						locale={locale}
-						className="cursor-pointer rounded-lg border border-black bg-muted px-3 py-1.5 font-sans text-sm font-bold"
+						className="cursor-pointer rounded-lg border border-edge bg-muted px-3 py-1.5 font-sans text-sm font-bold"
 					/>
 				</div>
 			</Tooltip.Provider>
@@ -103,7 +103,7 @@ export const JustNow: Story = {
 					<HumanizedTime
 						data-testid="time-el"
 						date={dateVal}
-						className="cursor-pointer rounded-lg border border-black bg-muted px-3 py-1.5 font-sans text-sm font-bold"
+						className="cursor-pointer rounded-lg border border-edge bg-muted px-3 py-1.5 font-sans text-sm font-bold"
 					/>
 				</div>
 			</Tooltip.Provider>

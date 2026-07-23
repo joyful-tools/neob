@@ -38,7 +38,7 @@ function InViewDemo(args: Omit<React.ComponentProps<typeof InView>, 'root' | 'ro
 			ref={setContainer}
 			// tabIndex makes the scrollable region keyboard-accessible, satisfying the axe scrollable-region-focusable rule
 			tabIndex={0}
-			className="h-96 w-64 overflow-y-scroll rounded-xl border-4 border-black bg-white shadow-cel-md dark:bg-zinc"
+			className="h-96 w-64 overflow-y-scroll rounded-xl border-4 border-edge bg-white shadow-cel-md dark:bg-zinc"
 			data-testid="container"
 		>
 			<div className="flex h-[150%] flex-col items-center justify-between p-10 select-none">
@@ -50,7 +50,7 @@ function InViewDemo(args: Omit<React.ComponentProps<typeof InView>, 'root' | 'ro
 						<div
 							style={{ visibility }}
 							data-testid="target"
-							className={`rounded-lg border-2 border-black bg-pink px-4 py-2 font-mono text-sm font-black text-black transition-all duration-700 ${
+							className={`rounded-lg border-2 border-edge bg-pink px-4 py-2 font-mono text-sm font-black text-black transition-all duration-700 ${
 								inView ? 'scale-100 opacity-100' : 'scale-50 opacity-0'
 							}`}
 						>

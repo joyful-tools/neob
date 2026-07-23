@@ -10,14 +10,14 @@ export function Toaster({ ...properties }: ToasterProperties) {
 			toastOptions={{
 				classNames: {
 					toast:
-						'group toast group-[.toaster]:bg-white dark:group-[.toaster]:bg-zinc group-[.toaster]:text-black dark:group-[.toaster]:text-white group-[.toaster]:border-2 group-[.toaster]:border-black group-[.toaster]:shadow-cel group-[.toaster]:rounded-lg group-[.toaster]:p-5 group-[.toaster]:gap-4 group-[.toaster]:flex group-[.toaster]:items-start group-[.toaster]:w-full group-[.toaster]:font-sans',
+						'group toast group-[.toaster]:bg-white dark:group-[.toaster]:bg-zinc group-[.toaster]:text-black dark:group-[.toaster]:text-white group-[.toaster]:border-2 group-[.toaster]:border-edge group-[.toaster]:shadow-cel group-[.toaster]:rounded-lg group-[.toaster]:p-5 group-[.toaster]:gap-4 group-[.toaster]:flex group-[.toaster]:items-start group-[.toaster]:w-full group-[.toaster]:font-sans',
 					title:
 						'group-[.toast]:font-bold group-[.toast]:text-lg group-[.toast]:text-black dark:group-[.toast]:text-white group-[.toast]:leading-tight',
 					description: 'group-[.toast]:text-muted-foreground group-[.toast]:text-sm group-[.toast]:leading-snug',
 					actionButton:
 						'group-[.toast]:bg-black dark:group-[.toast]:bg-white group-[.toast]:text-white dark:group-[.toast]:text-black group-[.toast]:font-bold group-[.toast]:font-sans group-[.toast]:rounded-md group-[.toast]:text-sm group-[.toast]:border-2 group-[.toast]:border-transparent group-[.toast]:transition-transform group-[.toast]:active:translate-y-0.5 group-[.toast]:shadow-cel-sm hover:group-[.toast]:bg-black/90 dark:hover:group-[.toast]:bg-white/90',
 					cancelButton:
-						'group-[.toast]:bg-white dark:group-[.toast]:bg-zinc group-[.toast]:text-black dark:group-[.toast]:text-white group-[.toast]:border-2 group-[.toast]:border-black group-[.toast]:font-bold group-[.toast]:font-sans group-[.toast]:rounded-md group-[.toast]:text-sm group-[.toast]:transition-transform group-[.toast]:active:translate-y-0.5 group-[.toast]:shadow-cel-sm hover:group-[.toast]:bg-muted dark:hover:group-[.toast]:bg-zinc/80',
+						'group-[.toast]:bg-white dark:group-[.toast]:bg-zinc group-[.toast]:text-black dark:group-[.toast]:text-white group-[.toast]:border-2 group-[.toast]:border-edge group-[.toast]:font-bold group-[.toast]:font-sans group-[.toast]:rounded-md group-[.toast]:text-sm group-[.toast]:transition-transform group-[.toast]:active:translate-y-0.5 group-[.toast]:shadow-cel-sm hover:group-[.toast]:bg-muted dark:hover:group-[.toast]:bg-zinc/80',
 					closeButton:
 						'group-[.toast]:neo-focus-ring group-[.toast]:isolate group-[.toast]:!bg-transparent group-[.toast]:!border-2 group-[.toast]:!border-transparent group-[.toast]:!text-black dark:group-[.toast]:!text-white group-[.toast]:!rounded-md group-[.toast]:!size-10 group-[.toast]:!p-0 group-[.toast]:!opacity-100 group-[.toast]:!-right-3 group-[.toast]:!-top-3 group-[.toast]:!outline-none group-[.toast]:!transition-transform group-[.toast]:!shadow-none hover:group-[.toast]:!bg-muted/80',
 					error:

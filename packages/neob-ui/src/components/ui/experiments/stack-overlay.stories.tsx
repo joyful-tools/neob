@@ -165,7 +165,7 @@ function StackOverlayDemo() {
 
 	return (
 		<div className="relative min-h-[250vh]">
-			<div className="fixed top-4 right-4 z-20 flex flex-col gap-1 rounded-sm border-2 border-black bg-white p-2 font-mono text-xs text-black shadow-sm dark:bg-zinc dark:text-white">
+			<div className="fixed top-4 right-4 z-20 flex flex-col gap-1 rounded-sm border-2 border-edge bg-white p-2 font-mono text-xs text-black shadow-sm dark:bg-zinc dark:text-white">
 				<div ref={percentageTextRef}>Percentage: 0%</div>
 				<div ref={overlayTopTextRef}>Overlay Top: 0.0px</div>
 				<div ref={minTopTextRef}>Min Top: 0.0px</div>
@@ -202,7 +202,7 @@ function StackOverlayDemo() {
 							animate={{ opacity: 1, scale: 1 }}
 							exit={{ opacity: 0, scale: 1.08 }}
 							transition={{ type: 'spring', stiffness: 550, damping: 28 }}
-							className="absolute left-1/2 z-10 flex h-96 max-h-[90vh] w-64 -translate-x-1/2 flex-col rounded-xl border-4 border-black bg-white shadow-xl dark:bg-zinc"
+							className="absolute left-1/2 z-10 flex h-96 max-h-[90vh] w-64 -translate-x-1/2 flex-col rounded-xl border-4 border-edge bg-white shadow-xl dark:bg-zinc"
 							style={{
 								top: `${initialMinOverlayTop}px`,
 							}}

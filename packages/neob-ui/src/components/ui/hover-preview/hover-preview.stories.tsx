@@ -34,7 +34,7 @@ type Story = StoryObj<typeof meta>;
 const PreviewSkeleton = () => (
 	<div
 		data-testid="preview-skeleton"
-		className="flex w-52 flex-col gap-3 rounded-xl border-2 border-black bg-white p-4 shadow-cel-sm dark:bg-zinc"
+		className="flex w-52 flex-col gap-3 rounded-xl border-2 border-edge bg-white p-4 shadow-cel-sm dark:bg-zinc"
 	>
 		<div className="flex items-center gap-3">
 			<Skeleton className="size-10 shrink-0 rounded-full" />

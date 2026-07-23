@@ -107,7 +107,7 @@ export function InputGroup({
 			<div
 				onClick={handleContainerClick}
 				className={cn(
-					`neo-focus-ring-focus isolate flex w-full items-center overflow-hidden rounded-lg border-2 border-black bg-white font-medium shadow-cel-inset-sm outline-hidden transition-all duration-300 ease-spring dark:border-black dark:bg-zinc`,
+					`neo-focus-ring-focus isolate flex w-full items-center overflow-hidden rounded-lg border-2 border-edge bg-white font-medium shadow-cel-inset-sm outline-hidden transition-all duration-300 ease-spring dark:border-edge dark:bg-zinc`,
 					size === 'sm' && 'h-8 px-2 text-sm',
 					size === 'default' && 'h-10 px-3.5 text-base',
 					size === 'lg' && 'h-12 px-4.5 text-lg',
@@ -255,7 +255,7 @@ function InputGroupSuffix({ children, className, ...properties }: InputGroupSuff
 	return (
 		<span
 			className={cn(
-				'ml-2 shrink-0 border-l-2 border-black/10 pl-2 font-semibold text-muted-foreground select-none',
+				'ml-2 shrink-0 border-l-2 border-edge/10 pl-2 font-semibold text-muted-foreground select-none',
 				size === 'sm' && 'text-xs',
 				size === 'lg' && 'text-lg',
 				className,

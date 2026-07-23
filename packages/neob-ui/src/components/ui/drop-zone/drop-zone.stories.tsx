@@ -112,7 +112,7 @@ export const Default: Story = {
 					}}
 				>
 					{({ openFilePicker }) => (
-						<div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-black bg-white p-12 text-black select-none dark:border-black dark:bg-zinc dark:text-white">
+						<div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-edge bg-white p-12 text-black select-none dark:border-edge dark:bg-zinc dark:text-white">
 							<UploadSimpleIcon className="mb-2 size-10 text-orange" />
 							<span className="mb-4 text-center font-sans text-sm font-bold">Drag images here to upload or</span>
 							<Button type="button" variant="accent" size="sm" onClick={openFilePicker}>
@@ -124,7 +124,7 @@ export const Default: Story = {
 				</DropZone>
 
 				{results && (
-					<div className="max-h-40 overflow-auto rounded-xl border-2 border-black bg-muted/20 p-3 font-mono text-xs">
+					<div className="max-h-40 overflow-auto rounded-xl border-2 border-edge bg-muted/20 p-3 font-mono text-xs">
 						<div>Accepted: {results.acceptedFiles.map((f) => f.name).join(', ') || 'none'}</div>
 						<div className="text-red-dark dark:text-red">
 							Rejected: {results.rejectedFiles.map((f) => `${f.file.name} (${f.code})`).join(', ') || 'none'}
@@ -216,7 +216,7 @@ export const InvalidFileRejection: Story = {
 					}}
 				>
 					{({ openFilePicker }) => (
-						<div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-black bg-white p-12 text-black select-none dark:bg-zinc dark:text-white">
+						<div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-edge bg-white p-12 text-black select-none dark:bg-zinc dark:text-white">
 							<UploadSimpleIcon className="mb-2 size-10 text-orange" />
 							<span className="mb-4 text-center font-sans text-sm font-bold">Drag file here (Requires PNG, size: 100B - 1KB)</span>
 							<Button type="button" variant="accent" size="sm" onClick={openFilePicker}>
@@ -228,7 +228,7 @@ export const InvalidFileRejection: Story = {
 				</DropZone>
 
 				{results && (
-					<div className="max-h-40 overflow-auto rounded-xl border-2 border-black bg-muted/20 p-3 font-mono text-xs">
+					<div className="max-h-40 overflow-auto rounded-xl border-2 border-edge bg-muted/20 p-3 font-mono text-xs">
 						<div>Accepted: {results.acceptedFiles.map((f) => f.name).join(', ') || 'none'}</div>
 						<div className="text-red-dark dark:text-red">
 							Rejected: {results.rejectedFiles.map((f) => `${f.file.name} (${f.code})`).join(', ') || 'none'}
@@ -287,7 +287,7 @@ export const FullPageDropZone: Story = {
 					}}
 				>
 					{({ openFilePicker }) => (
-						<div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-black bg-white p-12 text-black select-none dark:border-black dark:bg-zinc dark:text-white">
+						<div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-edge bg-white p-12 text-black select-none dark:border-edge dark:bg-zinc dark:text-white">
 							<UploadSimpleIcon className="mb-2 size-10 text-orange" />
 							<span className="mb-4 text-center font-sans text-sm font-bold">Drag files anywhere on the page</span>
 							<Button type="button" variant="accent" size="sm" onClick={openFilePicker}>
@@ -299,7 +299,7 @@ export const FullPageDropZone: Story = {
 				</DropZone>
 
 				{results && (
-					<div className="max-h-40 overflow-auto rounded-xl border-2 border-black bg-muted/20 p-3 font-mono text-xs">
+					<div className="max-h-40 overflow-auto rounded-xl border-2 border-edge bg-muted/20 p-3 font-mono text-xs">
 						<div>Accepted: {results.acceptedFiles.map((f) => f.name).join(', ') || 'none'}</div>
 						<div className="text-red-dark dark:text-red">
 							Rejected: {results.rejectedFiles.map((f) => `${f.file.name} (${f.code})`).join(', ') || 'none'}

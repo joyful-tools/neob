@@ -29,14 +29,14 @@ const VARIANT_ROOT_CLASSES = {
 
 const SWITCH_ROOT_CLASSES = `
 	peer relative isolate inline-flex h-6 w-11 shrink-0 cursor-pointer items-center
-	rounded-full border-2 border-black bg-white shadow-cel-inset-sm transition-colors
+	rounded-full border-2 border-edge bg-white shadow-cel-inset-sm transition-colors
 	duration-300 ease-spring neo-focus-ring outline-hidden
 	disabled:cursor-not-allowed disabled:opacity-50
 	dark:bg-zinc
 `;
 
 const SWITCH_THUMB_CLASSES = `
-	pointer-events-none block h-4 w-4 rounded-full border border-black bg-black
+	pointer-events-none block h-4 w-4 rounded-full border border-edge bg-black
 	transition-transform duration-300 ease-spring translate-x-0.5
 	data-[checked]:translate-x-[22px] data-[checked]:bg-white
 	dark:bg-white dark:data-[checked]:bg-black

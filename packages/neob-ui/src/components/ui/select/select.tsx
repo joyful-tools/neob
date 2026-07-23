@@ -180,7 +180,7 @@ function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 				<BaseSelect.Positioner side="bottom" align="start" sideOffset={6} className="z-50">
 					<BaseSelect.Popup
 						className={cn(
-							'flex flex-col overflow-hidden rounded-xl border-2 border-black bg-white p-2 text-black shadow-sm dark:bg-zinc dark:text-white',
+							'flex flex-col overflow-hidden rounded-xl border-2 border-edge bg-white p-2 text-black shadow-sm dark:bg-zinc dark:text-white',
 							'max-h-[min(300px,var(--available-height))] min-w-[calc(var(--anchor-width)+4px)]',
 							popupClassName,
 						)}

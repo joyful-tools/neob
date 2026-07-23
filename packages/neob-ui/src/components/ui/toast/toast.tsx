@@ -11,7 +11,7 @@ interface ToastOptions {
 export const toast = {
 	custom: (title: string, options?: ToastOptions) => {
 		sonnerToast.custom((t) => (
-			<div className="flex w-full min-w-80 flex-col gap-2 rounded-lg border-2 border-black bg-white p-5 font-sans shadow-sm select-none dark:bg-zinc">
+			<div className="flex w-full min-w-80 flex-col gap-2 rounded-lg border-2 border-edge bg-white p-5 font-sans shadow-sm select-none dark:bg-zinc">
 				<div className="flex items-start justify-between gap-4">
 					<div className="flex flex-col gap-1">
 						<h3 className="text-lg/tight font-bold text-black dark:text-white">{title}</h3>
@@ -37,7 +37,7 @@ export const toast = {
 	},
 	success: (title: string, options?: ToastOptions) => {
 		sonnerToast.custom((t) => (
-			<div className="flex w-full min-w-80 flex-col gap-2 rounded-lg border-2 border-black bg-green-light p-5 font-sans shadow-sm select-none dark:bg-green-dark">
+			<div className="flex w-full min-w-80 flex-col gap-2 rounded-lg border-2 border-edge bg-green-light p-5 font-sans shadow-sm select-none dark:bg-green-dark">
 				<div className="flex items-start justify-between gap-4">
 					<div className="flex flex-col gap-1">
 						<h3 className="text-lg/tight font-bold text-black dark:text-green-light">{title}</h3>
@@ -63,7 +63,7 @@ export const toast = {
 	},
 	error: (title: string, options?: ToastOptions) => {
 		sonnerToast.custom((t) => (
-			<div className="flex w-full min-w-80 flex-col gap-2 rounded-lg border-2 border-black bg-red-light p-5 font-sans shadow-sm select-none dark:bg-red-dark">
+			<div className="flex w-full min-w-80 flex-col gap-2 rounded-lg border-2 border-edge bg-red-light p-5 font-sans shadow-sm select-none dark:bg-red-dark">
 				<div className="flex items-start justify-between gap-4">
 					<div className="flex flex-col gap-1">
 						<h3 className="text-lg/tight font-bold text-black dark:text-red-light">{title}</h3>
@@ -89,7 +89,7 @@ export const toast = {
 	},
 	info: (title: string, options?: ToastOptions) => {
 		sonnerToast.custom((t) => (
-			<div className="flex w-full min-w-80 flex-col gap-2 rounded-lg border-2 border-black bg-blue-light p-5 font-sans shadow-sm select-none dark:bg-blue-dark">
+			<div className="flex w-full min-w-80 flex-col gap-2 rounded-lg border-2 border-edge bg-blue-light p-5 font-sans shadow-sm select-none dark:bg-blue-dark">
 				<div className="flex items-start justify-between gap-4">
 					<div className="flex flex-col gap-1">
 						<h3 className="text-lg/tight font-bold text-black dark:text-blue-light">{title}</h3>
@@ -115,7 +115,7 @@ export const toast = {
 	},
 	warning: (title: string, options?: ToastOptions) => {
 		sonnerToast.custom((t) => (
-			<div className="flex w-full min-w-80 flex-col gap-2 rounded-lg border-2 border-black bg-yellow-light p-5 font-sans shadow-sm select-none dark:bg-yellow-dark">
+			<div className="flex w-full min-w-80 flex-col gap-2 rounded-lg border-2 border-edge bg-yellow-light p-5 font-sans shadow-sm select-none dark:bg-yellow-dark">
 				<div className="flex items-start justify-between gap-4">
 					<div className="flex flex-col gap-1">
 						<h3 className="text-lg/tight font-bold text-black dark:text-yellow-light">{title}</h3>

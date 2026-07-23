@@ -35,7 +35,7 @@ type Story = StoryObj<typeof meta>;
 
 export const SingleMode: Story = {
 	render: () => (
-		<div className="w-100 rounded-2xl border-2 border-black bg-muted/20 p-4">
+		<div className="w-100 rounded-2xl border-2 border-edge bg-muted/20 p-4">
 			<Accordion defaultValue={['item-1']}>
 				<Accordion.Item value="item-1">
 					<Accordion.Trigger>Item 1: Brutalist Philosophy</Accordion.Trigger>
@@ -83,7 +83,7 @@ export const SingleMode: Story = {
 
 export const MultipleMode: Story = {
 	render: () => (
-		<div className="w-100 rounded-2xl border-2 border-black bg-muted/20 p-4">
+		<div className="w-100 rounded-2xl border-2 border-edge bg-muted/20 p-4">
 			<Accordion multiple defaultValue={['item-1', 'item-3']}>
 				<Accordion.Item value="item-1">
 					<Accordion.Trigger>Panel 1</Accordion.Trigger>

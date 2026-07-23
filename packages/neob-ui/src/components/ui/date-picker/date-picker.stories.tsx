@@ -66,7 +66,7 @@ export const Single = {
 						action('date-picker-single-month-change')(month);
 					}}
 				/>
-				<div className="rounded-lg border-2 border-black bg-muted px-3 py-1.5 font-mono text-sm font-bold dark:border-white dark:bg-zinc">
+				<div className="rounded-lg border-2 border-edge bg-muted px-3 py-1.5 font-mono text-sm font-bold dark:bg-zinc">
 					Selected Date: {date ? date.toLocaleDateString() : 'None'}
 				</div>
 			</div>
@@ -102,7 +102,7 @@ export const Range = {
 						action('date-picker-range-month-change')(month);
 					}}
 				/>
-				<div className="rounded-lg border-2 border-black bg-muted px-3 py-1.5 font-mono text-sm font-bold dark:border-white dark:bg-zinc">
+				<div className="rounded-lg border-2 border-edge bg-muted px-3 py-1.5 font-mono text-sm font-bold dark:bg-zinc">
 					Selected Range: {range?.from ? range.from.toLocaleDateString() : 'None'} – {range?.to ? range.to.toLocaleDateString() : 'None'}
 				</div>
 			</div>
@@ -143,7 +143,7 @@ export const Multiple = {
 						action('date-picker-multiple-month-change')(month);
 					}}
 				/>
-				<div className="max-w-xs rounded-lg border-2 border-black bg-muted px-3 py-1.5 text-center font-mono text-sm font-bold dark:border-white dark:bg-zinc">
+				<div className="max-w-xs rounded-lg border-2 border-edge bg-muted px-3 py-1.5 text-center font-mono text-sm font-bold dark:bg-zinc">
 					Selected Dates: {dates && dates.length > 0 ? dates.map((d) => d.toLocaleDateString()).join(', ') : 'None'}
 				</div>
 			</div>
@@ -179,7 +179,7 @@ export const MonthYearNavigation = {
 						action('date-picker-navigation-month-change')(month);
 					}}
 				/>
-				<div className="rounded-lg border-2 border-black bg-muted px-3 py-1.5 font-mono text-sm font-bold dark:border-white dark:bg-zinc">
+				<div className="rounded-lg border-2 border-edge bg-muted px-3 py-1.5 font-mono text-sm font-bold dark:bg-zinc">
 					Selected Date: {date ? date.toLocaleDateString() : 'None'}
 				</div>
 			</div>

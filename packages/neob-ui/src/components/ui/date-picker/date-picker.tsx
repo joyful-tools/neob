@@ -283,7 +283,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 	);
 
 	const containerClassName = cn(
-		'rdp-root relative box-border flex h-94 w-78 flex-col justify-between rounded-xl border-2 border-black bg-white p-4 text-black shadow-sm select-none dark:border-black dark:bg-zinc dark:text-white',
+		'rdp-root relative box-border flex h-94 w-78 flex-col justify-between rounded-xl border-2 border-edge bg-white p-4 text-black shadow-sm select-none dark:border-edge dark:bg-zinc dark:text-white',
 		className,
 	);
 
@@ -321,21 +321,21 @@ export function DatePicker(fullProps: DatePickerProps) {
 				week: 'flex w-full mt-1',
 				day: 'h-9 flex-1 p-0 relative flex items-center justify-center',
 				day_button: cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'text-md size-9 rounded-lg tracking-wide'),
-				today: '[&_button]:border-2 [&_button]:border-dashed [&_button]:border-black dark:[&_button]:border-black',
+				today: '[&_button]:border-2 [&_button]:border-dashed [&_button]:border-edge dark:[&_button]:border-edge',
 				selected:
-					'[&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-black dark:[&_button]:bg-orange dark:[&_button]:text-orange-light dark:[&_button]:border-black hover:[&_button]:bg-orange/90 dark:hover:[&_button]:bg-orange/90',
+					'[&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-edge dark:[&_button]:bg-orange dark:[&_button]:text-orange-light dark:[&_button]:border-edge hover:[&_button]:bg-orange/90 dark:hover:[&_button]:bg-orange/90',
 				range_start: cn(
-					'[&_button]:relative [&_button]:z-10 [&_button]:border-2 [&_button]:border-black [&_button]:bg-orange [&_button]:text-black hover:[&_button]:bg-orange/90 dark:[&_button]:border-black dark:[&_button]:text-orange-light dark:hover:[&_button]:bg-orange/90',
+					'[&_button]:relative [&_button]:z-10 [&_button]:border-2 [&_button]:border-edge [&_button]:bg-orange [&_button]:text-black hover:[&_button]:bg-orange/90 dark:[&_button]:border-edge dark:[&_button]:text-orange-light dark:hover:[&_button]:bg-orange/90',
 					startButtonRadius,
 					startRangeIndicator,
 				),
 				range_end: cn(
-					'[&_button]:relative [&_button]:z-10 [&_button]:border-2 [&_button]:border-black [&_button]:bg-orange [&_button]:text-black hover:[&_button]:bg-orange/90 dark:[&_button]:border-black dark:[&_button]:text-orange-light dark:hover:[&_button]:bg-orange/90',
+					'[&_button]:relative [&_button]:z-10 [&_button]:border-2 [&_button]:border-edge [&_button]:bg-orange [&_button]:text-black hover:[&_button]:bg-orange/90 dark:[&_button]:border-edge dark:[&_button]:text-orange-light dark:hover:[&_button]:bg-orange/90',
 					endButtonRadius,
 					endRangeIndicator,
 				),
 				range_middle:
-					"before:absolute before:inset-0 before:bg-orange/25 before:content-[''] dark:before:bg-orange/20 [&_button]:relative [&_button]:z-10 [&_button]:rounded-none [&_button]:border-2 [&_button]:border-transparent! [&_button]:bg-transparent [&_button]:text-black hover:[&_button]:border-black! hover:[&_button]:bg-black/10 dark:[&_button]:bg-transparent dark:[&_button]:text-white dark:hover:[&_button]:bg-white/10",
+					"before:absolute before:inset-0 before:bg-orange/25 before:content-[''] dark:before:bg-orange/20 [&_button]:relative [&_button]:z-10 [&_button]:rounded-none [&_button]:border-2 [&_button]:border-transparent! [&_button]:bg-transparent [&_button]:text-black hover:[&_button]:border-edge! hover:[&_button]:bg-black/10 dark:[&_button]:bg-transparent dark:[&_button]:text-white dark:hover:[&_button]:bg-white/10",
 				outside: 'text-black/65 dark:text-white/65 opacity-100',
 				disabled: 'text-muted-foreground opacity-30 cursor-not-allowed pointer-events-none',
 				...classNames,
@@ -440,7 +440,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 
 	return (
 		<div className={containerClassName}>
-			<div className="flex h-10 items-center justify-between border-b border-black/5 pb-2 dark:border-white/5">
+			<div className="flex h-10 items-center justify-between border-b border-edge/5 pb-2">
 				<div className="flex items-center gap-1.5 font-sans text-lg font-bold tracking-wider text-black uppercase dark:text-white">
 					<AnimatePresence mode="popLayout" initial={false}>
 						<motion.button

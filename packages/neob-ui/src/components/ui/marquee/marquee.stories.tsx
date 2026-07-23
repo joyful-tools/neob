@@ -32,14 +32,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const Item = ({ text }: { text: string }) => (
-	<div className="flex h-16 w-32 shrink-0 items-center justify-center rounded-xl border-2 border-black bg-orange font-sans font-bold text-black">
+	<div className="flex h-16 w-32 shrink-0 items-center justify-center rounded-xl border-2 border-edge bg-orange font-sans font-bold text-black">
 		{text}
 	</div>
 );
 
 export const Horizontal: Story = {
 	render: () => (
-		<div className="w-125 overflow-hidden rounded-2xl border border-black/10 bg-muted/10 p-4">
+		<div className="w-125 overflow-hidden rounded-2xl border border-edge/10 bg-muted/10 p-4">
 			<Marquee duration="10s">
 				<Item text="BRUTAL" />
 				<Item text="STARK" />
@@ -63,7 +63,7 @@ export const Horizontal: Story = {
 
 export const Vertical: Story = {
 	render: () => (
-		<div className="flex h-75 items-center justify-center overflow-hidden rounded-2xl border border-black/10 bg-muted/10 p-4">
+		<div className="flex h-75 items-center justify-center overflow-hidden rounded-2xl border border-edge/10 bg-muted/10 p-4">
 			<Marquee vertical duration="12s">
 				<Item text="VERTICAL" />
 				<Item text="SCROLL" />
@@ -84,7 +84,7 @@ export const Vertical: Story = {
 
 export const PauseOnHover: Story = {
 	render: () => (
-		<div className="w-125 overflow-hidden rounded-2xl border border-black/10 bg-muted/10 p-4">
+		<div className="w-125 overflow-hidden rounded-2xl border border-edge/10 bg-muted/10 p-4">
 			<Marquee pauseOnHover duration="8s">
 				<Item text="PAUSE" />
 				<Item text="ON" />

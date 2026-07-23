@@ -41,7 +41,7 @@ export const Default: Story = {
 		children: null,
 	},
 	render: () => (
-		<div className="w-full max-w-3xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
+		<div className="w-full max-w-3xl rounded-xl border border-edge/10 bg-card p-4">
 			<Breadcrumb>
 				<Breadcrumb.Link href="/" icon={<HouseIcon className="size-4" weight="fill" />}>
 					Home
@@ -70,7 +70,7 @@ export const LoadingCurrent: Story = {
 		children: null,
 	},
 	render: () => (
-		<div className="w-full max-w-xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
+		<div className="w-full max-w-xl rounded-xl border border-edge/10 bg-card p-4">
 			<Breadcrumb size="sm">
 				<Breadcrumb.Link href="/workspace">Workspace</Breadcrumb.Link>
 				<Breadcrumb.Separator />

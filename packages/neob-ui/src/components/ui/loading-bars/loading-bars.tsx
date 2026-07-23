@@ -17,7 +17,7 @@ export function LoadingBars({ className, colorClassName = 'bg-orange' }: Loading
 			{Array.from({ length: BAR_COUNT }, (_, index) => (
 				<motion.div
 					key={index}
-					className={cn('w-1.5 rounded-xs border-2 border-black dark:border-white', colorClassName)}
+					className={cn('w-1.5 rounded-xs border-2 border-edge', colorClassName)}
 					animate={
 						prefersReducedMotion
 							? { height: 12 + index * 4, opacity: 1 }

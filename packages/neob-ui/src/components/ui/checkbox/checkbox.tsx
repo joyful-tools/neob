@@ -9,7 +9,7 @@ const CheckboxGroupContext = createContext<{ controlFirst?: boolean }>({ control
 
 const CHECKBOX_ROOT_CLASSES = `
 	peer relative flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center
-	rounded-sm border-2 border-black bg-white shadow-cel-sm transition-all
+	rounded-sm border-2 border-edge bg-white shadow-cel-sm transition-all
 	duration-300 ease-spring
 	outline-hidden neo-focus-ring isolate
 	data-[checked]:bg-black data-[checked]:text-white

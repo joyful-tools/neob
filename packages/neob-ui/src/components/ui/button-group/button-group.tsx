@@ -76,16 +76,6 @@ function ButtonGroupButton({ className, value, size, children, ref, ...propertie
 		cornerClass = 'rounded-none';
 	}
 
-	const checkedClasses = {
-		sm: 'translate-y-0.5 shadow-cel-inset-md after:translate-y-0 hover:translate-y-0.5 hover:shadow-cel-inset-md hover:after:translate-y-0',
-		default:
-			'translate-y-0.5 shadow-cel-inset-md after:translate-y-0 hover:translate-y-0.5 hover:shadow-cel-inset-md hover:after:translate-y-0',
-		lg: 'translate-y-1 shadow-cel-inset-md after:translate-y-0 hover:translate-y-1 hover:shadow-cel-inset-md hover:after:translate-y-0',
-		xl: 'translate-y-1 shadow-cel-inset-md after:translate-y-0 hover:translate-y-1 hover:shadow-cel-inset-md hover:after:translate-y-0',
-		icon: 'translate-y-0.5 shadow-cel-inset-md after:translate-y-0 hover:translate-y-0.5 hover:shadow-cel-inset-md hover:after:translate-y-0',
-	};
-	const checkedClass = checkedClasses[resolvedSize] || checkedClasses.default;
-
 	return (
 		<Radio.Root
 			ref={ref}
@@ -113,12 +103,12 @@ function ButtonGroupButton({ className, value, size, children, ref, ...propertie
 					<button
 						{...buttonProps}
 						type="button"
+						data-pressed={checked ? '' : undefined}
 						className={cn(
 							buttonVariants({ variant: 'default', size: resolvedSize }),
 							'relative -ml-0.5 shrink-0 first:ml-0 focus-visible:z-20',
 							!checked && 'hover:z-20',
 							cornerClass,
-							checked && checkedClass,
 							className,
 						)}
 						{...restProperties}

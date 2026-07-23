@@ -35,7 +35,7 @@ export interface TableCellProperties extends TdHTMLAttributes<HTMLTableCellEleme
  */
 function TableRoot({ className, children, ...properties }: HTMLAttributes<HTMLDivElement>) {
 	return (
-		<div className="w-full overflow-auto rounded-lg border-2 border-black shadow-cel-sm">
+		<div className="w-full overflow-auto rounded-lg border-2 border-edge shadow-cel-sm">
 			<table className={cn('w-full border-collapse text-sm', className)} {...properties}>
 				{children}
 			</table>
@@ -50,11 +50,7 @@ TableRoot.displayName = 'Table';
  */
 function TableHeader({ className, ref, ...properties }: TableHeaderProperties) {
 	return (
-		<thead
-			ref={ref}
-			className={cn('border-b-2 border-black bg-black text-white dark:bg-zinc dark:text-white', className)}
-			{...properties}
-		/>
+		<thead ref={ref} className={cn('border-b-2 border-edge bg-black text-white dark:bg-zinc dark:text-white', className)} {...properties} />
 	);
 }
 TableHeader.displayName = 'Table.Header';
@@ -71,7 +67,7 @@ TableBody.displayName = 'Table.Body';
  * Table footer section (tfoot).
  */
 function TableFooter({ className, ref, ...properties }: TableFooterProperties) {
-	return <tfoot ref={ref} className={cn('border-t-2 border-black bg-muted/50 font-bold', className)} {...properties} />;
+	return <tfoot ref={ref} className={cn('border-t-2 border-edge bg-muted/50 font-bold', className)} {...properties} />;
 }
 TableFooter.displayName = 'Table.Footer';
 
@@ -79,7 +75,7 @@ TableFooter.displayName = 'Table.Footer';
  * Table row (tr).
  */
 function TableRow({ className, ref, ...properties }: TableRowProperties) {
-	return <tr ref={ref} className={cn(`border-b-2 border-black/10 dark:border-white/10`, className)} {...properties} />;
+	return <tr ref={ref} className={cn(`border-b-2 border-edge/10`, className)} {...properties} />;
 }
 TableRow.displayName = 'Table.Row';
 

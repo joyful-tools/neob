@@ -7,7 +7,7 @@ import { cn } from '@/lib/utilities';
 
 const RADIO_ITEM_CLASS_NAME = `
 	aspect-square size-5 shrink-0 cursor-pointer rounded-full border-2
-	border-black bg-white shadow-cel-sm transition-all duration-300 ease-spring
+	border-edge bg-white shadow-cel-sm transition-all duration-300 ease-spring
 	neo-focus-ring isolate outline-hidden
 	disabled:cursor-not-allowed disabled:opacity-50
 	data-[checked]:bg-black data-[checked]:text-white

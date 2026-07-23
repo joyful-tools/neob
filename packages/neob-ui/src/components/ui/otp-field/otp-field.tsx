@@ -55,7 +55,7 @@ interface InputProperties {
 }
 
 const INPUT_CLASS_NAME = `
-	aspect-square size-12 grow rounded-lg border-2 border-black bg-white
+	aspect-square size-12 grow rounded-lg border-2 border-edge bg-white
 	dark:bg-zinc text-center font-mono text-xl font-bold uppercase text-black
 	dark:text-white shadow-cel-inset transition-all duration-300 ease-spring
 	neo-focus-ring-focus isolate outline-hidden

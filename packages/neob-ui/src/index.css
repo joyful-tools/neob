@@ -31,7 +31,7 @@
 @theme {
 	--color-*: initial;
 
-	--font-sans: 'Urbanist', ui-sans-serif, system-ui, sans-serif;
+	--font-sans: 'Rubik', ui-sans-serif, system-ui, sans-serif;
 	--font-display: 'Dela Gothic One', system-ui, sans-serif;
 	--font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
 
@@ -52,19 +52,20 @@
 	--color-destructive-foreground: hsl(var(--destructive-foreground));
 
 	--color-black: #000;
+	--color-edge: hsl(var(--edge));
 	--color-white: #fff;
 
 	/* Base Colors */
-	--color-orange: #f0885a;
-	--color-gold: #e5bb59;
+	--color-orange: #f48120;
+	--color-gold: #faad3f;
 	--color-zinc: #25232a;
-	--color-coral: #e47d76;
-	--color-blue: #7ba9d5;
-	--color-purple: #aa8acd;
-	--color-pink: #d98aae;
-	--color-yellow: #ead35c;
-	--color-red: #d9717a;
-	--color-green: #75b889;
+	--color-coral: #ff6b4a;
+	--color-blue: #60a5fa;
+	--color-purple: #c084fc;
+	--color-pink: #f472b6;
+	--color-yellow: #fae315;
+	--color-red: #f55260;
+	--color-green: #26c968;
 
 	/* Light Variants (20% opacity on white) */
 	--color-orange-light: color-mix(in srgb, var(--color-orange) 20%, white);
@@ -104,12 +105,12 @@
 	--shadow-cel-depth-md: 4px;
 	--shadow-cel-depth-lg: 8px;
 	--shadow-cel-depth-xl: 12px;
-	--shadow-cel-color-default: rgba(0, 0, 0, 1);
+	--shadow-cel-color-default: hsl(var(--edge));
 	--shadow-cel-inset-depth: var(--shadow-cel-inset-depth-md);
 	--shadow-cel-inset-depth-md: 3px;
 	--shadow-cel-inset-depth-sm: 2px;
-	--shadow-cel-inset-color-md: rgba(0, 0, 0, 0.25);
-	--shadow-cel-inset-color-sm: rgba(0, 0, 0, 0.2);
+	--shadow-cel-inset-color-md: hsl(var(--edge) / 25%);
+	--shadow-cel-inset-color-sm: hsl(var(--edge) / 20%);
 	--underline-slide-thickness: 1px;
 	--underline-slide-duration: 300ms;
 	--focus-ring-inner-size: 2px;
@@ -234,6 +235,7 @@
 		/* Core Colors */
 		--background: 38 44% 96%;
 		--foreground: 270 9% 15%;
+		--edge: 270 4% 10%;
 		--primary: 270 9% 15%;
 		--primary-foreground: 38 44% 96%;
 		--muted: 280 22% 93%;
@@ -251,18 +253,19 @@
 
 	.dark {
 		color-scheme: dark;
-		--color-orange: #8f4f37;
-		--color-gold: #7b6438;
-		--color-coral: #874b49;
-		--color-blue: #42617f;
-		--color-purple: #5f4d78;
-		--color-pink: #7d4b65;
-		--color-yellow: #756a36;
-		--color-red: #8b454d;
-		--color-green: #426b4e;
+		--color-orange: #923a00;
+		--color-gold: #805500;
+		--color-coral: #a32f20;
+		--color-blue: #145b9f;
+		--color-purple: #6b329d;
+		--color-pink: #96325f;
+		--color-yellow: #665900;
+		--color-red: #a72432;
+		--color-green: #056631;
 		--background: 274 10% 14%;
 		--foreground: 38 44% 95%;
-		--primary: 263 52% 80%;
+		--edge: 270 4% 8%;
+		--primary: 38 44% 95%;
 		--primary-foreground: 270 9% 15%;
 		--muted: 273 9% 19%;
 		--muted-foreground: 278 13% 78%;

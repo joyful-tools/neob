@@ -132,7 +132,7 @@ export function InlineConfirmGroup({
 			disabled={isLoading}
 			onClick={handleConfirmClick}
 			className={cn(
-				'neo-focus-ring isolate flex size-7 cursor-pointer items-center justify-center rounded-md border border-black outline-hidden transition-all select-none hover:text-white disabled:pointer-events-none disabled:opacity-50 dark:border-white',
+				'neo-focus-ring isolate flex size-7 cursor-pointer items-center justify-center rounded-md border border-edge outline-hidden transition-all select-none hover:text-white disabled:pointer-events-none disabled:opacity-50',
 				intentClassNames[intent],
 			)}
 			aria-label={`Confirm ${actionLabelLowercase} ${itemName}`}
@@ -148,7 +148,7 @@ export function InlineConfirmGroup({
 			tabIndex={0}
 			disabled={isLoading}
 			onClick={handleCancelClick}
-			className="neo-focus-ring isolate flex size-7 cursor-pointer items-center justify-center rounded-md border border-black bg-zinc/10 text-black outline-hidden transition-all select-none hover:bg-black hover:text-white disabled:pointer-events-none disabled:opacity-50 dark:border-white dark:bg-zinc/20 dark:text-white dark:hover:bg-white dark:hover:text-black"
+			className="neo-focus-ring isolate flex size-7 cursor-pointer items-center justify-center rounded-md border border-edge bg-zinc/10 text-black outline-hidden transition-all select-none hover:bg-black hover:text-white disabled:pointer-events-none disabled:opacity-50 dark:bg-zinc/20 dark:text-white dark:hover:bg-white dark:hover:text-black"
 			aria-label={`Cancel ${actionLabelLowercase} ${itemName}`}
 		>
 			<XIcon className="size-4" />
@@ -169,7 +169,7 @@ export function InlineConfirmGroup({
 						transition={spring}
 						style={{ borderRadius: 8, transformOrigin }}
 						className={cn(
-							`absolute top-1/2 z-10 flex shrink-0 -translate-y-1/2 items-center gap-1.5 rounded-lg border-2 border-black bg-white p-1 shadow-sm dark:bg-zinc`,
+							`absolute top-1/2 z-10 flex shrink-0 -translate-y-1/2 items-center gap-1.5 rounded-lg border-2 border-edge bg-white p-1 shadow-sm dark:bg-zinc`,
 							groupPositionClassName,
 							className,
 						)}
@@ -195,7 +195,7 @@ export function InlineConfirmGroup({
 								setOpen(true);
 							}}
 							className={cn(
-								'neo-focus-ring isolate flex size-9 cursor-pointer items-center justify-center rounded-md border-2 border-transparent text-black outline-hidden transition-all select-none hover:border-black hover:bg-muted active:translate-y-0.5 disabled:pointer-events-none disabled:opacity-50 dark:text-white dark:hover:border-white dark:hover:bg-zinc',
+								'neo-focus-ring isolate flex size-9 cursor-pointer items-center justify-center rounded-md border-2 border-transparent text-black outline-hidden transition-all select-none hover:border-edge hover:bg-muted active:translate-y-0.5 disabled:pointer-events-none disabled:opacity-50 dark:text-white dark:hover:border-white dark:hover:bg-zinc',
 							)}
 							aria-label={`${actionLabel} ${itemName}`}
 						>

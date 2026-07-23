@@ -44,7 +44,7 @@ export function HoverInfo({ height = '2rem', className, children, ref, ...proper
 				onFocus={() => handleOpenChange(true)}
 				onBlur={handleBlur}
 				className={cn(
-					'neo-focus-ring absolute inset-x-0 top-0 z-10 overflow-hidden rounded-md border-2 border-black bg-card outline-hidden transition-shadow duration-200',
+					'neo-focus-ring absolute inset-x-0 top-0 z-10 overflow-hidden rounded-md border-2 border-edge bg-card outline-hidden transition-shadow duration-200',
 					open ? 'shadow-cel-md' : 'shadow-cel-sm',
 					className,
 				)}

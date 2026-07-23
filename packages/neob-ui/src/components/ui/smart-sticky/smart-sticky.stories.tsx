@@ -35,7 +35,7 @@ export const Default: Story = {
 		<div
 			data-testid="scroll-container"
 			tabIndex={0}
-			className="h-60 w-80 overflow-y-auto rounded-xl border-2 border-black bg-white select-none focus:ring-2 focus:ring-black focus:outline-hidden"
+			className="h-60 w-80 overflow-y-auto rounded-xl border-2 border-edge bg-white select-none focus:ring-2 focus:ring-edge focus:outline-hidden"
 		>
 			<div className="h-20 bg-muted/40 p-4 font-sans text-xs">Scroll down to stick the header...</div>
 
@@ -43,7 +43,7 @@ export const Default: Story = {
 				sticky={({ stuck }) => (
 					<div
 						data-testid="sticky-header"
-						className={`border-b-2 border-black p-3 font-display transition-all duration-200 ${
+						className={`border-b-2 border-edge p-3 font-display transition-all duration-200 ${
 							stuck ? 'bg-orange text-black shadow-cel-sm' : 'bg-white text-zinc'
 						}`}
 					>

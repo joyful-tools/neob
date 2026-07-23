@@ -50,7 +50,7 @@ function getInputStyles(size: ComboboxSize, hasError: boolean, focusRingClass = 
 	return cn(
 		focusRingClass,
 		`isolate flex w-full items-center justify-between bg-white font-bold text-black outline-hidden transition-all duration-300 ease-spring select-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
-		hasError ? 'border-red [--color-ring:var(--color-red)] dark:border-red' : 'border-black dark:border-black',
+		hasError ? 'border-red [--color-ring:var(--color-red)] dark:border-red' : 'border-edge dark:border-edge',
 		sizeClasses[size],
 	);
 }
@@ -188,7 +188,7 @@ function Content({
 					ref={ref}
 					aria-label={ariaLabel}
 					className={cn(
-						`flex max-h-[min(var(--available-height),24rem)] w-[max(var(--anchor-width),150px)] min-w-0 animate-popover-in flex-col overflow-hidden rounded-xl border-2 border-black bg-white px-0 py-1.5 text-black shadow-sm outline-hidden select-none data-closed:hidden data-closed:animate-popover-out dark:bg-zinc dark:text-white`,
+						`flex max-h-[min(var(--available-height),24rem)] w-[max(var(--anchor-width),150px)] min-w-0 animate-popover-in flex-col overflow-hidden rounded-xl border-2 border-edge bg-white px-0 py-1.5 text-black shadow-sm outline-hidden select-none data-closed:hidden data-closed:animate-popover-out dark:bg-zinc dark:text-white`,
 						`origin-(--transform-origin)`,
 						`data-[side=bottom]:[--tw-enter-translate-y:-0.5rem] data-[side=left]:[--tw-enter-translate-x:0.5rem] data-[side=right]:[--tw-enter-translate-x:-0.5rem] data-[side=top]:[--tw-enter-translate-y:0.5rem]`,
 						className,
@@ -379,7 +379,7 @@ function getChipsContainerStyles(size: ComboboxSize, hasError: boolean) {
 
 	return cn(
 		`neo-focus-ring-focus isolate flex w-full flex-col gap-1 bg-white font-bold text-black shadow-cel-inset-md outline-hidden transition-all duration-300 ease-spring select-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
-		hasError ? 'border-red [--color-ring:var(--color-red)] dark:border-red' : 'border-black dark:border-black',
+		hasError ? 'border-red [--color-ring:var(--color-red)] dark:border-red' : 'border-edge dark:border-edge',
 		sizeClasses[size],
 	);
 }
@@ -472,7 +472,7 @@ function Chip({ removeLabel = 'Remove', className, children, ref, ...props }: Co
 		<BaseCombobox.Chip
 			ref={ref}
 			className={cn(
-				'flex h-6 items-center gap-1.5 rounded-md border border-black bg-muted pr-0.75 pl-2 text-xs font-bold text-black shadow-cel-sm dark:border-white dark:bg-zinc dark:text-white',
+				'flex h-6 items-center gap-1.5 rounded-md border border-edge bg-muted pr-0.75 pl-2 text-xs font-bold text-black shadow-cel-sm dark:bg-zinc dark:text-white',
 				className,
 			)}
 			{...props}
@@ -553,7 +553,7 @@ function Input({ className, ref, 'aria-label': ariaLabel = 'Search options', ...
 			ref={ref}
 			aria-label={ariaLabel}
 			className={cn(
-				'neo-focus-ring-focus isolate mx-2 mt-1 mb-2 flex h-9 min-w-0 self-stretch overflow-hidden rounded-md border-2 border-black bg-white px-3 py-1.5 text-sm font-medium shadow-cel-inset-md outline-hidden dark:bg-zinc dark:text-white',
+				'neo-focus-ring-focus isolate mx-2 mt-1 mb-2 flex h-9 min-w-0 self-stretch overflow-hidden rounded-md border-2 border-edge bg-white px-3 py-1.5 text-sm font-medium shadow-cel-inset-md outline-hidden dark:bg-zinc dark:text-white',
 				className,
 			)}
 			{...props}
@@ -597,7 +597,7 @@ function Group({ className, ref, ...props }: ComboboxGroupProps) {
 	return (
 		<BaseCombobox.Group
 			ref={ref}
-			className={cn('mt-2 border-t border-black/10 pt-2 first:mt-0 first:border-t-0 first:pt-0 dark:border-white/10', className)}
+			className={cn('mt-2 border-t border-edge/10 pt-2 first:mt-0 first:border-t-0 first:pt-0', className)}
 			{...props}
 		/>
 	);

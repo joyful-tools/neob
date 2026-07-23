@@ -45,7 +45,7 @@ export function Cursor({ name, color, position, className, style, ref, ...proper
 				/>
 			</svg>
 			<div
-				className="mt-3 ml-1 rounded-xs border-2 border-black px-1.5 py-0.5 text-xs font-bold text-black shadow-cel-sm"
+				className="mt-3 ml-1 rounded-xs border-2 border-edge px-1.5 py-0.5 text-xs font-bold text-black shadow-cel-sm"
 				style={{
 					backgroundColor: color,
 				}}

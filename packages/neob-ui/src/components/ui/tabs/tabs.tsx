@@ -38,7 +38,7 @@ function TabsList({
 }) {
 	const listClasses =
 		variant === 'segmented'
-			? 'relative inline-flex items-center gap-1 border-2 border-black bg-muted/40 p-2 rounded-xl dark:border-black dark:bg-zinc/30'
+			? 'relative inline-flex items-center gap-1 border-2 border-edge bg-muted/40 p-2 rounded-xl dark:border-edge dark:bg-zinc/30'
 			: 'relative flex w-full space-x-1 border-b-2 border-zinc-200 pb-px dark:border-zinc-800';
 
 	return (
@@ -68,7 +68,7 @@ function TabsTrigger({
 
 	const indicatorClasses =
 		variant === 'segmented'
-			? 'absolute inset-0 rounded-lg border-2 border-black bg-white dark:bg-zinc dark:border-black z-0'
+			? 'absolute inset-0 rounded-lg border-2 border-edge bg-white dark:bg-zinc dark:border-edge z-0'
 			: 'absolute left-0 right-0 bottom-0 h-[4px] bg-black dark:bg-white z-10';
 
 	return (

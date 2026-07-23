@@ -56,7 +56,7 @@ export const DefaultCompound: { [key: string]: unknown } & import('@storybook/re
 		const [perPage, setPerPage] = useState(args.initialPerPage);
 
 		return (
-			<div className="w-full max-w-3xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
+			<div className="w-full max-w-3xl rounded-xl border border-edge/10 bg-card p-4">
 				<Pagination
 					page={page}
 					setPage={(nextPage) => {
@@ -99,7 +99,7 @@ export const SimpleControls: { [key: string]: unknown } & import('@storybook/rea
 		const [page, setPage] = useState(args.initialPage);
 
 		return (
-			<div className="w-full max-w-xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
+			<div className="w-full max-w-xl rounded-xl border border-edge/10 bg-card p-4">
 				<Pagination
 					page={page}
 					setPage={(nextPage) => {
@@ -137,7 +137,7 @@ export const DropdownSelector: { [key: string]: unknown } & import('@storybook/r
 		const [page, setPage] = useState(args.initialPage);
 
 		return (
-			<div className="w-full max-w-xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
+			<div className="w-full max-w-xl rounded-xl border border-edge/10 bg-card p-4">
 				<Pagination
 					page={page}
 					setPage={(nextPage) => {
@@ -175,7 +175,7 @@ export const InputClampingAndPageSize: { [key: string]: unknown } & import('@sto
 		const [perPage, setPerPage] = useState(args.initialPerPage);
 
 		return (
-			<div className="w-full max-w-3xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
+			<div className="w-full max-w-3xl rounded-xl border border-edge/10 bg-card p-4">
 				<Pagination
 					page={page}
 					setPage={(nextPage) => {
@@ -240,7 +240,7 @@ export const DropdownSelectionAndLabels: { [key: string]: unknown } & import('@s
 			const [page, setPage] = useState(args.initialPage);
 
 			return (
-				<div className="w-full max-w-xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
+				<div className="w-full max-w-xl rounded-xl border border-edge/10 bg-card p-4">
 					<Pagination
 						page={page}
 						setPage={(nextPage) => {
@@ -300,7 +300,7 @@ export const EmptyResultsDisabledState: { [key: string]: unknown } & import('@st
 		const [page, setPage] = useState(args.initialPage);
 
 		return (
-			<div className="w-full max-w-xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
+			<div className="w-full max-w-xl rounded-xl border border-edge/10 bg-card p-4">
 				<Pagination page={page} setPage={setPage} perPage={args.initialPerPage} totalCount={args.totalCount}>
 					<Pagination.Info />
 					<Pagination.Separator />
@@ -331,7 +331,7 @@ export const SinglePageDisabledState: { [key: string]: unknown } & import('@stor
 		const [page, setPage] = useState(args.initialPage);
 
 		return (
-			<div className="w-full max-w-xl rounded-xl border border-black/10 bg-card p-4 dark:border-white/10">
+			<div className="w-full max-w-xl rounded-xl border border-edge/10 bg-card p-4">
 				<Pagination page={page} setPage={setPage} perPage={args.initialPerPage} totalCount={args.totalCount}>
 					<Pagination.Info />
 					<Pagination.Separator />

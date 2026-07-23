@@ -6,11 +6,8 @@ import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utilities';
 
 const TOGGLE_ON_CLASS_NAME = `
-	data-[pressed]:border-black data-[pressed]:bg-orange
-	data-[pressed]:text-black dark:data-[pressed]:text-orange-light data-[pressed]:shadow-cel-inset
-	data-[pressed]:hover:translate-y-0 data-[pressed]:hover:bg-orange/90
-	data-[pressed]:hover:shadow-cel-inset
-	data-[pressed]:active:translate-y-0.5
+	data-[pressed]:bg-orange data-[pressed]:text-black
+	dark:data-[pressed]:text-orange-light data-[pressed]:hover:bg-orange/90
 `;
 
 interface ToggleProperties extends VariantProps<typeof buttonVariants> {
@@ -37,7 +34,14 @@ export function Toggle({
 	...properties
 }: ToggleProperties) {
 	if (asChild && isValidElement<Record<string, unknown>>(children)) {
-		return <TogglePrimitive ref={ref} render={children} className={cn(TOGGLE_ON_CLASS_NAME, className)} {...properties} />;
+		return (
+			<TogglePrimitive
+				ref={ref}
+				render={children}
+				className={cn(buttonVariants({ variant, size }), TOGGLE_ON_CLASS_NAME, className)}
+				{...properties}
+			/>
+		);
 	}
 
 	return (

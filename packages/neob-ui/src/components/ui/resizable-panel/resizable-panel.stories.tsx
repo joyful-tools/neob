@@ -39,7 +39,7 @@ export const Horizontal: Story = {
 	},
 	render: (args) => {
 		return (
-			<div className="flex h-64 w-125 overflow-hidden rounded-xl border-2 border-black bg-white text-black shadow-cel-md dark:bg-zinc dark:text-white">
+			<div className="flex h-64 w-125 overflow-hidden rounded-xl border-2 border-edge bg-white text-black shadow-cel-md dark:bg-zinc dark:text-white">
 				<ResizablePanel {...args}>
 					<div className="flex h-full items-center justify-center bg-orange-light p-4 text-center font-bold">Sidebar (Drag Right Edge)</div>
 				</ResizablePanel>

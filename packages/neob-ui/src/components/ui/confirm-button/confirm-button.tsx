@@ -165,7 +165,7 @@ export function ConfirmButton({
 						transition={springOpen}
 						style={{ borderRadius: 12 }}
 						className={cn(
-							`absolute z-20 flex min-w-56 flex-col items-center rounded-xl border-2 border-black bg-white p-3 text-black shadow-md dark:bg-zinc dark:text-white`,
+							`absolute z-20 flex min-w-56 flex-col items-center rounded-xl border-2 border-edge bg-white p-3 text-black shadow-md dark:bg-zinc dark:text-white`,
 							'origin-center',
 						)}
 						role="dialog"

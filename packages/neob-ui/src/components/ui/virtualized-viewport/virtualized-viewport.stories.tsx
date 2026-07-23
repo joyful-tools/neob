@@ -39,7 +39,7 @@ const makeSlabs = (count: number, dynamic = false, offset = 0): Slab[] =>
 const SlabItem = ({ slab }: { slab: Slab }) => (
 	<div
 		style={{ height: slab.height }}
-		className={cn('flex items-center border-b-2 border-black px-4 transition-colors duration-100 hover:brightness-110', slab.bg)}
+		className={cn('flex items-center border-b-2 border-edge px-4 transition-colors duration-100 hover:brightness-110', slab.bg)}
 	>
 		<span className="inline-flex items-center rounded-md bg-black/80 px-2 py-0.5 font-mono text-xs font-bold text-white">
 			{hexId(slab.label)}
@@ -84,7 +84,7 @@ export const Basic: Story = {
 
 		return (
 			<div className="flex w-120 flex-col gap-4">
-				<div className="flex items-center justify-between rounded-xl border-2 border-black bg-muted/40 p-3">
+				<div className="flex items-center justify-between rounded-xl border-2 border-edge bg-muted/40 p-3">
 					<h3 className="font-display text-base">Basic</h3>
 					<div className="flex gap-2">
 						<Button variant="subtle" size="sm" onClick={() => setItems((p) => [...p, ...makeSlabs(50, false, p.length)])}>
@@ -96,7 +96,7 @@ export const Basic: Story = {
 					</div>
 				</div>
 
-				<Card className="h-100 overflow-hidden border-2 border-black p-0">
+				<Card className="h-100 overflow-hidden border-2 border-edge p-0">
 					<VirtualizedViewport
 						items={items}
 						estimatedItemHeight={args.estimatedItemHeight}
@@ -144,7 +144,7 @@ export const DynamicHeights: Story = {
 
 		return (
 			<div className="flex w-120 flex-col gap-4">
-				<div className="flex items-center justify-between rounded-xl border-2 border-black bg-muted/40 p-3">
+				<div className="flex items-center justify-between rounded-xl border-2 border-edge bg-muted/40 p-3">
 					<h3 className="font-display text-base">Dynamic Heights</h3>
 					<div className="flex gap-2">
 						<Button
@@ -174,7 +174,7 @@ export const DynamicHeights: Story = {
 					</div>
 				</div>
 
-				<Card className="h-112.5 overflow-hidden border-2 border-black p-0 shadow-cel-md">
+				<Card className="h-112.5 overflow-hidden border-2 border-edge p-0 shadow-cel-md">
 					<VirtualizedViewport
 						items={items}
 						estimatedItemHeight={args.estimatedItemHeight}
@@ -226,12 +226,12 @@ export const VisualBufferDebugger: Story = {
 
 		return (
 			<div className="flex w-170 flex-col gap-4">
-				<div className="rounded-xl border-2 border-black bg-muted/40 p-3">
+				<div className="rounded-xl border-2 border-edge bg-muted/40 p-3">
 					<h3 className="font-display text-base">Buffer Debugger</h3>
 				</div>
 
 				<div className="flex gap-4">
-					<Card className="h-112.5 w-95 overflow-hidden border-2 border-black p-0 shadow-cel-md">
+					<Card className="h-112.5 w-95 overflow-hidden border-2 border-edge p-0 shadow-cel-md">
 						<VirtualizedViewport
 							items={items}
 							estimatedItemHeight={args.estimatedItemHeight}
@@ -242,18 +242,18 @@ export const VisualBufferDebugger: Story = {
 						/>
 					</Card>
 
-					<Card className="flex flex-1 flex-col border-2 border-black p-4 shadow-cel-md">
+					<Card className="flex flex-1 flex-col border-2 border-edge p-4 shadow-cel-md">
 						<div className="mb-3 flex flex-wrap gap-2 font-mono text-[10px]">
 							<div className="flex items-center gap-1">
-								<div className="size-3 rounded-sm border border-black bg-green-light shadow-cel-inset-sm" />
+								<div className="size-3 rounded-sm border border-edge bg-green-light shadow-cel-inset-sm" />
 								<span>Visible</span>
 							</div>
 							<div className="flex items-center gap-1">
-								<div className="size-3 rounded-sm border border-black bg-orange-light shadow-cel-inset-sm" />
+								<div className="size-3 rounded-sm border border-edge bg-orange-light shadow-cel-inset-sm" />
 								<span>Buffer</span>
 							</div>
 							<div className="flex items-center gap-1">
-								<div className="size-3 rounded-sm border border-black bg-muted shadow-cel-inset-sm" />
+								<div className="size-3 rounded-sm border border-edge bg-muted shadow-cel-inset-sm" />
 								<span>Virtual</span>
 							</div>
 						</div>
@@ -275,7 +275,7 @@ export const VisualBufferDebugger: Story = {
 										key={i}
 										title={`#${hexId(i)}`}
 										className={cn(
-											'flex size-6 items-center justify-center rounded-sm border border-black font-mono text-[9px] shadow-cel-sm transition-all duration-150',
+											'flex size-6 items-center justify-center rounded-sm border border-edge font-mono text-[9px] shadow-cel-sm transition-all duration-150',
 											statusClass,
 										)}
 									>

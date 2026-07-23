@@ -20,7 +20,7 @@ import { cn } from '@/lib/utilities';
 
 const CONTENT_CLASS_NAME = `
 	relative grid w-full max-w-[calc(100vw-2rem)] gap-4 rounded-xl
-	border-4 border-black bg-white dark:bg-zinc p-6 dark:text-white
+	border-4 border-edge bg-white dark:bg-zinc p-6 dark:text-white
 	sm:max-w-lg
 `;
 

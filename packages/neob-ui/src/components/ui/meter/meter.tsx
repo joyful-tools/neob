@@ -31,7 +31,7 @@ export function Meter({
 		>
 			<BaseMeter.Track
 				className={cn(
-					`h-4 w-full overflow-hidden rounded-full border-2 border-black bg-white shadow-cel-inset-sm dark:bg-zinc`,
+					`h-4 w-full overflow-hidden rounded-full border-2 border-edge bg-white shadow-cel-inset-sm dark:bg-zinc`,
 					trackClassName,
 				)}
 			>

@@ -112,12 +112,12 @@ function TooltipRoot({ children, content, side = 'top', delayDuration, className
 								role="tooltip"
 								render={<motion.div variants={tooltipVariants} initial="hidden" animate="visible" exit="exit" transition={springSnappy} />}
 								className={cn(
-									`rounded-full border border-black bg-white px-2 py-1 text-xs font-bold text-black shadow-sm select-none dark:bg-zinc dark:text-white`,
+									`rounded-full border border-edge bg-white px-2 py-1 text-xs font-bold text-black shadow-sm select-none dark:bg-zinc dark:text-white`,
 									className,
 								)}
 							>
 								{content}
-								<BaseTooltip.Arrow className="fill-black" />
+								<BaseTooltip.Arrow className="fill-edge" />
 							</BaseTooltip.Popup>
 						</BaseTooltip.Positioner>
 					</BaseTooltip.Portal>

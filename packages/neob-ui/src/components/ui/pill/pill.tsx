@@ -6,7 +6,7 @@ import type { HTMLAttributes, Ref } from 'react';
 
 const pillVariants = cva(
 	`
-		inline-flex items-center justify-center border-2 border-black
+		inline-flex items-center justify-center border-2 border-edge
 		leading-none font-bold tracking-wide transition-all
 		select-none
 	`,

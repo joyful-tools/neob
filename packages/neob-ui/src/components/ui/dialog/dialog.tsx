@@ -12,7 +12,7 @@ import type { HTMLAttributes, ReactNode, Ref } from 'react';
 
 const CONTENT_CLASS_NAME = `
 	relative grid w-full max-w-[calc(100vw-2rem)] gap-4 rounded-xl
-	border-4 border-black bg-white dark:bg-zinc p-6 shadow-xl
+	border-4 border-edge bg-white dark:bg-zinc p-6 shadow-xl
 	sm:max-w-lg dark:text-white
 `;
 
@@ -169,7 +169,7 @@ function DialogFooter({ className, ...properties }: HTMLAttributes<HTMLDivElemen
 	const { isComposed } = useContext(DialogContext);
 	return (
 		<div
-			className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', isComposed && 'border-t-2 border-black px-6 py-4', className)}
+			className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', isComposed && 'border-t-2 border-edge px-6 py-4', className)}
 			{...properties}
 		/>
 	);

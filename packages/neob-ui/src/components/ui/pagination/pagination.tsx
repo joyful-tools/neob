@@ -120,7 +120,7 @@ function PaginationPageSize({
 					onValueChange={(v) => onChange(Number(v))}
 					aria-label={labels.pageSize}
 					size="sm"
-					className="h-8 border-2 border-black px-2.5 text-xs font-black shadow-cel-sm dark:border-black [&_svg]:size-3"
+					className="h-8 border-2 border-edge px-2.5 text-xs font-black shadow-cel-sm dark:border-edge [&_svg]:size-3"
 					containerClassName="p-1"
 				>
 					{options.map((size) => (
@@ -219,7 +219,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							</Select>
 						</div>
 					) : (
-						<div className="neo-focus-ring-focus isolate -ml-0.5 flex h-8 items-center justify-center rounded-none border-2 border-black bg-white shadow-cel-sm outline-hidden transition-all duration-300 ease-spring select-none focus-within:z-10 dark:border-black dark:bg-zinc">
+						<div className="neo-focus-ring-focus isolate -ml-0.5 flex h-8 items-center justify-center rounded-none border-2 border-edge bg-white shadow-cel-sm outline-hidden transition-all duration-300 ease-spring select-none focus-within:z-10 dark:border-edge dark:bg-zinc">
 							<input
 								type="number"
 								data-neo-number-input=""
@@ -307,7 +307,7 @@ export interface PaginationSeparatorProps {
 }
 
 function PaginationSeparator({ className }: PaginationSeparatorProps) {
-	return <div data-slot="pagination-separator" className={cn('mx-2 h-6 border-l-2 border-black/15 dark:border-white/15', className)} />;
+	return <div data-slot="pagination-separator" className={cn('mx-2 h-6 border-l-2 border-edge/15', className)} />;
 }
 
 PaginationSeparator.displayName = 'Pagination.Separator';

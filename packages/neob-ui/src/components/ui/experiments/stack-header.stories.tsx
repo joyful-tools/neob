@@ -95,7 +95,7 @@ function StackHeaderDemo() {
 		<div>
 			<div
 				ref={headerRef}
-				className="z-10 flex h-18.25 w-full flex-col items-center justify-center border-4 border-black bg-orange shadow-sm dark:bg-orange-dark"
+				className="z-10 flex h-18.25 w-full flex-col items-center justify-center border-4 border-edge bg-orange shadow-sm dark:bg-orange-dark"
 				style={{
 					position: 'absolute',
 					top: '0px',

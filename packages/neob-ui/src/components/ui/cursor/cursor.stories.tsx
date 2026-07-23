@@ -26,7 +26,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	render: () => (
-		<div className="relative h-48 w-96 overflow-hidden rounded-lg border-2 border-black bg-white shadow-cel-inset-sm dark:bg-zinc">
+		<div className="relative h-48 w-96 overflow-hidden rounded-lg border-2 border-edge bg-white shadow-cel-inset-sm dark:bg-zinc">
 			<Cursor name="Demo" color="var(--color-blue)" position={[150, 80]} />
 		</div>
 	),
@@ -34,7 +34,7 @@ export const Default: Story = {
 
 export const Multiple: Story = {
 	render: () => (
-		<div className="relative h-64 w-125 overflow-hidden rounded-lg border-2 border-black bg-white shadow-cel-inset-sm dark:bg-zinc">
+		<div className="relative h-64 w-125 overflow-hidden rounded-lg border-2 border-edge bg-white shadow-cel-inset-sm dark:bg-zinc">
 			<Cursor name="Alice" color="var(--color-blue)" position={[50, 40]} />
 			<Cursor name="Bob" color="var(--color-red)" position={[180, 150]} />
 			<Cursor name="Charlie" color="var(--color-green)" position={[320, 90]} />
@@ -69,7 +69,7 @@ function InteractiveCursorContainer() {
 		<div
 			ref={containerRef}
 			onMouseMove={handleMouseMove}
-			className="relative h-64 w-125 overflow-hidden rounded-lg border-2 border-black bg-white shadow-cel-inset-sm dark:bg-zinc"
+			className="relative h-64 w-125 overflow-hidden rounded-lg border-2 border-edge bg-white shadow-cel-inset-sm dark:bg-zinc"
 		>
 			<div className="pointer-events-none absolute inset-0 flex items-center justify-center font-sans text-sm font-bold text-muted-foreground select-none">
 				Move pointer here

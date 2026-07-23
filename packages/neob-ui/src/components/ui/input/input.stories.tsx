@@ -238,7 +238,7 @@ export const CustomComposition: Story = {
 	render: (args) => (
 		<div className="w-80">
 			<Input.Wrapper label={args.label} description={args.description}>
-				<div className="rounded-lg border-2 border-dashed border-black/20 p-4 text-center text-sm font-bold text-muted-foreground dark:border-white/20">
+				<div className="rounded-lg border-2 border-dashed border-edge/20 p-4 text-center text-sm font-bold text-muted-foreground">
 					[Custom Component Here]
 				</div>
 			</Input.Wrapper>

@@ -47,7 +47,7 @@ export const PointerLockLifecycle: Story = {
 						setValue(Math.round(nextValue * 100) / 100);
 					}}
 				/>
-				<div className="rounded-lg border-2 border-black bg-muted px-3 py-1.5 font-mono text-sm font-bold dark:border-white dark:bg-zinc">
+				<div className="rounded-lg border-2 border-edge bg-muted px-3 py-1.5 font-mono text-sm font-bold dark:bg-zinc">
 					Current Value: {value}
 				</div>
 			</div>
