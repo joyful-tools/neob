@@ -6,17 +6,30 @@ neob provides accessible, design-system-compliant UI components built on [Base U
 
 ## Installation
 
-Install `neob` using your favorite package manager:
+Install `neob` from npm using your favorite package manager:
 
 ```bash
 # Using bun (recommended)
-bun add @joyful-tools/neob
+bun add @joyful.tools/neob
 
 # Using npm
-npm install @joyful-tools/neob
+npm install @joyful.tools/neob
 
 # Using pnpm
-pnpm add @joyful-tools/neob
+pnpm add @joyful.tools/neob
+```
+
+The same release is also published to GitHub Packages as `@joyful-tools/neob`. Add the registry and a GitHub token with `read:packages` permission to your project or user `.npmrc`:
+
+```ini
+@joyful-tools:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
+```
+
+Then install the GitHub Packages build:
+
+```bash
+bun add @joyful-tools/neob
 ```
 
 ### Peer Dependencies
@@ -36,8 +49,8 @@ npm install react react-dom
 Import components and the global stylesheet directly at the root of your application. The stylesheet is always an explicit import, regardless of whether components use root or granular imports:
 
 ```tsx
-import { Button, Card, Dialog } from '@joyful-tools/neob';
-import '@joyful-tools/neob/dist/index.css';
+import { Button, Card, Dialog } from '@joyful.tools/neob';
+import '@joyful.tools/neob/dist/index.css';
 ```
 
 ### Granular Imports (Tree-Shaking)
@@ -45,9 +58,9 @@ import '@joyful-tools/neob/dist/index.css';
 To reduce your bundle size, you can import components individually. The global stylesheet is still required once at the application root:
 
 ```tsx
-import '@joyful-tools/neob/dist/index.css';
-import { Button } from '@joyful-tools/neob/button';
-import { Card } from '@joyful-tools/neob/card';
+import '@joyful.tools/neob/dist/index.css';
+import { Button } from '@joyful.tools/neob/button';
+import { Card } from '@joyful.tools/neob/card';
 ```
 
 ### Tailwind CSS v4 Configuration
@@ -58,7 +71,7 @@ import { Card } from '@joyful-tools/neob/card';
 @import 'tailwindcss';
 
 /* Ensure Tailwind compiles neob classes from node_modules */
-@source "../node_modules/@joyful-tools/neob/dist/**/*.{js,cjs}";
+@source "../node_modules/@joyful.tools/neob/dist/**/*.{js,cjs}";
 ```
 
 ## Dark & Light Mode

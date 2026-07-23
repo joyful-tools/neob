@@ -1,7 +1,11 @@
 {
-	"name": "@joyful-tools/neob",
+	"name": "@joyful.tools/neob",
 	"version": "1.0.1",
 	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/joyful-tools/neob.git"
+	},
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -44,7 +48,8 @@
 		"react-dom": "^19.0.0"
 	},
 	"publishConfig": {
-		"registry": "https://npm.pkg.github.com"
+		"access": "public",
+		"registry": "https://registry.npmjs.org"
 	},
 	"sideEffects": [
 		"**/*.css"

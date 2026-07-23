@@ -76,11 +76,11 @@ shipped bundle so Tailwind v4 emits classes that only live in compiled JS:
 
 ```css
 @import 'tailwindcss';
-@source "../node_modules/neob/dist/**/*.{js,cjs}";
+@source "../node_modules/@joyful.tools/neob/dist/**/*.{js,cjs}";
 ```
 
 `neob` declares `"sideEffects": ["**/*.css"]` (see `neob-ui/package.json`),
-so importing `neob/dist/index.css` once at the app root is required and
+so importing `@joyful.tools/neob/dist/index.css` once at the app root is required and
 tree-shaking-safe.
 
 ---
@@ -124,7 +124,7 @@ a single namespace. Examples: `Dialog` (`dialog/dialog.tsx`), `Tabs`
 (`tabs/tabs.tsx`), `Input` (`input/input.tsx`), `Table`, `Select`, etc.
 
 ```tsx
-import { Tabs } from 'neob';
+import { Tabs } from '@joyful.tools/neob';
 
 <Tabs defaultValue="a">
   <Tabs.List variant="segmented">
@@ -290,7 +290,7 @@ hover styles on touch devices that lack real hover.
 
 - Public API is the barrel `index.ts`, but consumers can import per-component
   via the `"./*"` export map (`neob-ui/package.json`):
-  `import { Button } from 'neob/button';`. Prefer this in size-sensitive
+  `import { Button } from '@joyful.tools/neob/button';`. Prefer this in size-sensitive
   apps.
 - React and React DOM are peer dependencies. Other runtime libraries are regular package dependencies and are externalized from the bundle, so the package manager installs one shared copy.
 - Heavier components (virtualization, charts-style widgets, date pickers)

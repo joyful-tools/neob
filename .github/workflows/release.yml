@@ -17,6 +17,7 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main' }}
     permissions:
       contents: write
+      id-token: write
       pull-requests: write
       packages: write
     steps:
@@ -26,20 +27,23 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.workflow_run.head_sha }}
 
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2.2.0
+
+      - name: Update npm
+        run: npm install --global npm@latest
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Configure Registry
-        run: |
-          echo "@joyful-tools:registry=https://npm.pkg.github.com/" >> ~/.npmrc
-          echo "//npm.pkg.github.com/:_authToken=\${NODE_AUTH_TOKEN}" >> ~/.npmrc
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create Release Pull Request or Publish to GitHub Packages
+      - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
         with:
@@ -47,4 +51,16 @@ jobs:
           publish: bun run changeset:publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+
+      - name: Publish to GitHub Packages
+        if: steps.changesets.outputs.published == 'true'
+        working-directory: packages/neob-ui
+        run: |
+          echo "@joyful-tools:registry=https://npm.pkg.github.com" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=\${NODE_AUTH_TOKEN}" >> ~/.npmrc
+          npm pkg set name=@joyful-tools/neob
+          npm pkg set publishConfig.registry=https://npm.pkg.github.com
+          npm publish
+        env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
