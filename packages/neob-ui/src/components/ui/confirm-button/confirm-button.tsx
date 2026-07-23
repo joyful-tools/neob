@@ -156,7 +156,7 @@ export function ConfirmButton({
 			<span className="pointer-events-none opacity-0 select-none" aria-hidden="true">
 				&#x200b;
 			</span>
-			<AnimatePresence initial={false} mode="wait">
+			<AnimatePresence initial={false}>
 				{open ? (
 					<motion.div
 						key="popover"
@@ -165,7 +165,7 @@ export function ConfirmButton({
 						transition={springOpen}
 						style={{ borderRadius: 12 }}
 						className={cn(
-							`absolute z-20 flex min-w-56 flex-col items-center rounded-xl border-2 border-black bg-white p-3 text-black shadow-cel-md dark:bg-zinc dark:text-white`,
+							`absolute z-20 flex min-w-56 flex-col items-center rounded-xl border-2 border-black bg-white p-3 text-black shadow-md dark:bg-zinc dark:text-white`,
 							'origin-center',
 						)}
 						role="dialog"
@@ -174,10 +174,10 @@ export function ConfirmButton({
 						onKeyDown={handleKeyDown}
 					>
 						<motion.div
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							exit={{ opacity: 0 }}
-							transition={{ duration: 0.15 }}
+							initial={{ opacity: 0, scale: 0.92 }}
+							animate={{ opacity: 1, scale: 1 }}
+							exit={{ opacity: 0, scale: 0.92 }}
+							transition={{ duration: 0.18, ease: 'easeOut' }}
 							className="flex w-full flex-col items-center"
 						>
 							<p id={titleId} className="text-center text-sm font-bold text-black dark:text-white">
@@ -228,10 +228,10 @@ export function ConfirmButton({
 						style={{ borderRadius, transition: 'none' }}
 					>
 						<motion.span
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							exit={{ opacity: 0 }}
-							transition={{ duration: 0.15 }}
+							initial={{ opacity: 0, scale: 0.8 }}
+							animate={{ opacity: 1, scale: 1 }}
+							exit={{ opacity: 0, scale: 0.8 }}
+							transition={{ duration: 0.18, ease: 'easeOut' }}
 							className="inline-flex items-center gap-2"
 						>
 							{children}

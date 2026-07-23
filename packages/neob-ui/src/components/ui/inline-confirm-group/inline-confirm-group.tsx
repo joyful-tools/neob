@@ -169,7 +169,7 @@ export function InlineConfirmGroup({
 						transition={spring}
 						style={{ borderRadius: 8, transformOrigin }}
 						className={cn(
-							`absolute top-1/2 z-10 flex shrink-0 -translate-y-1/2 items-center gap-1.5 rounded-lg border-2 border-black bg-white p-1 shadow-cel-sm dark:bg-zinc`,
+							`absolute top-1/2 z-10 flex shrink-0 -translate-y-1/2 items-center gap-1.5 rounded-lg border-2 border-black bg-white p-1 shadow-sm dark:bg-zinc`,
 							groupPositionClassName,
 							className,
 						)}

@@ -6,7 +6,7 @@ import { DropdownMenu } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utilities';
 
 export interface SplitButtonProperties extends ButtonHTMLAttributes<HTMLButtonElement> {
-	readonly variant?: 'default' | 'accent' | 'danger' | 'subtle';
+	readonly variant?: 'default' | 'accent' | 'danger';
 	readonly size?: 'default' | 'sm' | 'lg';
 	readonly menuContent: ReactNode;
 }
@@ -69,9 +69,14 @@ export function SplitButton({
 						size={size}
 						disabled={disabled}
 						aria-label="more options"
-						className="-ml-0.5 flex items-center justify-center rounded-l-none px-2.5 focus:z-10"
+						className={cn(
+							'-ml-0.5 flex items-center justify-center rounded-l-none focus:z-10',
+							size === 'sm' && 'px-1.5',
+							size === 'default' && 'px-2.5',
+							size === 'lg' && 'px-3.5',
+						)}
 					>
-						<CaretDownIcon className="size-4" />
+						<CaretDownIcon className={cn(size === 'sm' && 'size-3', size === 'default' && 'size-3.5', size === 'lg' && 'size-4')} />
 					</Button>
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Content align="end" className="p-1" style={{ minWidth: width }}>

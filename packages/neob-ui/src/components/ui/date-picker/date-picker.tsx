@@ -16,7 +16,7 @@ import {
 	type Modifiers,
 } from 'react-day-picker';
 
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utilities';
 
 /**
@@ -294,6 +294,12 @@ export function DatePicker(fullProps: DatePickerProps) {
 		const sameDayRange = Boolean(rangeValue?.from && rangeValue.to && rangeValue.from.toDateString() === rangeValue.to.toDateString());
 		const startButtonRadius = sameDayRange ? '[&_button]:rounded-lg' : '[&_button]:rounded-l-lg [&_button]:rounded-r-sm';
 		const endButtonRadius = sameDayRange ? '[&_button]:rounded-lg' : '[&_button]:rounded-r-lg [&_button]:rounded-l-sm';
+		const startRangeIndicator = sameDayRange
+			? ''
+			: "before:absolute before:inset-y-0 before:left-1/2 before:right-0 before:bg-orange/25 before:content-[''] dark:before:bg-orange/20";
+		const endRangeIndicator = sameDayRange
+			? ''
+			: "before:absolute before:inset-y-0 before:left-0 before:right-1/2 before:bg-orange/25 before:content-[''] dark:before:bg-orange/20";
 
 		const dayPickerProps = {
 			showOutsideDays: true,
@@ -314,21 +320,22 @@ export function DatePicker(fullProps: DatePickerProps) {
 				weeks: 'space-y-1 mt-1 flex-1 flex flex-col justify-between',
 				week: 'flex w-full mt-1',
 				day: 'h-9 flex-1 p-0 relative flex items-center justify-center',
-				day_button:
-					'neo-focus-ring isolate cursor-pointer flex h-9 w-9 items-center justify-center rounded-lg border-2 border-transparent text-sm font-bold text-black outline-hidden transition-all duration-200 select-none hover:bg-black/10 hover:border-black dark:text-white dark:hover:bg-white/10 dark:hover:border-black',
+				day_button: cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'text-md size-9 rounded-lg tracking-wide'),
 				today: '[&_button]:border-2 [&_button]:border-dashed [&_button]:border-black dark:[&_button]:border-black',
 				selected:
 					'[&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-black dark:[&_button]:bg-orange dark:[&_button]:text-orange-light dark:[&_button]:border-black hover:[&_button]:bg-orange/90 dark:hover:[&_button]:bg-orange/90',
 				range_start: cn(
-					'rounded-l-lg bg-orange/25 dark:bg-orange/20 [&_button]:border-2 [&_button]:border-black [&_button]:bg-orange [&_button]:text-black hover:[&_button]:bg-orange/90 dark:[&_button]:border-black dark:[&_button]:text-orange-light dark:hover:[&_button]:bg-orange/90',
+					'[&_button]:relative [&_button]:z-10 [&_button]:border-2 [&_button]:border-black [&_button]:bg-orange [&_button]:text-black hover:[&_button]:bg-orange/90 dark:[&_button]:border-black dark:[&_button]:text-orange-light dark:hover:[&_button]:bg-orange/90',
 					startButtonRadius,
+					startRangeIndicator,
 				),
 				range_end: cn(
-					'rounded-r-lg bg-orange/25 dark:bg-orange/20 [&_button]:border-2 [&_button]:border-black [&_button]:bg-orange [&_button]:text-black hover:[&_button]:bg-orange/90 dark:[&_button]:border-black dark:[&_button]:text-orange-light dark:hover:[&_button]:bg-orange/90',
+					'[&_button]:relative [&_button]:z-10 [&_button]:border-2 [&_button]:border-black [&_button]:bg-orange [&_button]:text-black hover:[&_button]:bg-orange/90 dark:[&_button]:border-black dark:[&_button]:text-orange-light dark:hover:[&_button]:bg-orange/90',
 					endButtonRadius,
+					endRangeIndicator,
 				),
 				range_middle:
-					'bg-orange/25 dark:bg-orange/20 [&_button]:border-2 [&_button]:border-transparent! [&_button]:rounded-none [&_button]:bg-transparent dark:[&_button]:bg-transparent [&_button]:text-black dark:[&_button]:text-white hover:[&_button]:bg-black/10 hover:[&_button]:border-black! dark:hover:[&_button]:bg-white/10',
+					"before:absolute before:inset-0 before:bg-orange/25 before:content-[''] dark:before:bg-orange/20 [&_button]:relative [&_button]:z-10 [&_button]:rounded-none [&_button]:border-2 [&_button]:border-transparent! [&_button]:bg-transparent [&_button]:text-black hover:[&_button]:border-black! hover:[&_button]:bg-black/10 dark:[&_button]:bg-transparent dark:[&_button]:text-white dark:hover:[&_button]:bg-white/10",
 				outside: 'text-black/65 dark:text-white/65 opacity-100',
 				disabled: 'text-muted-foreground opacity-30 cursor-not-allowed pointer-events-none',
 				...classNames,
@@ -389,12 +396,12 @@ export function DatePicker(fullProps: DatePickerProps) {
 						<Button
 							key={monthName}
 							type="button"
-							variant={isSelected ? 'accent' : 'subtle'}
+							variant={isSelected ? 'subtle-accent' : 'subtle'}
 							onClick={() => {
 								changeView('days');
 								handleMonthChange(new Date(year, idx));
 							}}
-							className={cn('h-12 w-full text-sm', isSelected && 'text-black dark:text-black')}
+							className="h-12 w-full text-sm"
 						>
 							{monthName.toUpperCase()}
 						</Button>
@@ -416,12 +423,12 @@ export function DatePicker(fullProps: DatePickerProps) {
 						<Button
 							key={y}
 							type="button"
-							variant={isSelected ? 'accent' : 'subtle'}
+							variant={isSelected ? 'subtle-accent' : 'subtle'}
 							onClick={() => {
 								changeView('days');
 								handleMonthChange(new Date(y, displayedMonth.getMonth()));
 							}}
-							className={cn('h-12 w-full text-sm', isSelected && 'text-black dark:text-black')}
+							className="h-12 w-full text-sm"
 						>
 							{y}
 						</Button>
@@ -435,15 +442,17 @@ export function DatePicker(fullProps: DatePickerProps) {
 		<div className={containerClassName}>
 			<div className="flex h-10 items-center justify-between border-b border-black/5 pb-2 dark:border-white/5">
 				<div className="flex items-center gap-1.5 font-sans text-lg font-bold tracking-wider text-black uppercase dark:text-white">
-					<AnimatePresence mode="wait" initial={false}>
+					<AnimatePresence mode="popLayout" initial={false}>
 						<motion.button
 							key={`header-month-${monthLabel}`}
 							type="button"
 							onClick={() => changeView(view === 'months' ? 'days' : 'months')}
 							{...getFadeMotion()}
 							transition={fadeTransition}
+							aria-pressed={view === 'months'}
 							className={cn(
-								'neo-focus-ring isolate cursor-pointer rounded-sm px-1.5 py-0.5 outline-hidden transition-colors select-none hover:bg-black/10 dark:hover:bg-white/10',
+								buttonVariants({ variant: 'ghost', size: 'sm' }),
+								'text-lg tracking-wider',
 								view === 'months' && 'bg-black/5 dark:bg-white/10',
 							)}
 						>
@@ -451,7 +460,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 						</motion.button>
 					</AnimatePresence>
 					<span className="text-black/40 dark:text-white/40">/</span>
-					<AnimatePresence mode="wait" initial={false}>
+					<AnimatePresence mode="popLayout" initial={false}>
 						<motion.button
 							key={`header-year-${yearLabel}`}
 							type="button"
@@ -461,8 +470,10 @@ export function DatePicker(fullProps: DatePickerProps) {
 							}}
 							{...getFadeMotion()}
 							transition={fadeTransition}
+							aria-pressed={view === 'years'}
 							className={cn(
-								'neo-focus-ring isolate cursor-pointer rounded-sm px-1.5 py-0.5 outline-hidden transition-colors select-none hover:bg-black/10 dark:hover:bg-white/10',
+								buttonVariants({ variant: 'ghost', size: 'sm' }),
+								'text-lg tracking-wider',
 								view === 'years' && 'bg-black/5 dark:bg-white/10',
 							)}
 						>
@@ -495,7 +506,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 			</div>
 
 			{/* Views Content Grid — supports swipe navigation in addition to the prev/next buttons */}
-			<div {...bindSwipe()} className="relative flex flex-1 cursor-grab touch-pan-y flex-col justify-between active:cursor-grabbing">
+			<div {...bindSwipe()} className="relative flex flex-1 touch-pan-y flex-col justify-between">
 				<AnimatePresence
 					mode={pageDirection === 'none' ? 'wait' : 'sync'}
 					initial={false}

@@ -119,20 +119,6 @@ export const Danger: Story = {
 	}),
 };
 
-export const Subtle: Story = {
-	args: {
-		variant: 'subtle',
-	},
-	render: (args) => <PublishButton {...args} />,
-	play: guardPlay(async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const body = within(document.body);
-		await userEvent.click(canvas.getByRole('button', { name: 'more options' }));
-		const menuItem = await body.findByText('Save as Draft');
-		await expect(menuItem).toBeInTheDocument();
-	}),
-};
-
 export const Small: Story = {
 	args: {
 		size: 'sm',

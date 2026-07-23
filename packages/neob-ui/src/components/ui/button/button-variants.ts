@@ -7,10 +7,28 @@ const standardButtonStyles = `
 	after:transition-transform after:duration-25 after:ease-linear
 	after:content-[''] disabled:shadow-none
 	active:duration-0 active:after:duration-0
-	aria-expanded:translate-y-0.5 aria-expanded:shadow-cel-inset-md aria-expanded:duration-0
-	aria-expanded:after:translate-y-0 aria-expanded:after:duration-0 aria-expanded:hover:translate-y-0.5 aria-expanded:hover:shadow-cel-inset-md aria-expanded:hover:after:translate-y-0
-	data-pressed:translate-y-0.5 data-pressed:shadow-cel-inset-md data-pressed:duration-0
-	data-pressed:after:translate-y-0 data-pressed:after:duration-0 data-pressed:hover:translate-y-0.5 data-pressed:hover:shadow-cel-inset-md data-pressed:hover:after:translate-y-0
+	aria-expanded:duration-0 aria-expanded:after:duration-0
+	data-pressed:duration-0 data-pressed:after:duration-0
+`;
+
+const raisedButtonStyles = `
+	shadow-cel-sm
+	hover:-translate-y-0.5 hover:shadow-cel-md hover:after:translate-y-0.5
+	active:translate-y-0.5 active:shadow-cel-inset-md
+	aria-expanded:translate-y-0.5 aria-expanded:shadow-cel-inset-md
+	aria-expanded:after:translate-y-0 aria-expanded:hover:translate-y-0.5 aria-expanded:hover:shadow-cel-inset-md aria-expanded:hover:after:translate-y-0
+	data-pressed:translate-y-0.5 data-pressed:shadow-cel-inset-md
+	data-pressed:after:translate-y-0 data-pressed:hover:translate-y-0.5 data-pressed:hover:shadow-cel-inset-md data-pressed:hover:after:translate-y-0
+`;
+
+const subtleButtonStyles = `
+	translate-y-0 shadow-none after:translate-y-0
+	hover:-translate-y-0.5 hover:shadow-cel-sm hover:after:translate-y-0.5
+	active:translate-y-0.5 active:shadow-cel-inset-md
+	aria-expanded:translate-y-0.5 aria-expanded:shadow-cel-inset-md
+	aria-expanded:after:translate-y-0 aria-expanded:hover:translate-y-0.5 aria-expanded:hover:shadow-cel-inset-md aria-expanded:hover:after:translate-y-0
+	data-pressed:translate-y-0.5 data-pressed:shadow-cel-inset-md
+	data-pressed:after:translate-y-0 data-pressed:hover:translate-y-0.5 data-pressed:hover:shadow-cel-inset-md data-pressed:hover:after:translate-y-0
 `;
 
 export const buttonVariants = cva(
@@ -25,31 +43,28 @@ export const buttonVariants = cva(
 			variant: {
 				default: `
 					${standardButtonStyles}
-					bg-primary-foreground text-primary shadow-cel-sm
-					hover:-translate-y-0.5 hover:shadow-cel-md
-					hover:after:translate-y-0.5
-					active:translate-y-0.5 active:shadow-cel-inset-md
+					${raisedButtonStyles}
+					bg-primary-foreground text-primary
 				`,
 				accent: `
 					${standardButtonStyles}
-					bg-orange text-primary shadow-cel-sm hover:-translate-y-0.5
-					hover:shadow-cel-md hover:after:translate-y-0.5
-					active:translate-y-0.5
-					active:shadow-cel-inset-md dark:text-orange-light
+					${raisedButtonStyles}
+					bg-orange text-primary dark:text-orange-light
 				`,
 				danger: `
 					${standardButtonStyles}
-					bg-red text-primary shadow-cel-sm hover:-translate-y-0.5
-					hover:shadow-cel-md hover:after:translate-y-0.5
-					active:translate-y-0.5
-					active:shadow-cel-inset-md dark:text-red-light
+					${raisedButtonStyles}
+					bg-red text-primary dark:text-red-light
 				`,
 				subtle: `
 					${standardButtonStyles}
+					${subtleButtonStyles}
 					bg-primary-foreground text-primary
-					hover:-translate-y-0.5 hover:shadow-cel-sm
-					hover:after:translate-y-0.5
-					active:translate-y-0.5 active:shadow-cel-inset-md
+				`,
+				'subtle-accent': `
+					${standardButtonStyles}
+					${subtleButtonStyles}
+					bg-orange text-primary dark:text-orange-light
 				`,
 				ghost: `
 					${standardButtonStyles}

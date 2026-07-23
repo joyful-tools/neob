@@ -31,7 +31,19 @@ const meta = {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['default', 'accent', 'danger', 'subtle', 'ghost', 'link', 'dark-default', 'dark-accent', 'dark-subtle', 'dark-ghost'],
+			options: [
+				'default',
+				'accent',
+				'danger',
+				'subtle',
+				'subtle-accent',
+				'ghost',
+				'link',
+				'dark-default',
+				'dark-accent',
+				'dark-subtle',
+				'dark-ghost',
+			],
 		},
 		size: {
 			control: 'select',
@@ -112,6 +124,24 @@ export const Subtle: Story = {
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		const button = canvas.getByRole('button', { name: 'Subtle Button' });
+		await userEvent.click(button);
+		await expect(button).toBeInTheDocument();
+	}),
+};
+
+export const SubtleAccent: Story = {
+	render: (args) => (
+		<Button {...args} onClick={() => action('subtle-accent-button-click')()}>
+			{args.children}
+		</Button>
+	),
+	args: {
+		children: 'Subtle Accent Button',
+		variant: 'subtle-accent',
+	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const button = canvas.getByRole('button', { name: 'Subtle Accent Button' });
 		await userEvent.click(button);
 		await expect(button).toBeInTheDocument();
 	}),
