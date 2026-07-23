@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 1.0.2
+
+### Patch Changes
+
+- [`d2ba780`](https://github.com/joyful-tools/neob/commit/d2ba780bd49369e9059538538e95c9835c832592) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Include the README, usage guide, changelog, and MIT license in published packages and complete the npm package metadata.
+
 ## 1.0.1
 
 ### Patch Changes
