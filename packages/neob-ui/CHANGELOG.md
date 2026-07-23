@@ -1,4 +1,4 @@
-# @joyful-tools/neob
+# @joyful.tools/neob
 
 ## 1.0.1
 

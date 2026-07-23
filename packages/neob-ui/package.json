@@ -1,10 +1,18 @@
 {
 	"name": "@joyful.tools/neob",
 	"version": "1.0.1",
+	"description": "Accessible React 19 components with a bold Neo-Brutalist design system",
 	"type": "module",
+	"license": "MIT",
+	"author": "Timo Wilhelm",
+	"homepage": "https://github.com/joyful-tools/neob#readme",
+	"bugs": {
+		"url": "https://github.com/joyful-tools/neob/issues"
+	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/joyful-tools/neob.git"
+		"url": "git+https://github.com/joyful-tools/neob.git",
+		"directory": "packages/neob-ui"
 	},
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.js",
@@ -23,7 +31,11 @@
 		"./dist/index.css": "./dist/index.css"
 	},
 	"files": [
-		"dist"
+		"dist",
+		"README.md",
+		"USAGE.md",
+		"CHANGELOG.md",
+		"LICENSE"
 	],
 	"scripts": {
 		"build": "bun run typecheck && vite build && bun run package:verify",
