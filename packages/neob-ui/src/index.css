@@ -4,6 +4,66 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@property --button-rest-depth {
+	syntax: '<length>';
+	inherits: false;
+	initial-value: 2px;
+}
+
+@property --button-hover-depth {
+	syntax: '<length>';
+	inherits: false;
+	initial-value: 4px;
+}
+
+@property --button-shadow-depth-limit {
+	syntax: '<length>';
+	inherits: false;
+	initial-value: 100px;
+}
+
+@property --button-depth {
+	syntax: '<length>';
+	inherits: false;
+	initial-value: 2px;
+}
+
+@property --button-rest-shadow-color {
+	syntax: '<color>';
+	inherits: false;
+	initial-value: transparent;
+}
+
+@property --button-hover-shadow-color {
+	syntax: '<color>';
+	inherits: false;
+	initial-value: transparent;
+}
+
+@property --button-shadow-color {
+	syntax: '<color>';
+	inherits: false;
+	initial-value: transparent;
+}
+
+@property --button-inset-color {
+	syntax: '<color>';
+	inherits: false;
+	initial-value: transparent;
+}
+
+@property --underline-slide-thickness {
+	syntax: '<length>';
+	inherits: false;
+	initial-value: 1px;
+}
+
+@property --underline-slide-duration {
+	syntax: '<time>';
+	inherits: false;
+	initial-value: 300ms;
+}
+
 @custom-variant hover-always {
 	@media (hover: hover) and (pointer: fine) {
 		&:hover {
@@ -235,7 +295,7 @@
 		/* Core Colors */
 		--background: 38 44% 96%;
 		--foreground: 270 9% 15%;
-		--edge: 270 4% 10%;
+		--edge: 270 18% 28%;
 		--primary: 270 9% 15%;
 		--primary-foreground: 38 44% 96%;
 		--muted: 280 22% 93%;
@@ -315,6 +375,42 @@
 	animation: var(--animate-shiny-fade);
 }
 
+@utility button-physical {
+	--button-rest-depth: 2px;
+	--button-hover-depth: 4px;
+	--button-rest-shadow-color: var(--shadow-cel-color-default);
+	--button-hover-shadow-color: var(--shadow-cel-color-default);
+	--button-shadow-depth-limit: 100px;
+	--button-depth: var(--button-rest-depth);
+	--button-shadow-color: var(--button-rest-shadow-color);
+	--button-inset-color: var(--shadow-cel-inset-color-md);
+	--tw-shadow:
+		0 min(var(--button-depth), var(--button-shadow-depth-limit)) 0 0 var(--button-shadow-color),
+		inset 0 max(0px, calc(var(--button-rest-depth) - var(--button-depth))) 0 0 var(--button-inset-color);
+	transform: translateY(calc(var(--button-rest-depth) - var(--button-depth)));
+	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+	transition-property: --button-depth, --button-shadow-color, border-color, background-color, color;
+	transition-duration: 75ms;
+	transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+
+	&:hover {
+		--button-depth: var(--button-hover-depth);
+		--button-shadow-color: var(--button-hover-shadow-color);
+	}
+
+	&:active,
+	&[aria-expanded='true'],
+	&[data-pressed] {
+		--button-depth: 0px;
+		--button-shadow-color: var(--button-hover-shadow-color);
+	}
+
+	&:disabled {
+		--button-depth: var(--button-rest-depth);
+		--button-shadow-color: transparent;
+	}
+}
+
 @utility shadow-cel-* {
 	--shadow-cel-depth-value: --value(--shadow-cel-depth-*, --default(var(--shadow-cel-depth)));
 	--shadow-cel-color-value: --modifier(--color-*, [color], --default(var(--shadow-cel-color-default)));
@@ -340,7 +436,9 @@
 	background-position-x: right;
 	background-repeat: no-repeat;
 	background-size: 0 100%;
-	transition: background-size var(--underline-slide-duration-value);
+	transition:
+		background-size var(--underline-slide-duration-value),
+		--underline-slide-thickness 75ms cubic-bezier(0.2, 0, 0, 1);
 
 	@media (hover: hover) and (pointer: fine) {
 		&:hover,

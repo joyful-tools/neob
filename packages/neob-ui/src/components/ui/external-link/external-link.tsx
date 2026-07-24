@@ -21,7 +21,7 @@ export function ExternalLink({ children, openInNewTab = true, showIcon = true, c
 			target={openInNewTab ? '_blank' : undefined}
 			rel={openInNewTab ? 'noopener noreferrer' : undefined}
 			className={cn(
-				'group neo-focus-ring relative inline-flex items-center underline-slide font-semibold text-black outline-hidden dark:text-white',
+				'group neo-focus-ring relative inline-flex items-center underline-slide font-semibold text-black outline-hidden active:[--underline-slide-thickness:2px] dark:text-white',
 				className,
 			)}
 			{...properties}
