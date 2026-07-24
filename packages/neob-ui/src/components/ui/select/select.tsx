@@ -286,7 +286,7 @@ export interface SelectSeparatorProps {
 }
 
 function Separator({ className, ref }: SelectSeparatorProps) {
-	return <BaseSelect.Separator ref={ref} role="presentation" className={cn('-mx-1 my-1 h-px bg-black/10 dark:bg-white/10', className)} />;
+	return <BaseSelect.Separator ref={ref} className={cn('-mx-1 my-1 h-px bg-black/10 dark:bg-white/10', className)} />;
 }
 Separator.displayName = 'Select.Separator';
 
