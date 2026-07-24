@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 1.0.3
+
+### Patch Changes
+
+- [`4a89c62`](https://github.com/joyful-tools/neob/commit/4a89c621b9dddadfc5ef44bd3ca7d308dc70d221) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Refine button and link interactions with smoother physical depth transitions, and reorganize the design system styles into focused modules.
+
 ## 1.0.2
 
 ### Patch Changes
