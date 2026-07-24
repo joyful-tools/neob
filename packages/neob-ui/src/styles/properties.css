@@ -1,0 +1,101 @@
+@property --contrast-red {
+	syntax: '<number>';
+	inherits: false;
+	initial-value: 0;
+}
+
+@property --contrast-green {
+	syntax: '<number>';
+	inherits: false;
+	initial-value: 0;
+}
+
+@property --contrast-blue {
+	syntax: '<number>';
+	inherits: false;
+	initial-value: 0;
+}
+
+@property --lightness-threshold {
+	syntax: '<number>';
+	inherits: false;
+	initial-value: 0.68;
+}
+
+@property --perceived-lightness {
+	syntax: '<number>';
+	inherits: false;
+	initial-value: 0;
+}
+
+@property --lightness-switch {
+	syntax: '<number>';
+	inherits: false;
+	initial-value: 0;
+}
+
+@property --border-beam-angle {
+	syntax: '<angle>';
+	inherits: false;
+	initial-value: 0deg;
+}
+
+@property --button-rest-depth {
+	syntax: '<length>';
+	inherits: false;
+	initial-value: 2px;
+}
+
+@property --button-hover-depth {
+	syntax: '<length>';
+	inherits: false;
+	initial-value: 4px;
+}
+
+@property --button-shadow-depth-limit {
+	syntax: '<length>';
+	inherits: false;
+	initial-value: 100px;
+}
+
+@property --button-depth {
+	syntax: '<length>';
+	inherits: false;
+	initial-value: 2px;
+}
+
+@property --button-rest-shadow-color {
+	syntax: '<color>';
+	inherits: false;
+	initial-value: transparent;
+}
+
+@property --button-hover-shadow-color {
+	syntax: '<color>';
+	inherits: false;
+	initial-value: transparent;
+}
+
+@property --button-shadow-color {
+	syntax: '<color>';
+	inherits: false;
+	initial-value: transparent;
+}
+
+@property --button-inset-color {
+	syntax: '<color>';
+	inherits: false;
+	initial-value: transparent;
+}
+
+@property --underline-slide-thickness {
+	syntax: '<length>';
+	inherits: false;
+	initial-value: 1px;
+}
+
+@property --underline-slide-duration {
+	syntax: '<time>';
+	inherits: false;
+	initial-value: 300ms;
+}

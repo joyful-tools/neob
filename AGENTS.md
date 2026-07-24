@@ -8,7 +8,7 @@ Brutalist React 19 component library (`neob`). Form-focused inputs with opt-in w
 
 ## STRUCTURE
 
-```
+```text
 neob/
 ├── .storybook/              # Storybook configurations and theme setup
 ├── src/
@@ -16,7 +16,8 @@ neob/
 │   │   └── ui/              # Stark brutalist atom/molecule components
 │   ├── hooks/               # Core React hooks (useInputAreaAutoResize, useTransformOrigin, useDeferredOpen)
 │   ├── lib/                 # Shared utilities and Storybook integration helpers
-│   ├── index.css            # Global CSS containing Tailwind classes and custom tokens
+│   ├── index.css            # Tailwind entry point importing focused style modules
+│   ├── styles/              # Properties, theme, base, utilities, and effects
 │   └── index.ts             # Library barrel exports
 ├── package.json             # Scripts, dependencies, and bundle configuration
 ├── tsconfig.json            # TypeScript compile configurations
@@ -30,7 +31,8 @@ neob/
 | Component implementations | `src/components/ui/{name}.tsx`            | Direct atomic component implementation files.                 |
 | Hooks and auto-resizing   | `src/hooks/use-input-area-auto-resize.ts` | Layout and textarea sizing logic.                             |
 | Storybook stories         | `src/components/ui/{name}.stories.tsx`    | Component playground and visual verification setup.           |
-| Global design tokens      | `src/index.css`                           | Theme and token definitions (colors, fonts, variables).       |
+| Global stylesheet entry   | `src/index.css`                           | Tailwind entry point; keep limited to imports and directives. |
+| Design tokens and CSS     | `src/styles/`                             | Properties, theme, base, utilities, and effects modules.      |
 | Shared CSS utilities      | `src/lib/utilities.ts`                    | The `cn(...)` Tailwind merge helper and `getThemeColor(...)`. |
 | Bundle build configs      | `vite.config.ts` & `tsconfig.json`        | Bundling and compiler directives.                             |
 
@@ -38,7 +40,7 @@ neob/
 
 ## DESIGN SYSTEM TOKENS & COLORS
 
-All colors are controlled by CSS Custom Variables declared in `index.css`. The tailwind variants utilize these tokens:
+All colors are controlled by CSS Custom Variables declared in `src/styles/theme.css` and `src/styles/base.css`. The Tailwind variants utilize these tokens:
 
 - **Custom Colors:**
   - Orange: `var(--color-orange)` (`#f48120`)
@@ -85,6 +87,8 @@ Always apply these custom brutalist classes when building layouts:
 - **Brutalist Border & Tokens**: Colors must lean on curated tokens rather than standard Tailwind shades (e.g., `border-black`, `bg-zinc`, custom theme variables). Never use raw Tailwind colors like `bg-blue-500` or `text-gray-900`.
 - **Tailwind class merging**: Always utilize the exposed `cn(...)` utility helper when combining conditional classes dynamically.
 - **Mode/theme**: Custom light/dark themes are applied via the `.dark` class wrapper, targeting root variables or components.
+- **CSS custom property declarations**: Every project-owned custom property must be declared before use. Register typed or animated properties with `@property` in `src/styles/properties.css`; declare cascading design tokens in `src/styles/theme.css` or `src/styles/base.css`. Tailwind-owned `--tw-*` properties are exempt.
+- **Stylesheet boundaries**: Keep `src/index.css` limited to imports and Tailwind directives. Add styles to the focused module in `src/styles/` rather than growing the entry point.
 
 ### Components
 
@@ -108,15 +112,16 @@ Always apply these custom brutalist classes when building layouts:
 
 ## ANTI-PATTERNS
 
-| Pattern                                            | Why                                                     | Instead                                              |
-| :------------------------------------------------- | :------------------------------------------------------ | :--------------------------------------------------- |
-| `bg-blue-500`, `text-gray-900`                     | Breaks brutalist theme, fails styling guidelines        | Use semantic/curated tokens: `bg-blue`, `bg-zinc`    |
-| Using `forwardRef`                                 | Redundant in React 19, which supports direct `ref` prop | Pass `ref` as a regular prop to the component        |
-| Redundant comments (e.g. `// check if open`)       | Clutters the codebase without adding value              | Write self-documenting code; explain only the "why"  |
-| Visual block comments / divider banners            | Clutters the file structure                             | Keep structure clean with standard spacing           |
-| `as` type assertions                               | Bypasses TypeScript compiler safety                     | Fully type parameters, interfaces, and return values |
-| Importing sub-components directly (e.g. `TabList`) | Violates component coupling conventions                 | Import parent `Tabs` and use `<Tabs.List>`           |
-| Editing auto-generated files                       | Changes will be lost on subsequent builds               | Edit source configs or run code generator            |
+| Pattern                                            | Why                                                     | Instead                                                    |
+| :------------------------------------------------- | :------------------------------------------------------ | :--------------------------------------------------------- |
+| `bg-blue-500`, `text-gray-900`                     | Breaks brutalist theme, fails styling guidelines        | Use semantic/curated tokens: `bg-blue`, `bg-zinc`          |
+| Using `forwardRef`                                 | Redundant in React 19, which supports direct `ref` prop | Pass `ref` as a regular prop to the component              |
+| Redundant comments (e.g. `// check if open`)       | Clutters the codebase without adding value              | Write self-documenting code; explain only the "why"        |
+| Visual block comments / divider banners            | Clutters the file structure                             | Keep structure clean with standard spacing                 |
+| `as` type assertions                               | Bypasses TypeScript compiler safety                     | Fully type parameters, interfaces, and return values       |
+| Importing sub-components directly (e.g. `TabList`) | Violates component coupling conventions                 | Import parent `Tabs` and use `<Tabs.List>`                 |
+| Editing auto-generated files                       | Changes will be lost on subsequent builds               | Edit source configs or run code generator                  |
+| Using undeclared project-owned CSS properties      | Hides types, defaults, and inheritance behavior         | Declare tokens or register them in `styles/properties.css` |
 
 ---
 

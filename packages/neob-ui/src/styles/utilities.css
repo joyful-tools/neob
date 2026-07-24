@@ -1,0 +1,150 @@
+@utility contrast-text {
+	--lightness-threshold: 0.68;
+	--perceived-lightness: calc(
+		((var(--contrast-red, 0) * 0.2126) + (var(--contrast-green, 0) * 0.7152) + (var(--contrast-blue, 0) * 0.0722)) / 255
+	);
+	--lightness-switch: max(0, min(calc(1 / (var(--lightness-threshold) - var(--perceived-lightness))), 1));
+	color: hsl(0deg 0% calc(var(--lightness-switch) * 100%));
+}
+
+@utility shimmer-text {
+	position: relative;
+	display: inline-block;
+	overflow: hidden;
+	color: transparent;
+	white-space: nowrap;
+	background-color: hsl(var(--border));
+	background-image: linear-gradient(to right, hsl(var(--border)), hsl(var(--foreground)), hsl(var(--border)));
+	background-repeat: no-repeat;
+	background-size: 50% 100%;
+	background-clip: text;
+	animation: var(--animate-shimmer-text);
+}
+
+@utility shiny-fade {
+	background-image: linear-gradient(105deg, rgb(255 255 255 / 0%) 40%, rgb(255 255 255 / 45%) 50%, rgb(255 255 255 / 0%) 60%);
+	background-repeat: no-repeat;
+	background-position: 150% 0;
+	background-size: 250% 100%;
+	animation: var(--animate-shiny-fade);
+}
+
+@utility button-physical {
+	--button-rest-depth: 2px;
+	--button-hover-depth: 4px;
+	--button-rest-shadow-color: var(--shadow-cel-color-default);
+	--button-hover-shadow-color: var(--shadow-cel-color-default);
+	--button-shadow-depth-limit: 100px;
+	--button-depth: var(--button-rest-depth);
+	--button-shadow-color: var(--button-rest-shadow-color);
+	--button-inset-color: var(--shadow-cel-inset-color-md);
+	--tw-shadow:
+		0 min(var(--button-depth), var(--button-shadow-depth-limit)) 0 0 var(--button-shadow-color),
+		inset 0 max(0px, calc(var(--button-rest-depth) - var(--button-depth))) 0 0 var(--button-inset-color);
+	transform: translateY(calc(var(--button-rest-depth) - var(--button-depth)));
+	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+	transition-property: --button-depth, --button-shadow-color, border-color, background-color, color;
+	transition-duration: 75ms;
+	transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+
+	&:hover {
+		--button-depth: var(--button-hover-depth);
+		--button-shadow-color: var(--button-hover-shadow-color);
+	}
+
+	&:active,
+	&[aria-expanded='true'],
+	&[data-pressed] {
+		--button-depth: 0px;
+		--button-shadow-color: var(--button-hover-shadow-color);
+	}
+
+	&:disabled {
+		--button-depth: var(--button-rest-depth);
+		--button-shadow-color: transparent;
+	}
+}
+
+@utility shadow-cel-* {
+	--shadow-cel-depth-value: --value(--shadow-cel-depth-*, --default(var(--shadow-cel-depth)));
+	--shadow-cel-color-value: --modifier(--color-*, [color], --default(var(--shadow-cel-color-default)));
+	--tw-shadow: 0 var(--shadow-cel-depth-value) 0 0 var(--shadow-cel-color-value), inset 0 0 0 0 transparent;
+	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+@utility shadow-cel-inset-* {
+	--shadow-cel-inset-depth-value: --value(--shadow-cel-inset-depth-*, --default(var(--shadow-cel-inset-depth)));
+	--shadow-cel-inset-color-value: --modifier([color], --default(var(--shadow-cel-inset-color-md)));
+	--tw-shadow: 0 0 0 0 transparent, inset 0 var(--shadow-cel-inset-depth-value) 0 0 var(--shadow-cel-inset-color-value);
+	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+@utility underline-slide-* {
+	--underline-slide-thickness-value: --value([length], [line-width], --default(var(--underline-slide-thickness)));
+	--underline-slide-duration-value: --modifier([time], --default(var(--underline-slide-duration)));
+	text-decoration: none;
+	background-image: linear-gradient(
+		transparent calc(100% - var(--underline-slide-thickness-value)),
+		currentColor var(--underline-slide-thickness-value)
+	);
+	background-position-x: right;
+	background-repeat: no-repeat;
+	background-size: 0 100%;
+	transition:
+		background-size var(--underline-slide-duration-value),
+		--underline-slide-thickness 75ms cubic-bezier(0.2, 0, 0, 1);
+
+	@media (hover: hover) and (pointer: fine) {
+		&:hover,
+		&:focus-visible {
+			background-position-x: left;
+			background-size: 100% 100%;
+		}
+	}
+
+	@media (pointer: coarse) {
+		background-size: 100% 100%;
+	}
+}
+
+@utility neo-focus-ring-* {
+	--focus-ring-inner-size-value: --value([length], integer, --default(var(--focus-ring-inner-size)));
+	--focus-ring-outer-size-value: --modifier([length], integer, --default(var(--focus-ring-outer-size)));
+	position: relative;
+
+	&::before {
+		content: '';
+		position: absolute;
+		inset: -2px;
+		border-radius: inherit;
+		pointer-events: none;
+		z-index: -1;
+		box-shadow:
+			0 0 0 0 var(--color-ring-offset),
+			0 0 0 0 var(--color-ring);
+		opacity: 0;
+		transition:
+			box-shadow 300ms var(--ease-spring),
+			opacity 300ms ease-out;
+	}
+
+	&:focus-visible::before {
+		box-shadow:
+			0 0 0 var(--focus-ring-inner-size-value) var(--color-ring-offset),
+			0 0 0 var(--focus-ring-outer-size-value) var(--color-ring);
+		opacity: 1;
+	}
+}
+
+@utility neo-focus-ring-focus-* {
+	--focus-ring-inner-size-value: --value([length], integer, --default(var(--focus-ring-inner-size)));
+	--focus-ring-outer-size-value: --modifier([length], integer, --default(var(--focus-ring-outer-size)));
+	position: relative;
+	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow, 0 0 #0000);
+
+	&:focus,
+	&:focus-within {
+		--tw-ring-offset-shadow: 0 0 0 var(--focus-ring-inner-size-value) var(--color-ring-offset);
+		--tw-ring-shadow: 0 0 0 var(--focus-ring-outer-size-value) var(--color-ring);
+	}
+}

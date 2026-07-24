@@ -1,0 +1,23 @@
+@custom-variant hover-always {
+	@media (hover: hover) and (pointer: fine) {
+		&:hover {
+			@slot;
+		}
+	}
+
+	@media not all and (hover: hover) and (pointer: fine) {
+		@slot;
+	}
+}
+
+@custom-variant group-hover-always {
+	@media (hover: hover) and (pointer: fine) {
+		.group:hover & {
+			@slot;
+		}
+	}
+
+	@media not all and (hover: hover) and (pointer: fine) {
+		@slot;
+	}
+}

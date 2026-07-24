@@ -1,0 +1,63 @@
+@layer base {
+	:root {
+		color-scheme: light;
+		/* Core Colors */
+		--background: 38 44% 96%;
+		--foreground: 270 9% 15%;
+		--edge: 270 18% 28%;
+		--primary: 270 9% 15%;
+		--primary-foreground: 38 44% 96%;
+		--muted: 280 22% 93%;
+		--muted-foreground: 278 7% 38%;
+		--border: 274 13% 72%;
+		--ring: 270 9% 15%;
+		--ring-offset: 38 44% 96%;
+		--card: 42 50% 98%;
+		--card-foreground: 270 9% 15%;
+		--popover: 42 50% 98%;
+		--popover-foreground: 270 9% 15%;
+		--destructive: 0 63% 72%;
+		--destructive-foreground: 270 9% 15%;
+	}
+
+	.dark {
+		color-scheme: dark;
+		--color-orange: #923a00;
+		--color-gold: #805500;
+		--color-coral: #a32f20;
+		--color-blue: #145b9f;
+		--color-purple: #6b329d;
+		--color-pink: #96325f;
+		--color-yellow: #665900;
+		--color-red: #a72432;
+		--color-green: #056631;
+		--background: 274 10% 14%;
+		--foreground: 38 44% 95%;
+		--edge: 270 4% 8%;
+		--primary: 38 44% 95%;
+		--primary-foreground: 270 9% 15%;
+		--muted: 273 9% 19%;
+		--muted-foreground: 278 13% 78%;
+		--border: 278 8% 51%;
+		--ring: 211 74% 78%;
+		--ring-offset: 274 10% 14%;
+		--card: 274 11% 17%;
+		--card-foreground: 38 44% 95%;
+		--popover: 274 11% 17%;
+		--popover-foreground: 38 44% 95%;
+		--destructive: 0 63% 72%;
+		--destructive-foreground: 270 9% 15%;
+	}
+
+	.neo-theme-root {
+		@apply bg-background text-foreground;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+		text-rendering: optimizeLegibility;
+	}
+
+	.neo-app-shell {
+		overscroll-behavior: none;
+	}
+}
