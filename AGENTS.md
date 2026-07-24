@@ -139,6 +139,18 @@ bun run storybook:test      # Run component tests via Vitest
 bun run check               # Run lint + typecheck + storybook tests with coverage
 ```
 
+## CHANGESETS
+
+- Create changesets with `bun changeset`; never manually create or name files in `.changeset/`.
+- Select every affected published package, choose its semantic version bump, and enter the consumer-facing changelog summary through the CLI prompts.
+- Review all package changes since the latest version commit before choosing the affected package, bump type, and release summary.
+- Use `patch` for backward-compatible fixes and refinements, `minor` for backward-compatible features, and `major` for breaking changes.
+- Explain what changed and why. Include migration guidance when consumers must update their code.
+- Commit the CLI-generated changeset with the relevant implementation. Multiple independent consumer-facing changes may use separate changesets.
+- Repository-only maintenance that does not affect a published package does not need a changeset.
+- Validate the pending release plan with `bun changeset status`.
+- Leave package versioning, changelog generation, changeset consumption, and publishing to the automated release process; do not perform those operations manually during normal feature work.
+
 ---
 
 ## TOOLCHAIN
