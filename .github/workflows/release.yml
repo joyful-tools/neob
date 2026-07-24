@@ -51,14 +51,20 @@ jobs:
           publish: bun run changeset:publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
+
+      - name: Setup GitHub Packages
+        if: steps.changesets.outputs.published == 'true'
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          registry-url: https://npm.pkg.github.com
+          scope: '@joyful-tools'
+          package-manager-cache: false
 
       - name: Publish to GitHub Packages
         if: steps.changesets.outputs.published == 'true'
         working-directory: packages/neob-ui
         run: |
-          echo "@joyful-tools:registry=https://npm.pkg.github.com" >> ~/.npmrc
-          echo "//npm.pkg.github.com/:_authToken=\${NODE_AUTH_TOKEN}" >> ~/.npmrc
           npm pkg set name=@joyful-tools/neob
           npm pkg set publishConfig.registry=https://npm.pkg.github.com
           npm publish
