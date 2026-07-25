@@ -14,7 +14,7 @@ type StoryProps = InputAreaProperties & {
 };
 
 /**
- * InputArea is an auto-resizing brutalist textarea component.
+ * InputArea is an auto-resizing textarea component.
  *
  * ### Usage
  * ```tsx

@@ -26,7 +26,7 @@ type DatePickerMultipleStoryProperties = {
 };
 
 /**
- * DatePicker is a brutalist date selection calendar component built on react-day-picker.
+ * DatePicker is a date selection calendar component built on react-day-picker.
  *
  * ### Usage
  * ```tsx

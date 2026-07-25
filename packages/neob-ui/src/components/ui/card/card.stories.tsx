@@ -3,7 +3,7 @@ import { Card } from './card';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 /**
- * Card is a brutalist content container with optional headers, titles, and body content.
+ * Card is a content container with optional headers, titles, and body content.
  *
  * ### Usage
  * ```tsx
@@ -35,12 +35,10 @@ export const Default: Story = {
 		children: (
 			<>
 				<Card.Header>
-					<Card.Title>Neo-Brutalist Card</Card.Title>
+					<Card.Title>High-Contrast Card</Card.Title>
 				</Card.Header>
 				<Card.Content>
-					<p className="text-sm">
-						This is a premium card built with a bold black border and a thick drop shadow that defines the neo-brutalism design system.
-					</p>
+					<p className="text-sm">This card uses a bold black border and a thick drop shadow for strong visual contrast.</p>
 				</Card.Content>
 			</>
 		),

@@ -10,7 +10,7 @@ import { Button } from './button';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 /**
- * Button is a brutalist button component with various variants, sizes, and states.
+ * Button supports multiple variants, sizes, and states.
  *
  * ### Usage
  * ```tsx

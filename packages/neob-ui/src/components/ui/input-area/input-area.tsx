@@ -25,7 +25,7 @@ export interface InputAreaProperties extends Omit<ComponentProps<'textarea'>, 'r
 }
 
 /**
- * InputArea (textarea) component styled with brutalist design principles.
+ * InputArea (textarea) component with high-contrast styling.
  * Supports modern React 19 ref-as-prop pattern.
  * Supports auto-resizing via the `autoResize` prop.
  * Supports optional Field wrapping for labels, descriptions, and errors.

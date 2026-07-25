@@ -12,7 +12,7 @@ export interface ExternalLinkProperties extends AnchorHTMLAttributes<HTMLAnchorE
 
 /**
  * ExternalLink is an anchor link that defaults to opening in a new tab,
- * applying the brutalist underline slide animation and rendering a sliding icon on hover/focus.
+ * applying an underline slide animation and rendering a sliding icon on hover/focus.
  */
 export function ExternalLink({ children, openInNewTab = true, showIcon = true, className, ref, ...properties }: ExternalLinkProperties) {
 	return (

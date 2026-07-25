@@ -1,7 +1,7 @@
 # Building with `neob` without fighting it
 
 A reusable rulebook for AI agents (and humans) authoring or consuming the
-`neob` brutalist component library. Earned from the actual shape of this
+`neob` component library. Earned from the actual shape of this
 codebase — every rule below maps to a real file you can open and verify.
 
 **How to use:** in `AGENTS.md` (or your `CLAUDE.md`), keep a line like
@@ -196,7 +196,7 @@ check the component's props type first.
 
 ## §7 — Override the system as little as possible
 
-Components encode the brutalist look through curated utility classes. Before
+Components encode the visual system through curated utility classes. Before
 adding custom CSS or inline overrides:
 
 1. Check if a variant/size prop already does it (read the `*-variants.ts` or
@@ -265,7 +265,7 @@ These are enforced across the codebase and by `AGENTS.md`:
 
 ---
 
-## §11 — Functional brutalist utilities (use the modifiers)
+## §11 — Functional visual utilities (use the modifiers)
 
 `index.css` defines parameterized `@utility` classes — not just static ones.
 Prefer these over hand-rolled box-shadows / outlines:
@@ -311,5 +311,5 @@ hover styles on touch devices that lack real hover.
       `Input.Wrapper`
 - [ ] Polymorphism uses Base UI `render` (only `Button` has `asChild`)
 - [ ] `ref` is a prop, `displayName` is set, no `any`/`as`
-- [ ] Brutalist styling uses `shadow-cel*` / `neo-focus-ring` utilities
+- [ ] Styling uses `shadow-cel*` / `neo-focus-ring` utilities
 - [ ] `bun run typecheck` and `bun run storybook:test` pass

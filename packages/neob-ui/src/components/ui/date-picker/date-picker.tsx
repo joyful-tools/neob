@@ -151,7 +151,7 @@ function invokeCallback(
 }
 
 /**
- * DatePicker — a brutalist date selection calendar.
+ * DatePicker — a date selection calendar with high-contrast styling.
  *
  * Built on [react-day-picker](https://daypicker.dev) with custom neob styling.
  * Supports three selection modes: single, multiple, and range.

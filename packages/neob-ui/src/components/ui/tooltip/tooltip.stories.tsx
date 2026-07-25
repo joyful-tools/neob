@@ -40,14 +40,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		content: 'This is a premium neo-brutalist tooltip!',
+		content: 'This is a high-contrast tooltip!',
 		side: 'top',
 		children: <Button variant="subtle">Hover Me</Button>,
 	},
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		await userEvent.hover(canvas.getByRole('button', { name: 'Hover Me' }));
-		await expect(await within(document.body).findByRole('tooltip')).toHaveTextContent('This is a premium neo-brutalist tooltip!');
+		await expect(await within(document.body).findByRole('tooltip')).toHaveTextContent('This is a high-contrast tooltip!');
 	}),
 };
 

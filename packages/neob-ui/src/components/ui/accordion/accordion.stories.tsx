@@ -15,8 +15,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * <Accordion type="single" collapsible defaultValue="item-1">
  *   <Accordion.Item value="item-1">
- *     <Accordion.Trigger>Is it brutalist?</Accordion.Trigger>
- *     <Accordion.Content>Yes, stark borders and spring motion.</Accordion.Content>
+ *     <Accordion.Trigger>What visual feedback does it use?</Accordion.Trigger>
+ *     <Accordion.Content>Stark borders and spring motion.</Accordion.Content>
  *   </Accordion.Item>
  * </Accordion>
  * ```
@@ -38,10 +38,8 @@ export const SingleMode: Story = {
 		<div className="w-100 rounded-2xl border-2 border-edge bg-muted/20 p-4">
 			<Accordion defaultValue={['item-1']}>
 				<Accordion.Item value="item-1">
-					<Accordion.Trigger>Item 1: Brutalist Philosophy</Accordion.Trigger>
-					<Accordion.Content>
-						Brutalism values honesty of materials, raw texture, and stark, structural forms over polished elegance.
-					</Accordion.Content>
+					<Accordion.Trigger>Item 1: Visual Design</Accordion.Trigger>
+					<Accordion.Content>The visual system uses high contrast, solid borders, and structural forms.</Accordion.Content>
 				</Accordion.Item>
 				<Accordion.Item value="item-2">
 					<Accordion.Trigger>Item 2: React 19 Core</Accordion.Trigger>
@@ -61,7 +59,7 @@ export const SingleMode: Story = {
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
-		const trigger1 = canvas.getByRole('button', { name: /Brutalist Philosophy/i });
+		const trigger1 = canvas.getByRole('button', { name: /Visual Design/i });
 		const trigger2 = canvas.getByRole('button', { name: /React 19 Core/i });
 		const trigger3 = canvas.getByRole('button', { name: /Base UI Primitives/i });
 

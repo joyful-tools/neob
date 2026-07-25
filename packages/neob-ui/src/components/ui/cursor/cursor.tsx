@@ -29,23 +29,18 @@ export function Cursor({ name, color, position, className, style, ref, ...proper
 			}}
 			{...properties}
 		>
-			<svg
-				viewBox="0 0 24 24"
-				className="size-6 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]"
-				xmlns="http://www.w3.org/2000/svg"
-				aria-hidden="true"
-			>
+			<svg viewBox="0 0 24 24" className="size-6 drop-shadow-md" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 				<path
-					d="M22 10.2069L3 3L10.2069 22L13.4828 13.4828L22 10.2069Z"
+					d="M8.13 19.99L3.14 5.01C2.75 3.85 3.85 2.75 5.01 3.14L19.99 8.13C21.3 8.56 21.35 10.4 20.07 10.91L14.12 13.29C13.74 13.44 13.44 13.74 13.29 14.12L10.91 20.07C10.4 21.35 8.56 21.3 8.13 19.99Z"
 					fill={color}
-					stroke="black"
+					stroke="hsl(var(--edge))"
 					strokeWidth="2"
 					strokeLinecap="round"
 					strokeLinejoin="round"
 				/>
 			</svg>
 			<div
-				className="mt-3 ml-1 rounded-xs border-2 border-edge px-1.5 py-0.5 text-xs font-bold text-black shadow-cel-sm"
+				className="mt-4 -ml-1.5 rounded-md border-2 border-edge px-1.5 py-0.5 text-xs font-bold text-black shadow-md"
 				style={{
 					backgroundColor: color,
 				}}

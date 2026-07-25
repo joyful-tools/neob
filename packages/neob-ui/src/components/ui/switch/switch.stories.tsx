@@ -9,7 +9,7 @@ import { Switch } from './switch';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 /**
- * Switch is a brutalist styled togglable switch control.
+ * Switch is a styled toggle control.
  *
  * ### Usage
  * ```tsx

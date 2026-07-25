@@ -1,6 +1,6 @@
 # neob
 
-A React 19 component library styled in a bold Neo-Brutalist aesthetic.
+A React 19 component library with high-contrast styling and expressive motion.
 
 neob provides accessible, design-system-compliant UI components built on [Base UI](https://base-ui.com/). It handles keyboard navigation, focus management, and ARIA attributes with high-contrast layouts, spring animations, and built-in dark/light mode support.
 

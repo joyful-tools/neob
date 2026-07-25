@@ -11,7 +11,7 @@ import type { InputProperties, FieldsetProperties } from './input';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 /**
- * Input provides standard brutalist form input elements and wrapper styling.
+ * Input provides standard form input elements and wrapper styling.
  *
  * ### Usage
  * ```tsx

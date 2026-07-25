@@ -4,7 +4,7 @@
 
 ## OVERVIEW
 
-Brutalist React 19 component library (`neob`). Form-focused inputs with opt-in wrappers, touch-gated tooltips, sliding indicator segmented tabs, animated overlays, and performant virtualized viewports. Built on React 19, Base UI, Tailwind CSS v4, Framer Motion (motion/react), and Storybook. Driven by Bun as the package manager and Vitest for testing.
+High-contrast React 19 component library (`neob`). Form-focused inputs with opt-in wrappers, touch-gated tooltips, sliding indicator segmented tabs, animated overlays, and performant virtualized viewports. Built on React 19, Base UI, Tailwind CSS v4, Framer Motion (motion/react), and Storybook. Driven by Bun as the package manager and Vitest for testing.
 
 ## STRUCTURE
 
@@ -13,7 +13,7 @@ neob/
 ├── .storybook/              # Storybook configurations and theme setup
 ├── src/
 │   ├── components/          # React components
-│   │   └── ui/              # Stark brutalist atom/molecule components
+│   │   └── ui/              # High-contrast atom/molecule components
 │   ├── hooks/               # Core React hooks (useInputAreaAutoResize, useTransformOrigin, useDeferredOpen)
 │   ├── lib/                 # Shared utilities and Storybook integration helpers
 │   ├── index.css            # Tailwind entry point importing focused style modules
@@ -68,7 +68,7 @@ All colors are controlled by CSS Custom Variables declared in `src/styles/theme.
 
 ## KEY UTILITY CLASSES
 
-Always apply these custom brutalist classes when building layouts:
+Always apply these custom visual utility classes when building layouts:
 
 - `shadow-cel` - Stark 4px solid black drop shadow.
 - `shadow-cel-sm` - 2px solid black drop shadow (ideal for tags/buttons).
@@ -84,7 +84,7 @@ Always apply these custom brutalist classes when building layouts:
 
 ### Styling (CRITICAL)
 
-- **Brutalist Border & Tokens**: Colors must lean on curated tokens rather than standard Tailwind shades (e.g., `border-black`, `bg-zinc`, custom theme variables). Never use raw Tailwind colors like `bg-blue-500` or `text-gray-900`.
+- **Borders & Tokens**: Colors must lean on curated tokens rather than standard Tailwind shades (e.g., `border-black`, `bg-zinc`, custom theme variables). Never use raw Tailwind colors like `bg-blue-500` or `text-gray-900`.
 - **Tailwind class merging**: Always utilize the exposed `cn(...)` utility helper when combining conditional classes dynamically.
 - **Mode/theme**: Custom light/dark themes are applied via the `.dark` class wrapper, targeting root variables or components.
 - **CSS custom property declarations**: Every project-owned custom property must be declared before use. Register typed or animated properties with `@property` in `src/styles/properties.css`; declare cascading design tokens in `src/styles/theme.css` or `src/styles/base.css`. Tailwind-owned `--tw-*` properties are exempt.
@@ -114,7 +114,7 @@ Always apply these custom brutalist classes when building layouts:
 
 | Pattern                                            | Why                                                     | Instead                                                    |
 | :------------------------------------------------- | :------------------------------------------------------ | :--------------------------------------------------------- |
-| `bg-blue-500`, `text-gray-900`                     | Breaks brutalist theme, fails styling guidelines        | Use semantic/curated tokens: `bg-blue`, `bg-zinc`          |
+| `bg-blue-500`, `text-gray-900`                     | Breaks the visual theme                                 | Use semantic/curated tokens: `bg-blue`, `bg-zinc`          |
 | Using `forwardRef`                                 | Redundant in React 19, which supports direct `ref` prop | Pass `ref` as a regular prop to the component              |
 | Redundant comments (e.g. `// check if open`)       | Clutters the codebase without adding value              | Write self-documenting code; explain only the "why"        |
 | Visual block comments / divider banners            | Clutters the file structure                             | Keep structure clean with standard spacing                 |

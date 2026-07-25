@@ -9,7 +9,7 @@ type TableStoryProperties = {
 };
 
 /**
- * Table is a tabular data container with brutalist borders.
+ * Table is a tabular data container with high-contrast borders.
  *
  * ### Usage
  * ```tsx
