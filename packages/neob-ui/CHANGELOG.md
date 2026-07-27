@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 1.0.4
+
+### Patch Changes
+
+- [`57dafb1`](https://github.com/joyful-tools/neob/commit/57dafb1cf9f0d93e409c6917f87ea31769844379) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Use Tailwind hover variants.
+
 ## 1.0.3
 
 ### Patch Changes
