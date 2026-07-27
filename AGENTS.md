@@ -86,6 +86,7 @@ Always apply these custom visual utility classes when building layouts:
 
 - **Borders & Tokens**: Colors must lean on curated tokens rather than standard Tailwind shades (e.g., `border-black`, `bg-zinc`, custom theme variables). Never use raw Tailwind colors like `bg-blue-500` or `text-gray-900`.
 - **Tailwind class merging**: Always utilize the exposed `cn(...)` utility helper when combining conditional classes dynamically.
+- **Hover interactions**: Use Tailwind v4 `hover:` and `group-hover:` variants in class strings. Inside `@utility` declarations, use `@variant hover { ... }` instead of raw `&:hover` selectors so Tailwind applies its hover-capability guard and avoids sticky touchscreen states. Keep raw hover media queries only for deliberate fallback behavior such as `hover-always` and `group-hover-always`.
 - **Mode/theme**: Custom light/dark themes are applied via the `.dark` class wrapper, targeting root variables or components.
 - **CSS custom property declarations**: Every project-owned custom property must be declared before use. Register typed or animated properties with `@property` in `src/styles/properties.css`; declare cascading design tokens in `src/styles/theme.css` or `src/styles/base.css`. Tailwind-owned `--tw-*` properties are exempt.
 - **Stylesheet boundaries**: Keep `src/index.css` limited to imports and Tailwind directives. Add styles to the focused module in `src/styles/` rather than growing the entry point.
