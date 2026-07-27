@@ -2,6 +2,7 @@ import { TrashIcon, XIcon } from '@phosphor-icons/react';
 import { AnimatePresence, motion, Transition } from 'motion/react';
 import { cloneElement, KeyboardEvent, MouseEvent, ReactElement, useCallback, useEffect, useRef, useState, useId } from 'react';
 
+import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { cn } from '@/lib/utilities';
 
@@ -124,35 +125,36 @@ export function InlineConfirmGroup({
 		[onCancel],
 	);
 	const confirmButton = (
-		<button
+		<Button
 			key="confirm"
 			ref={confirmButtonReference}
 			type="button"
+			variant="subtle"
+			size="icon"
 			tabIndex={0}
 			disabled={isLoading}
 			onClick={handleConfirmClick}
-			className={cn(
-				'neo-focus-ring isolate flex size-7 cursor-pointer items-center justify-center rounded-md border border-edge outline-hidden transition-all select-none hover:text-white disabled:pointer-events-none disabled:opacity-50',
-				intentClassNames[intent],
-			)}
+			className={cn('size-7 rounded-md border hover:text-white', intentClassNames[intent])}
 			aria-label={`Confirm ${actionLabelLowercase} ${itemName}`}
 		>
 			{renderActionIcon('size-4')}
-		</button>
+		</Button>
 	);
 	const cancelButton = (
-		<button
+		<Button
 			key="cancel"
 			ref={cancelButtonReference}
 			type="button"
+			variant="subtle"
+			size="icon"
 			tabIndex={0}
 			disabled={isLoading}
 			onClick={handleCancelClick}
-			className="neo-focus-ring isolate flex size-7 cursor-pointer items-center justify-center rounded-md border border-edge bg-zinc/10 text-black outline-hidden transition-all select-none hover:bg-black hover:text-white disabled:pointer-events-none disabled:opacity-50 dark:bg-zinc/20 dark:text-white dark:hover:bg-white dark:hover:text-black"
+			className="size-7 rounded-md border bg-zinc/10 text-black hover:bg-black hover:text-white dark:bg-zinc/20 dark:text-white dark:hover:bg-white dark:hover:text-black"
 			aria-label={`Cancel ${actionLabelLowercase} ${itemName}`}
 		>
 			<XIcon className="size-4" />
-		</button>
+		</Button>
 	);
 	const confirmationButtons = direction === 'left' ? [confirmButton, cancelButton] : [cancelButton, confirmButton];
 
@@ -187,20 +189,20 @@ export function InlineConfirmGroup({
 						style={{ borderRadius: 8, transformOrigin }}
 						className={cn('inline-flex size-9 items-center justify-center border-2 border-transparent', triggerOriginClassName)}
 					>
-						<button
+						<Button
 							type="button"
+							variant="ghost"
+							size="icon"
 							disabled={isLoading}
 							onClick={(event) => {
 								event.stopPropagation();
 								setOpen(true);
 							}}
-							className={cn(
-								'neo-focus-ring isolate flex size-9 cursor-pointer items-center justify-center rounded-md border-2 border-transparent text-black outline-hidden transition-all select-none hover:border-edge hover:bg-muted active:translate-y-0.5 disabled:pointer-events-none disabled:opacity-50 dark:text-white dark:hover:border-white dark:hover:bg-zinc',
-							)}
+							className="size-9 rounded-md hover:bg-muted dark:text-white dark:hover:border-white dark:hover:bg-zinc"
 							aria-label={`${actionLabel} ${itemName}`}
 						>
 							{isLoading ? <Spinner size="sm" className="size-5" /> : renderActionIcon('size-5')}
-						</button>
+						</Button>
 					</motion.div>
 				)}
 			</AnimatePresence>

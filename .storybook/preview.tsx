@@ -78,13 +78,13 @@ const preview: Preview = {
 					<code className="rounded-sm border border-border bg-muted px-1.5 py-0.5 font-mono text-sm text-foreground">{children}</code>
 				),
 				table: ({ children }: React.ComponentProps<'table'>) => (
-					<table className="my-6 w-full border-collapse border-2 border-black">{children}</table>
+					<table className="my-6 w-full border-collapse border-2 border-border">{children}</table>
 				),
-				thead: ({ children }: React.ComponentProps<'thead'>) => <thead className="bg-black text-white">{children}</thead>,
+				thead: ({ children }: React.ComponentProps<'thead'>) => <thead className="bg-foreground text-background">{children}</thead>,
 				tbody: ({ children }: React.ComponentProps<'tbody'>) => <tbody>{children}</tbody>,
 				tr: ({ children }: React.ComponentProps<'tr'>) => <tr className="border-b border-border">{children}</tr>,
 				th: ({ children }: React.ComponentProps<'th'>) => (
-					<th className="px-4 py-2 text-left font-display text-sm font-black text-white uppercase">{children}</th>
+					<th className="px-4 py-2 text-left font-display text-sm font-black text-background uppercase">{children}</th>
 				),
 				td: ({ children }: React.ComponentProps<'td'>) => <td className="border-r border-border px-4 py-2 text-foreground">{children}</td>,
 			},

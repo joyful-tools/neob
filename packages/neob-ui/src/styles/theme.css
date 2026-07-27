@@ -3,7 +3,7 @@
 	/* Core Colors */
 	--background: oklch(97.41% 0.0083 81.51);
 	--foreground: oklch(26.199% 0.0136 307.89);
-	--edge: oklch(37.482% 0.046 307.08);
+	--edge: oklch(22.753% 0.055 295.87);
 	--primary: oklch(26.199% 0.0136 307.89);
 	--primary-foreground: oklch(97.41% 0.0083 81.51);
 	--muted: oklch(94.102% 0.0118 314.77);
@@ -65,7 +65,7 @@
 	--color-*: initial;
 
 	--font-sans: 'Rubik', ui-sans-serif, system-ui, sans-serif;
-	--font-display: 'Dela Gothic One', system-ui, sans-serif;
+	--font-display: 'Rubik', 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
 	--font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
 
 	--color-background: var(--background);
@@ -97,29 +97,53 @@
 	--color-red: var(--palette-red);
 	--color-green: var(--palette-green);
 
-	/* Light Variants (20% opacity on white) */
-	--color-orange-light: color-mix(in oklch, var(--color-orange) 20%, var(--color-white));
-	--color-gold-light: color-mix(in oklch, var(--color-gold) 20%, var(--color-white));
-	--color-zinc-light: color-mix(in oklch, var(--color-zinc) 20%, var(--color-white));
-	--color-coral-light: color-mix(in oklch, var(--color-coral) 20%, var(--color-white));
-	--color-blue-light: color-mix(in oklch, var(--color-blue) 20%, var(--color-white));
-	--color-purple-light: color-mix(in oklch, var(--color-purple) 20%, var(--color-white));
-	--color-pink-light: color-mix(in oklch, var(--color-pink) 20%, var(--color-white));
-	--color-yellow-light: color-mix(in oklch, var(--color-yellow) 20%, var(--color-white));
-	--color-red-light: color-mix(in oklch, var(--color-red) 20%, var(--color-white));
-	--color-green-light: color-mix(in oklch, var(--color-green) 20%, var(--color-white));
+	/* Subtle/Lighter Variants (20% opacity tint on white) */
+	--color-orange-lighter: color-mix(in oklab, var(--color-orange) 20%, var(--color-white));
+	--color-gold-lighter: color-mix(in oklab, var(--color-gold) 20%, var(--color-white));
+	--color-zinc-lighter: color-mix(in oklab, var(--color-zinc) 20%, var(--color-white));
+	--color-coral-lighter: color-mix(in oklab, var(--color-coral) 20%, var(--color-white));
+	--color-blue-lighter: color-mix(in oklab, var(--color-blue) 20%, var(--color-white));
+	--color-purple-lighter: color-mix(in oklab, var(--color-purple) 20%, var(--color-white));
+	--color-pink-lighter: color-mix(in oklab, var(--color-pink) 20%, var(--color-white));
+	--color-yellow-lighter: color-mix(in oklab, var(--color-yellow) 20%, var(--color-white));
+	--color-red-lighter: color-mix(in oklab, var(--color-red) 20%, var(--color-white));
+	--color-green-lighter: color-mix(in oklab, var(--color-green) 20%, var(--color-white));
 
-	/* Dark Variants */
-	--color-orange-dark: color-mix(in oklch, var(--color-orange) 80%, var(--color-black));
-	--color-gold-dark: color-mix(in oklch, var(--color-gold) 80%, var(--color-black));
-	--color-zinc-dark: color-mix(in oklch, var(--color-zinc) 80%, var(--color-black));
-	--color-coral-dark: color-mix(in oklch, var(--color-coral) 80%, var(--color-black));
-	--color-blue-dark: color-mix(in oklch, var(--color-blue) 80%, var(--color-black));
-	--color-purple-dark: color-mix(in oklch, var(--color-purple) 80%, var(--color-black));
-	--color-pink-dark: color-mix(in oklch, var(--color-pink) 80%, var(--color-black));
-	--color-yellow-dark: color-mix(in oklch, var(--color-yellow) 80%, var(--color-black));
-	--color-red-dark: color-mix(in oklch, var(--color-red) 80%, var(--color-black));
-	--color-green-dark: color-mix(in oklch, var(--color-green) 80%, var(--color-black));
+	/* Light Variants (20% brighter on white) */
+	--color-orange-light: color-mix(in oklab, var(--color-orange) 80%, var(--color-white));
+	--color-gold-light: color-mix(in oklab, var(--color-gold) 80%, var(--color-white));
+	--color-zinc-light: color-mix(in oklab, var(--color-zinc) 80%, var(--color-white));
+	--color-coral-light: color-mix(in oklab, var(--color-coral) 80%, var(--color-white));
+	--color-blue-light: color-mix(in oklab, var(--color-blue) 80%, var(--color-white));
+	--color-purple-light: color-mix(in oklab, var(--color-purple) 80%, var(--color-white));
+	--color-pink-light: color-mix(in oklab, var(--color-pink) 80%, var(--color-white));
+	--color-yellow-light: color-mix(in oklab, var(--color-yellow) 80%, var(--color-white));
+	--color-red-light: color-mix(in oklab, var(--color-red) 80%, var(--color-white));
+	--color-green-light: color-mix(in oklab, var(--color-green) 80%, var(--color-white));
+
+	/* Dark Variants (20% darker) */
+	--color-orange-dark: color-mix(in oklab, var(--color-orange) 80%, var(--color-black));
+	--color-gold-dark: color-mix(in oklab, var(--color-gold) 80%, var(--color-black));
+	--color-zinc-dark: color-mix(in oklab, var(--color-zinc) 80%, var(--color-black));
+	--color-coral-dark: color-mix(in oklab, var(--color-coral) 80%, var(--color-black));
+	--color-blue-dark: color-mix(in oklab, var(--color-blue) 80%, var(--color-black));
+	--color-purple-dark: color-mix(in oklab, var(--color-purple) 80%, var(--color-black));
+	--color-pink-dark: color-mix(in oklab, var(--color-pink) 80%, var(--color-black));
+	--color-yellow-dark: color-mix(in oklab, var(--color-yellow) 80%, var(--color-black));
+	--color-red-dark: color-mix(in oklab, var(--color-red) 80%, var(--color-black));
+	--color-green-dark: color-mix(in oklab, var(--color-green) 80%, var(--color-black));
+
+	/* Darker Variants (60% darker) */
+	--color-orange-darker: color-mix(in oklab, var(--color-orange) 40%, var(--color-black));
+	--color-gold-darker: color-mix(in oklab, var(--color-gold) 40%, var(--color-black));
+	--color-zinc-darker: color-mix(in oklab, var(--color-zinc) 40%, var(--color-black));
+	--color-coral-darker: color-mix(in oklab, var(--color-coral) 40%, var(--color-black));
+	--color-blue-darker: color-mix(in oklab, var(--color-blue) 40%, var(--color-black));
+	--color-purple-darker: color-mix(in oklab, var(--color-purple) 40%, var(--color-black));
+	--color-pink-darker: color-mix(in oklab, var(--color-pink) 40%, var(--color-black));
+	--color-yellow-darker: color-mix(in oklab, var(--color-yellow) 40%, var(--color-black));
+	--color-red-darker: color-mix(in oklab, var(--color-red) 40%, var(--color-black));
+	--color-green-darker: color-mix(in oklab, var(--color-green) 40%, var(--color-black));
 
 	--animate-overlay-in: overlay-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 	--animate-overlay-out: overlay-out 0.05s ease-in forwards;
@@ -131,6 +155,7 @@
 	--ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
 	--shadow-cel-depth: var(--shadow-cel-depth-md);
+	--shadow-cel-depth-xs: 1px;
 	--shadow-cel-depth-sm: 2px;
 	--shadow-cel-depth-md: 4px;
 	--shadow-cel-depth-lg: 8px;

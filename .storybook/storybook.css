@@ -1,25 +1,33 @@
 /* Story preview container/canvas card styled with design system tokens */
 .sbdocs-preview {
-	background-color: hsl(var(--card)) !important;
-	border-color: hsl(var(--border)) !important;
-}
-
-/* Story preview toolbar */
-.sbdocs-preview > div:first-child {
-	background-color: hsl(var(--background)) !important;
-	border-bottom: 1px solid hsl(var(--border)) !important;
-}
-
-/* Story preview toolbar controls (reload, zoom, open in new tab) */
-.sbdocs-preview > div:first-child button,
-.sbdocs-preview > div:first-child a {
-	color: hsl(var(--foreground)) !important;
-}
-
-.sbdocs-preview > div:first-child svg {
-	fill: hsl(var(--foreground)) !important;
+	background-color: var(--color-card) !important;
+	border-color: var(--color-border) !important;
 }
 
 .docs-story {
-	background-color: hsl(var(--background)) !important;
+	background-color: var(--color-background) !important;
+	font-family: var(--font-sans) !important;
+}
+
+/* Docs container and controls table dark mode overrides */
+.dark .sbdocs-wrapper,
+.dark .sbdocs-content {
+	background-color: var(--color-background) !important;
+	color: var(--color-foreground);
+}
+
+.dark .docblock-argstable,
+.dark .docblock-argstable-head,
+.dark .docblock-argstable-body {
+	color: var(--color-foreground);
+}
+
+.dark .docblock-argstable th,
+.dark .docblock-argstable td {
+	color: var(--color-foreground);
+	border-color: var(--color-border);
+}
+
+.dark .docblock-argstable tr {
+	background-color: var(--color-card);
 }

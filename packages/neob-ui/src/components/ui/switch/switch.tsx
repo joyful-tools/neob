@@ -1,4 +1,5 @@
 import { Switch as BaseSwitch } from '@base-ui/react/switch';
+import { CheckIcon, XIcon } from '@phosphor-icons/react';
 import { ComponentPropsWithoutRef, ReactNode, Ref, useId } from 'react';
 
 import { cn } from '@/lib/utilities';
@@ -14,37 +15,43 @@ export interface SwitchProperties extends ComponentPropsWithoutRef<typeof BaseSw
 
 const VARIANT_ROOT_CLASSES = {
 	default: `
-		data-[checked]:bg-black dark:data-[checked]:bg-white
-		data-[checked]:text-white dark:data-[checked]:text-black
+		data-[checked]:bg-zinc dark:data-[checked]:bg-zinc-lighter
+		data-[checked]:border-edge
 	`,
 	accent: `
-		data-[checked]:bg-orange dark:data-[checked]:bg-orange
-		data-[checked]:text-black
+		data-[checked]:bg-orange dark:data-[checked]:bg-orange-light
+		data-[checked]:border-edge
 	`,
 	success: `
-		data-[checked]:bg-green dark:data-[checked]:bg-green
-		data-[checked]:text-white dark:data-[checked]:text-black
+		data-[checked]:bg-green dark:data-[checked]:bg-green-light
+		data-[checked]:border-edge
 	`,
 } as const;
 
+const VARIANT_ICON_CLASSES = {
+	default: 'text-zinc dark:text-zinc-lighter',
+	accent: 'text-orange-dark dark:text-orange-light',
+	success: 'text-green-dark dark:text-green-light',
+} as const;
+
 const SWITCH_ROOT_CLASSES = `
-	peer relative isolate inline-flex h-6 w-11 shrink-0 cursor-pointer items-center
-	rounded-full border-2 border-edge bg-white shadow-cel-inset-sm transition-colors
-	duration-300 ease-spring neo-focus-ring outline-hidden
+	group peer relative isolate inline-flex h-6 w-11 shrink-0 cursor-pointer items-center
+	rounded-md border border-edge bg-muted/80 shadow-cel-inset-sm transition-all
+	duration-240 [transition-timing-function:cubic-bezier(0.2,1.15,0.3,1)] neo-focus-ring outline-hidden
 	disabled:cursor-not-allowed disabled:opacity-50
-	dark:bg-zinc
+	dark:bg-zinc-light
 `;
 
 const SWITCH_THUMB_CLASSES = `
-	pointer-events-none block h-4 w-4 rounded-full border border-edge bg-black
-	transition-transform duration-300 ease-spring translate-x-0.5
-	data-[checked]:translate-x-[22px] data-[checked]:bg-white
-	dark:bg-white dark:data-[checked]:bg-black
+	pointer-events-none relative flex h-[24px] w-[23px] items-center justify-center rounded-md border border-edge bg-white
+	shadow-cel-xs transition-all duration-240 [transition-timing-function:cubic-bezier(0.2,1.15,0.3,1)] -translate-x-px -translate-y-px
+	group-data-[checked]:translate-x-5
+	dark:bg-zinc
 `;
 
 /**
- * Sliding Switch toggle control component.
- * Supports multiple active variants (default black/white, accent orange, success green).
+ * Sliding Switch toggle control component inspired by tactile S.C.R.A.P.S. design.
+ * Supports multiple active variants (default neutral zinc, accent orange, success green).
  */
 export function Switch({
 	label,
@@ -66,12 +73,29 @@ export function Switch({
 	const switchControl = (
 		<BaseSwitch.Root
 			ref={ref}
-			className={cn(SWITCH_ROOT_CLASSES, VARIANT_ROOT_CLASSES[variant], error && 'border-red dark:border-red', className)}
+			className={cn(SWITCH_ROOT_CLASSES, VARIANT_ROOT_CLASSES[variant], error && 'bg-red-light dark:bg-red', className)}
 			aria-describedby={describedBy}
 			aria-invalid={hasError ? true : undefined}
 			{...properties}
 		>
-			<BaseSwitch.Thumb className={SWITCH_THUMB_CLASSES} />
+			<BaseSwitch.Thumb className={SWITCH_THUMB_CLASSES}>
+				<span
+					className={cn(
+						'absolute inset-0 flex scale-100 items-center justify-center text-muted-foreground opacity-100 transition-all duration-120 ease-[cubic-bezier(0.2,1.15,0.3,1)] group-data-checked:scale-75 group-data-checked:opacity-0',
+						error && 'text-red-dark dark:text-red-light',
+					)}
+				>
+					<XIcon className="size-3.5" weight="bold" />
+				</span>
+				<span
+					className={cn(
+						'absolute inset-0 flex scale-75 items-center justify-center opacity-0 transition-all duration-120 ease-[cubic-bezier(0.2,1.15,0.3,1)] group-data-checked:scale-100 group-data-checked:opacity-100',
+						VARIANT_ICON_CLASSES[variant],
+					)}
+				>
+					<CheckIcon className="size-3.5" weight="bold" />
+				</span>
+			</BaseSwitch.Thumb>
 		</BaseSwitch.Root>
 	);
 
@@ -96,13 +120,13 @@ export function Switch({
 							{description}
 						</span>
 					)}
+					{error && (
+						<span id={errorId} className="text-xs/normal font-bold text-red-dark dark:text-red-light">
+							{error}
+						</span>
+					)}
 				</div>
 			</label>
-			{error && (
-				<span id={errorId} className="pl-14 text-xs font-bold text-red-dark dark:text-red-light">
-					{error}
-				</span>
-			)}
 		</div>
 	);
 }

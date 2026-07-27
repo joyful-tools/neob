@@ -230,7 +230,7 @@ function TriggerValue({ className, ref, placeholder, ...props }: ComboboxTrigger
 				ref={ref}
 				className={cn(
 					getInputStyles(size, hasError, 'neo-focus-ring'),
-					'relative flex w-full cursor-pointer items-center shadow-cel-sm transition-all duration-300 ease-spring hover:-translate-y-0.5 hover:shadow-cel-md active:translate-y-0.5 active:shadow-cel-inset-md disabled:hover:translate-y-0 disabled:hover:shadow-cel-sm aria-expanded:translate-y-0.5 aria-expanded:shadow-cel-inset-md data-pressed:translate-y-0.5 data-pressed:shadow-cel-inset-md',
+					'relative flex w-full button-physical cursor-pointer items-center',
 					iconStyles.padding,
 				)}
 				aria-describedby={describedBy}

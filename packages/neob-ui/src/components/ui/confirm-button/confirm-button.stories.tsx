@@ -45,13 +45,14 @@ export const Default: Story = {
 	),
 	args: {
 		children: 'Delete Item',
+		confirmLabel: 'Confirm Delete',
 		onConfirm: () => {},
 	},
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		await userEvent.click(canvas.getByRole('button', { name: 'Delete Item' }));
 		await expect(canvas.getByText('Are you sure?')).toBeInTheDocument();
-		await userEvent.click(canvas.getByRole('button', { name: 'Delete Item' }));
+		await userEvent.click(canvas.getByRole('button', { name: 'Confirm Delete' }));
 	}),
 };
 
