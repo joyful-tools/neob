@@ -1,82 +1,65 @@
-# NEOB KNOWLEDGE BASE
+# NEOB CONTRIBUTOR GUIDE
 
-**Generated:** 2026-05-31 | **Branch:** main
+Repository guidance for agents and contributors authoring, reviewing, testing, and releasing `neob`. Consumer setup and public API usage belong in `packages/neob-ui/README.md` and `packages/neob-ui/USAGE.md`.
 
 ## OVERVIEW
 
-High-contrast React 19 component library (`neob`). Form-focused inputs with opt-in wrappers, touch-gated tooltips, sliding indicator segmented tabs, animated overlays, and performant virtualized viewports. Built on React 19, Base UI, Tailwind CSS v4, Framer Motion (motion/react), and Storybook. Driven by Bun as the package manager and Vitest for testing.
+High-contrast React 19 component library (`neob`). Form-focused inputs with opt-in wrappers, touch-gated tooltips, sliding indicator segmented tabs, animated overlays, and performant virtualized viewports. Built on React 19, Base UI, Tailwind CSS v4, Motion, and Storybook. Driven by Bun as the package manager and Vitest for testing.
 
 ## STRUCTURE
 
 ```text
 neob/
-├── .storybook/              # Storybook configurations and theme setup
-├── src/
-│   ├── components/          # React components
-│   │   └── ui/              # High-contrast atom/molecule components
-│   ├── hooks/               # Core React hooks (useInputAreaAutoResize, useTransformOrigin, useDeferredOpen)
-│   ├── lib/                 # Shared utilities and Storybook integration helpers
-│   ├── index.css            # Tailwind entry point importing focused style modules
-│   ├── styles/              # Properties, theme, base, utilities, and effects
-│   └── index.ts             # Library barrel exports
-├── package.json             # Scripts, dependencies, and bundle configuration
-├── tsconfig.json            # TypeScript compile configurations
-└── vite.config.ts           # Library-mode build config
+├── .storybook/                    # Storybook configuration and theme setup
+├── packages/
+│   └── neob-ui/
+│       ├── src/
+│       │   ├── components/ui/     # Component folders, implementations, and stories
+│       │   ├── hooks/             # Shared React hooks
+│       │   ├── lib/               # Shared utilities and Storybook helpers
+│       │   ├── styles/            # Theme, base, utilities, properties, and effects
+│       │   ├── index.css          # Tailwind stylesheet entry point
+│       │   └── index.ts           # Public package exports
+│       ├── package.json           # Package scripts, dependencies, and exports
+│       ├── tsconfig.json          # Package TypeScript configuration
+│       └── vite.config.ts         # Library-mode build configuration
+├── package.json                   # Workspace scripts
+└── vitest.workspace.ts            # Workspace test configuration
 ```
 
 ## WHERE TO LOOK
 
-| Task                      | Location                                  | Notes                                                         |
-| ------------------------- | ----------------------------------------- | ------------------------------------------------------------- |
-| Component implementations | `src/components/ui/{name}.tsx`            | Direct atomic component implementation files.                 |
-| Hooks and auto-resizing   | `src/hooks/use-input-area-auto-resize.ts` | Layout and textarea sizing logic.                             |
-| Storybook stories         | `src/components/ui/{name}.stories.tsx`    | Component playground and visual verification setup.           |
-| Global stylesheet entry   | `src/index.css`                           | Tailwind entry point; keep limited to imports and directives. |
-| Design tokens and CSS     | `src/styles/`                             | Properties, theme, base, utilities, and effects modules.      |
-| Shared CSS utilities      | `src/lib/utilities.ts`                    | The `cn(...)` Tailwind merge helper and `getThemeColor(...)`. |
-| Bundle build configs      | `vite.config.ts` & `tsconfig.json`        | Bundling and compiler directives.                             |
+| Task                      | Location                                                       | Notes                                                               |
+| ------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Component implementations | `packages/neob-ui/src/components/ui/{name}/{name}.tsx`         | Authoritative component implementation.                             |
+| Storybook stories         | `packages/neob-ui/src/components/ui/{name}/{name}.stories.tsx` | Public examples and browser tests; read before editing a component. |
+| Hooks and auto-resizing   | `packages/neob-ui/src/hooks/`                                  | Shared hooks and layout behavior.                                   |
+| Global stylesheet entry   | `packages/neob-ui/src/index.css`                               | Keep limited to imports and Tailwind directives.                    |
+| Design tokens and CSS     | `packages/neob-ui/src/styles/`                                 | Theme sources, derived tokens, utilities, and effects.              |
+| Shared CSS utilities      | `packages/neob-ui/src/lib/utilities.ts`                        | `cn(...)` and theme utility helpers.                                |
+| Bundle build configs      | `packages/neob-ui/vite.config.ts` and package `tsconfig`       | Bundling and compiler directives.                                   |
 
 ---
 
 ## DESIGN SYSTEM TOKENS & COLORS
 
-All colors are controlled by CSS Custom Variables declared in `src/styles/theme.css` and `src/styles/base.css`. The Tailwind variants utilize these tokens:
+All color sources live at the top of `packages/neob-ui/src/styles/theme.css`. Edit `:root` for light mode and `.dark` for dark mode. Keep the derived Tailwind `@theme` mappings below the editable sources.
 
-- **Custom Colors:**
-  - Orange: `var(--color-orange)` (`#f48120`)
-  - Gold: `var(--color-gold)` (`#faad3f`)
-  - Zinc: `var(--color-zinc)` (`#232426`)
-  - Coral: `var(--color-coral)` (`#ff6b4a`)
-  - Blue: `var(--color-blue)` (`#60a5fa`)
-  - Purple: `var(--color-purple)` (`#c084fc`)
-  - Pink: `var(--color-pink)` (`#f472b6`)
-  - Yellow: `var(--color-yellow)` (`#fae315`)
-  - Red: `var(--color-red)` (`#ef4444`)
-  - Green: `var(--color-green)` (`#19c056`)
-- **Theme Variables (Light / Dark Mode):**
-  - Background: `var(--background)` (Light: `0 0% 100%` / Dark: `0 0% 3.9%`)
-  - Foreground: `var(--foreground)` (Light: `0 0% 3.9%` / Dark: `0 0% 98%`)
-  - Muted: `var(--muted)` (Light: `0 0% 96.1%` / Dark: `0 0% 14.9%`)
-  - Border: `var(--border)` (Light: `0 0% 89.8%` / Dark: `0 0% 14.9%`)
-  - Card: `var(--card)` (Light: `0 0% 100%` / Dark: `0 0% 3.9%`)
-- **Typography:**
-  - Sans: `var(--font-sans)` ('Urbanist', sans-serif)
-  - Display (Headings): `var(--font-display)` ('Dela Gothic One', sans-serif)
-  - Monospace: `var(--font-mono)` ('JetBrains Mono', monospace)
+- **Semantic sources:** `--background`, `--foreground`, `--edge`, `--primary`, `--muted`, `--border`, `--ring`, `--card`, `--popover`, and `--destructive`, including foreground counterparts.
+- **Palette sources:** `--palette-orange`, `--palette-gold`, `--palette-zinc`, `--palette-coral`, `--palette-blue`, `--palette-purple`, `--palette-pink`, `--palette-yellow`, `--palette-red`, and `--palette-green`.
+- **Derived Tailwind tokens:** `--color-*` mappings and light/dark palette variants belong in `@theme`; do not duplicate source values there.
+- **Typography:** `--font-sans` uses Rubik, `--font-display` uses Dela Gothic One, and `--font-mono` uses JetBrains Mono with fallbacks.
 
 ---
 
 ## KEY UTILITY CLASSES
 
-Always apply these custom visual utility classes when building layouts:
+Prefer these utilities when the corresponding treatment is required:
 
-- `shadow-cel` - Stark 4px solid black drop shadow.
-- `shadow-cel-sm` - 2px solid black drop shadow (ideal for tags/buttons).
-- `shadow-cel-lg` - 8px solid black drop shadow (ideal for hover states).
-- `shadow-cel-inset` - Inset shadow for active button states.
-- `shadow-cel-inset-sm` - Inset shadow for inputs/meter tracks.
-- `neo-focus-ring` - Focus-visible border-offset outline animation.
-- `underline-slide` - Hover slide-out underline effect for link items.
+- `shadow-cel`, `shadow-cel-sm`, and `shadow-cel-lg` provide token-driven solid drop shadows.
+- `shadow-cel-inset` and `shadow-cel-inset-sm` provide inset treatments.
+- `neo-focus-ring` provides the shared focus-visible ring.
+- `underline-slide` provides the shared animated link underline.
 
 ---
 
@@ -85,15 +68,17 @@ Always apply these custom visual utility classes when building layouts:
 ### Styling (CRITICAL)
 
 - **Borders & Tokens**: Colors must lean on curated tokens rather than standard Tailwind shades (e.g., `border-black`, `bg-zinc`, custom theme variables). Never use raw Tailwind colors like `bg-blue-500` or `text-gray-900`.
+- **Color space**: Prefer `oklch(...)` for all authored color values and `color-mix(in oklch, ...)` for derived colors. Use another color space only when an external API, browser serialization, or color-input format requires it.
 - **Tailwind class merging**: Always utilize the exposed `cn(...)` utility helper when combining conditional classes dynamically.
 - **Hover interactions**: Use Tailwind v4 `hover:` and `group-hover:` variants in class strings. Inside `@utility` declarations, use `@variant hover { ... }` instead of raw `&:hover` selectors so Tailwind applies its hover-capability guard and avoids sticky touchscreen states. Keep raw hover media queries only for deliberate fallback behavior such as `hover-always` and `group-hover-always`.
 - **Mode/theme**: Custom light/dark themes are applied via the `.dark` class wrapper, targeting root variables or components.
-- **CSS custom property declarations**: Every project-owned custom property must be declared before use. Register typed or animated properties with `@property` in `src/styles/properties.css`; declare cascading design tokens in `src/styles/theme.css` or `src/styles/base.css`. Tailwind-owned `--tw-*` properties are exempt.
-- **Stylesheet boundaries**: Keep `src/index.css` limited to imports and Tailwind directives. Add styles to the focused module in `src/styles/` rather than growing the entry point.
+- **CSS custom property declarations**: Every project-owned custom property must be declared before use. Register typed or animated properties in `packages/neob-ui/src/styles/properties.css`; declare cascading design tokens in `packages/neob-ui/src/styles/theme.css`. Tailwind-owned `--tw-*` properties are exempt.
+- **Stylesheet boundaries**: Keep `packages/neob-ui/src/index.css` limited to imports and Tailwind directives. Add styles to the focused module in `packages/neob-ui/src/styles/` rather than growing the entry point.
 
 ### Components
 
-- **Single Component Imports**: Always import compound components via their parent component (e.g., `import { Tabs } from 'neob';` and use `<Tabs.List>`, `<Tabs.Trigger>`, etc.).
+- **Stories first**: Read a component's implementation and colocated story before changing its API or behavior.
+- **Single Component Imports**: Use compound components through their public parent API (for example, `import { Tabs } from '@joyful.tools/neob';` with `<Tabs.List>` and `<Tabs.Trigger>`).
 - **Ref Forwarding**: All elements support modern React 19 ref-as-prop pattern. Do NOT use `forwardRef`.
 - **Early Returns**: Write early return statements for guard clauses.
 - **Display Names**: Always set `displayName` (e.g., `Tabs.displayName = 'Tabs'`) to aid React Developer Tools debugging.

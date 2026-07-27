@@ -33,7 +33,7 @@ export function Cursor({ name, color, position, className, style, ref, ...proper
 				<path
 					d="M8.13 19.99L3.14 5.01C2.75 3.85 3.85 2.75 5.01 3.14L19.99 8.13C21.3 8.56 21.35 10.4 20.07 10.91L14.12 13.29C13.74 13.44 13.44 13.74 13.29 14.12L10.91 20.07C10.4 21.35 8.56 21.3 8.13 19.99Z"
 					fill={color}
-					stroke="hsl(var(--edge))"
+					stroke="var(--edge)"
 					strokeWidth="2"
 					strokeLinecap="round"
 					strokeLinejoin="round"

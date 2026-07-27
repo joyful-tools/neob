@@ -173,7 +173,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							setPage(1);
 							setEditingPage(1);
 						}}
-						className="size-8 rounded-r-none p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]"
+						className="size-8 rounded-r-none p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_oklch(0%_0_0)]"
 					>
 						<CaretDoubleLeftIcon className={cn('size-4', isFirstPageDisabled && 'opacity-30')} />
 					</Button>
@@ -190,7 +190,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						setEditingPage(previousPage);
 					}}
 					className={cn(
-						'size-8 p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]',
+						'size-8 p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_oklch(0%_0_0)]',
 						controls === 'full' ? '-ml-0.5 rounded-none' : 'rounded-r-none',
 					)}
 				>
@@ -272,7 +272,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						setEditingPage(nextPage);
 					}}
 					className={cn(
-						'-ml-0.5 size-8 p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]',
+						'-ml-0.5 size-8 p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_oklch(0%_0_0)]',
 						controls === 'full' ? 'rounded-none' : 'rounded-l-none',
 					)}
 				>
@@ -289,7 +289,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							setPage(maxPage);
 							setEditingPage(maxPage);
 						}}
-						className="-ml-0.5 size-8 rounded-l-none p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_#000]"
+						className="-ml-0.5 size-8 rounded-l-none p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_oklch(0%_0_0)]"
 					>
 						<CaretDoubleRightIcon className={cn('size-4', isLastPageDisabled && 'opacity-30')} />
 					</Button>

@@ -1,3 +1,66 @@
+:root {
+	color-scheme: light;
+	/* Core Colors */
+	--background: oklch(97.41% 0.0083 81.51);
+	--foreground: oklch(26.199% 0.0136 307.89);
+	--edge: oklch(37.482% 0.046 307.08);
+	--primary: oklch(26.199% 0.0136 307.89);
+	--primary-foreground: oklch(97.41% 0.0083 81.51);
+	--muted: oklch(94.102% 0.0118 314.77);
+	--muted-foreground: oklch(48.097% 0.0239 313.3);
+	--border: oklch(76.638% 0.0285 310.76);
+	--ring: oklch(26.199% 0.0136 307.89);
+	--ring-offset: oklch(97.41% 0.0083 81.51);
+	--card: oklch(98.803% 0.005 87.45);
+	--card-foreground: oklch(26.199% 0.0136 307.89);
+	--popover: oklch(98.803% 0.005 87.45);
+	--popover-foreground: oklch(26.199% 0.0136 307.89);
+	--destructive: oklch(72.969% 0.1102 20.08);
+	--destructive-foreground: oklch(26.199% 0.0136 307.89);
+
+	/* Base Colors */
+	--palette-orange: oklch(71.927% 0.171 53.68);
+	--palette-gold: oklch(80.365% 0.1499 71.69);
+	--palette-zinc: oklch(26.128% 0.0132 298.54);
+	--palette-coral: oklch(70.662% 0.1875 34.08);
+	--palette-blue: oklch(71.37% 0.1434 254.63);
+	--palette-purple: oklch(72.164% 0.1767 305.5);
+	--palette-pink: oklch(72.529% 0.1752 349.76);
+	--palette-yellow: oklch(90.65% 0.187 101.83);
+	--palette-red: oklch(66.506% 0.1983 19.56);
+	--palette-green: oklch(73.528% 0.1874 151.05);
+}
+
+.dark {
+	color-scheme: dark;
+	--background: oklch(25.162% 0.0145 310.59);
+	--foreground: oklch(96.761% 0.0104 81.51);
+	--edge: oklch(19.103% 0.0035 308.26);
+	--primary: oklch(96.761% 0.0104 81.51);
+	--primary-foreground: oklch(26.199% 0.0136 307.89);
+	--muted: oklch(30.21% 0.0168 309.92);
+	--muted-foreground: oklch(81.849% 0.0225 313.44);
+	--border: oklch(59.11% 0.0334 313.26);
+	--ring: oklch(81.125% 0.0745 250.45);
+	--ring-offset: oklch(25.162% 0.0145 310.59);
+	--card: oklch(28.089% 0.0188 310.5);
+	--card-foreground: oklch(96.761% 0.0104 81.51);
+	--popover: oklch(28.089% 0.0188 310.5);
+	--popover-foreground: oklch(96.761% 0.0104 81.51);
+	--destructive: oklch(72.969% 0.1102 20.08);
+	--destructive-foreground: oklch(26.199% 0.0136 307.89);
+
+	--palette-orange: oklch(46.354% 0.1323 45.12);
+	--palette-gold: oklch(48.469% 0.1022 75.11);
+	--palette-coral: oklch(48.096% 0.1546 30.71);
+	--palette-blue: oklch(46.711% 0.1285 252.23);
+	--palette-purple: oklch(44.798% 0.1674 304.96);
+	--palette-pink: oklch(47.627% 0.1408 356.04);
+	--palette-yellow: oklch(46.251% 0.096 99.41);
+	--palette-red: oklch(48.01% 0.166 20.91);
+	--palette-green: oklch(44.749% 0.1169 151.5);
+}
+
 @theme {
 	--color-*: initial;
 
@@ -5,61 +68,58 @@
 	--font-display: 'Dela Gothic One', system-ui, sans-serif;
 	--font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
 
-	--color-background: hsl(var(--background));
-	--color-foreground: hsl(var(--foreground));
-	--color-muted: hsl(var(--muted));
-	--color-muted-foreground: hsl(var(--muted-foreground));
-	--color-primary: hsl(var(--primary));
-	--color-primary-foreground: hsl(var(--primary-foreground));
-	--color-border: hsl(var(--border));
-	--color-ring: hsl(var(--ring));
-	--color-card: hsl(var(--card));
-	--color-ring-offset: hsl(var(--ring-offset));
-	--color-card-foreground: hsl(var(--card-foreground));
-	--color-popover: hsl(var(--popover));
-	--color-popover-foreground: hsl(var(--popover-foreground));
-	--color-destructive: hsl(var(--destructive));
-	--color-destructive-foreground: hsl(var(--destructive-foreground));
-
-	--color-black: #000;
-	--color-edge: hsl(var(--edge));
-	--color-white: #fff;
-
-	/* Base Colors */
-	--color-orange: #f48120;
-	--color-gold: #faad3f;
-	--color-zinc: #25232a;
-	--color-coral: #ff6b4a;
-	--color-blue: #60a5fa;
-	--color-purple: #c084fc;
-	--color-pink: #f472b6;
-	--color-yellow: #fae315;
-	--color-red: #f55260;
-	--color-green: #26c968;
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-border: var(--border);
+	--color-ring: var(--ring);
+	--color-card: var(--card);
+	--color-ring-offset: var(--ring-offset);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-black: oklch(0% 0 0);
+	--color-edge: var(--edge);
+	--color-white: oklch(100% 0 0);
+	--color-orange: var(--palette-orange);
+	--color-gold: var(--palette-gold);
+	--color-zinc: var(--palette-zinc);
+	--color-coral: var(--palette-coral);
+	--color-blue: var(--palette-blue);
+	--color-purple: var(--palette-purple);
+	--color-pink: var(--palette-pink);
+	--color-yellow: var(--palette-yellow);
+	--color-red: var(--palette-red);
+	--color-green: var(--palette-green);
 
 	/* Light Variants (20% opacity on white) */
-	--color-orange-light: color-mix(in srgb, var(--color-orange) 20%, white);
-	--color-gold-light: color-mix(in srgb, var(--color-gold) 20%, white);
-	--color-zinc-light: color-mix(in srgb, var(--color-zinc) 20%, white);
-	--color-coral-light: color-mix(in srgb, var(--color-coral) 20%, white);
-	--color-blue-light: color-mix(in srgb, var(--color-blue) 20%, white);
-	--color-purple-light: color-mix(in srgb, var(--color-purple) 20%, white);
-	--color-pink-light: color-mix(in srgb, var(--color-pink) 20%, white);
-	--color-yellow-light: color-mix(in srgb, var(--color-yellow) 20%, white);
-	--color-red-light: color-mix(in srgb, var(--color-red) 20%, white);
-	--color-green-light: color-mix(in srgb, var(--color-green) 20%, white);
+	--color-orange-light: color-mix(in oklch, var(--color-orange) 20%, var(--color-white));
+	--color-gold-light: color-mix(in oklch, var(--color-gold) 20%, var(--color-white));
+	--color-zinc-light: color-mix(in oklch, var(--color-zinc) 20%, var(--color-white));
+	--color-coral-light: color-mix(in oklch, var(--color-coral) 20%, var(--color-white));
+	--color-blue-light: color-mix(in oklch, var(--color-blue) 20%, var(--color-white));
+	--color-purple-light: color-mix(in oklch, var(--color-purple) 20%, var(--color-white));
+	--color-pink-light: color-mix(in oklch, var(--color-pink) 20%, var(--color-white));
+	--color-yellow-light: color-mix(in oklch, var(--color-yellow) 20%, var(--color-white));
+	--color-red-light: color-mix(in oklch, var(--color-red) 20%, var(--color-white));
+	--color-green-light: color-mix(in oklch, var(--color-green) 20%, var(--color-white));
 
 	/* Dark Variants */
-	--color-orange-dark: color-mix(in srgb, var(--color-orange) 80%, black);
-	--color-gold-dark: color-mix(in srgb, var(--color-gold) 80%, black);
-	--color-zinc-dark: color-mix(in srgb, var(--color-zinc) 80%, black);
-	--color-coral-dark: color-mix(in srgb, var(--color-coral) 80%, black);
-	--color-blue-dark: color-mix(in srgb, var(--color-blue) 80%, black);
-	--color-purple-dark: color-mix(in srgb, var(--color-purple) 80%, black);
-	--color-pink-dark: color-mix(in srgb, var(--color-pink) 80%, black);
-	--color-yellow-dark: color-mix(in srgb, var(--color-yellow) 80%, black);
-	--color-red-dark: color-mix(in srgb, var(--color-red) 80%, black);
-	--color-green-dark: color-mix(in srgb, var(--color-green) 80%, black);
+	--color-orange-dark: color-mix(in oklch, var(--color-orange) 80%, var(--color-black));
+	--color-gold-dark: color-mix(in oklch, var(--color-gold) 80%, var(--color-black));
+	--color-zinc-dark: color-mix(in oklch, var(--color-zinc) 80%, var(--color-black));
+	--color-coral-dark: color-mix(in oklch, var(--color-coral) 80%, var(--color-black));
+	--color-blue-dark: color-mix(in oklch, var(--color-blue) 80%, var(--color-black));
+	--color-purple-dark: color-mix(in oklch, var(--color-purple) 80%, var(--color-black));
+	--color-pink-dark: color-mix(in oklch, var(--color-pink) 80%, var(--color-black));
+	--color-yellow-dark: color-mix(in oklch, var(--color-yellow) 80%, var(--color-black));
+	--color-red-dark: color-mix(in oklch, var(--color-red) 80%, var(--color-black));
+	--color-green-dark: color-mix(in oklch, var(--color-green) 80%, var(--color-black));
 
 	--animate-overlay-in: overlay-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 	--animate-overlay-out: overlay-out 0.05s ease-in forwards;
@@ -75,12 +135,12 @@
 	--shadow-cel-depth-md: 4px;
 	--shadow-cel-depth-lg: 8px;
 	--shadow-cel-depth-xl: 12px;
-	--shadow-cel-color-default: hsl(var(--edge));
+	--shadow-cel-color-default: var(--edge);
 	--shadow-cel-inset-depth: var(--shadow-cel-inset-depth-md);
 	--shadow-cel-inset-depth-md: 3px;
 	--shadow-cel-inset-depth-sm: 2px;
-	--shadow-cel-inset-color-md: hsl(var(--edge) / 25%);
-	--shadow-cel-inset-color-sm: hsl(var(--edge) / 20%);
+	--shadow-cel-inset-color-md: oklch(from var(--edge) l c h / 25%);
+	--shadow-cel-inset-color-sm: oklch(from var(--edge) l c h / 20%);
 	--underline-slide-thickness: 1px;
 	--underline-slide-duration: 300ms;
 	--focus-ring-inner-size: 2px;
