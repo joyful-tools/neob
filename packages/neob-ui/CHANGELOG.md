@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 1.1.0
+
+### Minor Changes
+
+- [`db28b3d`](https://github.com/joyful-tools/neob/commit/db28b3d2b332749e2303eacd7e0c98c625b7800b) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Overhaul light and dark mode color themes
+
 ## 1.0.4
 
 ### Patch Changes
