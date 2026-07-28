@@ -34,30 +34,32 @@ function InViewDemo(args: Omit<React.ComponentProps<typeof InView>, 'root' | 'ro
 	const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
 	return (
-		<div
-			ref={setContainer}
-			// tabIndex makes the scrollable region keyboard-accessible, satisfying the axe scrollable-region-focusable rule
-			tabIndex={0}
-			className="h-96 w-64 overflow-y-scroll rounded-xl border-4 border-edge bg-white shadow-cel-md dark:bg-zinc"
-			data-testid="container"
-		>
-			<div className="flex h-[150%] flex-col items-center justify-between p-10 select-none">
-				<div className="text-center font-mono text-lg font-black text-black dark:text-white">Scroll down ↓</div>
-				{/* root=container scopes the IntersectionObserver to the scrollable div,
+		<div className="h-96 w-64 overflow-hidden rounded-xl border-4 border-edge bg-card text-card-foreground shadow-cel-md dark:bg-zinc dark:text-white">
+			<div
+				ref={setContainer}
+				// tabIndex makes the scrollable region keyboard-accessible, satisfying the axe scrollable-region-focusable rule
+				tabIndex={0}
+				className="size-full overflow-y-auto outline-none focus:outline-none"
+				data-testid="container"
+			>
+				<div className="flex h-[150%] flex-col items-center justify-between p-10 select-none">
+					<div className="text-center font-mono text-lg font-black text-black dark:text-white">Scroll down ↓</div>
+					{/* root=container scopes the IntersectionObserver to the scrollable div,
 				    so container.scroll() reliably fires the callback in both browser and headless environments. */}
-				<InView {...args} root={container} rootMargin="0px" onviewchange={action('view-change')}>
-					{({ inView, visibility }) => (
-						<div
-							style={{ visibility }}
-							data-testid="target"
-							className={`rounded-lg border-2 border-edge bg-pink px-4 py-2 font-mono text-sm font-black text-black transition-all duration-700 ${
-								inView ? 'scale-100 opacity-100' : 'scale-50 opacity-0'
-							}`}
-						>
-							Hello World
-						</div>
-					)}
-				</InView>
+					<InView {...args} root={container} rootMargin="0px" onviewchange={action('view-change')}>
+						{({ inView, visibility }) => (
+							<div
+								style={{ visibility }}
+								data-testid="target"
+								className={`rounded-lg border-2 border-edge bg-pink px-4 py-2 font-mono text-sm font-black text-black transition-all duration-700 ${
+									inView ? 'scale-100 opacity-100' : 'scale-50 opacity-0'
+								}`}
+							>
+								Hello World
+							</div>
+						)}
+					</InView>
+				</div>
 			</div>
 		</div>
 	);

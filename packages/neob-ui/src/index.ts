@@ -174,7 +174,6 @@ export type { MarqueeProps } from './components/ui/marquee';
 export { useScrollPercentage, ScrollPercentage } from './components/ui/scroll-percentage';
 export { TypeWords } from './components/ui/type-words';
 export { DropMenu, DropMenuItem } from './components/ui/drop-menu';
-export { RollingDigits } from './components/ui/rolling-digits';
 export { TextScramble, TextShake, TextSkew, TextWave } from './components/ui/text-animations';
 export { TextError } from './components/ui/text-error';
 export type { TextErrorProperties } from './components/ui/text-error';

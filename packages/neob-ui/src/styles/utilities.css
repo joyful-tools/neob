@@ -148,3 +148,51 @@
 		--tw-ring-shadow: 0 0 0 var(--focus-ring-outer-size-value) var(--color-ring);
 	}
 }
+
+@utility scrollbar-none {
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+@utility scrollbar-thin {
+	scrollbar-width: thin;
+
+	&::-webkit-scrollbar {
+		width: 6px;
+		height: 6px;
+	}
+}
+
+@utility scrollbar-auto {
+	scrollbar-width: auto;
+
+	&::-webkit-scrollbar {
+		width: 10px;
+		height: 10px;
+	}
+}
+
+@utility scrollbar-stable {
+	scrollbar-gutter: stable;
+}
+
+@utility scrollbar-neo {
+	--scrollbar-track: var(--muted);
+	--scrollbar-thumb: var(--edge);
+	--scrollbar-thumb-hover: var(--foreground);
+	--scrollbar-thumb-active: var(--primary);
+	scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+
+	&::-webkit-scrollbar-track {
+		border-radius: 0;
+		border-left: 2px solid var(--edge);
+	}
+
+	&::-webkit-scrollbar-thumb {
+		border-radius: 0;
+		border: 2px solid var(--edge);
+	}
+}

@@ -32,32 +32,30 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	render: () => (
-		<div
-			data-testid="scroll-container"
-			tabIndex={0}
-			className="h-60 w-80 overflow-y-auto rounded-xl border-2 border-edge bg-white select-none focus:ring-2 focus:ring-edge focus:outline-hidden"
-		>
-			<div className="h-20 bg-muted/40 p-4 font-sans text-xs">Scroll down to stick the header...</div>
+		<div className="h-60 w-80 overflow-hidden rounded-xl border-2 border-edge bg-card text-card-foreground shadow-cel-md select-none dark:bg-zinc dark:text-white">
+			<div data-testid="scroll-container" tabIndex={0} className="size-full overflow-y-auto outline-none focus:outline-none">
+				<div className="h-20 bg-muted/40 p-4 font-sans text-xs text-foreground/80">Scroll down to stick the header...</div>
 
-			<SmartSticky
-				sticky={({ stuck }) => (
-					<div
-						data-testid="sticky-header"
-						className={`border-b-2 border-edge p-3 font-display transition-all duration-200 ${
-							stuck ? 'bg-cyan text-black shadow-cel-sm' : 'bg-white text-zinc'
-						}`}
-					>
-						{stuck ? 'STUCK HEADER' : 'Sticky Header'}
+				<SmartSticky
+					sticky={({ stuck }) => (
+						<div
+							data-testid="sticky-header"
+							className={`border-b-2 border-edge p-3 font-display transition-all duration-200 ${
+								stuck ? 'bg-cyan text-black shadow-cel-sm' : 'bg-card text-card-foreground dark:bg-zinc dark:text-white'
+							}`}
+						>
+							{stuck ? 'STUCK HEADER' : 'Sticky Header'}
+						</div>
+					)}
+				>
+					<div className="h-100 bg-muted/10 p-4 font-sans text-sm/relaxed text-foreground/90">
+						This is some scrollable text area inside the sticky observer.
+						<br />
+						<br />
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum dolor a lectus elementum sodales.
 					</div>
-				)}
-			>
-				<div className="h-100 bg-muted/10 p-4 font-sans text-sm/relaxed">
-					This is some scrollable text area inside the sticky observer.
-					<br />
-					<br />
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum dolor a lectus elementum sodales.
-				</div>
-			</SmartSticky>
+				</SmartSticky>
+			</div>
 		</div>
 	),
 	play: guardPlay(async ({ canvasElement }) => {

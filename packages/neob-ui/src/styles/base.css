@@ -11,3 +11,53 @@
 		overscroll-behavior: none;
 	}
 }
+
+:root,
+html,
+body,
+* {
+	scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+	scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--scrollbar-track);
+	border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--scrollbar-thumb);
+	border-radius: 9999px;
+	border: 2px solid transparent;
+	background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--scrollbar-thumb-hover);
+	border: 2px solid transparent;
+	background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:active {
+	background: var(--scrollbar-thumb-active);
+	border: 2px solid transparent;
+	background-clip: padding-box;
+}
+
+::-webkit-scrollbar-corner {
+	background: transparent;
+}
+
+[class*='overflow-y-auto'],
+[class*='overflow-auto'],
+[class*='overflow-y-scroll'],
+[class*='overflow-scroll'],
+[class*='overflow-x-auto'],
+[class*='overflow-x-scroll'] {
+	clip-path: inset(0 round inherit);
+}

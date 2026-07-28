@@ -29,15 +29,14 @@ export const Default: Story = {
 						Scroll percentage: {percentage.toFixed(0)}%
 					</span>
 				</div>
-				<div
-					ref={containerRef}
-					className="relative h-96 w-64 overflow-y-scroll rounded-xl border-4 border-edge bg-white shadow-cel-lg select-none dark:bg-zinc"
-				>
-					<div className="h-[200%] w-full bg-linear-to-b from-cyan via-gold to-purple opacity-90" />
-					<div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-between p-4">
-						<span className="rounded-sm border-2 border-edge bg-white px-2 py-1 font-sans text-sm font-black text-black dark:bg-zinc dark:text-white">
-							Scroll Down ↓
-						</span>
+				<div className="h-96 w-64 overflow-hidden rounded-xl border-4 border-edge bg-card shadow-cel-lg select-none dark:bg-zinc">
+					<div ref={containerRef} className="relative size-full overflow-y-auto">
+						<div className="h-[200%] w-full bg-linear-to-b from-cyan via-gold to-purple opacity-90" />
+						<div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-between p-4">
+							<span className="rounded-sm border-2 border-edge bg-card px-2 py-1 font-sans text-sm font-black text-card-foreground dark:bg-zinc dark:text-white">
+								Scroll Down ↓
+							</span>
+						</div>
 					</div>
 				</div>
 			</div>

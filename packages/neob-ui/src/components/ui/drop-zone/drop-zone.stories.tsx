@@ -124,10 +124,12 @@ export const Default: Story = {
 				</DropZone>
 
 				{results && (
-					<div className="max-h-40 overflow-auto rounded-xl border-2 border-edge bg-muted/20 p-3 font-mono text-xs">
-						<div>Accepted: {results.acceptedFiles.map((f) => f.name).join(', ') || 'none'}</div>
-						<div className="text-red-dark dark:text-red">
-							Rejected: {results.rejectedFiles.map((f) => `${f.file.name} (${f.code})`).join(', ') || 'none'}
+					<div className="overflow-hidden rounded-xl border-2 border-edge bg-muted/20 font-mono text-xs">
+						<div className="max-h-40 overflow-auto p-3">
+							<div>Accepted: {results.acceptedFiles.map((f) => f.name).join(', ') || 'none'}</div>
+							<div className="text-red-dark dark:text-red">
+								Rejected: {results.rejectedFiles.map((f) => `${f.file.name} (${f.code})`).join(', ') || 'none'}
+							</div>
 						</div>
 					</div>
 				)}
@@ -228,10 +230,12 @@ export const InvalidFileRejection: Story = {
 				</DropZone>
 
 				{results && (
-					<div className="max-h-40 overflow-auto rounded-xl border-2 border-edge bg-muted/20 p-3 font-mono text-xs">
-						<div>Accepted: {results.acceptedFiles.map((f) => f.name).join(', ') || 'none'}</div>
-						<div className="text-red-dark dark:text-red">
-							Rejected: {results.rejectedFiles.map((f) => `${f.file.name} (${f.code})`).join(', ') || 'none'}
+					<div className="overflow-hidden rounded-xl border-2 border-edge bg-muted/20 font-mono text-xs">
+						<div className="max-h-40 overflow-auto p-3">
+							<div>Accepted: {results.acceptedFiles.map((f) => f.name).join(', ') || 'none'}</div>
+							<div className="text-red-dark dark:text-red">
+								Rejected: {results.rejectedFiles.map((f) => `${f.file.name} (${f.code})`).join(', ') || 'none'}
+							</div>
 						</div>
 					</div>
 				)}
@@ -299,10 +303,12 @@ export const FullPageDropZone: Story = {
 				</DropZone>
 
 				{results && (
-					<div className="max-h-40 overflow-auto rounded-xl border-2 border-edge bg-muted/20 p-3 font-mono text-xs">
-						<div>Accepted: {results.acceptedFiles.map((f) => f.name).join(', ') || 'none'}</div>
-						<div className="text-red-dark dark:text-red">
-							Rejected: {results.rejectedFiles.map((f) => `${f.file.name} (${f.code})`).join(', ') || 'none'}
+					<div className="overflow-hidden rounded-xl border-2 border-edge bg-muted/20 font-mono text-xs">
+						<div className="max-h-40 overflow-auto p-3">
+							<div>Accepted: {results.acceptedFiles.map((f) => f.name).join(', ') || 'none'}</div>
+							<div className="text-red-dark dark:text-red">
+								Rejected: {results.rejectedFiles.map((f) => `${f.file.name} (${f.code})`).join(', ') || 'none'}
+							</div>
 						</div>
 					</div>
 				)}

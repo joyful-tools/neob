@@ -40,7 +40,6 @@ export const publicComponentEntries = [
 	'popover',
 	'radio-group',
 	'resizable-panel',
-	'rolling-digits',
 	'scroll-percentage',
 	'select',
 	'sensitive-input',
