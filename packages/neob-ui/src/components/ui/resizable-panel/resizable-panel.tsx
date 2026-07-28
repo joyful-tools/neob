@@ -144,7 +144,7 @@ export function ResizablePanel({
 		onKeyDown: handleKeyDown,
 	};
 
-	const handleStateClasses = isResizing || isHandleHovered ? 'bg-orange' : 'bg-black';
+	const handleStateClasses = isResizing || isHandleHovered ? 'bg-cyan' : 'bg-black';
 
 	function renderHandle() {
 		return (

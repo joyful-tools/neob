@@ -88,7 +88,7 @@ export type { NumericSliderProperties } from './components/ui/numeric-slider';
 export { InlineConfirmGroup } from './components/ui/inline-confirm-group';
 export { LoadingBars } from './components/ui/loading-bars';
 
-export { Pill } from './components/ui/pill';
+export { Pill, pillVariants } from './components/ui/pill';
 export type { PillProperties } from './components/ui/pill';
 
 export { GlobalDialogBackdrop } from './components/ui/dialog';

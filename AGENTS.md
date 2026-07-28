@@ -46,7 +46,7 @@ neob/
 All color sources live at the top of `packages/neob-ui/src/styles/theme.css`. Edit `:root` for light mode and `.dark` for dark mode. Keep the derived Tailwind `@theme` mappings below the editable sources.
 
 - **Semantic sources:** `--background`, `--foreground`, `--edge`, `--primary`, `--muted`, `--border`, `--ring`, `--card`, `--popover`, and `--destructive`, including foreground counterparts.
-- **Palette sources:** `--palette-orange`, `--palette-gold`, `--palette-zinc`, `--palette-coral`, `--palette-blue`, `--palette-purple`, `--palette-pink`, `--palette-yellow`, `--palette-red`, and `--palette-green`.
+- **Palette sources:** `--palette-cyan`, `--palette-gold`, `--palette-zinc`, `--palette-coral`, `--palette-blue`, `--palette-purple`, `--palette-pink`, `--palette-yellow`, `--palette-red`, and `--palette-green`.
 - **Derived Tailwind tokens:** `--color-*` mappings and light/dark palette variants belong in `@theme`; do not duplicate source values there.
 - **Typography:** `--font-sans` uses Rubik, `--font-display` uses Rubik Variable, and `--font-mono` uses JetBrains Mono with fallbacks.
 

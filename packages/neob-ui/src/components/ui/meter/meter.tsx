@@ -35,7 +35,7 @@ export function Meter({
 					trackClassName,
 				)}
 			>
-				<BaseMeter.Indicator className={cn('h-full bg-orange transition-all duration-300 ease-out', indicatorClassName)} />
+				<BaseMeter.Indicator className={cn('h-full bg-cyan transition-all duration-300 ease-out', indicatorClassName)} />
 			</BaseMeter.Track>
 		</BaseMeter.Root>
 	);

@@ -12,7 +12,7 @@ function LoadingBars({ className }: { readonly className?: string }) {
 			{Array.from({ length: BAR_COUNT }, (_, index) => (
 				<motion.div
 					key={index}
-					className="w-0.75 rounded-full bg-orange"
+					className="w-0.75 rounded-full bg-cyan"
 					animate={{
 						height: [8 + index * 3, 16 + index * 2, 8 + index * 3],
 						opacity: [0.3, 1, 0.3],

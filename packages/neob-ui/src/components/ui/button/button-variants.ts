@@ -37,7 +37,7 @@ export const buttonVariants = cva(
 				accent: `
 					${standardButtonStyles}
 					${raisedButtonStyles}
-					bg-orange text-primary dark:text-orange-light
+					bg-cyan text-primary dark:text-cyan-light
 				`,
 				danger: `
 					${standardButtonStyles}
@@ -52,7 +52,7 @@ export const buttonVariants = cva(
 				'subtle-accent': `
 					${standardButtonStyles}
 					${subtleButtonStyles}
-					bg-orange text-primary dark:text-orange-light
+					bg-cyan text-primary dark:text-cyan-light
 				`,
 				ghost: `
 					${standardButtonStyles}
@@ -69,7 +69,7 @@ export const buttonVariants = cva(
 				`,
 				'dark-accent': `
 					${standardButtonStyles}
-					border-4 bg-orange text-orange-light
+					border-4 bg-cyan text-cyan-light
 					[--button-hover-depth:8px] [--button-rest-depth:4px]
 					[--button-rest-shadow-color:var(--shadow-cel-color-default)]
 				`,

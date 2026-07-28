@@ -1,64 +1,64 @@
 :root {
 	color-scheme: light;
-	/* Core Colors */
-	--background: oklch(97.41% 0.0083 81.51);
-	--foreground: oklch(26.199% 0.0136 307.89);
-	--edge: oklch(22.753% 0.055 295.87);
-	--primary: oklch(26.199% 0.0136 307.89);
-	--primary-foreground: oklch(97.41% 0.0083 81.51);
-	--muted: oklch(94.102% 0.0118 314.77);
-	--muted-foreground: oklch(48.097% 0.0239 313.3);
-	--border: oklch(76.638% 0.0285 310.76);
-	--ring: oklch(26.199% 0.0136 307.89);
-	--ring-offset: oklch(97.41% 0.0083 81.51);
-	--card: oklch(98.803% 0.005 87.45);
-	--card-foreground: oklch(26.199% 0.0136 307.89);
-	--popover: oklch(98.803% 0.005 87.45);
-	--popover-foreground: oklch(26.199% 0.0136 307.89);
-	--destructive: oklch(72.969% 0.1102 20.08);
-	--destructive-foreground: oklch(26.199% 0.0136 307.89);
+	--background: oklch(98% 0.005 85);
+	--foreground: oklch(18% 0.025 275);
+	--edge: oklch(15% 0.03 275);
+	--primary: oklch(18% 0.025 275);
+	--primary-foreground: oklch(100% 0 0);
+	--muted: oklch(94% 0.012 280);
+	--muted-foreground: oklch(45% 0.03 280);
+	--border: oklch(80% 0.02 280);
+	--ring: oklch(70% 0.15 195);
+	--ring-offset: oklch(98% 0.005 85);
+	--card: oklch(100% 0 0);
+	--card-foreground: oklch(18% 0.025 275);
+	--popover: oklch(100% 0 0);
+	--popover-foreground: oklch(18% 0.025 275);
+	--destructive: oklch(63% 0.22 22);
+	--destructive-foreground: oklch(99% 0 0);
 
-	/* Base Colors */
-	--palette-orange: oklch(71.927% 0.171 53.68);
-	--palette-gold: oklch(80.365% 0.1499 71.69);
-	--palette-zinc: oklch(26.128% 0.0132 298.54);
-	--palette-coral: oklch(70.662% 0.1875 34.08);
-	--palette-blue: oklch(71.37% 0.1434 254.63);
-	--palette-purple: oklch(72.164% 0.1767 305.5);
-	--palette-pink: oklch(72.529% 0.1752 349.76);
-	--palette-yellow: oklch(90.65% 0.187 101.83);
-	--palette-red: oklch(66.506% 0.1983 19.56);
-	--palette-green: oklch(73.528% 0.1874 151.05);
+	--palette-cyan: oklch(70% 0.15 195);
+	--palette-gold: oklch(80% 0.15 85);
+	--palette-zinc: oklch(27% 0.03 280);
+	--palette-coral: oklch(69% 0.16 210);
+	--palette-blue: oklch(66% 0.15 230);
+	--palette-purple: oklch(66% 0.19 295);
+	--palette-pink: oklch(70% 0.18 330);
+	--palette-yellow: oklch(88% 0.16 95);
+	--palette-red: oklch(63% 0.22 22);
+	--palette-green: oklch(72% 0.18 145);
 }
 
 .dark {
 	color-scheme: dark;
-	--background: oklch(25.162% 0.0145 310.59);
-	--foreground: oklch(96.761% 0.0104 81.51);
-	--edge: oklch(19.103% 0.0035 308.26);
-	--primary: oklch(96.761% 0.0104 81.51);
-	--primary-foreground: oklch(26.199% 0.0136 307.89);
-	--muted: oklch(30.21% 0.0168 309.92);
-	--muted-foreground: oklch(81.849% 0.0225 313.44);
-	--border: oklch(59.11% 0.0334 313.26);
-	--ring: oklch(81.125% 0.0745 250.45);
-	--ring-offset: oklch(25.162% 0.0145 310.59);
-	--card: oklch(28.089% 0.0188 310.5);
-	--card-foreground: oklch(96.761% 0.0104 81.51);
-	--popover: oklch(28.089% 0.0188 310.5);
-	--popover-foreground: oklch(96.761% 0.0104 81.51);
-	--destructive: oklch(72.969% 0.1102 20.08);
-	--destructive-foreground: oklch(26.199% 0.0136 307.89);
 
-	--palette-orange: oklch(46.354% 0.1323 45.12);
-	--palette-gold: oklch(48.469% 0.1022 75.11);
-	--palette-coral: oklch(48.096% 0.1546 30.71);
-	--palette-blue: oklch(46.711% 0.1285 252.23);
-	--palette-purple: oklch(44.798% 0.1674 304.96);
-	--palette-pink: oklch(47.627% 0.1408 356.04);
-	--palette-yellow: oklch(46.251% 0.096 99.41);
-	--palette-red: oklch(48.01% 0.166 20.91);
-	--palette-green: oklch(44.749% 0.1169 151.5);
+	--background: oklch(18% 0.02 275);
+	--foreground: oklch(97% 0.008 90);
+	--edge: oklch(8% 0.03 275);
+	--primary: oklch(97% 0.008 90);
+	--primary-foreground: oklch(27% 0.03 280);
+	--muted: oklch(30% 0.04 280);
+	--muted-foreground: oklch(78% 0.025 275);
+	--border: oklch(45% 0.05 280);
+	--ring: oklch(72% 0.16 195);
+	--ring-offset: oklch(18% 0.02 275);
+	--card: oklch(25% 0.035 280);
+	--card-foreground: oklch(97% 0.008 90);
+	--popover: oklch(25% 0.035 280);
+	--popover-foreground: oklch(97% 0.008 90);
+	--destructive: oklch(65% 0.22 22);
+	--destructive-foreground: oklch(99% 0 0);
+
+	--palette-cyan: oklch(72% 0.16 195);
+	--palette-gold: oklch(81% 0.15 85);
+	--palette-zinc: oklch(27% 0.03 280);
+	--palette-coral: oklch(71% 0.16 210);
+	--palette-blue: oklch(68% 0.16 230);
+	--palette-purple: oklch(68% 0.19 295);
+	--palette-pink: oklch(72% 0.18 330);
+	--palette-yellow: oklch(89% 0.16 95);
+	--palette-red: oklch(65% 0.22 22);
+	--palette-green: oklch(74% 0.19 145);
 }
 
 @theme {
@@ -86,7 +86,7 @@
 	--color-black: oklch(0% 0 0);
 	--color-edge: var(--edge);
 	--color-white: oklch(100% 0 0);
-	--color-orange: var(--palette-orange);
+	--color-cyan: var(--palette-cyan);
 	--color-gold: var(--palette-gold);
 	--color-zinc: var(--palette-zinc);
 	--color-coral: var(--palette-coral);
@@ -97,53 +97,49 @@
 	--color-red: var(--palette-red);
 	--color-green: var(--palette-green);
 
-	/* Subtle/Lighter Variants (20% opacity tint on white) */
-	--color-orange-lighter: color-mix(in oklab, var(--color-orange) 20%, var(--color-white));
-	--color-gold-lighter: color-mix(in oklab, var(--color-gold) 20%, var(--color-white));
-	--color-zinc-lighter: color-mix(in oklab, var(--color-zinc) 20%, var(--color-white));
-	--color-coral-lighter: color-mix(in oklab, var(--color-coral) 20%, var(--color-white));
-	--color-blue-lighter: color-mix(in oklab, var(--color-blue) 20%, var(--color-white));
-	--color-purple-lighter: color-mix(in oklab, var(--color-purple) 20%, var(--color-white));
-	--color-pink-lighter: color-mix(in oklab, var(--color-pink) 20%, var(--color-white));
-	--color-yellow-lighter: color-mix(in oklab, var(--color-yellow) 20%, var(--color-white));
-	--color-red-lighter: color-mix(in oklab, var(--color-red) 20%, var(--color-white));
-	--color-green-lighter: color-mix(in oklab, var(--color-green) 20%, var(--color-white));
+	--color-cyan-lighter: color-mix(in oklab, var(--color-cyan) 30%, var(--color-white));
+	--color-gold-lighter: color-mix(in oklab, var(--color-gold) 30%, var(--color-white));
+	--color-zinc-lighter: color-mix(in oklab, var(--color-zinc) 30%, var(--color-white));
+	--color-coral-lighter: color-mix(in oklab, var(--color-coral) 30%, var(--color-white));
+	--color-blue-lighter: color-mix(in oklab, var(--color-blue) 30%, var(--color-white));
+	--color-purple-lighter: color-mix(in oklab, var(--color-purple) 30%, var(--color-white));
+	--color-pink-lighter: color-mix(in oklab, var(--color-pink) 30%, var(--color-white));
+	--color-yellow-lighter: color-mix(in oklab, var(--color-yellow) 30%, var(--color-white));
+	--color-red-lighter: color-mix(in oklab, var(--color-red) 30%, var(--color-white));
+	--color-green-lighter: color-mix(in oklab, var(--color-green) 30%, var(--color-white));
 
-	/* Light Variants (20% brighter on white) */
-	--color-orange-light: color-mix(in oklab, var(--color-orange) 80%, var(--color-white));
-	--color-gold-light: color-mix(in oklab, var(--color-gold) 80%, var(--color-white));
-	--color-zinc-light: color-mix(in oklab, var(--color-zinc) 80%, var(--color-white));
-	--color-coral-light: color-mix(in oklab, var(--color-coral) 80%, var(--color-white));
-	--color-blue-light: color-mix(in oklab, var(--color-blue) 80%, var(--color-white));
-	--color-purple-light: color-mix(in oklab, var(--color-purple) 80%, var(--color-white));
-	--color-pink-light: color-mix(in oklab, var(--color-pink) 80%, var(--color-white));
-	--color-yellow-light: color-mix(in oklab, var(--color-yellow) 80%, var(--color-white));
-	--color-red-light: color-mix(in oklab, var(--color-red) 80%, var(--color-white));
-	--color-green-light: color-mix(in oklab, var(--color-green) 80%, var(--color-white));
+	--color-cyan-light: color-mix(in oklab, var(--color-cyan) 70%, var(--color-white));
+	--color-gold-light: color-mix(in oklab, var(--color-gold) 70%, var(--color-white));
+	--color-zinc-light: color-mix(in oklab, var(--color-zinc) 70%, var(--color-white));
+	--color-coral-light: color-mix(in oklab, var(--color-coral) 70%, var(--color-white));
+	--color-blue-light: color-mix(in oklab, var(--color-blue) 70%, var(--color-white));
+	--color-purple-light: color-mix(in oklab, var(--color-purple) 70%, var(--color-white));
+	--color-pink-light: color-mix(in oklab, var(--color-pink) 70%, var(--color-white));
+	--color-yellow-light: color-mix(in oklab, var(--color-yellow) 70%, var(--color-white));
+	--color-red-light: color-mix(in oklab, var(--color-red) 70%, var(--color-white));
+	--color-green-light: color-mix(in oklab, var(--color-green) 70%, var(--color-white));
 
-	/* Dark Variants (20% darker) */
-	--color-orange-dark: color-mix(in oklab, var(--color-orange) 80%, var(--color-black));
-	--color-gold-dark: color-mix(in oklab, var(--color-gold) 80%, var(--color-black));
-	--color-zinc-dark: color-mix(in oklab, var(--color-zinc) 80%, var(--color-black));
-	--color-coral-dark: color-mix(in oklab, var(--color-coral) 80%, var(--color-black));
-	--color-blue-dark: color-mix(in oklab, var(--color-blue) 80%, var(--color-black));
-	--color-purple-dark: color-mix(in oklab, var(--color-purple) 80%, var(--color-black));
-	--color-pink-dark: color-mix(in oklab, var(--color-pink) 80%, var(--color-black));
-	--color-yellow-dark: color-mix(in oklab, var(--color-yellow) 80%, var(--color-black));
-	--color-red-dark: color-mix(in oklab, var(--color-red) 80%, var(--color-black));
-	--color-green-dark: color-mix(in oklab, var(--color-green) 80%, var(--color-black));
+	--color-cyan-dark: color-mix(in oklab, var(--color-cyan) 70%, var(--color-black));
+	--color-gold-dark: color-mix(in oklab, var(--color-gold) 70%, var(--color-black));
+	--color-zinc-dark: color-mix(in oklab, var(--color-zinc) 70%, var(--color-black));
+	--color-coral-dark: color-mix(in oklab, var(--color-coral) 70%, var(--color-black));
+	--color-blue-dark: color-mix(in oklab, var(--color-blue) 70%, var(--color-black));
+	--color-purple-dark: color-mix(in oklab, var(--color-purple) 70%, var(--color-black));
+	--color-pink-dark: color-mix(in oklab, var(--color-pink) 70%, var(--color-black));
+	--color-yellow-dark: color-mix(in oklab, var(--color-yellow) 70%, var(--color-black));
+	--color-red-dark: color-mix(in oklab, var(--color-red) 70%, var(--color-black));
+	--color-green-dark: color-mix(in oklab, var(--color-green) 70%, var(--color-black));
 
-	/* Darker Variants (60% darker) */
-	--color-orange-darker: color-mix(in oklab, var(--color-orange) 40%, var(--color-black));
-	--color-gold-darker: color-mix(in oklab, var(--color-gold) 40%, var(--color-black));
-	--color-zinc-darker: color-mix(in oklab, var(--color-zinc) 40%, var(--color-black));
-	--color-coral-darker: color-mix(in oklab, var(--color-coral) 40%, var(--color-black));
-	--color-blue-darker: color-mix(in oklab, var(--color-blue) 40%, var(--color-black));
-	--color-purple-darker: color-mix(in oklab, var(--color-purple) 40%, var(--color-black));
-	--color-pink-darker: color-mix(in oklab, var(--color-pink) 40%, var(--color-black));
-	--color-yellow-darker: color-mix(in oklab, var(--color-yellow) 40%, var(--color-black));
-	--color-red-darker: color-mix(in oklab, var(--color-red) 40%, var(--color-black));
-	--color-green-darker: color-mix(in oklab, var(--color-green) 40%, var(--color-black));
+	--color-cyan-darker: color-mix(in oklab, var(--color-cyan) 30%, var(--color-black));
+	--color-gold-darker: color-mix(in oklab, var(--color-gold) 30%, var(--color-black));
+	--color-zinc-darker: color-mix(in oklab, var(--color-zinc) 30%, var(--color-black));
+	--color-coral-darker: color-mix(in oklab, var(--color-coral) 30%, var(--color-black));
+	--color-blue-darker: color-mix(in oklab, var(--color-blue) 30%, var(--color-black));
+	--color-purple-darker: color-mix(in oklab, var(--color-purple) 30%, var(--color-black));
+	--color-pink-darker: color-mix(in oklab, var(--color-pink) 30%, var(--color-black));
+	--color-yellow-darker: color-mix(in oklab, var(--color-yellow) 30%, var(--color-black));
+	--color-red-darker: color-mix(in oklab, var(--color-red) 30%, var(--color-black));
+	--color-green-darker: color-mix(in oklab, var(--color-green) 30%, var(--color-black));
 
 	--animate-overlay-in: overlay-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 	--animate-overlay-out: overlay-out 0.05s ease-in forwards;

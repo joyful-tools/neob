@@ -10,7 +10,7 @@ interface BorderBeamProperties {
 const beamStyle: CSSProperties = {
 	animation: 'borderBeam var(--border-beam-duration, 2s) linear infinite',
 	background:
-		'conic-gradient(from var(--border-beam-angle), transparent 0%, transparent 70%, var(--color-orange) 85%, var(--color-gold) 92%, transparent 100%)',
+		'conic-gradient(from var(--border-beam-angle), transparent 0%, transparent 70%, var(--color-cyan) 85%, var(--color-gold) 92%, transparent 100%)',
 	mask: 'linear-gradient(oklch(100% 0 0) 0 0) content-box, linear-gradient(oklch(100% 0 0) 0 0)',
 	maskComposite: 'exclude',
 	padding: '1.5px',

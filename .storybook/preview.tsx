@@ -67,7 +67,7 @@ const preview: Preview = {
 				),
 				p: ({ children }: React.ComponentProps<'p'>) => <p className="my-4 font-sans text-base/relaxed text-foreground/90">{children}</p>,
 				a: ({ children, href, ...props }: React.ComponentProps<'a'>) => (
-					<a href={href} className="font-medium text-orange hover:underline" {...props}>
+					<a href={href} className="font-medium text-cyan hover:underline" {...props}>
 						{children}
 					</a>
 				),

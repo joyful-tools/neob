@@ -41,7 +41,7 @@ export const Horizontal: Story = {
 		return (
 			<div className="flex h-64 w-125 overflow-hidden rounded-xl border-2 border-edge bg-white text-black shadow-cel-md dark:bg-zinc dark:text-white">
 				<ResizablePanel {...args}>
-					<div className="flex h-full items-center justify-center bg-orange-light p-4 text-center font-bold">Sidebar (Drag Right Edge)</div>
+					<div className="flex h-full items-center justify-center bg-cyan-light p-4 text-center font-bold">Sidebar (Drag Right Edge)</div>
 				</ResizablePanel>
 				<div className="flex flex-1 items-center justify-center p-4 text-center font-medium">
 					Main content area (takes up remaining space)

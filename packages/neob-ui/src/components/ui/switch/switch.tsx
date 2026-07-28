@@ -19,7 +19,7 @@ const VARIANT_ROOT_CLASSES = {
 		data-[checked]:border-edge
 	`,
 	accent: `
-		data-[checked]:bg-orange dark:data-[checked]:bg-orange-light
+		data-[checked]:bg-cyan dark:data-[checked]:bg-cyan-light
 		data-[checked]:border-edge
 	`,
 	success: `
@@ -30,7 +30,7 @@ const VARIANT_ROOT_CLASSES = {
 
 const VARIANT_ICON_CLASSES = {
 	default: 'text-zinc dark:text-zinc-lighter',
-	accent: 'text-orange-dark dark:text-orange-light',
+	accent: 'text-cyan-dark dark:text-cyan-light',
 	success: 'text-green-dark dark:text-green-light',
 } as const;
 
@@ -39,7 +39,7 @@ const SWITCH_ROOT_CLASSES = `
 	rounded-md border border-edge bg-muted/80 shadow-cel-inset-sm transition-all
 	duration-240 [transition-timing-function:cubic-bezier(0.2,1.15,0.3,1)] neo-focus-ring outline-hidden
 	disabled:cursor-not-allowed disabled:opacity-50
-	dark:bg-zinc-light
+	dark:bg-muted
 `;
 
 const SWITCH_THUMB_CLASSES = `
@@ -51,7 +51,7 @@ const SWITCH_THUMB_CLASSES = `
 
 /**
  * Sliding Switch toggle control component inspired by tactile S.C.R.A.P.S. design.
- * Supports multiple active variants (default neutral zinc, accent orange, success green).
+ * Supports multiple active variants (default neutral zinc, accent cyan, success green).
  */
 export function Switch({
 	label,

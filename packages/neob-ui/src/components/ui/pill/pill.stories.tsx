@@ -22,7 +22,7 @@ type PillCollectionStoryProperties = {
  * ```tsx
  * import { Pill } from '@joyful-tools/neob';
  *
- * <Pill color="orange">New</Pill>
+ * <Pill color="cyan">New</Pill>
  * ```
  */
 const meta = {
@@ -35,7 +35,7 @@ const meta = {
 	argTypes: {
 		color: {
 			control: 'select',
-			options: ['default', 'orange', 'gold', 'red', 'green', 'blue', 'purple', 'pink', 'yellow', 'zinc', 'white'],
+			options: ['default', 'cyan', 'gold', 'red', 'green', 'blue', 'purple', 'pink', 'yellow', 'zinc', 'white'],
 		},
 		size: {
 			control: 'select',
@@ -63,7 +63,7 @@ export const AllColors: StoryObj<PillCollectionStoryProperties> = {
 	args: {
 		items: [
 			{ label: 'Default', color: 'default' },
-			{ label: 'Orange', color: 'orange' },
+			{ label: 'Cyan', color: 'cyan' },
 			{ label: 'Gold', color: 'gold' },
 			{ label: 'Red', color: 'red' },
 			{ label: 'Green', color: 'green' },

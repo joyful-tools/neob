@@ -32,7 +32,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const Item = ({ text }: { text: string }) => (
-	<div className="flex h-16 w-32 shrink-0 items-center justify-center rounded-xl border-2 border-edge bg-orange font-sans font-bold text-black">
+	<div className="flex h-16 w-32 shrink-0 items-center justify-center rounded-xl border-2 border-edge bg-cyan font-sans font-bold text-black">
 		{text}
 	</div>
 );

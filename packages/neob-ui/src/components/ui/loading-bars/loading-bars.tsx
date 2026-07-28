@@ -10,7 +10,7 @@ interface LoadingBarsProperties {
 	readonly colorClassName?: string;
 }
 
-export function LoadingBars({ className, colorClassName = 'bg-orange' }: LoadingBarsProperties) {
+export function LoadingBars({ className, colorClassName = 'bg-cyan' }: LoadingBarsProperties) {
 	const prefersReducedMotion = usePrefersReducedMotion();
 	return (
 		<div className={cn('flex h-8 items-end gap-1', className)} role="status">

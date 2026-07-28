@@ -18,7 +18,7 @@ interface Slab {
 	height: number;
 }
 
-const BG = ['bg-orange', 'bg-gold', 'bg-blue', 'bg-purple', 'bg-pink', 'bg-yellow', 'bg-red', 'bg-green'] as const;
+const BG = ['bg-cyan', 'bg-gold', 'bg-blue', 'bg-purple', 'bg-pink', 'bg-yellow', 'bg-red', 'bg-green'] as const;
 
 const hexId = (n: number) => {
 	const sign = n < 0 ? '-' : '';
@@ -249,7 +249,7 @@ export const VisualBufferDebugger: Story = {
 								<span>Visible</span>
 							</div>
 							<div className="flex items-center gap-1">
-								<div className="size-3 rounded-sm border border-edge bg-orange-light shadow-cel-inset-sm" />
+								<div className="size-3 rounded-sm border border-edge bg-gold-light shadow-cel-inset-sm" />
 								<span>Buffer</span>
 							</div>
 							<div className="flex items-center gap-1">
@@ -267,7 +267,7 @@ export const VisualBufferDebugger: Story = {
 								if (isVisible) {
 									statusClass = 'bg-green-light border-green-dark text-green-950 font-bold';
 								} else if (isRendered) {
-									statusClass = 'bg-orange-light border-orange-dark text-orange-950 font-bold';
+									statusClass = 'bg-gold-light border-gold-dark text-gold-darker font-bold';
 								}
 
 								return (

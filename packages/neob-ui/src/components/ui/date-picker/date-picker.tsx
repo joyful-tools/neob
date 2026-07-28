@@ -296,10 +296,10 @@ export function DatePicker(fullProps: DatePickerProps) {
 		const endButtonRadius = sameDayRange ? '[&_button]:rounded-lg' : '[&_button]:rounded-r-lg [&_button]:rounded-l-sm';
 		const startRangeIndicator = sameDayRange
 			? ''
-			: "before:absolute before:inset-y-0 before:left-1/2 before:right-0 before:bg-orange/25 before:content-[''] dark:before:bg-orange/20";
+			: "before:absolute before:inset-y-0 before:left-1/2 before:right-0 before:bg-cyan/25 before:content-[''] dark:before:bg-cyan/20";
 		const endRangeIndicator = sameDayRange
 			? ''
-			: "before:absolute before:inset-y-0 before:left-0 before:right-1/2 before:bg-orange/25 before:content-[''] dark:before:bg-orange/20";
+			: "before:absolute before:inset-y-0 before:left-0 before:right-1/2 before:bg-cyan/25 before:content-[''] dark:before:bg-cyan/20";
 
 		const dayPickerProps = {
 			showOutsideDays: true,
@@ -323,19 +323,19 @@ export function DatePicker(fullProps: DatePickerProps) {
 				day_button: cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'text-md size-9 rounded-lg tracking-wide'),
 				today: '[&_button]:border-2 [&_button]:border-dashed [&_button]:border-edge dark:[&_button]:border-edge',
 				selected:
-					'[&_button]:bg-orange [&_button]:text-black [&_button]:border-2 [&_button]:border-edge dark:[&_button]:bg-orange dark:[&_button]:text-orange-light dark:[&_button]:border-edge hover:[&_button]:bg-orange/90 dark:hover:[&_button]:bg-orange/90',
+					'[&_button]:bg-cyan [&_button]:text-black [&_button]:border-2 [&_button]:border-edge dark:[&_button]:bg-cyan dark:[&_button]:text-cyan-light dark:[&_button]:border-edge hover:[&_button]:bg-cyan/90 dark:hover:[&_button]:bg-cyan/90',
 				range_start: cn(
-					'[&_button]:relative [&_button]:z-10 [&_button]:border-2 [&_button]:border-edge [&_button]:bg-orange [&_button]:text-black hover:[&_button]:bg-orange/90 dark:[&_button]:border-edge dark:[&_button]:text-orange-light dark:hover:[&_button]:bg-orange/90',
+					'[&_button]:relative [&_button]:z-10 [&_button]:border-2 [&_button]:border-edge [&_button]:bg-cyan [&_button]:text-black hover:[&_button]:bg-cyan/90 dark:[&_button]:border-edge dark:[&_button]:text-cyan-light dark:hover:[&_button]:bg-cyan/90',
 					startButtonRadius,
 					startRangeIndicator,
 				),
 				range_end: cn(
-					'[&_button]:relative [&_button]:z-10 [&_button]:border-2 [&_button]:border-edge [&_button]:bg-orange [&_button]:text-black hover:[&_button]:bg-orange/90 dark:[&_button]:border-edge dark:[&_button]:text-orange-light dark:hover:[&_button]:bg-orange/90',
+					'[&_button]:relative [&_button]:z-10 [&_button]:border-2 [&_button]:border-edge [&_button]:bg-cyan [&_button]:text-black hover:[&_button]:bg-cyan/90 dark:[&_button]:border-edge dark:[&_button]:text-cyan-light dark:hover:[&_button]:bg-cyan/90',
 					endButtonRadius,
 					endRangeIndicator,
 				),
 				range_middle:
-					"before:absolute before:inset-0 before:bg-orange/25 before:content-[''] dark:before:bg-orange/20 [&_button]:relative [&_button]:z-10 [&_button]:rounded-none [&_button]:border-2 [&_button]:border-transparent! [&_button]:bg-transparent [&_button]:text-black hover:[&_button]:border-edge! hover:[&_button]:bg-black/10 dark:[&_button]:bg-transparent dark:[&_button]:text-white dark:hover:[&_button]:bg-white/10",
+					"before:absolute before:inset-0 before:bg-cyan/25 before:content-[''] dark:before:bg-cyan/20 [&_button]:relative [&_button]:z-10 [&_button]:rounded-none [&_button]:border-2 [&_button]:border-transparent! [&_button]:bg-transparent [&_button]:text-black hover:[&_button]:border-edge! hover:[&_button]:bg-black/10 dark:[&_button]:bg-transparent dark:[&_button]:text-white dark:hover:[&_button]:bg-white/10",
 				outside: 'text-black/65 dark:text-white/65 opacity-100',
 				disabled: 'text-muted-foreground opacity-30 cursor-not-allowed pointer-events-none',
 				...classNames,

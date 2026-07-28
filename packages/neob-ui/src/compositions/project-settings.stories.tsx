@@ -18,7 +18,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 function ProjectSettings() {
 	return (
 		<main className="min-h-dvh bg-muted/30 text-foreground">
-			<div className="border-b-2 border-edge bg-orange-light dark:bg-orange-dark">
+			<div className="border-b-2 border-edge bg-cyan-light dark:bg-cyan-dark">
 				<div className="mx-auto flex w-full max-w-6xl flex-col justify-between gap-5 px-5 py-7 sm:flex-row sm:items-end sm:px-8 lg:px-10">
 					<div className="flex items-start gap-4">
 						<div>
@@ -98,7 +98,7 @@ function ProjectSettings() {
 												label="Weekly digest"
 												description="A Monday summary of workspace activity."
 												defaultChecked
-												controlFirst={false}
+												controlFirst={true}
 											/>
 										</div>
 										<div>
@@ -106,7 +106,7 @@ function ProjectSettings() {
 												label="Activity status"
 												description="Show teammates when you are active."
 												variant="success"
-												controlFirst={false}
+												controlFirst={true}
 											/>
 										</div>
 									</Card.Content>

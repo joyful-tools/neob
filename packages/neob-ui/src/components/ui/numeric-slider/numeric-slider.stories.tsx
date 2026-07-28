@@ -103,7 +103,7 @@ export const PointerLockLifecycle: Story = {
 			});
 
 			await waitFor(() => {
-				expect(slider).toHaveClass('text-orange');
+				expect(slider).toHaveClass('text-cyan');
 			});
 
 			document.dispatchEvent(new PointerEvent('pointermove', { movementY: -12 }));
@@ -121,7 +121,7 @@ export const PointerLockLifecycle: Story = {
 			pointerLockElement = null;
 			document.dispatchEvent(new Event('pointerlockchange'));
 			await waitFor(() => {
-				expect(slider).not.toHaveClass('text-orange');
+				expect(slider).not.toHaveClass('text-cyan');
 			});
 
 			await userEvent.pointer([{ target: slider, keys: '[MouseLeft>]' }]);
@@ -132,7 +132,7 @@ export const PointerLockLifecycle: Story = {
 			globalThis.dispatchEvent(new PointerEvent('pointercancel', { pointerId: 1 }));
 			await waitFor(() => {
 				expect(exitCallCount).toBe(2);
-				expect(slider).not.toHaveClass('text-orange');
+				expect(slider).not.toHaveClass('text-cyan');
 			});
 		} finally {
 			console.error = originalConsoleError;

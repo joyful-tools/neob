@@ -44,7 +44,7 @@ export const Default: Story = {
 					<div
 						data-testid="sticky-header"
 						className={`border-b-2 border-edge p-3 font-display transition-all duration-200 ${
-							stuck ? 'bg-orange text-black shadow-cel-sm' : 'bg-white text-zinc'
+							stuck ? 'bg-cyan text-black shadow-cel-sm' : 'bg-white text-zinc'
 						}`}
 					>
 						{stuck ? 'STUCK HEADER' : 'Sticky Header'}
@@ -67,7 +67,7 @@ export const Default: Story = {
 		const header = canvas.getByTestId('sticky-header');
 
 		await expect(header).toHaveTextContent('Sticky Header');
-		await expect(header).not.toHaveClass('bg-orange');
+		await expect(header).not.toHaveClass('bg-cyan');
 
 		container.scrollTop = 100;
 		fireEvent.scroll(container);
@@ -75,13 +75,13 @@ export const Default: Story = {
 		await new Promise((resolve) => setTimeout(resolve, 300));
 
 		await expect(header).toHaveTextContent('STUCK HEADER');
-		await expect(header).toHaveClass('bg-orange');
+		await expect(header).toHaveClass('bg-cyan');
 
 		container.scrollTop = 0;
 		fireEvent.scroll(container);
 		await new Promise((resolve) => setTimeout(resolve, 300));
 
 		await expect(header).toHaveTextContent('Sticky Header');
-		await expect(header).not.toHaveClass('bg-orange');
+		await expect(header).not.toHaveClass('bg-cyan');
 	}),
 };
