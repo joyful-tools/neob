@@ -42,7 +42,8 @@ export { Toaster } from './components/ui/toast';
 
 export { Toggle } from './components/ui/toggle';
 
-export { AnimatedNumber } from './components/ui/animated-number';
+export { AnimatedNumber, RollingDigit, NumberFlowGroup } from './components/ui/animated-number';
+export type { AnimatedNumberProperties, RollingDigitProps } from './components/ui/animated-number';
 
 export { Cursor } from './components/ui/cursor';
 export type { CursorProperties } from './components/ui/cursor';

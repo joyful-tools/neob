@@ -31,8 +31,8 @@ const makeSlabs = (count: number, dynamic = false, offset = 0): Slab[] =>
 		return {
 			id: `s-${idx}`,
 			label: idx,
-			bg: BG[idx % BG.length]!,
-			height: dynamic ? [48, 72, 96][idx % 3]! : 48,
+			bg: BG[idx % BG.length] ?? 'bg-cyan',
+			height: dynamic ? ([48, 72, 96][idx % 3] ?? 48) : 48,
 		};
 	});
 
@@ -158,8 +158,8 @@ export const DynamicHeights: Story = {
 										return {
 											id: `pre-${Date.now()}-${i}`,
 											label,
-											bg: BG[((label % BG.length) + BG.length) % BG.length]!,
-											height: [48, 72, 96][((label % 3) + 3) % 3]!,
+											bg: BG[((label % BG.length) + BG.length) % BG.length] ?? 'bg-cyan',
+											height: [48, 72, 96][((label % 3) + 3) % 3] ?? 48,
 										};
 									});
 									return [...prepended, ...prev];
