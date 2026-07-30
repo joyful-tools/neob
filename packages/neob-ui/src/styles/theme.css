@@ -8,7 +8,7 @@
 	--muted: oklch(94% 0.012 280);
 	--muted-foreground: oklch(45% 0.03 280);
 	--border: oklch(80% 0.02 280);
-	--ring: oklch(70% 0.15 195);
+	--ring: oklch(72% 0.05 250);
 	--ring-offset: oklch(98% 0.005 85);
 	--card: oklch(100% 0 0);
 	--card-foreground: oklch(18% 0.025 275);
@@ -45,7 +45,7 @@
 	--muted: oklch(30% 0.04 280);
 	--muted-foreground: oklch(78% 0.025 275);
 	--border: oklch(45% 0.05 280);
-	--ring: oklch(72% 0.16 195);
+	--ring: oklch(74% 0.05 250);
 	--ring-offset: oklch(18% 0.02 275);
 	--card: oklch(25% 0.035 280);
 	--card-foreground: oklch(97% 0.008 90);
