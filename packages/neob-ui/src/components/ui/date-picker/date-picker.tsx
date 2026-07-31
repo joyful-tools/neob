@@ -441,7 +441,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 	return (
 		<div className={containerClassName}>
 			<div className="flex h-10 items-center justify-between border-b border-edge/5 pb-2">
-				<div className="flex items-center gap-1.5 font-sans text-lg font-bold tracking-wider text-black uppercase dark:text-white">
+				<div className="flex min-w-0 items-center gap-0.5 font-sans text-lg font-bold tracking-wider text-black uppercase dark:text-white">
 					<AnimatePresence mode="popLayout" initial={false}>
 						<motion.button
 							key={`header-month-${monthLabel}`}
@@ -452,14 +452,14 @@ export function DatePicker(fullProps: DatePickerProps) {
 							aria-pressed={view === 'months'}
 							className={cn(
 								buttonVariants({ variant: 'ghost', size: 'sm' }),
-								'text-lg tracking-wider',
+								'max-w-28 truncate px-1.5 text-lg tracking-wider',
 								view === 'months' && 'bg-black/5 dark:bg-white/10',
 							)}
 						>
 							{monthLabel}
 						</motion.button>
 					</AnimatePresence>
-					<span className="text-black/40 dark:text-white/40">/</span>
+					<span className="shrink-0 text-black/40 dark:text-white/40">/</span>
 					<AnimatePresence mode="popLayout" initial={false}>
 						<motion.button
 							key={`header-year-${yearLabel}`}
@@ -473,7 +473,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 							aria-pressed={view === 'years'}
 							className={cn(
 								buttonVariants({ variant: 'ghost', size: 'sm' }),
-								'text-lg tracking-wider',
+								'max-w-20 truncate px-1.5 text-lg tracking-wider',
 								view === 'years' && 'bg-black/5 dark:bg-white/10',
 							)}
 						>
