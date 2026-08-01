@@ -59,6 +59,7 @@ const INPUT_CLASS_NAME = `
 	dark:bg-zinc text-center font-mono text-xl font-bold uppercase text-black
 	dark:text-white shadow-cel-inset transition-all duration-300 ease-spring
 	neo-focus-ring-focus isolate outline-hidden
+	aria-invalid:border-red aria-invalid:[--color-ring:var(--color-red)] dark:aria-invalid:border-red
 	placeholder:text-muted-foreground/50
 	disabled:cursor-not-allowed disabled:opacity-50
 	selection:bg-black selection:text-white

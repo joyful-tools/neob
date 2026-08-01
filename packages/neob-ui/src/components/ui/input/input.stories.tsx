@@ -108,7 +108,6 @@ export const ValidationError: Story = {
 		error: 'Password must contain at least 8 characters and one number.',
 		type: 'password',
 		defaultValue: '12345',
-		className: 'border-red dark:border-red',
 	},
 	render: (args) => (
 		<div className="w-80">

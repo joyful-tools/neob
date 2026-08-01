@@ -61,6 +61,7 @@ export interface ComboboxProps<Value = unknown, Multiple extends boolean | undef
 > {
 	readonly 'aria-label'?: string;
 	readonly 'aria-labelledby'?: string;
+	readonly 'aria-invalid'?: boolean | 'true' | 'false';
 	readonly label?: ReactNode;
 	readonly required?: boolean;
 	readonly labelTooltip?: ReactNode;
@@ -85,9 +86,10 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 	containerClassName,
 	'aria-label': ariaLabel,
 	'aria-labelledby': ariaLabelledby,
+	'aria-invalid': ariaInvalidProp,
 	...props
 }: ComboboxProps<Value, Multiple>) {
-	const hasError = Boolean(error);
+	const hasError = Boolean(error) || ariaInvalidProp === true || ariaInvalidProp === 'true';
 	const [anchorElement, setAnchorElement] = useState<HTMLDivElement | null>(null);
 
 	const controlId = useId();

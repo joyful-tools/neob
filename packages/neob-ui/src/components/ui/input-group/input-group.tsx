@@ -74,7 +74,7 @@ export function InputGroup({
 	const descriptionId = useId();
 	const errorId = useId();
 	const hasDescription = Boolean(description);
-	const hasError = !!error;
+	const hasError = !!error || properties['aria-invalid'] === true || properties['aria-invalid'] === 'true';
 	const errorMessage = typeof error === 'string' ? error : undefined;
 
 	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;

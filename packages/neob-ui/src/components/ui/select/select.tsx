@@ -24,6 +24,7 @@ export interface SelectProps<T = unknown, Multiple extends boolean | undefined =
 > {
 	'aria-label'?: string;
 	'aria-labelledby'?: string;
+	'aria-invalid'?: boolean | 'true' | 'false';
 	multiple?: Multiple;
 	renderValue?: (value: Multiple extends true ? T[] : T) => ReactNode;
 	className?: string;
@@ -109,6 +110,7 @@ function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 	error,
 	'aria-label': ariaLabel,
 	'aria-labelledby': ariaLabelledby,
+	'aria-invalid': ariaInvalidProp,
 	required,
 	container,
 	containerClassName,
@@ -144,6 +146,7 @@ function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 	const errorId = useId();
 	const hasDescription = Boolean(description);
 	const hasError = Boolean(error);
+	const isInvalid = hasError || ariaInvalidProp === true || ariaInvalidProp === 'true';
 
 	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
 
@@ -154,13 +157,13 @@ function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 				className={cn(
 					buttonVariants({ size }),
 					'w-full justify-between bg-white font-bold text-black dark:bg-zinc dark:text-white',
-					error && 'border-red dark:border-red',
+					isInvalid && 'border-red [--color-ring:var(--color-red)] dark:border-red',
 					className,
 				)}
 				aria-describedby={describedBy}
 				aria-label={ariaLabel}
 				aria-labelledby={ariaLabelledby}
-				aria-invalid={hasError ? true : undefined}
+				aria-invalid={isInvalid ? true : undefined}
 				aria-busy={loading || undefined}
 			>
 				{loading ? (

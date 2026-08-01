@@ -49,15 +49,16 @@ function CheckboxRoot({ label, description, controlFirst = true, error, classNam
 	const errorId = useId();
 	const hasDescription = Boolean(description);
 	const hasError = Boolean(error);
+	const isInvalid = hasError || properties['aria-invalid'] === true || properties['aria-invalid'] === 'true';
 
 	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
 
 	const checkboxControl = (
 		<BaseCheckbox.Root
 			ref={ref}
-			className={cn(CHECKBOX_ROOT_CLASSES, error && 'border-red dark:border-red', className)}
+			className={cn(CHECKBOX_ROOT_CLASSES, isInvalid && 'border-red [--color-ring:var(--color-red)] dark:border-red', className)}
 			aria-describedby={describedBy}
-			aria-invalid={hasError ? true : undefined}
+			aria-invalid={isInvalid ? true : undefined}
 			{...properties}
 		>
 			<BaseCheckbox.Indicator

@@ -67,15 +67,21 @@ export function Switch({
 	const errorId = useId();
 	const hasDescription = Boolean(description);
 	const hasError = Boolean(error);
+	const isInvalid = hasError || properties['aria-invalid'] === true || properties['aria-invalid'] === 'true';
 
 	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
 
 	const switchControl = (
 		<BaseSwitch.Root
 			ref={ref}
-			className={cn(SWITCH_ROOT_CLASSES, VARIANT_ROOT_CLASSES[variant], error && 'bg-red-light dark:bg-red', className)}
+			className={cn(
+				SWITCH_ROOT_CLASSES,
+				VARIANT_ROOT_CLASSES[variant],
+				isInvalid && 'bg-red-light [--color-ring:var(--color-red)] dark:bg-red',
+				className,
+			)}
 			aria-describedby={describedBy}
-			aria-invalid={hasError ? true : undefined}
+			aria-invalid={isInvalid ? true : undefined}
 			{...properties}
 		>
 			<BaseSwitch.Thumb className={SWITCH_THUMB_CLASSES}>
