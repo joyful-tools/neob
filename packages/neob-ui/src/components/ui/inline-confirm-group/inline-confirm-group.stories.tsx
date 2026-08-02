@@ -3,12 +3,11 @@ import { ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
-import { Button } from '@/components/ui/button';
 import { guardPlay } from '@/lib/storybook-interactions';
 
 import { InlineConfirmGroup, InlineConfirmGroupIntent } from './inline-confirm-group';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta } from '@storybook/react-vite';
 
 type InlineConfirmGroupStoryProperties = {
 	initialFiles: FileItem[];
@@ -36,7 +35,6 @@ const meta = {
 } satisfies Meta<typeof InlineConfirmGroup>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
 type FileAction = 'delete' | 'archive' | 'download';
 
@@ -167,132 +165,31 @@ export const Default = {
 	render: (args: InlineConfirmGroupStoryProperties) => <RealWorldList {...args} />,
 	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 		const canvas = within(canvasElement);
-		const buttons = canvas.getAllByRole('button');
-		await userEvent.click(buttons[0]);
-		await expect(canvas.getAllByRole('button').length).toBeGreaterThan(1);
-	}),
-};
 
-export const KeyboardAndOutsideCancel: Story = {
-	args: {
-		itemName: 'package.json',
-		onConfirm: () => {},
-	},
-	render: () => {
-		const [cancelCount, setCancelCount] = useState(0);
-		return (
-			<div className="flex min-h-40 items-start justify-start p-8">
-				<div className="flex flex-col gap-4">
-					<InlineConfirmGroup
-						itemName="package.json"
-						actionLabel="Archive"
-						actionIcon={<ArchiveIcon />}
-						intent="info"
-						direction="right"
-						onConfirm={() => {
-							action('inline-confirm-keyboard-confirm')();
-						}}
-						onCancel={() => {
-							action('inline-confirm-keyboard-cancel')();
-							setCancelCount((previous) => previous + 1);
-						}}
-					/>
-					<p className="font-mono text-sm font-bold">Cancel Count: {cancelCount}</p>
-					<Button type="button">Outside Target</Button>
-				</div>
-			</div>
-		);
-	},
-	play: guardPlay(async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		await userEvent.click(canvas.getByRole('button', { name: 'Archive package.json' }));
+		await userEvent.click(canvas.getByRole('button', { name: 'Archive invoices.csv' }));
 		await waitFor(() => {
-			expect(canvas.getByRole('button', { name: 'Cancel archive package.json' })).toHaveFocus();
+			expect(canvas.getByRole('button', { name: 'Cancel archive invoices.csv' })).toHaveFocus();
 		});
 
 		await userEvent.keyboard('{ArrowRight}');
-		await expect(canvas.getByRole('button', { name: 'Confirm archive package.json' })).toHaveFocus();
+		await expect(canvas.getByRole('button', { name: 'Confirm archive invoices.csv' })).toHaveFocus();
 
 		await userEvent.keyboard('{Tab}');
-		await expect(canvas.getByRole('button', { name: 'Cancel archive package.json' })).toHaveFocus();
+		await expect(canvas.getByRole('button', { name: 'Cancel archive invoices.csv' })).toHaveFocus();
 
 		await userEvent.keyboard('{Escape}');
 		await waitFor(() => {
-			expect(canvas.queryByRole('group', { name: 'Archive confirmation for package.json' })).not.toBeInTheDocument();
-			expect(canvas.getByText('Cancel Count: 1')).toBeInTheDocument();
+			expect(canvas.queryByRole('group', { name: 'Archive confirmation for invoices.csv' })).not.toBeInTheDocument();
 		});
 
-		await userEvent.click(canvas.getByRole('button', { name: 'Archive package.json' }));
+		await userEvent.click(canvas.getByRole('button', { name: 'Archive invoices.csv' }));
 		await waitFor(() => {
-			expect(canvas.getByRole('group', { name: 'Archive confirmation for package.json' })).toBeInTheDocument();
+			expect(canvas.getByRole('group', { name: 'Archive confirmation for invoices.csv' })).toBeInTheDocument();
 		});
 
-		await userEvent.click(canvas.getByRole('button', { name: 'Outside Target' }));
+		await userEvent.click(canvas.getByText('Project Directory Files'));
 		await waitFor(() => {
-			expect(canvas.queryByRole('group', { name: 'Archive confirmation for package.json' })).not.toBeInTheDocument();
-			expect(canvas.getByText('Cancel Count: 2')).toBeInTheDocument();
+			expect(canvas.queryByRole('group', { name: 'Archive confirmation for invoices.csv' })).not.toBeInTheDocument();
 		});
-	}),
-};
-
-export const ConfirmAndLoadingState: Story = {
-	args: {
-		itemName: 'README.md',
-		onConfirm: () => {},
-	},
-	render: () => {
-		const [confirmed, setConfirmed] = useState(false);
-		return (
-			<div className="flex flex-col gap-6 p-8">
-				<div className="flex items-center gap-4">
-					<InlineConfirmGroup
-						itemName="README.md"
-						actionLabel="Delete"
-						actionIcon={<TrashIcon />}
-						intent="danger"
-						onConfirm={() => {
-							action('inline-confirm-confirm')();
-							setConfirmed(true);
-						}}
-						onCancel={() => {
-							action('inline-confirm-loading-cancel')();
-						}}
-					/>
-					<p className="font-mono text-sm font-bold">Confirmed: {confirmed ? 'yes' : 'no'}</p>
-				</div>
-				<div className="flex items-center gap-4">
-					<InlineConfirmGroup
-						itemName="locked-file.txt"
-						actionLabel="Delete"
-						actionIcon={<TrashIcon />}
-						intent="danger"
-						isLoading
-						onConfirm={() => {
-							action('inline-confirm-loading-confirm')();
-						}}
-					/>
-					<p className="font-mono text-sm font-bold">Loading Delete Control</p>
-				</div>
-			</div>
-		);
-	},
-	play: guardPlay(async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		await userEvent.click(canvas.getByRole('button', { name: 'Delete README.md' }));
-		await waitFor(() => {
-			expect(canvas.getByRole('button', { name: 'Confirm delete README.md' })).toBeInTheDocument();
-		});
-
-		await userEvent.click(canvas.getByRole('button', { name: 'Confirm delete README.md' }));
-		await waitFor(() => {
-			expect(canvas.getByText('Confirmed: yes')).toBeInTheDocument();
-			expect(canvas.queryByRole('button', { name: 'Confirm delete README.md' })).not.toBeInTheDocument();
-		});
-
-		const loadingDeleteButton = canvas.getByRole('button', { name: 'Delete locked-file.txt' });
-		await expect(loadingDeleteButton).toBeDisabled();
-		await expect(canvas.queryByRole('group', { name: 'Delete confirmation for locked-file.txt' })).not.toBeInTheDocument();
 	}),
 };

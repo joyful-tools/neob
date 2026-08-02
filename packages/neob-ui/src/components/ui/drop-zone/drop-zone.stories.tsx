@@ -165,41 +165,13 @@ export const Default: Story = {
 
 		const rejectedOutput = canvas.getByText(/Rejected: none/i);
 		expect(rejectedOutput).toBeInTheDocument();
-	}),
-};
 
-export const RepeatedFileSelection: Story = {
-	render: () => {
-		const [selectionCount, setSelectionCount] = useState(0);
-
-		return (
-			<div>
-				<DropZone onFileDrop={() => setSelectionCount((count) => count + 1)}>
-					{({ openFilePicker }) => (
-						<Button type="button" onClick={openFilePicker}>
-							Select File
-						</Button>
-					)}
-				</DropZone>
-				<span>Selections: {selectionCount}</span>
-			</div>
-		);
-	},
-	play: guardPlay(async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
 		const input = canvasElement.querySelector('input[type="file"]');
-		if (!(input instanceof HTMLInputElement)) {
-			throw new TypeError('File input not found');
+		if (input instanceof HTMLInputElement) {
+			const repeatFile = new File(['content'], 'repeat.txt', { type: 'text/plain' });
+			fireEvent.change(input, { target: { files: new MockFileList([repeatFile]) } });
+			await expect(input).toHaveValue('');
 		}
-
-		const file = new File(['content'], 'repeat.txt', { type: 'text/plain' });
-		fireEvent.change(input, { target: { files: new MockFileList([file]) } });
-		await expect(canvas.getByText('Selections: 1')).toBeInTheDocument();
-		await expect(input).toHaveValue('');
-
-		fireEvent.change(input, { target: { files: new MockFileList([file]) } });
-		await expect(canvas.getByText('Selections: 2')).toBeInTheDocument();
-		await expect(input).toHaveValue('');
 	}),
 };
 

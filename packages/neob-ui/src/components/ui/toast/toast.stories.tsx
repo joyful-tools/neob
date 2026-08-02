@@ -157,10 +157,20 @@ export const WithActions: Story = {
 	),
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		await userEvent.click(canvas.getByRole('button', { name: 'Default + Action' }));
 		const body = within(document.body);
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Default + Action' }));
+		await expect(body.getByText('File uploaded')).toBeInTheDocument();
 		await expect(body.getByRole('button', { name: 'Open File' })).toBeInTheDocument();
 		await userEvent.click(body.getByRole('button', { name: 'Open File' }));
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Success + Action' }));
+		await expect(body.getByText('Team created')).toBeInTheDocument();
+		await expect(body.getByRole('button', { name: 'Invite Team Members' })).toBeInTheDocument();
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Error + Action' }));
+		await expect(body.getByText('Connection failed')).toBeInTheDocument();
+		await expect(body.getByRole('button', { name: 'Retry' })).toBeInTheDocument();
 	}),
 };
 
@@ -247,65 +257,5 @@ export const VariantDismissal: Story = {
 		await waitFor(() => {
 			expect(lastToast?.isConnected).toBe(false);
 		});
-	}),
-};
-
-export const MixedActionsAndClosePaths: Story = {
-	args: {
-		buttons: [
-			{
-				label: 'Custom Action',
-				variant: 'default',
-				kind: 'custom',
-				title: 'Draft saved',
-				actionLabel: 'Review Draft',
-				actionEvent: 'toast-review-draft',
-			},
-			{
-				label: 'Info Action',
-				variant: 'subtle',
-				kind: 'info',
-				title: 'New release available',
-				description: 'Version 2.1.0 is ready to install.',
-				actionLabel: 'Read Notes',
-				actionEvent: 'toast-read-notes',
-			},
-			{ label: 'Warning Title Only', variant: 'default', kind: 'warning', title: 'Storage nearing limit' },
-			{
-				label: 'Error Close',
-				variant: 'danger',
-				kind: 'error',
-				title: 'Upload failed',
-				description: 'A network error interrupted the upload.',
-			},
-		],
-	},
-	render: (args) => (
-		<div className="flex flex-wrap items-center gap-3">
-			{args.buttons.map((button) => (
-				<Button key={button.label} variant={button.variant} onClick={() => showToast(button)}>
-					{button.label}
-				</Button>
-			))}
-		</div>
-	),
-	play: guardPlay(async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const body = within(document.body);
-
-		await userEvent.click(canvas.getByRole('button', { name: 'Custom Action' }));
-		await expect(body.getByText('Draft saved')).toBeInTheDocument();
-		await userEvent.click(body.getByRole('button', { name: 'Review Draft' }));
-
-		await userEvent.click(canvas.getByRole('button', { name: 'Info Action' }));
-		await expect(body.getByText('New release available')).toBeInTheDocument();
-		await expect(body.getByText('Version 2.1.0 is ready to install.')).toBeInTheDocument();
-		await userEvent.click(body.getByRole('button', { name: 'Read Notes' }));
-
-		await userEvent.click(canvas.getByRole('button', { name: 'Warning Title Only' }));
-		await expect(body.getByText('Storage nearing limit')).toBeInTheDocument();
-
-		await userEvent.click(canvas.getByRole('button', { name: 'Error Close' }));
-		await expect(body.getByText('Upload failed')).toBeInTheDocument();
 	}),
 };

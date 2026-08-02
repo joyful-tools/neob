@@ -34,8 +34,15 @@ export function ConfirmDialog({
 	const [copied, setCopied] = useState(false);
 	const inputId = useId();
 	const copyTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+	const cancelButtonRef = useRef<HTMLButtonElement>(null);
 
 	useEffect(() => () => clearTimeout(copyTimeoutRef.current), []);
+
+	useEffect(() => {
+		if (open && !resourceName) {
+			cancelButtonRef.current?.focus();
+		}
+	}, [open, resourceName]);
 
 	const confirmationMatches = resourceName ? typedConfirmation === resourceName : true;
 
@@ -102,7 +109,7 @@ export function ConfirmDialog({
 					</div>
 				</Dialog.Body>
 				<Dialog.Footer>
-					<Button type="button" variant="subtle" onClick={() => handleOpenChange(false)} disabled={isConfirming}>
+					<Button ref={cancelButtonRef} type="button" variant="subtle" onClick={() => handleOpenChange(false)} disabled={isConfirming}>
 						{cancelLabel}
 					</Button>
 					<Button

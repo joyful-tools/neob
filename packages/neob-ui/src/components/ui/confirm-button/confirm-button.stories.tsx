@@ -1,5 +1,5 @@
 import { action } from 'storybook/actions';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 
@@ -50,8 +50,30 @@ export const Default: Story = {
 	},
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		await userEvent.click(canvas.getByRole('button', { name: 'Delete Item' }));
-		await expect(canvas.getByText('Are you sure?')).toBeInTheDocument();
+
+		// Keyboard interaction test (opens and cancels via Escape)
+		const trigger1 = canvas.getByRole('button', { name: 'Delete Item' });
+		trigger1.focus();
+		await userEvent.keyboard('{Enter}');
+		await expect(await canvas.findByText('Are you sure?')).toBeInTheDocument();
+		await expect(canvas.getByRole('button', { name: 'Cancel' })).toHaveFocus();
+
+		await userEvent.keyboard('{ArrowRight}');
+		await expect(canvas.getByRole('button', { name: 'Confirm Delete' })).toHaveFocus();
+
+		await userEvent.keyboard('{Tab}');
+		await expect(canvas.getByRole('button', { name: 'Cancel' })).toHaveFocus();
+
+		await userEvent.keyboard('{Escape}');
+		await waitFor(() => {
+			expect(canvas.queryByText('Are you sure?')).not.toBeInTheDocument();
+		});
+
+		// Mouse click interaction test (opens and confirms)
+		const trigger2 = await canvas.findByRole('button', { name: 'Delete Item' });
+		await userEvent.click(trigger2);
+		await expect(await canvas.findByText('Are you sure?')).toBeInTheDocument();
+		await expect(canvas.getByRole('button', { name: 'Cancel' })).toHaveFocus();
 		await userEvent.click(canvas.getByRole('button', { name: 'Confirm Delete' }));
 	}),
 };

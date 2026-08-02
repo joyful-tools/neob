@@ -64,15 +64,19 @@ export function ConfirmButton({
 		}
 	}, [open]);
 
-	const setConfirmButtonRef = useCallback(
+	const setCancelButtonRef = useCallback(
 		(node: HTMLButtonElement | null) => {
-			confirmButtonRef.current = node;
+			cancelButtonRef.current = node;
 			if (node && open) {
 				node.focus();
 			}
 		},
 		[open],
 	);
+
+	const setConfirmButtonRef = useCallback((node: HTMLButtonElement | null) => {
+		confirmButtonRef.current = node;
+	}, []);
 
 	const setTriggerButtonRef = useCallback(
 		(node: HTMLButtonElement | null) => {
@@ -129,7 +133,9 @@ export function ConfirmButton({
 				setOpen(false);
 				return;
 			}
-			case 'Tab': {
+			case 'Tab':
+			case 'ArrowLeft':
+			case 'ArrowRight': {
 				event.preventDefault();
 				event.stopPropagation();
 				if (document.activeElement === confirmButtonRef.current) {
@@ -190,7 +196,7 @@ export function ConfirmButton({
 							)}
 							<div className="mt-3 flex w-full items-center justify-center gap-1.5">
 								<Button
-									ref={cancelButtonRef}
+									ref={setCancelButtonRef}
 									type="button"
 									variant="subtle"
 									size="sm"
@@ -227,15 +233,7 @@ export function ConfirmButton({
 						onClick={() => setOpen(true)}
 						style={{ borderRadius, transition: 'none' }}
 					>
-						<motion.span
-							initial={{ opacity: 0, scale: 0.8 }}
-							animate={{ opacity: 1, scale: 1 }}
-							exit={{ opacity: 0, scale: 0.8 }}
-							transition={{ duration: 0.18, ease: 'easeOut' }}
-							className="inline-flex items-center gap-2"
-						>
-							{children}
-						</motion.span>
+						<span className="inline-flex items-center gap-2">{children}</span>
 					</motion.button>
 				)}
 			</AnimatePresence>

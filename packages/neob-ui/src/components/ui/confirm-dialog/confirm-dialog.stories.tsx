@@ -102,6 +102,7 @@ export const NormalConfirm = {
 		const body = within(document.body);
 		await userEvent.click(canvas.getByRole('button', { name: 'Open Save Confirmation' }));
 		await expect(body.getByText('Save Changes?')).toBeInTheDocument();
+		await expect(body.getByRole('button', { name: 'Cancel' })).toHaveFocus();
 		await userEvent.click(body.getByRole('button', { name: 'Save' }));
 	}),
 };

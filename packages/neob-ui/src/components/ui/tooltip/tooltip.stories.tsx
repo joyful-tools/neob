@@ -68,25 +68,15 @@ export const GatedTouch: Story = {
 	),
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		await userEvent.hover(canvas.getByRole('button', { name: 'Touch / Hover Test' }));
-		await expect(await within(document.body).findByRole('tooltip')).toHaveTextContent('Success! Long press worked.');
-	}),
-};
+		const trigger = canvas.getByRole('button', { name: 'Touch / Hover Test' });
 
-export const TouchLongPressBehavior: Story = {
-	args: {
-		content: 'Long press confirmed.',
-	},
-	render: (args) => (
-		<div className="flex flex-col items-center gap-4 p-8">
-			<Tooltip {...args}>
-				<Button variant="accent">Hold To Open</Button>
-			</Tooltip>
-		</div>
-	),
-	play: guardPlay(async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const trigger = canvas.getByRole('button', { name: 'Hold To Open' });
+		await userEvent.hover(trigger);
+		await expect(await within(document.body).findByRole('tooltip')).toHaveTextContent('Success! Long press worked.');
+
+		await userEvent.unhover(trigger);
+		await waitFor(() => {
+			expect(within(document.body).queryByRole('tooltip')).not.toBeInTheDocument();
+		});
 
 		trigger.dispatchEvent(new Event('touchstart', { bubbles: true, cancelable: true }));
 		await new Promise((resolve) => globalThis.setTimeout(resolve, 150));
@@ -100,7 +90,7 @@ export const TouchLongPressBehavior: Story = {
 
 		await waitFor(
 			async () => {
-				expect(await within(document.body).findByRole('tooltip')).toHaveTextContent('Long press confirmed.');
+				expect(await within(document.body).findByRole('tooltip')).toHaveTextContent('Success! Long press worked.');
 			},
 			{ timeout: 1200 },
 		);
