@@ -91,6 +91,37 @@ function getFadeMotion() {
 	} as const;
 }
 
+const SELECTED_DAY_BUTTON_CLASSES =
+	'[&_button]:relative [&_button]:z-10 [&_button]:border-2 [&_button]:border-edge [&_button]:bg-cyan [&_button]:text-black dark:[&_button]:bg-cyan-dark dark:[&_button]:text-white hover:[&_button]:bg-cyan/90 dark:hover:[&_button]:bg-cyan-dark/90';
+
+const RANGE_INDICATOR_BASE =
+	"before:absolute before:inset-y-px before:z-0 before:bg-cyan/30 dark:before:bg-cyan/25 before:content-[''] before:transition-all before:duration-50";
+
+const DAY_PICKER_BASE_CLASSNAMES = {
+	root: 'w-full h-full flex flex-col justify-between',
+	months: 'flex flex-col sm:flex-row gap-4 flex-1 justify-between',
+	month: 'space-y-4 relative flex-1 flex flex-col justify-between',
+	month_caption: 'hidden',
+	month_grid: 'w-full border-collapse space-y-1 flex-1',
+	weekdays: 'flex w-full',
+	weekday:
+		'text-xs font-black tracking-wider text-muted-foreground dark:text-white/80 flex-1 h-9 flex items-center justify-center uppercase',
+	weeks: 'space-y-1 mt-1 flex-1 flex flex-col justify-between',
+	week: 'flex w-full mt-1',
+	day: 'h-9 flex-1 p-0 relative flex items-center justify-center',
+	day_button: cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'text-md size-9 rounded-lg tracking-wide'),
+	today: '[&_button]:border-2 [&_button]:border-dashed [&_button]:border-edge font-extrabold',
+	selected: SELECTED_DAY_BUTTON_CLASSES,
+	range_middle: cn(
+		"before:absolute before:inset-x-0 before:inset-y-px before:z-0 before:bg-cyan/30 before:transition-all before:duration-50 before:content-[''] dark:before:bg-cyan/25",
+		'first:before:rounded-l-lg last:before:rounded-r-lg',
+		'[&_button]:relative [&_button]:z-10',
+		'hover:[&_button]:bg-cyan/20 dark:hover:[&_button]:bg-cyan/20',
+	),
+	outside: 'text-muted-foreground opacity-100',
+	disabled: 'text-muted-foreground opacity-30 cursor-not-allowed pointer-events-none [&_button]:pointer-events-none',
+} as const;
+
 /** Base props shared across all DatePicker modes */
 type BaseProps = Omit<PropsBase, 'classNames'> & {
 	/** Additional CSS classes merged via `cn()`. */
@@ -279,27 +310,29 @@ export function DatePicker(fullProps: DatePickerProps) {
 				handlePrevClick();
 			}
 		},
-		{ axis: 'x', filterTaps: true, pointer: { touch: true } },
+		{ axis: 'x', pointer: { touch: true } },
 	);
 
 	const containerClassName = cn(
-		'rdp-root relative box-border flex h-94 w-78 flex-col justify-between rounded-xl border-2 border-edge bg-white p-4 text-black shadow-sm select-none dark:border-edge dark:bg-zinc dark:text-white',
+		'rdp-root relative box-border flex h-94 w-78 flex-col justify-between rounded-xl border-2 border-edge bg-white p-4 text-black shadow-sm select-none dark:bg-zinc dark:text-white',
 		className,
 	);
 
 	const renderDays = () => {
-		// When a range starts and ends on the same day, both range_start and range_end
-		// apply to one cell — the endpoint button must stay fully rounded in that case.
-		const rangeValue = fullProps.mode === 'range' ? fullProps.selected : undefined;
-		const sameDayRange = Boolean(rangeValue?.from && rangeValue.to && rangeValue.from.toDateString() === rangeValue.to.toDateString());
-		const startButtonRadius = sameDayRange ? '[&_button]:rounded-lg' : '[&_button]:rounded-l-lg [&_button]:rounded-r-sm';
-		const endButtonRadius = sameDayRange ? '[&_button]:rounded-lg' : '[&_button]:rounded-r-lg [&_button]:rounded-l-sm';
-		const startRangeIndicator = sameDayRange
-			? ''
-			: "before:absolute before:inset-y-0 before:left-1/2 before:right-0 before:bg-cyan/25 before:content-[''] dark:before:bg-cyan/20";
-		const endRangeIndicator = sameDayRange
-			? ''
-			: "before:absolute before:inset-y-0 before:left-0 before:right-1/2 before:bg-cyan/25 before:content-[''] dark:before:bg-cyan/20";
+		const isMultiDayRange = Boolean(
+			fullProps.mode === 'range' &&
+			fullProps.selected?.from &&
+			fullProps.selected?.to &&
+			fullProps.selected.from.toDateString() !== fullProps.selected.to.toDateString(),
+		);
+
+		const startButtonRadius = isMultiDayRange ? '[&_button]:rounded-l-lg [&_button]:rounded-r-sm' : '[&_button]:rounded-lg';
+		const endButtonRadius = isMultiDayRange ? '[&_button]:rounded-r-lg [&_button]:rounded-l-sm' : '[&_button]:rounded-lg';
+
+		const startRangeIndicator = isMultiDayRange ? cn(RANGE_INDICATOR_BASE, 'before:right-0 before:left-[calc(50%+16px)]') : '';
+		const endRangeIndicator = isMultiDayRange ? cn(RANGE_INDICATOR_BASE, 'before:right-[calc(50%+16px)] before:left-0') : '';
+
+		const selectedClass = fullProps.mode === 'range' ? '' : SELECTED_DAY_BUTTON_CLASSES;
 
 		const dayPickerProps = {
 			showOutsideDays: true,
@@ -309,35 +342,10 @@ export function DatePicker(fullProps: DatePickerProps) {
 			hideNavigation: true,
 			disableNavigation: true,
 			classNames: {
-				root: 'w-full h-full flex flex-col justify-between',
-				months: 'flex flex-col sm:flex-row gap-4 flex-1 justify-between',
-				month: 'space-y-4 relative flex-1 flex flex-col justify-between',
-				month_caption: 'hidden',
-				month_grid: 'w-full border-collapse space-y-1 flex-1',
-				weekdays: 'flex w-full',
-				weekday:
-					'text-xs font-black tracking-wider text-muted-foreground dark:text-white/80 flex-1 h-9 flex items-center justify-center uppercase',
-				weeks: 'space-y-1 mt-1 flex-1 flex flex-col justify-between',
-				week: 'flex w-full mt-1',
-				day: 'h-9 flex-1 p-0 relative flex items-center justify-center',
-				day_button: cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'text-md size-9 rounded-lg tracking-wide'),
-				today: '[&_button]:border-2 [&_button]:border-dashed [&_button]:border-edge dark:[&_button]:border-edge',
-				selected:
-					'[&_button]:bg-cyan [&_button]:text-black [&_button]:border-2 [&_button]:border-edge dark:[&_button]:bg-cyan dark:[&_button]:text-cyan-light dark:[&_button]:border-edge hover:[&_button]:bg-cyan/90 dark:hover:[&_button]:bg-cyan/90',
-				range_start: cn(
-					'[&_button]:relative [&_button]:z-10 [&_button]:border-2 [&_button]:border-edge [&_button]:bg-cyan [&_button]:text-black hover:[&_button]:bg-cyan/90 dark:[&_button]:border-edge dark:[&_button]:text-cyan-light dark:hover:[&_button]:bg-cyan/90',
-					startButtonRadius,
-					startRangeIndicator,
-				),
-				range_end: cn(
-					'[&_button]:relative [&_button]:z-10 [&_button]:border-2 [&_button]:border-edge [&_button]:bg-cyan [&_button]:text-black hover:[&_button]:bg-cyan/90 dark:[&_button]:border-edge dark:[&_button]:text-cyan-light dark:hover:[&_button]:bg-cyan/90',
-					endButtonRadius,
-					endRangeIndicator,
-				),
-				range_middle:
-					"before:absolute before:inset-0 before:bg-cyan/25 before:content-[''] dark:before:bg-cyan/20 [&_button]:relative [&_button]:z-10 [&_button]:rounded-none [&_button]:border-2 [&_button]:border-transparent! [&_button]:bg-transparent [&_button]:text-black hover:[&_button]:border-edge! hover:[&_button]:bg-black/10 dark:[&_button]:bg-transparent dark:[&_button]:text-white dark:hover:[&_button]:bg-white/10",
-				outside: 'text-black/65 dark:text-white/65 opacity-100',
-				disabled: 'text-muted-foreground opacity-30 cursor-not-allowed pointer-events-none',
+				...DAY_PICKER_BASE_CLASSNAMES,
+				selected: selectedClass,
+				range_start: cn('relative z-10', SELECTED_DAY_BUTTON_CLASSES, startButtonRadius, startRangeIndicator),
+				range_end: cn('relative z-10', SELECTED_DAY_BUTTON_CLASSES, endButtonRadius, endRangeIndicator),
 				...classNames,
 			},
 			components: {
@@ -348,37 +356,55 @@ export function DatePicker(fullProps: DatePickerProps) {
 
 		if (fullProps.mode === 'single') {
 			const { className: _, classNames: __, components: ___, onChange, ...singleProps } = fullProps;
-			const handleSelect = (selected: Date | undefined, triggerDate: Date, modifiers: Modifiers, e: MouseEvent | KeyboardEvent) => {
-				if (onChange) {
-					invokeCallback(onChange, selected, triggerDate, modifiers, e);
-				}
-			};
-			return <DayPicker {...dayPickerProps} {...singleProps} mode="single" onSelect={handleSelect} />;
+			return (
+				<DayPicker
+					{...dayPickerProps}
+					{...singleProps}
+					mode="single"
+					onSelect={(selected: Date | undefined, triggerDate: Date, modifiers: Modifiers, e: MouseEvent | KeyboardEvent) => {
+						if (onChange) {
+							invokeCallback(onChange, selected, triggerDate, modifiers, e);
+						}
+					}}
+				/>
+			);
 		}
 
 		if (fullProps.mode === 'multiple') {
 			const { className: _, classNames: __, components: ___, onChange, ...multiProps } = fullProps;
-			const handleSelect = (selected: Date[] | undefined, triggerDate: Date, modifiers: Modifiers, e: MouseEvent | KeyboardEvent) => {
-				if (onChange) {
-					invokeCallback(onChange, selected, triggerDate, modifiers, e);
-				}
-			};
-			return <DayPicker {...dayPickerProps} {...multiProps} mode="multiple" onSelect={handleSelect} />;
+			return (
+				<DayPicker
+					{...dayPickerProps}
+					{...multiProps}
+					mode="multiple"
+					onSelect={(selected: Date[] | undefined, triggerDate: Date, modifiers: Modifiers, e: MouseEvent | KeyboardEvent) => {
+						if (onChange) {
+							invokeCallback(onChange, selected, triggerDate, modifiers, e);
+						}
+					}}
+				/>
+			);
 		}
 
 		if (fullProps.mode === 'range') {
 			const { className: _, classNames: __, components: ___, onChange, ...rangeProps } = fullProps;
-			const handleSelect = (
-				selected: import('react-day-picker').DateRange | undefined,
-				triggerDate: Date,
-				modifiers: Modifiers,
-				e: MouseEvent | KeyboardEvent,
-			) => {
-				if (onChange) {
-					invokeCallback(onChange, selected, triggerDate, modifiers, e);
-				}
-			};
-			return <DayPicker {...dayPickerProps} {...rangeProps} mode="range" onSelect={handleSelect} />;
+			return (
+				<DayPicker
+					{...dayPickerProps}
+					{...rangeProps}
+					mode="range"
+					onSelect={(
+						selected: import('react-day-picker').DateRange | undefined,
+						triggerDate: Date,
+						modifiers: Modifiers,
+						e: MouseEvent | KeyboardEvent,
+					) => {
+						if (onChange) {
+							invokeCallback(onChange, selected, triggerDate, modifiers, e);
+						}
+					}}
+				/>
+			);
 		}
 
 		return null;
@@ -441,7 +467,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 	return (
 		<div className={containerClassName}>
 			<div className="flex h-10 items-center justify-between border-b border-edge/5 pb-2">
-				<div className="flex min-w-0 items-center gap-0.5 font-sans text-lg font-bold tracking-wider text-black uppercase dark:text-white">
+				<div className="flex min-w-0 items-center gap-1 font-sans text-lg font-bold tracking-wider text-black uppercase dark:text-white">
 					<AnimatePresence mode="popLayout" initial={false}>
 						<motion.button
 							key={`header-month-${monthLabel}`}
@@ -452,11 +478,11 @@ export function DatePicker(fullProps: DatePickerProps) {
 							aria-pressed={view === 'months'}
 							className={cn(
 								buttonVariants({ variant: 'ghost', size: 'sm' }),
-								'max-w-28 truncate px-1.5 text-lg tracking-wider',
+								'max-w-32 px-1.5 text-lg tracking-wider',
 								view === 'months' && 'bg-black/5 dark:bg-white/10',
 							)}
 						>
-							{monthLabel}
+							<span className="truncate">{monthLabel}</span>
 						</motion.button>
 					</AnimatePresence>
 					<span className="shrink-0 text-black/40 dark:text-white/40">/</span>
@@ -473,11 +499,11 @@ export function DatePicker(fullProps: DatePickerProps) {
 							aria-pressed={view === 'years'}
 							className={cn(
 								buttonVariants({ variant: 'ghost', size: 'sm' }),
-								'max-w-20 truncate px-1.5 text-lg tracking-wider',
+								'max-w-20 px-1.5 text-lg tracking-wider',
 								view === 'years' && 'bg-black/5 dark:bg-white/10',
 							)}
 						>
-							{yearLabel}
+							<span className="truncate">{yearLabel}</span>
 						</motion.button>
 					</AnimatePresence>
 				</div>
