@@ -8,7 +8,7 @@
 	--muted: oklch(94% 0.012 280);
 	--muted-foreground: oklch(45% 0.03 280);
 	--border: oklch(80% 0.02 280);
-	--ring: oklch(72% 0.05 250);
+	--ring: oklch(15% 0.03 275);
 	--ring-offset: oklch(98% 0.005 85);
 	--card: oklch(100% 0 0);
 	--card-foreground: oklch(18% 0.025 275);
