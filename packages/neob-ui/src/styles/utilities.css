@@ -41,7 +41,7 @@
 	--tw-shadow:
 		0 min(var(--button-depth), var(--button-shadow-depth-limit)) 0 0 var(--button-shadow-color),
 		inset 0 max(0px, calc(var(--button-rest-depth) - var(--button-depth))) 0 0 var(--button-inset-color);
-	transform: translateY(calc(var(--button-rest-depth) - var(--button-depth)));
+	translate: 0 calc(var(--button-rest-depth) - var(--button-depth));
 	box-shadow: var(--tw-ring-offset-shadow, 0 0 transparent), var(--tw-ring-shadow, 0 0 transparent), var(--tw-shadow);
 	transition-property: --button-depth, --button-shadow-color, border-color, background-color, color;
 	transition-duration: 75ms;

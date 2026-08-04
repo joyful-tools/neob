@@ -236,12 +236,12 @@ export const ExtraLarge: Story = {
 		</Button>
 	),
 	args: {
-		children: 'Start Game',
+		children: 'Extra Large',
 		size: 'xl',
 	},
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		const button = canvas.getByRole('button', { name: 'Start Game' });
+		const button = canvas.getByRole('button', { name: 'Extra Large' });
 		await userEvent.click(button);
 		await expect(button).toBeInTheDocument();
 	}),
