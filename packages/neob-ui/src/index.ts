@@ -10,7 +10,8 @@ export { cn, getThemeColor } from './lib/utilities';
 export { Button, buttonVariants } from './components/ui/button';
 export type { ButtonProperties } from './components/ui/button';
 
-export { Card } from './components/ui/card';
+export { Card, Card3d, Hover3d } from './components/ui/card';
+export type { Card3dProperties, Hover3dProperties } from './components/ui/card';
 
 export { Dialog } from './components/ui/dialog';
 
@@ -99,6 +100,8 @@ export type { DialogStackStore } from './components/ui/dialog';
 export { useInputAreaAutoResize } from './hooks/use-input-area-auto-resize';
 export type { UseInputAreaAutoResizeOptions } from './hooks/use-input-area-auto-resize';
 export { useTransformOrigin } from './hooks/use-transform-origin';
+export { useHover3d } from './hooks/use-hover-3d';
+export type { Hover3dState, UseHover3dOptions } from './hooks/use-hover-3d';
 
 export { SensitiveInput } from './components/ui/sensitive-input';
 export type { SensitiveInputProperties } from './components/ui/sensitive-input';
