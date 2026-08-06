@@ -58,14 +58,14 @@ function Card3dSurface({ children, className, overlay, shiny = false, state, sty
 	};
 
 	return (
-		<motion.div className="relative h-full select-none" style={{ scale }}>
-			<motion.div className="h-full" style={{ filter }}>
-				<motion.div className={cn('relative h-full', className)} style={cardStyle} {...properties}>
-					<div data-neob-card3d-clip className="relative h-full overflow-hidden rounded-[inherit]">
+		<motion.div className="relative h-full select-none transform-3d" style={{ scale }}>
+			<motion.div className="h-full transform-3d">
+				<motion.div className={cn('relative h-full transform-3d', className)} style={cardStyle} {...properties}>
+					<motion.div data-neob-card3d-clip className="relative h-full overflow-hidden rounded-[inherit]" style={{ filter }}>
 						{typeof children === 'function' ? children(state) : children}
 						{shiny && <div data-neob-card3d-shine aria-hidden="true" />}
 						{!shiny && <div data-neob-card3d-flare aria-hidden="true" />}
-					</div>
+					</motion.div>
 					{overlay && <div className="pointer-events-none absolute inset-0 transform-3d">{overlay}</div>}
 				</motion.div>
 			</motion.div>
