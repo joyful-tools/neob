@@ -1,0 +1,19 @@
+packages/neob-ui/src/components/ui/switch/switch.tsx
+  s_62b816c889ea28::t_99f0fa70afda11 16-19,68,73-87,92,101
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "cb81778869a879d8d3b0d851d058cd28fbc17992",
+  "prompts": {},
+  "sessions": {
+    "s_62b816c889ea28": {
+      "agent_id": {
+        "tool": "windsurf",
+        "id": "copy-orchid",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
