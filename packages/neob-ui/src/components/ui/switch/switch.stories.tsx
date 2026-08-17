@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, within } from 'storybook/test';
 
@@ -113,45 +113,57 @@ export const DisabledState: Story = {
 
 export const ValidationError: Story = {
 	render: (arguments_) => {
-		const [checked, setChecked] = useState(false);
-		const error = checked ? undefined : 'You must agree to the privacy policy.';
+		const [emailChecked, setEmailChecked] = useState(true);
+		const [smsChecked, setSmsChecked] = useState(true);
+		const errorId = useId();
+		const isInvalid = emailChecked === smsChecked;
 
 		return (
-			<div className="min-h-19 w-80">
+			<fieldset className="flex min-h-36 w-80 flex-col gap-4 border-0 p-0">
+				<legend className="mb-3 text-base/tight font-bold text-black dark:text-white">Notification channel</legend>
 				<Switch
 					{...arguments_}
-					checked={checked}
-					onCheckedChange={(nextChecked) => {
-						setChecked(nextChecked);
-						action('switch-validation-change')(nextChecked);
+					label="Email notifications"
+					checked={emailChecked}
+					onCheckedChange={(checked) => {
+						setEmailChecked(checked);
+						action('email-notifications-change')(checked);
 					}}
-					error={error}
+					aria-invalid={isInvalid ? true : undefined}
+					aria-describedby={isInvalid ? errorId : undefined}
 				/>
-			</div>
+				<Switch
+					{...arguments_}
+					label="SMS notifications"
+					checked={smsChecked}
+					onCheckedChange={(checked) => {
+						setSmsChecked(checked);
+						action('sms-notifications-change')(checked);
+					}}
+					aria-invalid={isInvalid ? true : undefined}
+					aria-describedby={isInvalid ? errorId : undefined}
+				/>
+				{isInvalid && (
+					<span id={errorId} className="text-xs/normal font-bold text-red-dark dark:text-red-light">
+						Select exactly one notification channel.
+					</span>
+				)}
+			</fieldset>
 		);
 	},
 	args: {
-		label: 'Agree to privacy policy',
-		description: 'Required choice to register.',
+		variant: 'accent',
 	},
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		const toggle = canvas.getByRole('switch');
+		const emailToggle = canvas.getByRole('switch', { name: 'Email notifications' });
+		const smsToggle = canvas.getByRole('switch', { name: 'SMS notifications' });
 
-		// Error should be visible initially because checked is false
-		await expect(canvas.getByText('You must agree to the privacy policy.')).toBeInTheDocument();
-
-		// Click the switch to check it
-		await userEvent.click(toggle);
-
-		// Error should disappear
-		await expect(canvas.queryByText('You must agree to the privacy policy.')).not.toBeInTheDocument();
-
-		// Click the switch again to uncheck it
-		await userEvent.click(toggle);
-
-		// Error should reappear
-		await expect(canvas.getByText('You must agree to the privacy policy.')).toBeInTheDocument();
+		await expect(emailToggle).toBeChecked();
+		await expect(smsToggle).toBeChecked();
+		await expect(emailToggle).toHaveAttribute('aria-invalid', 'true');
+		await expect(smsToggle).toHaveAttribute('aria-invalid', 'true');
+		await expect(canvas.getByText('Select exactly one notification channel.')).toBeInTheDocument();
 	}),
 };
 

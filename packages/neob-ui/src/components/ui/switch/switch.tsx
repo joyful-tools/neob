@@ -13,19 +13,10 @@ export interface SwitchProperties extends ComponentPropsWithoutRef<typeof BaseSw
 	readonly variant?: 'default' | 'accent' | 'success';
 }
 
-const VARIANT_ROOT_CLASSES = {
-	default: `
-		data-[checked]:bg-zinc dark:data-[checked]:bg-zinc-lighter
-		data-[checked]:border-edge
-	`,
-	accent: `
-		data-[checked]:bg-cyan dark:data-[checked]:bg-cyan-light
-		data-[checked]:border-edge
-	`,
-	success: `
-		data-[checked]:bg-green dark:data-[checked]:bg-green-light
-		data-[checked]:border-edge
-	`,
+const VARIANT_TRACK_CLASSES = {
+	default: 'bg-zinc dark:bg-zinc-lighter',
+	accent: 'bg-cyan dark:bg-cyan-light',
+	success: 'bg-green dark:bg-green-light',
 } as const;
 
 const VARIANT_ICON_CLASSES = {
@@ -74,21 +65,31 @@ export function Switch({
 	const switchControl = (
 		<BaseSwitch.Root
 			ref={ref}
-			className={cn(
-				SWITCH_ROOT_CLASSES,
-				VARIANT_ROOT_CLASSES[variant],
-				isInvalid && 'bg-red-light [--color-ring:var(--color-red)] dark:bg-red',
-				className,
-			)}
+			className={cn(SWITCH_ROOT_CLASSES, isInvalid && 'border-red [--color-ring:var(--color-red)] dark:border-red', className)}
 			aria-describedby={describedBy}
 			aria-invalid={isInvalid ? true : undefined}
 			{...properties}
 		>
+			<span aria-hidden="true" className="pointer-events-none absolute inset-0 flex overflow-hidden rounded-[inherit]">
+				<span
+					className={cn(
+						'w-1/4 shrink-0 transition-[width,background-color] duration-240 ease-[cubic-bezier(0.2,1.15,0.3,1)] group-data-checked:w-3/4',
+						VARIANT_TRACK_CLASSES[variant],
+						isInvalid && 'bg-red-light dark:bg-red',
+					)}
+				/>
+				<span
+					className={cn(
+						'min-w-0 flex-1 bg-muted/80 transition-colors duration-240 ease-[cubic-bezier(0.2,1.15,0.3,1)] dark:bg-muted',
+						isInvalid && 'bg-red-light dark:bg-red',
+					)}
+				/>
+			</span>
 			<BaseSwitch.Thumb className={SWITCH_THUMB_CLASSES}>
 				<span
 					className={cn(
 						'absolute inset-0 flex scale-100 items-center justify-center text-muted-foreground opacity-100 transition-all duration-120 ease-[cubic-bezier(0.2,1.15,0.3,1)] group-data-checked:scale-75 group-data-checked:opacity-0',
-						error && 'text-red-dark dark:text-red-light',
+						isInvalid && 'text-red-dark dark:text-red-light',
 					)}
 				>
 					<XIcon className="size-3.5" weight="bold" />
@@ -97,6 +98,7 @@ export function Switch({
 					className={cn(
 						'absolute inset-0 flex scale-75 items-center justify-center opacity-0 transition-all duration-120 ease-[cubic-bezier(0.2,1.15,0.3,1)] group-data-checked:scale-100 group-data-checked:opacity-100',
 						VARIANT_ICON_CLASSES[variant],
+						isInvalid && 'text-red-dark dark:text-red-light',
 					)}
 				>
 					<CheckIcon className="size-3.5" weight="bold" />
