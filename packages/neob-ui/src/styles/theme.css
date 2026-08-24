@@ -1,73 +1,73 @@
 :root {
 	color-scheme: light;
-	--background: oklch(98% 0.005 85);
-	--foreground: oklch(18% 0.025 275);
-	--edge: oklch(15% 0.03 275);
-	--primary: oklch(18% 0.025 275);
-	--primary-foreground: oklch(100% 0 0);
-	--muted: oklch(94% 0.012 280);
-	--muted-foreground: oklch(45% 0.03 280);
-	--border: oklch(80% 0.02 280);
-	--ring: oklch(15% 0.03 275);
-	--ring-offset: oklch(98% 0.005 85);
+	--background: oklch(99% 0.003 85);
+	--foreground: oklch(20% 0.02 260);
+	--edge: oklch(14% 0.018 260);
+	--primary: oklch(26% 0.04 255);
+	--primary-foreground: oklch(98% 0.004 250);
+	--muted: oklch(95% 0.006 85);
+	--muted-foreground: oklch(42% 0.025 255);
+	--border: oklch(56% 0.02 250);
+	--ring: oklch(48% 0.14 245);
+	--ring-offset: oklch(99% 0.003 85);
 	--card: oklch(100% 0 0);
-	--card-foreground: oklch(18% 0.025 275);
+	--card-foreground: oklch(20% 0.02 260);
 	--popover: oklch(100% 0 0);
-	--popover-foreground: oklch(18% 0.025 275);
-	--destructive: oklch(63% 0.22 22);
-	--destructive-foreground: oklch(99% 0 0);
+	--popover-foreground: oklch(20% 0.02 260);
+	--destructive: oklch(54% 0.18 25);
+	--destructive-foreground: oklch(98% 0.004 250);
 
-	--palette-cyan: oklch(70% 0.15 195);
-	--palette-gold: oklch(80% 0.15 85);
-	--palette-zinc: oklch(27% 0.03 280);
-	--palette-coral: oklch(69% 0.16 210);
-	--palette-blue: oklch(66% 0.15 230);
-	--palette-purple: oklch(66% 0.19 295);
-	--palette-pink: oklch(70% 0.18 330);
-	--palette-yellow: oklch(88% 0.16 95);
-	--palette-red: oklch(63% 0.22 22);
-	--palette-green: oklch(72% 0.18 145);
+	--palette-cyan: oklch(75% 0.13 195);
+	--palette-gold: oklch(82% 0.13 88);
+	--palette-zinc: oklch(27% 0.025 255);
+	--palette-coral: oklch(72% 0.15 30);
+	--palette-blue: oklch(68% 0.15 245);
+	--palette-purple: oklch(69% 0.15 295);
+	--palette-pink: oklch(75% 0.14 340);
+	--palette-yellow: oklch(89% 0.13 100);
+	--palette-red: oklch(63% 0.18 25);
+	--palette-green: oklch(72% 0.14 150);
 
 	--scrollbar-track: transparent;
-	--scrollbar-thumb: oklch(75% 0.02 280);
-	--scrollbar-thumb-hover: oklch(50% 0.03 280);
+	--scrollbar-thumb: oklch(65% 0.025 250);
+	--scrollbar-thumb-hover: oklch(42% 0.03 255);
 	--scrollbar-thumb-active: var(--edge);
 }
 
 .dark {
 	color-scheme: dark;
 
-	--background: oklch(18% 0.02 275);
-	--foreground: oklch(97% 0.008 90);
-	--edge: oklch(8% 0.03 275);
-	--primary: oklch(97% 0.008 90);
-	--primary-foreground: oklch(27% 0.03 280);
-	--muted: oklch(30% 0.04 280);
-	--muted-foreground: oklch(78% 0.025 275);
-	--border: oklch(45% 0.05 280);
-	--ring: oklch(74% 0.05 250);
-	--ring-offset: oklch(18% 0.02 275);
-	--card: oklch(25% 0.035 280);
-	--card-foreground: oklch(97% 0.008 90);
-	--popover: oklch(25% 0.035 280);
-	--popover-foreground: oklch(97% 0.008 90);
-	--destructive: oklch(65% 0.22 22);
-	--destructive-foreground: oklch(99% 0 0);
+	--background: oklch(20.5% 0.018 255);
+	--foreground: oklch(94% 0.008 250);
+	--edge: oklch(9% 0.018 260);
+	--primary: oklch(90% 0.018 250);
+	--primary-foreground: oklch(30% 0.025 260);
+	--muted: oklch(30% 0.025 255);
+	--muted-foreground: oklch(75% 0.025 250);
+	--border: oklch(58% 0.035 250);
+	--ring: oklch(78% 0.13 220);
+	--ring-offset: oklch(20.5% 0.018 255);
+	--card: oklch(29% 0.022 255);
+	--card-foreground: oklch(94% 0.008 250);
+	--popover: oklch(30% 0.022 255);
+	--popover-foreground: oklch(94% 0.008 250);
+	--destructive: oklch(68% 0.17 25);
+	--destructive-foreground: oklch(12% 0.018 260);
 
-	--palette-cyan: oklch(72% 0.16 195);
-	--palette-gold: oklch(81% 0.15 85);
-	--palette-zinc: oklch(27% 0.03 280);
-	--palette-coral: oklch(71% 0.16 210);
-	--palette-blue: oklch(68% 0.16 230);
-	--palette-purple: oklch(68% 0.19 295);
-	--palette-pink: oklch(72% 0.18 330);
-	--palette-yellow: oklch(89% 0.16 95);
-	--palette-red: oklch(65% 0.22 22);
-	--palette-green: oklch(74% 0.19 145);
+	--palette-cyan: oklch(78% 0.13 195);
+	--palette-gold: oklch(84% 0.13 88);
+	--palette-zinc: oklch(34% 0.025 255);
+	--palette-coral: oklch(75% 0.15 30);
+	--palette-blue: oklch(73% 0.14 245);
+	--palette-purple: oklch(74% 0.14 295);
+	--palette-pink: oklch(78% 0.13 340);
+	--palette-yellow: oklch(90% 0.13 100);
+	--palette-red: oklch(68% 0.17 25);
+	--palette-green: oklch(76% 0.19 150);
 
 	--scrollbar-track: transparent;
-	--scrollbar-thumb: oklch(45% 0.04 280);
-	--scrollbar-thumb-hover: oklch(75% 0.03 280);
+	--scrollbar-thumb: oklch(50% 0.03 250);
+	--scrollbar-thumb-hover: oklch(72% 0.025 250);
 	--scrollbar-thumb-active: var(--foreground);
 }
 
@@ -112,16 +112,27 @@
 	--color-scrollbar-thumb-hover: var(--scrollbar-thumb-hover);
 	--color-scrollbar-thumb-active: var(--scrollbar-thumb-active);
 
-	--color-cyan-lighter: color-mix(in oklab, var(--color-cyan) 30%, var(--color-white));
-	--color-gold-lighter: color-mix(in oklab, var(--color-gold) 30%, var(--color-white));
-	--color-zinc-lighter: color-mix(in oklab, var(--color-zinc) 30%, var(--color-white));
-	--color-coral-lighter: color-mix(in oklab, var(--color-coral) 30%, var(--color-white));
-	--color-blue-lighter: color-mix(in oklab, var(--color-blue) 30%, var(--color-white));
-	--color-purple-lighter: color-mix(in oklab, var(--color-purple) 30%, var(--color-white));
-	--color-pink-lighter: color-mix(in oklab, var(--color-pink) 30%, var(--color-white));
-	--color-yellow-lighter: color-mix(in oklab, var(--color-yellow) 30%, var(--color-white));
-	--color-red-lighter: color-mix(in oklab, var(--color-red) 30%, var(--color-white));
-	--color-green-lighter: color-mix(in oklab, var(--color-green) 30%, var(--color-white));
+	--color-cyan-lightest: color-mix(in oklab, var(--color-cyan) 20%, var(--color-white));
+	--color-gold-lightest: color-mix(in oklab, var(--color-gold) 20%, var(--color-white));
+	--color-zinc-lightest: color-mix(in oklab, var(--color-zinc) 20%, var(--color-white));
+	--color-coral-lightest: color-mix(in oklab, var(--color-coral) 20%, var(--color-white));
+	--color-blue-lightest: color-mix(in oklab, var(--color-blue) 20%, var(--color-white));
+	--color-purple-lightest: color-mix(in oklab, var(--color-purple) 20%, var(--color-white));
+	--color-pink-lightest: color-mix(in oklab, var(--color-pink) 20%, var(--color-white));
+	--color-yellow-lightest: color-mix(in oklab, var(--color-yellow) 20%, var(--color-white));
+	--color-red-lightest: color-mix(in oklab, var(--color-red) 20%, var(--color-white));
+	--color-green-lightest: color-mix(in oklab, var(--color-green) 20%, var(--color-white));
+
+	--color-cyan-lighter: color-mix(in oklab, var(--color-cyan) 40%, var(--color-white));
+	--color-gold-lighter: color-mix(in oklab, var(--color-gold) 40%, var(--color-white));
+	--color-zinc-lighter: color-mix(in oklab, var(--color-zinc) 40%, var(--color-white));
+	--color-coral-lighter: color-mix(in oklab, var(--color-coral) 40%, var(--color-white));
+	--color-blue-lighter: color-mix(in oklab, var(--color-blue) 40%, var(--color-white));
+	--color-purple-lighter: color-mix(in oklab, var(--color-purple) 40%, var(--color-white));
+	--color-pink-lighter: color-mix(in oklab, var(--color-pink) 40%, var(--color-white));
+	--color-yellow-lighter: color-mix(in oklab, var(--color-yellow) 40%, var(--color-white));
+	--color-red-lighter: color-mix(in oklab, var(--color-red) 40%, var(--color-white));
+	--color-green-lighter: color-mix(in oklab, var(--color-green) 40%, var(--color-white));
 
 	--color-cyan-light: color-mix(in oklab, var(--color-cyan) 70%, var(--color-white));
 	--color-gold-light: color-mix(in oklab, var(--color-gold) 70%, var(--color-white));
@@ -145,16 +156,27 @@
 	--color-red-dark: color-mix(in oklab, var(--color-red) 70%, var(--color-black));
 	--color-green-dark: color-mix(in oklab, var(--color-green) 70%, var(--color-black));
 
-	--color-cyan-darker: color-mix(in oklab, var(--color-cyan) 30%, var(--color-black));
-	--color-gold-darker: color-mix(in oklab, var(--color-gold) 30%, var(--color-black));
-	--color-zinc-darker: color-mix(in oklab, var(--color-zinc) 30%, var(--color-black));
-	--color-coral-darker: color-mix(in oklab, var(--color-coral) 30%, var(--color-black));
-	--color-blue-darker: color-mix(in oklab, var(--color-blue) 30%, var(--color-black));
-	--color-purple-darker: color-mix(in oklab, var(--color-purple) 30%, var(--color-black));
-	--color-pink-darker: color-mix(in oklab, var(--color-pink) 30%, var(--color-black));
-	--color-yellow-darker: color-mix(in oklab, var(--color-yellow) 30%, var(--color-black));
-	--color-red-darker: color-mix(in oklab, var(--color-red) 30%, var(--color-black));
-	--color-green-darker: color-mix(in oklab, var(--color-green) 30%, var(--color-black));
+	--color-cyan-darker: color-mix(in oklab, var(--color-cyan) 40%, var(--color-black));
+	--color-gold-darker: color-mix(in oklab, var(--color-gold) 40%, var(--color-black));
+	--color-zinc-darker: color-mix(in oklab, var(--color-zinc) 40%, var(--color-black));
+	--color-coral-darker: color-mix(in oklab, var(--color-coral) 40%, var(--color-black));
+	--color-blue-darker: color-mix(in oklab, var(--color-blue) 40%, var(--color-black));
+	--color-purple-darker: color-mix(in oklab, var(--color-purple) 40%, var(--color-black));
+	--color-pink-darker: color-mix(in oklab, var(--color-pink) 40%, var(--color-black));
+	--color-yellow-darker: color-mix(in oklab, var(--color-yellow) 40%, var(--color-black));
+	--color-red-darker: color-mix(in oklab, var(--color-red) 40%, var(--color-black));
+	--color-green-darker: color-mix(in oklab, var(--color-green) 40%, var(--color-black));
+
+	--color-cyan-darkest: color-mix(in oklab, var(--color-cyan) 20%, var(--color-black));
+	--color-gold-darkest: color-mix(in oklab, var(--color-gold) 20%, var(--color-black));
+	--color-zinc-darkest: color-mix(in oklab, var(--color-zinc) 20%, var(--color-black));
+	--color-coral-darkest: color-mix(in oklab, var(--color-coral) 20%, var(--color-black));
+	--color-blue-darkest: color-mix(in oklab, var(--color-blue) 20%, var(--color-black));
+	--color-purple-darkest: color-mix(in oklab, var(--color-purple) 20%, var(--color-black));
+	--color-pink-darkest: color-mix(in oklab, var(--color-pink) 20%, var(--color-black));
+	--color-yellow-darkest: color-mix(in oklab, var(--color-yellow) 20%, var(--color-black));
+	--color-red-darkest: color-mix(in oklab, var(--color-red) 20%, var(--color-black));
+	--color-green-darkest: color-mix(in oklab, var(--color-green) 20%, var(--color-black));
 
 	--animate-overlay-in: overlay-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 	--animate-overlay-out: overlay-out 0.05s ease-in forwards;
