@@ -87,7 +87,7 @@ function BreadcrumbCurrent({ icon, loading = false, className, children, ...prop
 	return (
 		<div
 			data-slot="breadcrumb-current"
-			className={cn('inline-flex max-w-full min-w-0 items-center gap-1 font-black text-foreground', className)}
+			className={cn('inline-flex max-w-full min-w-0 items-center gap-1 font-bold text-foreground', className)}
 			aria-current="page"
 			{...props}
 		>
@@ -220,7 +220,7 @@ function BreadcrumbRoot({ children, size = 'default', className, ...props }: Bre
 			data-slot="breadcrumb"
 			aria-label="breadcrumb"
 			className={cn(
-				'group flex max-w-full min-w-0 grow items-center overflow-hidden py-1 font-bold whitespace-nowrap text-foreground',
+				'group flex max-w-full min-w-0 grow items-center overflow-hidden py-1 whitespace-nowrap text-foreground',
 				breadcrumbVariants(size),
 				className,
 			)}
