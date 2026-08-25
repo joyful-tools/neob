@@ -120,7 +120,7 @@ function PaginationPageSize({
 					onValueChange={(v) => onChange(Number(v))}
 					aria-label={labels.pageSize}
 					size="sm"
-					className="h-8 border-2 border-edge px-2.5 text-xs font-black shadow-cel-sm dark:border-edge [&_svg]:size-3"
+					className="h-8 border-2 border-edge px-2.5 text-xs font-black dark:border-edge [&_svg]:size-3"
 					containerClassName="p-1"
 				>
 					{options.map((size) => (
@@ -173,7 +173,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							setPage(1);
 							setEditingPage(1);
 						}}
-						className="size-8 rounded-r-none p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_oklch(0%_0_0)]"
+						className="size-8 rounded-r-none p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100"
 					>
 						<CaretDoubleLeftIcon className={cn('size-4', isFirstPageDisabled && 'opacity-30')} />
 					</Button>
@@ -190,7 +190,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						setEditingPage(previousPage);
 					}}
 					className={cn(
-						'size-8 p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_oklch(0%_0_0)]',
+						'size-8 p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100',
 						controls === 'full' ? '-ml-0.5 rounded-none' : 'rounded-r-none',
 					)}
 				>
@@ -219,7 +219,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							</Select>
 						</div>
 					) : (
-						<div className="neo-focus-ring-focus isolate -ml-0.5 flex h-8 items-center justify-center rounded-none border-2 border-edge bg-white shadow-cel-sm outline-hidden transition-all duration-300 ease-spring select-none focus-within:z-10 dark:border-edge dark:bg-zinc">
+						<div className="neo-focus-ring-focus isolate -ml-0.5 flex h-8 items-center justify-center rounded-none border-2 border-edge bg-white shadow-cel-sm outline-hidden transition-all duration-(--duration-control) ease-spring select-none focus-within:z-10 dark:border-edge dark:bg-zinc">
 							<input
 								type="number"
 								data-neo-number-input=""
@@ -272,7 +272,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						setEditingPage(nextPage);
 					}}
 					className={cn(
-						'-ml-0.5 size-8 p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_oklch(0%_0_0)]',
+						'-ml-0.5 size-8 p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100',
 						controls === 'full' ? 'rounded-none' : 'rounded-l-none',
 					)}
 				>
@@ -289,7 +289,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							setPage(maxPage);
 							setEditingPage(maxPage);
 						}}
-						className="-ml-0.5 size-8 rounded-l-none p-0 focus:z-10 disabled:opacity-100 disabled:shadow-[0_2px_0_0_oklch(0%_0_0)]"
+						className="-ml-0.5 size-8 rounded-l-none p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100"
 					>
 						<CaretDoubleRightIcon className={cn('size-4', isLastPageDisabled && 'opacity-30')} />
 					</Button>

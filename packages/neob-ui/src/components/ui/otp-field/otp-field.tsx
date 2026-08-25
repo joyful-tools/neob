@@ -57,11 +57,11 @@ interface InputProperties {
 const INPUT_CLASS_NAME = `
 	aspect-square size-12 grow rounded-lg border-2 border-edge bg-white
 	dark:bg-zinc text-center font-mono text-xl font-bold uppercase text-black
-	dark:text-white shadow-cel-inset transition-all duration-300 ease-spring
+	dark:text-white shadow-cel-inset transition-all duration-[var(--duration-control)] ease-spring
 	neo-focus-ring-focus isolate outline-hidden
-	aria-invalid:border-red aria-invalid:[--color-ring:var(--color-red)] dark:aria-invalid:border-red
+	aria-invalid:border-red aria-invalid:[--color-ring:var(--ring-invalid)] dark:aria-invalid:border-red
 	placeholder:text-muted-foreground/50
-	disabled:cursor-not-allowed disabled:opacity-50
+	disabled:cursor-not-allowed disabled:opacity-disabled
 	selection:bg-black selection:text-white
 	dark:selection:bg-white dark:selection:text-black
 `;

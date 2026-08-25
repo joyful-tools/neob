@@ -43,25 +43,25 @@
 @property --button-rest-depth {
 	syntax: '<length>';
 	inherits: false;
-	initial-value: 2px;
+	initial-value: 0px;
 }
 
 @property --button-hover-depth {
 	syntax: '<length>';
 	inherits: false;
-	initial-value: 4px;
+	initial-value: 0px;
 }
 
 @property --button-shadow-depth-limit {
 	syntax: '<length>';
 	inherits: false;
-	initial-value: 100px;
+	initial-value: 0px;
 }
 
 @property --button-depth {
 	syntax: '<length>';
 	inherits: false;
-	initial-value: 2px;
+	initial-value: 0px;
 }
 
 @property --button-rest-shadow-color {
@@ -71,6 +71,12 @@
 }
 
 @property --button-hover-shadow-color {
+	syntax: '<color>';
+	inherits: false;
+	initial-value: transparent;
+}
+
+@property --button-disabled-shadow-color {
 	syntax: '<color>';
 	inherits: false;
 	initial-value: transparent;

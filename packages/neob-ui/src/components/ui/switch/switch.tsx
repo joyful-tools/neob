@@ -29,7 +29,7 @@ const SWITCH_ROOT_CLASSES = `
 	group peer relative isolate inline-flex h-6 w-11 shrink-0 cursor-pointer items-center
 	rounded-md border border-edge bg-muted/80 shadow-cel-inset-sm transition-all
 	duration-240 [transition-timing-function:cubic-bezier(0.2,1.15,0.3,1)] neo-focus-ring outline-hidden
-	disabled:cursor-not-allowed disabled:opacity-50
+	disabled:cursor-not-allowed disabled:opacity-disabled
 	dark:bg-muted
 `;
 
@@ -65,7 +65,7 @@ export function Switch({
 	const switchControl = (
 		<BaseSwitch.Root
 			ref={ref}
-			className={cn(SWITCH_ROOT_CLASSES, isInvalid && 'border-red [--color-ring:var(--color-red)] dark:border-red', className)}
+			className={cn(SWITCH_ROOT_CLASSES, isInvalid && 'border-red [--color-ring:var(--ring-invalid)] dark:border-red', className)}
 			aria-describedby={describedBy}
 			aria-invalid={isInvalid ? true : undefined}
 			{...properties}

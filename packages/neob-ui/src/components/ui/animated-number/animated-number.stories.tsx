@@ -118,7 +118,7 @@ export const ContinuousOdometerReel: Story = {
 					<Button
 						variant="accent"
 						onClick={triggerRandomSpin}
-						className="border-2 border-edge bg-cyan font-mono text-sm font-bold text-edge shadow-cel hover:bg-cyan-light"
+						className="border-2 border-edge bg-cyan font-mono text-sm font-bold text-edge hover:bg-cyan-light"
 					>
 						Spin Odometer (+50 to +450)
 					</Button>

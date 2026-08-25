@@ -973,7 +973,7 @@ export const CustomTrigger: StoryObj<CustomTriggerComboboxStoryProperties> = {
 							<Button
 								variant="ghost"
 								size="default"
-								className={cn('justify-between overflow-hidden transition-[width] duration-300 ease-spring')}
+								className={cn('justify-between overflow-hidden transition-[width] duration-(--duration-control) ease-spring')}
 							/>
 						}
 					>

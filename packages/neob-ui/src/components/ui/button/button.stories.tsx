@@ -60,6 +60,8 @@ type Story = StoryObj<typeof meta>;
 
 const getButtonDepth = (button: HTMLElement) => getComputedStyle(button).getPropertyValue('--button-depth').trim();
 const getButtonShadowColor = (button: HTMLElement) => getComputedStyle(button).getPropertyValue('--button-shadow-color').trim();
+const getCelDepth = (button: HTMLElement, size: 'sm' | 'md' | 'lg') =>
+	getComputedStyle(button).getPropertyValue(`--shadow-cel-depth-${size}`).trim();
 
 export const Default: Story = {
 	render: (args) => (
@@ -76,7 +78,7 @@ export const Default: Story = {
 		const button = canvas.getByRole('button', { name: 'Button' });
 		await userEvent.click(button);
 		await expect(button).toBeInTheDocument();
-		await expect(getButtonDepth(button)).toBe('2px');
+		await expect(getButtonDepth(button)).toBe(getCelDepth(button, 'sm'));
 		await expect(getButtonShadowColor(button)).not.toBe('rgba(0, 0, 0, 0)');
 	}),
 };
@@ -132,9 +134,9 @@ export const Subtle: Story = {
 		const button = canvas.getByRole('button', { name: 'Subtle Button' });
 		await userEvent.click(button);
 		await expect(button).toBeInTheDocument();
-		await expect(getButtonDepth(button)).toBe('2px');
+		await expect(getButtonDepth(button)).toBe(getCelDepth(button, 'sm'));
 		await expect(getButtonShadowColor(button)).toBe('rgba(0, 0, 0, 0)');
-		await expect(getComputedStyle(button).getPropertyValue('--button-shadow-depth-limit').trim()).toBe('2px');
+		await expect(getComputedStyle(button).getPropertyValue('--button-shadow-depth-limit').trim()).toBe(getCelDepth(button, 'sm'));
 	}),
 };
 
@@ -171,7 +173,7 @@ export const Ghost: Story = {
 		const button = canvas.getByRole('button', { name: 'Ghost Button' });
 		await userEvent.click(button);
 		await expect(button).toBeInTheDocument();
-		await expect(getComputedStyle(button).getPropertyValue('--button-hover-depth').trim()).toBe('2px');
+		await expect(getComputedStyle(button).getPropertyValue('--button-hover-depth').trim()).toBe(getCelDepth(button, 'sm'));
 	}),
 };
 
@@ -278,7 +280,7 @@ export const Disabled: Story = {
 	},
 	play: guardPlay(async ({ canvasElement }) => {
 		const button = within(canvasElement).getByRole('button', { name: 'Disabled' });
-		await expect(getButtonDepth(button)).toBe('2px');
+		await expect(getButtonDepth(button)).toBe(getCelDepth(button, 'sm'));
 		await expect(getButtonShadowColor(button)).toBe('rgba(0, 0, 0, 0)');
 	}),
 };

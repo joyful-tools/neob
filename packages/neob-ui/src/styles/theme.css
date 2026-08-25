@@ -9,6 +9,7 @@
 	--muted-foreground: oklch(42% 0.025 255);
 	--border: oklch(56% 0.02 250);
 	--ring: oklch(48% 0.14 245);
+	--ring-invalid: var(--destructive);
 	--ring-offset: oklch(99% 0.003 85);
 	--card: oklch(100% 0 0);
 	--card-foreground: oklch(20% 0.02 260);
@@ -86,6 +87,7 @@
 	--color-primary-foreground: var(--primary-foreground);
 	--color-border: var(--border);
 	--color-ring: var(--ring);
+	--color-ring-invalid: var(--ring-invalid);
 	--color-card: var(--card);
 	--color-ring-offset: var(--ring-offset);
 	--color-card-foreground: var(--card-foreground);
@@ -112,16 +114,16 @@
 	--color-scrollbar-thumb-hover: var(--scrollbar-thumb-hover);
 	--color-scrollbar-thumb-active: var(--scrollbar-thumb-active);
 
-	--color-cyan-lightest: color-mix(in oklab, var(--color-cyan) 20%, var(--color-white));
-	--color-gold-lightest: color-mix(in oklab, var(--color-gold) 20%, var(--color-white));
-	--color-zinc-lightest: color-mix(in oklab, var(--color-zinc) 20%, var(--color-white));
-	--color-coral-lightest: color-mix(in oklab, var(--color-coral) 20%, var(--color-white));
-	--color-blue-lightest: color-mix(in oklab, var(--color-blue) 20%, var(--color-white));
-	--color-purple-lightest: color-mix(in oklab, var(--color-purple) 20%, var(--color-white));
-	--color-pink-lightest: color-mix(in oklab, var(--color-pink) 20%, var(--color-white));
-	--color-yellow-lightest: color-mix(in oklab, var(--color-yellow) 20%, var(--color-white));
-	--color-red-lightest: color-mix(in oklab, var(--color-red) 20%, var(--color-white));
-	--color-green-lightest: color-mix(in oklab, var(--color-green) 20%, var(--color-white));
+	--color-cyan-lightest: color-mix(in oklab, var(--color-cyan) 25%, var(--color-white));
+	--color-gold-lightest: color-mix(in oklab, var(--color-gold) 25%, var(--color-white));
+	--color-zinc-lightest: color-mix(in oklab, var(--color-zinc) 25%, var(--color-white));
+	--color-coral-lightest: color-mix(in oklab, var(--color-coral) 25%, var(--color-white));
+	--color-blue-lightest: color-mix(in oklab, var(--color-blue) 25%, var(--color-white));
+	--color-purple-lightest: color-mix(in oklab, var(--color-purple) 25%, var(--color-white));
+	--color-pink-lightest: color-mix(in oklab, var(--color-pink) 25%, var(--color-white));
+	--color-yellow-lightest: color-mix(in oklab, var(--color-yellow) 25%, var(--color-white));
+	--color-red-lightest: color-mix(in oklab, var(--color-red) 25%, var(--color-white));
+	--color-green-lightest: color-mix(in oklab, var(--color-green) 25%, var(--color-white));
 
 	--color-cyan-lighter: color-mix(in oklab, var(--color-cyan) 40%, var(--color-white));
 	--color-gold-lighter: color-mix(in oklab, var(--color-gold) 40%, var(--color-white));
@@ -167,16 +169,16 @@
 	--color-red-darker: color-mix(in oklab, var(--color-red) 40%, var(--color-black));
 	--color-green-darker: color-mix(in oklab, var(--color-green) 40%, var(--color-black));
 
-	--color-cyan-darkest: color-mix(in oklab, var(--color-cyan) 20%, var(--color-black));
-	--color-gold-darkest: color-mix(in oklab, var(--color-gold) 20%, var(--color-black));
-	--color-zinc-darkest: color-mix(in oklab, var(--color-zinc) 20%, var(--color-black));
-	--color-coral-darkest: color-mix(in oklab, var(--color-coral) 20%, var(--color-black));
-	--color-blue-darkest: color-mix(in oklab, var(--color-blue) 20%, var(--color-black));
-	--color-purple-darkest: color-mix(in oklab, var(--color-purple) 20%, var(--color-black));
-	--color-pink-darkest: color-mix(in oklab, var(--color-pink) 20%, var(--color-black));
-	--color-yellow-darkest: color-mix(in oklab, var(--color-yellow) 20%, var(--color-black));
-	--color-red-darkest: color-mix(in oklab, var(--color-red) 20%, var(--color-black));
-	--color-green-darkest: color-mix(in oklab, var(--color-green) 20%, var(--color-black));
+	--color-cyan-darkest: color-mix(in oklab, var(--color-cyan) 25%, var(--color-black));
+	--color-gold-darkest: color-mix(in oklab, var(--color-gold) 25%, var(--color-black));
+	--color-zinc-darkest: color-mix(in oklab, var(--color-zinc) 25%, var(--color-black));
+	--color-coral-darkest: color-mix(in oklab, var(--color-coral) 25%, var(--color-black));
+	--color-blue-darkest: color-mix(in oklab, var(--color-blue) 25%, var(--color-black));
+	--color-purple-darkest: color-mix(in oklab, var(--color-purple) 25%, var(--color-black));
+	--color-pink-darkest: color-mix(in oklab, var(--color-pink) 25%, var(--color-black));
+	--color-yellow-darkest: color-mix(in oklab, var(--color-yellow) 25%, var(--color-black));
+	--color-red-darkest: color-mix(in oklab, var(--color-red) 25%, var(--color-black));
+	--color-green-darkest: color-mix(in oklab, var(--color-green) 25%, var(--color-black));
 
 	--animate-overlay-in: overlay-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 	--animate-overlay-out: overlay-out 0.05s ease-in forwards;
@@ -186,23 +188,38 @@
 	--animate-popover-out: popover-out 0.05s ease-in forwards;
 
 	--ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	--ease-press: cubic-bezier(0.2, 0, 0, 1);
+	--duration-control: 300ms;
+	--duration-press: 75ms;
+	--duration-focus-ring: var(--duration-control);
+	--opacity-disabled: 0.5;
 
 	--shadow-cel-depth: var(--shadow-cel-depth-md);
-	--shadow-cel-depth-xs: 1px;
-	--shadow-cel-depth-sm: 2px;
-	--shadow-cel-depth-md: 4px;
-	--shadow-cel-depth-lg: 8px;
-	--shadow-cel-depth-xl: 12px;
+	--shadow-cel-depth-xs: 0.5px;
+	--shadow-cel-depth-sm: 1px;
+	--shadow-cel-depth-md: 2px;
+	--shadow-cel-depth-lg: 4px;
+	--shadow-cel-depth-xl: 8px;
 	--shadow-cel-color-default: var(--edge);
-	--shadow-cel-inset-depth: var(--shadow-cel-inset-depth-md);
-	--shadow-cel-inset-depth-md: 3px;
-	--shadow-cel-inset-depth-sm: 2px;
-	--shadow-cel-inset-color-md: oklch(from var(--edge) l c h / 25%);
-	--shadow-cel-inset-color-sm: oklch(from var(--edge) l c h / 20%);
+	--shadow-cel-inset-depth: var(--shadow-cel-depth);
+	--shadow-cel-inset-depth-xs: var(--shadow-cel-depth-xs);
+	--shadow-cel-inset-depth-sm: var(--shadow-cel-depth-sm);
+	--shadow-cel-inset-depth-md: var(--shadow-cel-depth-md);
+	--shadow-cel-inset-depth-lg: var(--shadow-cel-depth-lg);
+	--shadow-cel-inset-depth-xl: var(--shadow-cel-depth-xl);
+	--shadow-cel-inset-color-default: oklch(from var(--edge) l c h / 25%);
 	--underline-slide-thickness: 1px;
 	--underline-slide-duration: 300ms;
 	--focus-ring-inner-size: 2px;
 	--focus-ring-outer-size: 4px;
+	--focus-ring-compact-inner-size: 0px;
+	--focus-ring-compact-outer-size: 2px;
+	--focus-ring-bleed: 2px;
+	--scrollbar-size: 8px;
+	--scrollbar-size-thin: 6px;
+	--scrollbar-size-auto: 10px;
+	--scrollbar-radius: 9999px;
+	--scrollbar-thumb-border-width: 2px;
 
 	@keyframes overlay-in {
 		from {

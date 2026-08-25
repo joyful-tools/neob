@@ -10,11 +10,11 @@ const CheckboxGroupContext = createContext<{ controlFirst?: boolean }>({ control
 const CHECKBOX_ROOT_CLASSES = `
 	peer relative flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center
 	rounded-sm border-2 border-edge bg-white shadow-cel-sm transition-all
-	duration-300 ease-spring
+	duration-[var(--duration-control)] ease-spring
 	outline-hidden neo-focus-ring isolate
 	data-[checked]:bg-black data-[checked]:text-white
 	data-[indeterminate]:bg-black data-[indeterminate]:text-white
-	disabled:cursor-not-allowed disabled:opacity-50
+	disabled:cursor-not-allowed disabled:opacity-disabled
 	dark:bg-zinc dark:data-[checked]:bg-white
 	dark:data-[checked]:text-black dark:data-[indeterminate]:bg-white
 	dark:data-[indeterminate]:text-black
@@ -56,7 +56,7 @@ function CheckboxRoot({ label, description, controlFirst = true, error, classNam
 	const checkboxControl = (
 		<BaseCheckbox.Root
 			ref={ref}
-			className={cn(CHECKBOX_ROOT_CLASSES, isInvalid && 'border-red [--color-ring:var(--color-red)] dark:border-red', className)}
+			className={cn(CHECKBOX_ROOT_CLASSES, isInvalid && 'border-red [--color-ring:var(--ring-invalid)] dark:border-red', className)}
 			aria-describedby={describedBy}
 			aria-invalid={isInvalid ? true : undefined}
 			{...properties}

@@ -157,7 +157,7 @@ function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 				className={cn(
 					buttonVariants({ size }),
 					'w-full justify-between bg-white font-bold text-black dark:bg-zinc dark:text-white',
-					isInvalid && 'border-red [--color-ring:var(--color-red)] dark:border-red',
+					isInvalid && 'border-red [--color-ring:var(--ring-invalid)] dark:border-red',
 					className,
 				)}
 				aria-describedby={describedBy}
@@ -234,7 +234,7 @@ function Option<T>({ children, value, disabled, className }: SelectOptionProps<T
 			disabled={disabled}
 			className={cn(
 				'relative flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-1.5 text-sm font-bold text-black outline-hidden transition-colors select-none',
-				'data-disabled:pointer-events-none data-disabled:opacity-50',
+				'data-disabled:pointer-events-none data-disabled:opacity-disabled',
 				'data-highlighted:bg-black data-highlighted:text-white dark:text-white dark:data-highlighted:bg-white dark:data-highlighted:text-black',
 				className,
 			)}

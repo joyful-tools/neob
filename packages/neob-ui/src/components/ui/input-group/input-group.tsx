@@ -107,11 +107,11 @@ export function InputGroup({
 			<div
 				onClick={handleContainerClick}
 				className={cn(
-					`neo-focus-ring-focus isolate flex w-full items-center overflow-hidden rounded-lg border-2 border-edge bg-white font-medium shadow-cel-inset-sm outline-hidden transition-all duration-300 ease-spring dark:border-edge dark:bg-zinc`,
+					`neo-focus-ring-focus isolate flex w-full items-center overflow-hidden rounded-lg border-2 border-edge bg-white font-medium shadow-cel-inset-sm outline-hidden transition-all duration-(--duration-control) ease-spring dark:border-edge dark:bg-zinc`,
 					size === 'sm' && 'h-8 px-2 text-sm',
 					size === 'default' && 'h-10 px-3.5 text-base',
 					size === 'lg' && 'h-12 px-4.5 text-lg',
-					hasError && 'border-red [--color-ring:var(--color-red)] dark:border-red',
+					hasError && 'border-red [--color-ring:var(--ring-invalid)] dark:border-red',
 					disabled && 'pointer-events-none cursor-not-allowed opacity-50 select-none',
 					className,
 				)}
@@ -225,7 +225,7 @@ function InputGroupButton({ children, className, tooltip, ...properties }: Input
 			variant="ghost"
 			disabled={disabled || properties.disabled}
 			className={cn(
-				`h-7 w-auto min-w-7 border px-1.5 text-black/60 [--focus-ring-inner-size:0] [--focus-ring-outer-size:2px] hover:text-black dark:text-white/60 dark:hover:text-white`,
+				`h-7 w-auto min-w-7 border px-1.5 text-black/60 [--focus-ring-inner-size:var(--focus-ring-compact-inner-size)] [--focus-ring-outer-size:var(--focus-ring-compact-outer-size)] hover:text-black dark:text-white/60 dark:hover:text-white`,
 				size === 'sm' && 'h-5 min-w-5 px-1 text-xs',
 				size === 'lg' && 'h-9 min-w-9 px-2 text-base',
 				className,

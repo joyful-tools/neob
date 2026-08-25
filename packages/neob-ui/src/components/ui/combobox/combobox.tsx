@@ -49,8 +49,8 @@ function getInputStyles(size: ComboboxSize, hasError: boolean, focusRingClass = 
 
 	return cn(
 		focusRingClass,
-		`isolate flex w-full items-center justify-between bg-white font-bold text-black outline-hidden transition-all duration-300 ease-spring select-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
-		hasError ? 'border-red [--color-ring:var(--color-red)] dark:border-red' : 'border-edge dark:border-edge',
+		`isolate flex w-full items-center justify-between bg-white font-bold text-black outline-hidden transition-all duration-(--duration-control) ease-spring select-none disabled:cursor-not-allowed disabled:opacity-disabled dark:bg-zinc dark:text-white`,
+		hasError ? 'border-red [--color-ring:var(--ring-invalid)] dark:border-red' : 'border-edge dark:border-edge',
 		sizeClasses[size],
 	);
 }
@@ -380,8 +380,8 @@ function getChipsContainerStyles(size: ComboboxSize, hasError: boolean) {
 	};
 
 	return cn(
-		`neo-focus-ring-focus isolate flex w-full flex-col gap-1 bg-white font-bold text-black shadow-cel-inset-md outline-hidden transition-all duration-300 ease-spring select-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc dark:text-white`,
-		hasError ? 'border-red [--color-ring:var(--color-red)] dark:border-red' : 'border-edge dark:border-edge',
+		`neo-focus-ring-focus isolate flex w-full flex-col gap-1 bg-white font-bold text-black shadow-cel-inset-md outline-hidden transition-all duration-(--duration-control) ease-spring select-none disabled:cursor-not-allowed disabled:opacity-disabled dark:bg-zinc dark:text-white`,
+		hasError ? 'border-red [--color-ring:var(--ring-invalid)] dark:border-red' : 'border-edge dark:border-edge',
 		sizeClasses[size],
 	);
 }
@@ -419,7 +419,7 @@ function TriggerMultipleWithInput<ValueType>({
 		<BaseCombobox.Chips
 			className={cn(
 				getChipsContainerStyles(size, hasError),
-				'h-auto data-disabled:cursor-not-allowed data-disabled:opacity-50',
+				'h-auto data-disabled:cursor-not-allowed data-disabled:opacity-disabled',
 				sizeToMinHeight[size],
 				className,
 			)}
@@ -506,7 +506,7 @@ function Item({ children, className, ref, ...props }: ComboboxItemProps) {
 			className={cn(
 				'relative mx-1.5 flex cursor-pointer items-center justify-between rounded-md px-3 py-1.5 text-sm font-bold text-black outline-hidden select-none dark:text-white',
 				'data-highlighted:bg-black data-highlighted:text-white dark:data-highlighted:bg-white dark:data-highlighted:text-black [&[data-highlighted]_*]:text-white dark:[&[data-highlighted]_*]:text-black',
-				'data-disabled:cursor-not-allowed data-disabled:opacity-50 data-disabled:data-highlighted:bg-transparent data-disabled:data-highlighted:text-black dark:data-disabled:data-highlighted:text-white',
+				'data-disabled:cursor-not-allowed data-disabled:opacity-disabled data-disabled:data-highlighted:bg-transparent data-disabled:data-highlighted:text-black dark:data-disabled:data-highlighted:text-white',
 				className,
 			)}
 			{...props}

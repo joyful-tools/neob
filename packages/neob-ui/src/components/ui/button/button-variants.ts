@@ -11,11 +11,11 @@ const raisedButtonStyles = `
 const subtleButtonStyles = `
 	[--button-rest-shadow-color:transparent]
 	[--button-hover-shadow-color:var(--shadow-cel-color-default)]
-	[--button-shadow-depth-limit:2px]
+	[--button-shadow-depth-limit:var(--shadow-cel-depth-sm)]
 `;
 
 const ghostButtonStyles = `
-	border-transparent [--button-hover-depth:2px] [--button-rest-shadow-color:transparent] [--button-hover-shadow-color:transparent]
+	border-transparent [--button-hover-depth:var(--shadow-cel-depth-sm)] [--button-rest-shadow-color:transparent] [--button-hover-shadow-color:transparent]
 	hover:border-edge active:border-edge aria-expanded:border-edge data-pressed:border-edge
 `;
 
@@ -24,7 +24,7 @@ export const buttonVariants = cva(
 		neo-focus-ring
 		relative isolate inline-flex cursor-pointer items-center justify-center
 		gap-2 whitespace-nowrap outline-hidden select-none
-		disabled:pointer-events-none disabled:opacity-50
+		disabled:pointer-events-none disabled:opacity-disabled
 	`,
 	{
 		variants: {
@@ -70,7 +70,7 @@ export const buttonVariants = cva(
 				'dark-accent': `
 					${standardButtonStyles}
 					border-4 bg-cyan-dark text-white
-					[--button-hover-depth:8px] [--button-rest-depth:4px]
+					[--button-hover-depth:var(--shadow-cel-depth-lg)] [--button-rest-depth:var(--shadow-cel-depth-md)]
 					[--button-rest-shadow-color:var(--shadow-cel-color-default)]
 				`,
 				'dark-subtle': `
