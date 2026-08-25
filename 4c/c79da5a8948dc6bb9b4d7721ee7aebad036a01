@@ -1,0 +1,29 @@
+packages/neob-ui/src/components/ui/combobox/combobox.stories.tsx
+  s_6b199d2dfc9297::t_5488bc6cd311d0 976
+packages/neob-ui/src/components/ui/combobox/combobox.tsx
+  s_6b199d2dfc9297::t_ba8242608bf975 52-53,383-384,422,509
+packages/neob-ui/src/components/ui/input-area/input-area.tsx
+  s_6b199d2dfc9297::t_a36c25d2f6b3e0 66,68
+packages/neob-ui/src/components/ui/input-group/input-group.tsx
+  s_6b199d2dfc9297::t_c75dcbace6af1e 110,114,228
+packages/neob-ui/src/components/ui/input/input.tsx
+  s_6b199d2dfc9297::t_f5a62b721a7abc 176-177
+packages/neob-ui/src/components/ui/pagination/pagination.tsx
+  s_6b199d2dfc9297::t_e974c4b7e3784a 123,176,193,222,275,292
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "4cc79da5a8948dc6bb9b4d7721ee7aebad036a01",
+  "prompts": {},
+  "sessions": {
+    "s_6b199d2dfc9297": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_fc7a7aa13ffeFVFMTK8tTRVbuW",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
