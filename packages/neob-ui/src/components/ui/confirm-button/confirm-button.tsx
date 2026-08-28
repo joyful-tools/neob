@@ -15,8 +15,10 @@ interface ConfirmButtonProperties {
 	readonly cancelLabel?: string;
 	readonly onConfirm: () => Promise<void> | void;
 	readonly variant?: ButtonProperties['variant'];
+	readonly color?: ButtonProperties['color'];
 	readonly size?: ButtonProperties['size'];
 	readonly confirmVariant?: ButtonProperties['variant'];
+	readonly confirmColor?: ButtonProperties['color'];
 	readonly className?: string;
 	readonly disabled?: boolean;
 }
@@ -41,8 +43,10 @@ export function ConfirmButton({
 	cancelLabel = 'Cancel',
 	onConfirm,
 	variant = 'subtle',
+	color,
 	size = 'sm',
 	confirmVariant = 'danger',
+	confirmColor,
 	className,
 	disabled = false,
 }: ConfirmButtonProperties) {
@@ -210,6 +214,7 @@ export function ConfirmButton({
 									ref={setConfirmButtonRef}
 									type="button"
 									variant={confirmVariant}
+									color={confirmColor}
 									size="sm"
 									onClick={() => void handleConfirm()}
 									isLoading={isConfirming}
@@ -228,7 +233,7 @@ export function ConfirmButton({
 						layoutId={layoutId}
 						layoutDependency={open}
 						transition={springClose}
-						className={cn(buttonVariants({ variant, size, className }), 'relative')}
+						className={cn(buttonVariants({ variant, color, size, className }), 'relative')}
 						disabled={disabled}
 						onClick={() => setOpen(true)}
 						style={{ borderRadius, transition: 'none' }}

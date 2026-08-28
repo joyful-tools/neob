@@ -62,7 +62,7 @@ export const GatedTouch: Story = {
 				long-press (700ms) to avoid misfires during scrolling.
 			</p>
 			<Tooltip {...args}>
-				<Button variant="accent">Touch / Hover Test</Button>
+				<Button color="gold">Touch / Hover Test</Button>
 			</Tooltip>
 		</div>
 	),

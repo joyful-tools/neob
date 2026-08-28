@@ -116,7 +116,8 @@ export function ConfirmDialog({
 						type="button"
 						onClick={onConfirm}
 						disabled={!confirmationMatches}
-						variant={variant === 'danger' ? 'danger' : variant === 'warning' ? 'accent' : 'default'}
+						variant={variant === 'danger' ? 'danger' : 'default'}
+						color={variant === 'warning' ? 'gold' : undefined}
 						isLoading={isConfirming}
 					>
 						{confirmLabel}

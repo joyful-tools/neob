@@ -38,6 +38,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const colors = ['cyan', 'gold', 'zinc', 'coral', 'blue', 'purple', 'pink', 'yellow', 'red', 'green'] satisfies NonNullable<
+	ComponentProps<typeof SplitButton>['color']
+>[];
+
 const PublishButton = ({ children, menuContent: _menuContent, ...props }: ComponentProps<typeof SplitButton>) => {
 	const menuContent = (
 		<>
@@ -91,15 +95,20 @@ export const Default: Story = {
 	}),
 };
 
-export const Accent: Story = {
-	args: {
-		variant: 'accent',
-	},
-	render: (args) => <PublishButton {...args} />,
+export const Colors: Story = {
+	render: (args) => (
+		<div className="grid grid-cols-2 gap-3">
+			{colors.map((color) => (
+				<PublishButton key={color} {...args} color={color}>
+					{color}
+				</PublishButton>
+			))}
+		</div>
+	),
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
-		await userEvent.click(canvas.getByRole('button', { name: 'more options' }));
+		await userEvent.click(canvas.getAllByRole('button', { name: 'more options' })[0]);
 		const menuItem = await body.findByText('Schedule Publish');
 		await expect(menuItem).toBeInTheDocument();
 	}),
@@ -122,7 +131,7 @@ export const Danger: Story = {
 export const Small: Story = {
 	args: {
 		size: 'sm',
-		variant: 'accent',
+		color: 'gold',
 	},
 	render: (args) => <PublishButton {...args} />,
 	play: guardPlay(async ({ canvasElement }) => {

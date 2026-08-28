@@ -5,8 +5,11 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utilities';
 
-export interface SplitButtonProperties extends ButtonHTMLAttributes<HTMLButtonElement> {
-	readonly variant?: 'default' | 'accent' | 'danger';
+import type { ButtonProperties } from '@/components/ui/button';
+
+export interface SplitButtonProperties extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color'> {
+	readonly variant?: ButtonProperties['variant'];
+	readonly color?: ButtonProperties['color'];
 	readonly size?: 'default' | 'sm' | 'lg';
 	readonly menuContent: ReactNode;
 }
@@ -14,6 +17,7 @@ export interface SplitButtonProperties extends ButtonHTMLAttributes<HTMLButtonEl
 export function SplitButton({
 	children,
 	variant = 'default',
+	color,
 	size = 'default',
 	menuContent,
 	className,
@@ -53,6 +57,7 @@ export function SplitButton({
 			<Button
 				type="button"
 				variant={variant}
+				color={color}
 				size={size}
 				disabled={disabled}
 				onClick={onClick}
@@ -66,6 +71,7 @@ export function SplitButton({
 					<Button
 						type="button"
 						variant={variant}
+						color={color}
 						size={size}
 						disabled={disabled}
 						aria-label="more options"

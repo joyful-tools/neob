@@ -34,7 +34,7 @@ export const Default: Story = {
 			<div className="min-h-96 p-12">
 				<DropMenu
 					trigger={({ isOpen, anchor }) => (
-						<Button ref={anchor} variant="accent" aria-expanded={isOpen}>
+						<Button ref={anchor} color="gold" aria-expanded={isOpen}>
 							Open Menu
 						</Button>
 					)}

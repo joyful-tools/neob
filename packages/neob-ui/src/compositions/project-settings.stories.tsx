@@ -142,7 +142,7 @@ function ProjectSettings() {
 							</Card.Header>
 							<Card.Content className="grid gap-6 md:grid-cols-2">
 								<Switch label="Product updates" description="New releases, improvements, and scheduled maintenance." defaultChecked />
-								<Switch label="Mentions and replies" description="Messages that need your attention." defaultChecked variant="accent" />
+								<Switch label="Mentions and replies" description="Messages that need your attention." defaultChecked variant="cyan" />
 							</Card.Content>
 						</Card>
 					</Tabs.Content>

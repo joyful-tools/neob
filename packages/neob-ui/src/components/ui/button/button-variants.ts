@@ -34,11 +34,6 @@ export const buttonVariants = cva(
 					${raisedButtonStyles}
 					bg-primary-foreground text-primary
 				`,
-				accent: `
-					${standardButtonStyles}
-					${raisedButtonStyles}
-					bg-cyan text-black dark:bg-cyan-dark dark:text-white
-				`,
 				danger: `
 					${standardButtonStyles}
 					${raisedButtonStyles}
@@ -48,11 +43,6 @@ export const buttonVariants = cva(
 					${standardButtonStyles}
 					${subtleButtonStyles}
 					bg-primary-foreground text-primary
-				`,
-				'subtle-accent': `
-					${standardButtonStyles}
-					${subtleButtonStyles}
-					bg-cyan text-black dark:bg-cyan-dark dark:text-white
 				`,
 				ghost: `
 					${standardButtonStyles}
@@ -67,12 +57,6 @@ export const buttonVariants = cva(
 					${raisedButtonStyles}
 					bg-zinc text-white
 				`,
-				'dark-accent': `
-					${standardButtonStyles}
-					border-4 bg-cyan-dark text-white
-					[--button-hover-depth:var(--shadow-cel-depth-lg)] [--button-rest-depth:var(--shadow-cel-depth-md)]
-					[--button-rest-shadow-color:var(--shadow-cel-color-default)]
-				`,
 				'dark-subtle': `
 					${standardButtonStyles}
 					${subtleButtonStyles}
@@ -83,6 +67,18 @@ export const buttonVariants = cva(
 					${ghostButtonStyles}
 					text-white
 				`,
+			},
+			color: {
+				cyan: 'bg-cyan text-black dark:bg-cyan-dark dark:text-white',
+				gold: 'bg-gold text-black dark:bg-gold-dark dark:text-white',
+				zinc: 'bg-zinc text-white dark:bg-zinc-dark',
+				coral: 'bg-coral text-black dark:bg-coral-dark dark:text-white',
+				blue: 'bg-blue text-black dark:bg-blue-dark dark:text-white',
+				purple: 'bg-purple text-black dark:bg-purple-dark dark:text-white',
+				pink: 'bg-pink text-black dark:bg-pink-dark dark:text-white',
+				yellow: 'bg-yellow text-black dark:bg-yellow-dark dark:text-white',
+				red: 'bg-red text-black dark:bg-red-dark dark:text-white',
+				green: 'bg-green text-black dark:bg-green-dark dark:text-white',
 			},
 			size: {
 				default: 'h-10 px-4 py-2',

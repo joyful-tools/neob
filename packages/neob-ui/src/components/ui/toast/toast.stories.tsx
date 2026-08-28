@@ -13,6 +13,7 @@ import type { ComponentProps } from 'react';
 type ToastButtonConfiguration = {
 	label: string;
 	variant: ComponentProps<typeof Button>['variant'];
+	color?: ComponentProps<typeof Button>['color'];
 	kind: 'custom' | 'success' | 'error' | 'info' | 'warning';
 	title: string;
 	description?: string;
@@ -92,7 +93,14 @@ export const AllVariants: Story = {
 	args: {
 		buttons: [
 			{ label: 'Default', variant: 'default', kind: 'custom', title: 'Default Toast', description: 'This is a standard notification.' },
-			{ label: 'Success', variant: 'accent', kind: 'success', title: 'Success!', description: 'Your changes have been saved.' },
+			{
+				label: 'Success',
+				variant: 'default',
+				color: 'green',
+				kind: 'success',
+				title: 'Success!',
+				description: 'Your changes have been saved.',
+			},
 			{ label: 'Error', variant: 'danger', kind: 'error', title: 'Something went wrong', description: 'Please try again later.' },
 			{ label: 'Info', variant: 'subtle', kind: 'info', title: 'Did you know?', description: 'You can drag toasts to dismiss them.' },
 			{ label: 'Warning', variant: 'default', kind: 'warning', title: 'Careful!', description: 'This action may have side effects.' },
@@ -101,7 +109,7 @@ export const AllVariants: Story = {
 	render: (args) => (
 		<div className="flex flex-wrap items-center gap-3">
 			{args.buttons.map((button) => (
-				<Button key={button.label} variant={button.variant} onClick={() => showToast(button)}>
+				<Button key={button.label} variant={button.variant} color={button.color} onClick={() => showToast(button)}>
 					{button.label}
 				</Button>
 			))}
@@ -128,7 +136,8 @@ export const WithActions: Story = {
 			},
 			{
 				label: 'Success + Action',
-				variant: 'accent',
+				variant: 'default',
+				color: 'green',
 				kind: 'success',
 				title: 'Team created',
 				description: 'Your new team is ready to go.',
@@ -149,7 +158,7 @@ export const WithActions: Story = {
 	render: (args) => (
 		<div className="flex flex-wrap items-center gap-3">
 			{args.buttons.map((button) => (
-				<Button key={button.label} variant={button.variant} onClick={() => showToast(button)}>
+				<Button key={button.label} variant={button.variant} color={button.color} onClick={() => showToast(button)}>
 					{button.label}
 				</Button>
 			))}
@@ -178,14 +187,14 @@ export const Minimal: Story = {
 	args: {
 		buttons: [
 			{ label: 'Title Only', variant: 'default', kind: 'custom', title: 'Copied to clipboard' },
-			{ label: 'Success Title Only', variant: 'accent', kind: 'success', title: 'Saved' },
+			{ label: 'Success Title Only', variant: 'default', color: 'green', kind: 'success', title: 'Saved' },
 			{ label: 'Error Title Only', variant: 'danger', kind: 'error', title: 'Failed' },
 		],
 	},
 	render: (args) => (
 		<div className="flex flex-wrap items-center gap-3">
 			{args.buttons.map((button) => (
-				<Button key={button.label} variant={button.variant} onClick={() => showToast(button)}>
+				<Button key={button.label} variant={button.variant} color={button.color} onClick={() => showToast(button)}>
 					{button.label}
 				</Button>
 			))}
@@ -203,7 +212,8 @@ export const VariantDismissal: Story = {
 		buttons: [
 			{
 				label: 'Success Variant',
-				variant: 'accent',
+				variant: 'default',
+				color: 'green',
 				kind: 'success',
 				title: 'Deployment complete',
 				description: 'All services are healthy.',
@@ -227,7 +237,7 @@ export const VariantDismissal: Story = {
 	render: (args) => (
 		<div className="flex flex-wrap items-center gap-3">
 			{args.buttons.map((button) => (
-				<Button key={button.label} variant={button.variant} onClick={() => showToast(button)}>
+				<Button key={button.label} variant={button.variant} color={button.color} onClick={() => showToast(button)}>
 					{button.label}
 				</Button>
 			))}

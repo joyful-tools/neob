@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { ComponentProps, useId, useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, within } from 'storybook/test';
 
@@ -30,7 +30,7 @@ const meta = {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['default', 'accent', 'success'],
+			options: ['default', 'cyan', 'gold', 'zinc', 'coral', 'blue', 'purple', 'pink', 'yellow', 'red', 'green', 'success'],
 		},
 		disabled: {
 			control: 'boolean',
@@ -43,6 +43,10 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+const colors = ['cyan', 'gold', 'zinc', 'coral', 'blue', 'purple', 'pink', 'yellow', 'red', 'green'] satisfies NonNullable<
+	ComponentProps<typeof Switch>['variant']
+>[];
 
 export const Standalone: Story = {
 	args: {
@@ -69,16 +73,17 @@ export const WithLabel: Story = {
 	}),
 };
 
-export const AccentColor: Story = {
-	args: {
-		label: 'Enable Gold Accent Mode',
-		description: 'Use the custom brand accent colors.',
-		variant: 'accent',
-		defaultChecked: true,
-	},
+export const Colors: Story = {
+	render: () => (
+		<div className="grid grid-cols-2 gap-4">
+			{colors.map((color) => (
+				<Switch key={color} label={color} variant={color} defaultChecked />
+			))}
+		</div>
+	),
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		const toggle = canvas.getByRole('switch');
+		const toggle = canvas.getByRole('switch', { name: 'gold' });
 		await expect(toggle).toBeChecked();
 	}),
 };
@@ -152,7 +157,7 @@ export const ValidationError: Story = {
 		);
 	},
 	args: {
-		variant: 'accent',
+		variant: 'cyan',
 	},
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);

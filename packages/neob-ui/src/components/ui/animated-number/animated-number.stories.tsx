@@ -66,23 +66,18 @@ export const InteractiveCounter: Story = {
 					<Button variant="subtle" size="sm" onClick={() => setValue(0)} className="flex items-center gap-1 font-mono">
 						<ArrowClockwise className="size-3.5" /> Reset
 					</Button>
-					<Button
-						variant="accent"
-						size="sm"
-						onClick={() => setValue((previous) => previous + 1)}
-						className="flex items-center gap-1 font-mono"
-					>
+					<Button color="gold" size="sm" onClick={() => setValue((previous) => previous + 1)} className="flex items-center gap-1 font-mono">
 						<Plus className="size-3.5" /> 1
 					</Button>
 					<Button
-						variant="accent"
+						color="gold"
 						size="sm"
 						onClick={() => setValue((previous) => previous + 10)}
 						className="flex items-center gap-1 font-mono"
 					>
 						<Plus className="size-3.5" /> 10
 					</Button>
-					<Button variant="accent" size="sm" onClick={() => setValue((previous) => previous + 100)} className="font-mono">
+					<Button color="gold" size="sm" onClick={() => setValue((previous) => previous + 100)} className="font-mono">
 						+100
 					</Button>
 				</div>
@@ -116,7 +111,7 @@ export const ContinuousOdometerReel: Story = {
 
 				<div className="flex gap-3">
 					<Button
-						variant="accent"
+						color="gold"
 						onClick={triggerRandomSpin}
 						className="border-2 border-edge bg-cyan font-mono text-sm font-bold text-edge hover:bg-cyan-light"
 					>
@@ -187,7 +182,7 @@ export const FinancialMarketTicker: Story = {
 						Simulate Dip
 					</Button>
 					<Button
-						variant="accent"
+						color="gold"
 						size="sm"
 						onClick={() => simulateTrade('up')}
 						className="flex-1 border-2 border-edge bg-green font-mono text-xs text-edge hover:bg-green-light"
@@ -286,7 +281,7 @@ export const AnimatedNumberModes: Story = {
 					</div>
 				</div>
 
-				<Button variant="accent" onClick={() => setValue(Math.floor(Math.random() * 900) + 100)} className="font-mono text-xs">
+				<Button color="gold" onClick={() => setValue(Math.floor(Math.random() * 900) + 100)} className="font-mono text-xs">
 					Randomize (100 - 999)
 				</Button>
 			</Card>

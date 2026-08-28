@@ -40,7 +40,7 @@ export type BreadcrumbSeparatorProps = HTMLAttributes<HTMLSpanElement>;
 
 export type BreadcrumbEllipsisProps = HTMLAttributes<HTMLSpanElement>;
 
-export interface BreadcrumbClipboardProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+export interface BreadcrumbClipboardProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'color'> {
 	readonly text: string;
 }
 

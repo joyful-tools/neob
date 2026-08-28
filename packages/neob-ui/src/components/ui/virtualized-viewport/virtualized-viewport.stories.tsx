@@ -148,7 +148,7 @@ export const DynamicHeights: Story = {
 					<h3 className="font-display text-base">Dynamic Heights</h3>
 					<div className="flex gap-2">
 						<Button
-							variant="accent"
+							color="gold"
 							size="sm"
 							onClick={() =>
 								setItems((prev) => {

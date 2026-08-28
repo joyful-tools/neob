@@ -7,6 +7,7 @@ import { guardPlay } from '@/lib/storybook-interactions';
 
 import { Button } from './button';
 
+import type { ButtonProperties } from './button';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 /**
@@ -16,7 +17,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  * ```tsx
  * import { Button } from '@joyful-tools/neob';
  *
- * <Button variant="accent" size="lg" isLoading={false} onClick={handleClick}>
+ * <Button color="gold" size="lg" isLoading={false} onClick={handleClick}>
  *   Submit
  * </Button>
  * ```
@@ -31,19 +32,11 @@ const meta = {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: [
-				'default',
-				'accent',
-				'danger',
-				'subtle',
-				'subtle-accent',
-				'ghost',
-				'link',
-				'dark-default',
-				'dark-accent',
-				'dark-subtle',
-				'dark-ghost',
-			],
+			options: ['default', 'danger', 'subtle', 'ghost', 'link', 'dark-default', 'dark-subtle', 'dark-ghost'],
+		},
+		color: {
+			control: 'select',
+			options: ['cyan', 'gold', 'zinc', 'coral', 'blue', 'purple', 'pink', 'yellow', 'red', 'green'],
 		},
 		size: {
 			control: 'select',
@@ -57,6 +50,10 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+const colors = ['cyan', 'gold', 'zinc', 'coral', 'blue', 'purple', 'pink', 'yellow', 'red', 'green'] satisfies NonNullable<
+	ButtonProperties['color']
+>[];
 
 const getButtonDepth = (button: HTMLElement) => getComputedStyle(button).getPropertyValue('--button-depth').trim();
 const getButtonShadowColor = (button: HTMLElement) => getComputedStyle(button).getPropertyValue('--button-shadow-color').trim();
@@ -83,19 +80,19 @@ export const Default: Story = {
 	}),
 };
 
-export const Accent: Story = {
-	render: (args) => (
-		<Button {...args} onClick={() => action('accent-button-click')()}>
-			{args.children}
-		</Button>
+export const Colors: Story = {
+	render: () => (
+		<div className="flex max-w-2xl flex-wrap gap-3">
+			{colors.map((color) => (
+				<Button key={color} color={color} onClick={() => action(`${color}-button-click`)()}>
+					{color}
+				</Button>
+			))}
+		</div>
 	),
-	args: {
-		children: 'Accent Button',
-		variant: 'accent',
-	},
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		const button = canvas.getByRole('button', { name: 'Accent Button' });
+		const button = canvas.getByRole('button', { name: 'gold' });
 		await userEvent.click(button);
 		await expect(button).toBeInTheDocument();
 	}),
@@ -140,19 +137,19 @@ export const Subtle: Story = {
 	}),
 };
 
-export const SubtleAccent: Story = {
-	render: (args) => (
-		<Button {...args} onClick={() => action('subtle-accent-button-click')()}>
-			{args.children}
-		</Button>
+export const SubtleColor: Story = {
+	render: () => (
+		<div className="flex max-w-2xl flex-wrap gap-3">
+			{colors.map((color) => (
+				<Button key={color} variant="subtle" color={color} onClick={() => action(`subtle-${color}-button-click`)()}>
+					{color}
+				</Button>
+			))}
+		</div>
 	),
-	args: {
-		children: 'Subtle Accent Button',
-		variant: 'subtle-accent',
-	},
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		const button = canvas.getByRole('button', { name: 'Subtle Accent Button' });
+		const button = canvas.getByRole('button', { name: 'gold' });
 		await userEvent.click(button);
 		await expect(button).toBeInTheDocument();
 	}),

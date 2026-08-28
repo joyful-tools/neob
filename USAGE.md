@@ -24,7 +24,7 @@ fixtures (`bun run storybook:test`), so they are guaranteed current.
 If you skip this, you will:
 
 - Invent variant names that don't exist (`Button` variants are
-  `default | accent | danger | subtle | ghost | link` plus their `dark-*`
+  `default | danger | subtle | ghost | link` plus their `dark-*`; set `color` to any palette color
   twins — see `button/button-variants.ts`; there is no `primary` or
   `outline`).
 - Double-wrap form controls in a field wrapper (they already self-wrap —

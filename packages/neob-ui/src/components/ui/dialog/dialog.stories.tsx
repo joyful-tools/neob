@@ -95,7 +95,7 @@ export const Default: Story = {
 								Cancel
 							</Button>
 							<Button
-								variant="accent"
+								color="gold"
 								onClick={() => {
 									action('dialog-confirm')();
 									action('dialog-open-change')(false);

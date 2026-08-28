@@ -422,7 +422,8 @@ export function DatePicker(fullProps: DatePickerProps) {
 						<Button
 							key={monthName}
 							type="button"
-							variant={isSelected ? 'subtle-accent' : 'subtle'}
+							variant="subtle"
+							color={isSelected ? 'gold' : undefined}
 							onClick={() => {
 								changeView('days');
 								handleMonthChange(new Date(year, idx));
@@ -449,7 +450,8 @@ export function DatePicker(fullProps: DatePickerProps) {
 						<Button
 							key={y}
 							type="button"
-							variant={isSelected ? 'subtle-accent' : 'subtle'}
+							variant="subtle"
+							color={isSelected ? 'gold' : undefined}
 							onClick={() => {
 								changeView('days');
 								handleMonthChange(new Date(y, displayedMonth.getMonth()));

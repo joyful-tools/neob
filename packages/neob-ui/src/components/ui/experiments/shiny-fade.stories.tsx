@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	render: () => (
-		<Button variant="accent" className="shiny-fade">
+		<Button color="gold" className="shiny-fade">
 			Generate idea
 		</Button>
 	),

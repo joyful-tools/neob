@@ -1,3 +1,4 @@
+import { ComponentProps } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
@@ -36,6 +37,10 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+const colors = ['cyan', 'gold', 'zinc', 'coral', 'blue', 'purple', 'pink', 'yellow', 'red', 'green'] satisfies NonNullable<
+	ComponentProps<typeof ConfirmButton>['color']
+>[];
 
 export const Default: Story = {
 	render: (args) => (
@@ -78,27 +83,27 @@ export const Default: Story = {
 	}),
 };
 
-export const SubtleAccent: Story = {
-	render: (args) => (
-		<ConfirmButton {...args} onConfirm={() => action('confirm-button-upgrade-confirm')()}>
-			{args.children}
-		</ConfirmButton>
-	),
+export const Colors: Story = {
 	args: {
-		children: 'Upgrade Plan',
+		children: 'Confirm',
 		onConfirm: () => {},
-		variant: 'accent',
-		confirmVariant: 'accent',
-		confirmLabel: 'Confirm Upgrade',
-		title: 'Confirm upgrade plan?',
-		description: 'You will be billed immediately for the new plan tier.',
 	},
-	play: guardPlay(async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		await userEvent.click(canvas.getByRole('button', { name: 'Upgrade Plan' }));
-		await expect(canvas.getByText('Confirm upgrade plan?')).toBeInTheDocument();
-		await userEvent.click(canvas.getByRole('button', { name: 'Confirm Upgrade' }));
-	}),
+	render: () => (
+		<div className="flex max-w-2xl flex-wrap gap-3">
+			{colors.map((color) => (
+				<ConfirmButton
+					key={color}
+					color={color}
+					confirmColor={color}
+					title={`Confirm ${color}?`}
+					confirmLabel="Confirm"
+					onConfirm={() => action(`confirm-${color}`)()}
+				>
+					{color}
+				</ConfirmButton>
+			))}
+		</div>
+	),
 };
 
 export const AsyncDelete: Story = {

@@ -10,18 +10,36 @@ export interface SwitchProperties extends ComponentPropsWithoutRef<typeof BaseSw
 	readonly description?: ReactNode;
 	readonly controlFirst?: boolean;
 	readonly error?: string;
-	readonly variant?: 'default' | 'accent' | 'success';
+	readonly variant?: 'default' | 'cyan' | 'gold' | 'zinc' | 'coral' | 'blue' | 'purple' | 'pink' | 'yellow' | 'red' | 'green' | 'success';
 }
 
 const VARIANT_TRACK_CLASSES = {
 	default: 'bg-zinc dark:bg-zinc-lighter',
-	accent: 'bg-cyan dark:bg-cyan-light',
+	cyan: 'bg-cyan dark:bg-cyan-light',
+	gold: 'bg-gold dark:bg-gold-light',
+	zinc: 'bg-zinc dark:bg-zinc-light',
+	coral: 'bg-coral dark:bg-coral-light',
+	blue: 'bg-blue dark:bg-blue-light',
+	purple: 'bg-purple dark:bg-purple-light',
+	pink: 'bg-pink dark:bg-pink-light',
+	yellow: 'bg-yellow dark:bg-yellow-light',
+	red: 'bg-red dark:bg-red-light',
+	green: 'bg-green dark:bg-green-light',
 	success: 'bg-green dark:bg-green-light',
 } as const;
 
 const VARIANT_ICON_CLASSES = {
 	default: 'text-zinc dark:text-zinc-lighter',
-	accent: 'text-cyan-dark dark:text-cyan-light',
+	cyan: 'text-cyan-dark dark:text-cyan-light',
+	gold: 'text-gold-dark dark:text-gold-light',
+	zinc: 'text-zinc-dark dark:text-zinc-light',
+	coral: 'text-coral-dark dark:text-coral-light',
+	blue: 'text-blue-dark dark:text-blue-light',
+	purple: 'text-purple-dark dark:text-purple-light',
+	pink: 'text-pink-dark dark:text-pink-light',
+	yellow: 'text-yellow-dark dark:text-yellow-light',
+	red: 'text-red-dark dark:text-red-light',
+	green: 'text-green-dark dark:text-green-light',
 	success: 'text-green-dark dark:text-green-light',
 } as const;
 
@@ -42,7 +60,7 @@ const SWITCH_THUMB_CLASSES = `
 
 /**
  * Sliding Switch toggle control component inspired by tactile S.C.R.A.P.S. design.
- * Supports multiple active variants (default neutral zinc, accent cyan, success green).
+ * Supports neutral, semantic, and all palette-color active variants.
  */
 export function Switch({
 	label,

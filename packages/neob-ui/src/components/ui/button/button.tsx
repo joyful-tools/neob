@@ -7,7 +7,7 @@ import { cn } from '@/lib/utilities';
 
 import { buttonVariants } from './button-variants';
 
-export interface ButtonProperties extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
+export interface ButtonProperties extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color'>, VariantProps<typeof buttonVariants> {
 	readonly asChild?: boolean;
 	readonly isLoading?: boolean;
 }
@@ -15,6 +15,7 @@ export interface ButtonProperties extends ButtonHTMLAttributes<HTMLButtonElement
 export function Button({
 	className,
 	variant,
+	color,
 	size,
 	asChild = false,
 	isLoading = false,
@@ -24,7 +25,7 @@ export function Button({
 	...properties
 }: ButtonProperties & { ref?: Ref<HTMLButtonElement> }) {
 	const isDisabledOrLoading = disabled || isLoading;
-	const buttonClass = cn(buttonVariants({ variant, size, className }), isLoading && 'relative');
+	const buttonClass = cn(buttonVariants({ variant, color, size, className }), isLoading && 'relative');
 
 	if (asChild && isValidElement(children)) {
 		return <BaseButton ref={ref} disabled={isDisabledOrLoading} className={buttonClass} render={children} {...properties} />;
