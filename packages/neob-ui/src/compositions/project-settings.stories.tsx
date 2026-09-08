@@ -156,14 +156,12 @@ function ProjectSettings() {
 								</Card.Title>
 								<p className="text-sm text-foreground/70">Northstar Studio currently has 12 active members.</p>
 							</Card.Header>
-							<Card.Content>
-								<div className="flex flex-col justify-between gap-4 rounded-xl border-2 border-edge bg-muted/30 p-5 sm:flex-row sm:items-center">
-									<div>
-										<p className="font-bold">Invite collaborators</p>
-										<p className="mt-1 text-sm text-muted-foreground">New members join with viewer access by default.</p>
-									</div>
-									<Button variant="subtle">Manage members</Button>
+							<Card.Content className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+								<div>
+									<p className="font-bold">Invite collaborators</p>
+									<p className="mt-1 text-sm text-muted-foreground">New members join with viewer access by default.</p>
 								</div>
+								<Button variant="subtle">Manage members</Button>
 							</Card.Content>
 						</Card>
 					</Tabs.Content>

@@ -64,6 +64,9 @@ export { DropdownMenu } from './components/ui/dropdown-menu';
 export { Meter } from './components/ui/meter';
 export type { MeterProperties } from './components/ui/meter';
 
+export { Slider } from './components/ui/slider';
+export type { SliderProperties } from './components/ui/slider';
+
 export { Skeleton } from './components/ui/skeleton';
 export type { SkeletonProperties, ListSkeletonProperties } from './components/ui/skeleton';
 
