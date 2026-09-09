@@ -104,7 +104,7 @@ export function ConfirmButton({
 
 	// Close on click outside
 	useEffect(() => {
-		if (!open) return;
+		if (!open || isConfirming) return;
 
 		function handlePointerDown(event: PointerEvent) {
 			if (!(event.target instanceof Node)) return;
@@ -117,7 +117,7 @@ export function ConfirmButton({
 		return () => {
 			document.removeEventListener('pointerdown', handlePointerDown);
 		};
-	}, [open, containerElement]);
+	}, [open, isConfirming, containerElement]);
 
 	async function handleConfirm() {
 		setIsConfirming(true);
@@ -129,12 +129,14 @@ export function ConfirmButton({
 		}
 	}
 
-	const handleKeyDown = useCallback((event: KeyboardEvent) => {
+	function handleKeyDown(event: KeyboardEvent) {
 		switch (event.key) {
 			case 'Escape': {
 				event.preventDefault();
 				event.stopPropagation();
-				setOpen(false);
+				if (!isConfirming) {
+					setOpen(false);
+				}
 				return;
 			}
 			case 'Tab':
@@ -153,7 +155,7 @@ export function ConfirmButton({
 				return;
 			}
 		}
-	}, []);
+	}
 
 	const borderRadius = size === 'sm' ? 6 : size === 'lg' || size === 'xl' ? 12 : 8;
 
