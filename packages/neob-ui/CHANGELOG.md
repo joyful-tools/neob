@@ -1,5 +1,15 @@
 # @joyful.tools/neob
 
+## 1.2.0
+
+### Minor Changes
+
+- [`f0ca940`](https://github.com/joyful-tools/neob/commit/f0ca940baea41bd002be9cb8e86531a53ab7beb7) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - added slider component
+
+### Patch Changes
+
+- [`04d9e3b`](https://github.com/joyful-tools/neob/commit/04d9e3bd13f7a45a5470838b34c17a8eb3067e17) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Improve dark-mode contrast for highlighted menu items, pressed toggles, and hovered confirmation actions.
+
 ## 1.1.0
 
 ### Minor Changes
