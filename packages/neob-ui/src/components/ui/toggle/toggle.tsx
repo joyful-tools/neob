@@ -7,7 +7,7 @@ import { cn } from '@/lib/utilities';
 
 const TOGGLE_ON_CLASS_NAME = `
 	data-[pressed]:bg-cyan data-[pressed]:text-black
-	dark:data-[pressed]:text-cyan-light data-[pressed]:hover:bg-cyan/90
+	dark:data-[pressed]:text-black data-[pressed]:hover:bg-cyan/90
 `;
 
 interface ToggleProperties extends VariantProps<typeof buttonVariants> {

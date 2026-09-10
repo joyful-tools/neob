@@ -147,7 +147,7 @@ export function DropMenuItem({ children, onClick, className }: DropMenuItemPrope
 						variant="default"
 						size="sm"
 						className={cn(
-							'w-full bg-white px-4 py-2 font-mono font-black text-black hover:bg-yellow focus-visible:bg-yellow dark:bg-zinc dark:text-white dark:hover:text-yellow-light dark:focus-visible:text-yellow-light',
+							'w-full bg-white px-4 py-2 font-mono font-black text-black hover:bg-yellow focus-visible:bg-yellow dark:bg-zinc dark:text-white dark:hover:text-black dark:focus-visible:text-black',
 							className,
 						)}
 					/>
