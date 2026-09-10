@@ -1,0 +1,27 @@
+.changeset/sour-geckos-talk.md
+  s_30c2e3af26781d::t_e758bf5a4bb80c 1-5
+packages/neob-ui/src/components/ui/drop-menu/drop-menu.tsx
+  s_30c2e3af26781d::t_81058cfb0c2c61 150
+packages/neob-ui/src/components/ui/dropdown-menu/dropdown-menu.tsx
+  s_30c2e3af26781d::t_f151223d038aff 125
+packages/neob-ui/src/components/ui/inline-confirm-group/inline-confirm-group.tsx
+  s_30c2e3af26781d::t_f7621bb7702524 31-33
+packages/neob-ui/src/components/ui/toggle/toggle.tsx
+  s_30c2e3af26781d::t_0a37420f57f8c9 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "19e82df49b8da5261f8507a3e29509149e631d80",
+  "prompts": {},
+  "sessions": {
+    "s_30c2e3af26781d": {
+      "agent_id": {
+        "tool": "devin",
+        "id": "s_30c2e3af26781d",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
