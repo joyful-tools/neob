@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 1.3.0
+
+### Minor Changes
+
+- [`09da7d6`](https://github.com/joyful-tools/neob/commit/09da7d662e59b3ffe833357a86e256cc3b3833bb) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Allow inline confirmation triggers to use standard button variants, colors, and sizes while preserving consistent dark-mode borders.
+
 ## 1.2.0
 
 ### Minor Changes
