@@ -5,11 +5,12 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 
-import { InlineConfirmGroup, InlineConfirmGroupIntent } from './inline-confirm-group';
+import { InlineConfirmGroup } from './inline-confirm-group';
 
+import type { InlineConfirmGroupIntent, InlineConfirmGroupProperties } from './inline-confirm-group';
 import type { Meta } from '@storybook/react-vite';
 
-type InlineConfirmGroupStoryProperties = {
+type InlineConfirmGroupStoryProperties = Pick<InlineConfirmGroupProperties, 'variant' | 'color' | 'size'> & {
 	initialFiles: FileItem[];
 };
 
@@ -31,6 +32,20 @@ const meta = {
 	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',
+	},
+	argTypes: {
+		variant: {
+			control: 'select',
+			options: ['default', 'danger', 'subtle', 'ghost', 'link', 'dark-default', 'dark-subtle', 'dark-ghost'],
+		},
+		color: {
+			control: 'select',
+			options: ['cyan', 'gold', 'zinc', 'coral', 'blue', 'purple', 'pink', 'yellow', 'red', 'green'],
+		},
+		size: {
+			control: 'select',
+			options: ['default', 'sm', 'lg', 'xl', 'icon'],
+		},
 	},
 } satisfies Meta<typeof InlineConfirmGroup>;
 
@@ -79,7 +94,7 @@ function getActionProperties(kind: FileAction): {
 	}
 }
 
-const RealWorldList = ({ initialFiles }: InlineConfirmGroupStoryProperties) => {
+const RealWorldList = ({ initialFiles, variant, color, size }: InlineConfirmGroupStoryProperties) => {
 	const [files, setFiles] = useState<FileItem[]>(initialFiles);
 	const [loadingActionIds, setLoadingActionIds] = useState<string[]>([]);
 
@@ -119,6 +134,9 @@ const RealWorldList = ({ initialFiles }: InlineConfirmGroupStoryProperties) => {
 										actionLabel={actionProperties.actionLabel}
 										actionIcon={actionProperties.actionIcon}
 										intent={actionProperties.intent}
+										variant={variant}
+										color={color}
+										size={size}
 										onConfirm={() => void handleAction(file.id, fileAction.kind)}
 										isLoading={loadingActionIds.includes(actionId)}
 									/>
@@ -135,6 +153,8 @@ const RealWorldList = ({ initialFiles }: InlineConfirmGroupStoryProperties) => {
 
 export const Default = {
 	args: {
+		variant: 'ghost',
+		size: 'icon',
 		initialFiles: [
 			{
 				id: '1',

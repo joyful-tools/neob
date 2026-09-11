@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { cn } from '@/lib/utilities';
 
+import type { ButtonProperties } from '@/components/ui/button';
+
 export type InlineConfirmGroupDirection = 'left' | 'right';
 export type InlineConfirmGroupIntent = 'danger' | 'info' | 'success';
 
@@ -19,6 +21,9 @@ export interface InlineConfirmGroupProperties {
 	readonly className?: string;
 	readonly isLoading?: boolean;
 	readonly direction?: InlineConfirmGroupDirection;
+	readonly variant?: ButtonProperties['variant'];
+	readonly color?: ButtonProperties['color'];
+	readonly size?: ButtonProperties['size'];
 }
 
 const spring: Transition = {
@@ -43,9 +48,14 @@ export function InlineConfirmGroup({
 	className,
 	isLoading = false,
 	direction = 'left',
+	variant = 'ghost',
+	color,
+	size = 'icon',
 }: InlineConfirmGroupProperties) {
 	const [open, setOpen] = useState(false);
+	const [triggerSize, setTriggerSize] = useState<{ width: number; height: number } | null>(null);
 	const containerReference = useRef<HTMLDivElement>(null);
+	const triggerButtonReference = useRef<HTMLButtonElement>(null);
 	const confirmButtonReference = useRef<HTMLButtonElement>(null);
 	const cancelButtonReference = useRef<HTMLButtonElement>(null);
 	const layoutId = useId();
@@ -57,6 +67,20 @@ export function InlineConfirmGroup({
 		(sizeClassName: string) => cloneElement(actionIcon, { className: cn(sizeClassName, actionIcon.props.className) }),
 		[actionIcon],
 	);
+
+	useEffect(() => {
+		const triggerButton = triggerButtonReference.current;
+		if (open || !triggerButton) return;
+
+		const updateTriggerSize = () => {
+			setTriggerSize({ width: triggerButton.offsetWidth, height: triggerButton.offsetHeight });
+		};
+		const resizeObserver = new ResizeObserver(updateTriggerSize);
+
+		updateTriggerSize();
+		resizeObserver.observe(triggerButton);
+		return () => resizeObserver.disconnect();
+	}, [open]);
 
 	// Auto-focus cancel button on mount so the user has immediate focus there
 	useEffect(() => {
@@ -159,7 +183,11 @@ export function InlineConfirmGroup({
 	const confirmationButtons = direction === 'left' ? [confirmButton, cancelButton] : [cancelButton, confirmButton];
 
 	return (
-		<div ref={containerReference} className="relative inline-flex size-9 items-center justify-center">
+		<div
+			ref={containerReference}
+			className="relative inline-flex items-center justify-center"
+			style={open && triggerSize ? { width: triggerSize.width, height: triggerSize.height } : undefined}
+		>
 			<AnimatePresence mode="popLayout" initial={false}>
 				{open ? (
 					<motion.div
@@ -186,19 +214,20 @@ export function InlineConfirmGroup({
 						layoutId={layoutId}
 						layoutDependency={open}
 						transition={spring}
-						style={{ borderRadius: 8, transformOrigin }}
-						className={cn('inline-flex size-9 items-center justify-center border-2 border-transparent', triggerOriginClassName)}
+						style={{ transformOrigin }}
+						className={cn('inline-flex items-center justify-center', triggerOriginClassName)}
 					>
 						<Button
+							ref={triggerButtonReference}
 							type="button"
-							variant="ghost"
-							size="icon"
+							variant={variant}
+							color={color}
+							size={size}
 							disabled={isLoading}
 							onClick={(event) => {
 								event.stopPropagation();
 								setOpen(true);
 							}}
-							className="size-9 rounded-md hover:bg-muted dark:text-white dark:hover:border-white dark:hover:bg-zinc"
 							aria-label={`${actionLabel} ${itemName}`}
 						>
 							{isLoading ? <Spinner size="sm" className="size-5" /> : renderActionIcon('size-5')}
