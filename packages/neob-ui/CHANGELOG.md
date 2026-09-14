@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 1.4.0
+
+### Minor Changes
+
+- [`36dd545`](https://github.com/joyful-tools/neob/commit/36dd545e60637f881a1a13b5bbe23617b5b5c545) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Add an integrated footer row to InputArea for actions alongside auto-resizing text.
+
 ## 1.3.0
 
 ### Minor Changes
