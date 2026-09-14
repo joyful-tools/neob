@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
+import { Button } from '@/components/ui/button';
 import { guardPlay } from '@/lib/storybook-interactions';
 
 import { InputArea } from './input-area';
@@ -183,5 +185,60 @@ export const AutoResizeMaxRows: Story = {
 			expect(resizeContainer?.getAttribute('style')).toContain('height');
 			expect(textarea.style.overflowY).toBe('auto');
 		});
+	}),
+};
+
+function AutoResizeWithFooterExample() {
+	const [value, setValue] = useState('');
+	const [submitted, setSubmitted] = useState('Nothing submitted yet.');
+
+	return (
+		<div className="w-96">
+			<InputArea
+				label="Add a note"
+				autoResize={{ maxRows: 4 }}
+				maxLength={500}
+				value={value}
+				onChange={(event) => setValue(event.currentTarget.value)}
+				placeholder="Write a note…"
+				footer={
+					<>
+						<span className="mr-auto text-xs text-muted-foreground">{value.length}/500</span>
+						<Button type="button" variant="ghost" size="sm" disabled={!value} onClick={() => setValue('')}>
+							Clear
+						</Button>
+						<Button type="button" size="sm" disabled={!value.trim()} onClick={() => setSubmitted(value)}>
+							Add note
+						</Button>
+					</>
+				}
+			/>
+			<p aria-live="polite" className="mt-3 text-xs text-muted-foreground">
+				{submitted}
+			</p>
+		</div>
+	);
+}
+
+export const AutoResizeWithFooter: Story = {
+	render: () => <AutoResizeWithFooterExample />,
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const textarea = canvas.getByRole('textbox', { name: 'Add a note' });
+		const footer = canvasElement.querySelector<HTMLElement>('[data-slot="input-area-footer"]');
+
+		await expect(footer).not.toBeNull();
+		await userEvent.type(textarea, 'One{enter}Two{enter}Three{enter}Four{enter}Five');
+		await expect(textarea).toHaveValue('One\nTwo\nThree\nFour\nFive');
+
+		await waitFor(() => {
+			expect(textarea.style.overflowY).toBe('auto');
+			expect(footer?.getBoundingClientRect().top).toBeGreaterThanOrEqual(textarea.getBoundingClientRect().bottom);
+		});
+
+		await userEvent.click(footer!);
+		await expect(textarea).toHaveFocus();
+		await userEvent.click(canvas.getByRole('button', { name: 'Add note' }));
+		await expect(canvas.getByText('One Two Three Four Five', { selector: 'p' })).toBeInTheDocument();
 	}),
 };
