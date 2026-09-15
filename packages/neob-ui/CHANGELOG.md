@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 1.5.0
+
+### Minor Changes
+
+- [`ee63acc`](https://github.com/joyful-tools/neob/commit/ee63acc843885828d53d5b8976c0109aacd4f22b) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Add StackHeader, composable breadcrumb links, and extensible multi-select combobox inputs.
+
 ## 1.4.0
 
 ### Minor Changes
