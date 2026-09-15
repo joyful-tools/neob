@@ -563,6 +563,8 @@ export const Multiple: StoryObj<MultipleComboboxStoryProperties> = {
 					<Combobox.TriggerMultipleWithInput
 						className="w-full"
 						placeholder={args.placeholder}
+						inputProps={{ 'aria-label': 'Search workspace apps' }}
+						endAdornment={<span className="px-1 text-xs text-muted-foreground">⌘K</span>}
 						renderItem={(selected: WorkspaceAppItem) => <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>}
 						inputSide="right"
 					/>
@@ -585,7 +587,8 @@ export const Multiple: StoryObj<MultipleComboboxStoryProperties> = {
 	},
 	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 		const canvas = within(canvasElement);
-		const combobox = canvas.getByRole('combobox');
+		const combobox = canvas.getByRole('combobox', { name: 'Search workspace apps' });
+		await expect(canvas.getByText('⌘K')).toBeInTheDocument();
 		const body = within(document.body);
 		await userEvent.click(combobox);
 		await userEvent.type(combobox, 'Not');

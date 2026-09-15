@@ -392,6 +392,8 @@ export interface ComboboxTriggerMultipleWithInputProps<ValueType> {
 	readonly className?: string;
 	readonly inputSide?: 'right' | 'top';
 	readonly value?: ValueType[];
+	readonly inputProps?: Omit<ComponentPropsWithoutRef<typeof BaseCombobox.Input>, 'id'>;
+	readonly endAdornment?: ReactNode;
 }
 
 /**
@@ -404,9 +406,12 @@ function TriggerMultipleWithInput<ValueType>({
 	className,
 	inputSide = 'right',
 	value: controlledValue,
+	inputProps,
+	endAdornment,
 }: ComboboxTriggerMultipleWithInputProps<ValueType>) {
 	const { size, hasError, describedBy, ariaInvalid, ariaLabel, controlId } = useContext(ComboboxContext);
 	const chipsToRender = controlledValue;
+	const { className: inputClassName, ...resolvedInputProps } = inputProps ?? {};
 
 	const sizeToMinHeight: Record<ComboboxSize, string> = {
 		xs: 'min-h-5',
@@ -431,9 +436,13 @@ function TriggerMultipleWithInput<ValueType>({
 					id={controlId}
 					placeholder={placeholder}
 					aria-label={ariaLabel ?? 'Search options'}
-					className="w-full border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black outline-hidden dark:text-white"
+					className={cn(
+						'w-full border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black outline-hidden dark:text-white',
+						inputClassName,
+					)}
 					aria-describedby={describedBy}
 					aria-invalid={ariaInvalid ? true : undefined}
+					{...resolvedInputProps}
 				/>
 			)}
 			<div className="flex flex-1 flex-wrap items-center gap-1">
@@ -449,12 +458,17 @@ function TriggerMultipleWithInput<ValueType>({
 						id={controlId}
 						placeholder={placeholder}
 						aria-label={ariaLabel ?? 'Search options'}
-						className="min-w-20 flex-1 border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black outline-hidden dark:text-white"
+						className={cn(
+							'min-w-20 flex-1 border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black outline-hidden dark:text-white',
+							inputClassName,
+						)}
 						aria-describedby={describedBy}
 						aria-invalid={ariaInvalid ? true : undefined}
+						{...resolvedInputProps}
 					/>
 				)}
 			</div>
+			{endAdornment ? <div className="flex shrink-0 items-center">{endAdornment}</div> : null}
 		</BaseCombobox.Chips>
 	);
 }

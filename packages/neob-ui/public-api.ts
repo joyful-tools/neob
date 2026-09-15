@@ -46,6 +46,7 @@ export const publicComponentEntries = [
 	'skeleton',
 	'smart-sticky',
 	'spinner',
+	'stack-header',
 	'split-button',
 	'switch',
 	'table',

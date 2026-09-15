@@ -122,7 +122,7 @@ export { Select } from './components/ui/select';
 export type { SelectProps, SelectOptionProps, SelectGroupProps, SelectGroupLabelProps, SelectSeparatorProps } from './components/ui/select';
 
 export { Combobox } from './components/ui/combobox';
-export type { ComboboxProps, ComboboxSize } from './components/ui/combobox';
+export type { ComboboxProps, ComboboxSize, ComboboxTriggerMultipleWithInputProps } from './components/ui/combobox';
 
 export { Tabs } from './components/ui/tabs';
 
@@ -173,6 +173,8 @@ export { DropZone } from './components/ui/drop-zone';
 export type { DropZoneProps, DropZoneResult, FileRejection, FileRejectionCode, ValidationOptions } from './components/ui/drop-zone';
 export { SmartSticky } from './components/ui/smart-sticky';
 export type { SmartStickyProps } from './components/ui/smart-sticky';
+export { StackHeader } from './components/ui/stack-header';
+export type { StackHeaderProps } from './components/ui/stack-header';
 export { HumanizedTime } from './components/ui/humanized-time';
 export type { HumanizedTimeProps } from './components/ui/humanized-time';
 export { Marquee } from './components/ui/marquee';

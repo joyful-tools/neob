@@ -1,3 +1,4 @@
+import { useRender } from '@base-ui/react';
 import { CaretRightIcon, CheckIcon, CopyIcon, DotsThreeIcon } from '@phosphor-icons/react';
 import {
 	AnchorHTMLAttributes,
@@ -29,6 +30,7 @@ export interface BreadcrumbProps extends HTMLAttributes<HTMLElement> {
 export interface BreadcrumbLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 	readonly href: string;
 	readonly icon?: ReactNode;
+	readonly render?: useRender.RenderProp;
 }
 
 export interface BreadcrumbCurrentProps extends HTMLAttributes<HTMLDivElement> {
@@ -52,21 +54,26 @@ function breadcrumbVariants(size: BreadcrumbSize = 'default') {
 	return 'h-12 gap-1 text-base';
 }
 
-function BreadcrumbLink({ href, icon, className, children, ...props }: BreadcrumbLinkProps) {
-	return (
-		<a
-			data-slot="breadcrumb-link"
-			href={href}
-			className={cn(
+function BreadcrumbLink({ href, icon, className, children, render, ...props }: BreadcrumbLinkProps) {
+	return useRender({
+		defaultTagName: 'a',
+		render,
+		props: {
+			...props,
+			'data-slot': 'breadcrumb-link',
+			href,
+			className: cn(
 				'inline-flex max-w-full min-w-0 items-center gap-1 rounded-xs font-semibold text-muted-foreground no-underline transition-colors hover:text-foreground focus:outline-hidden focus-visible:neo-focus-ring',
 				className,
-			)}
-			{...props}
-		>
-			{icon ? <span className="flex shrink-0 items-center">{icon}</span> : null}
-			<span className="truncate">{children}</span>
-		</a>
-	);
+			),
+			children: (
+				<>
+					{icon ? <span className="flex shrink-0 items-center">{icon}</span> : null}
+					<span className="truncate">{children}</span>
+				</>
+			),
+		},
+	});
 }
 
 function BreadcrumbCurrent({ icon, loading = false, className, children, ...props }: BreadcrumbCurrentProps) {

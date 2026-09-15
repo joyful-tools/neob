@@ -20,6 +20,9 @@ for (const entry of publicComponentEntries) {
 }
 
 export default defineConfig({
+	optimizeDeps: {
+		include: ['@base-ui/react'],
+	},
 	plugins: [
 		tailwindcss(),
 		react(),

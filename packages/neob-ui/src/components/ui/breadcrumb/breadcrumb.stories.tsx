@@ -86,3 +86,21 @@ export const LoadingCurrent: Story = {
 		await expect(canvas.getByRole('navigation', { name: 'breadcrumb' })).toBeInTheDocument();
 	}),
 };
+
+export const ComposedLink: Story = {
+	args: { children: null },
+	render: () => (
+		<Breadcrumb>
+			<Breadcrumb.Link href="/projects/neob" render={<a data-composed-link="" />}>
+				Neob
+			</Breadcrumb.Link>
+			<Breadcrumb.Separator />
+			<Breadcrumb.Current>Components</Breadcrumb.Current>
+		</Breadcrumb>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const link = within(canvasElement).getByRole('link', { name: 'Neob' });
+		await expect(link).toHaveAttribute('href', '/projects/neob');
+		await expect(link).toHaveAttribute('data-composed-link');
+	}),
+};
