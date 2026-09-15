@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 1.5.2
+
+### Patch Changes
+
+- [`d47081f`](https://github.com/joyful-tools/neob/commit/d47081f46ef2493931f5015bd4c6e0b4511ff87b) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - fix toast text color
+
 ## 1.5.1
 
 ### Patch Changes
