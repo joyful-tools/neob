@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 1.5.1
+
+### Patch Changes
+
+- [`553a0dd`](https://github.com/joyful-tools/neob/commit/553a0ddc37af07238d875d9a016a0e5073cff819) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Restore StackHeader's progressive, scroll-linked hide and reveal behavior, and allow multi-select combobox end adornments to remain inline until wrapping is necessary.
+
 ## 1.5.0
 
 ### Minor Changes
