@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 1.5.3
+
+### Patch Changes
+
+- [`db1cbab`](https://github.com/joyful-tools/neob/commit/db1cbab66d3263ef15af8679ceb339be885c53a1) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Prevent HoverPreview popups from remaining open when the pointer moves over their exit animation.
+
 ## 1.5.2
 
 ### Patch Changes
