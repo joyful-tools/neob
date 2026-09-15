@@ -588,7 +588,9 @@ export const Multiple: StoryObj<MultipleComboboxStoryProperties> = {
 	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 		const canvas = within(canvasElement);
 		const combobox = canvas.getByRole('combobox', { name: 'Search workspace apps' });
-		await expect(canvas.getByText('⌘K')).toBeInTheDocument();
+		const adornment = canvas.getByText('⌘K');
+		await expect(adornment).toBeInTheDocument();
+		await expect(adornment.parentElement?.parentElement).toBe(combobox.parentElement);
 		const body = within(document.body);
 		await userEvent.click(combobox);
 		await userEvent.type(combobox, 'Not');

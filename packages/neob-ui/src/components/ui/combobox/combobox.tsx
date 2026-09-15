@@ -467,8 +467,8 @@ function TriggerMultipleWithInput<ValueType>({
 						{...resolvedInputProps}
 					/>
 				)}
+				{endAdornment ? <div className="flex shrink-0 items-center">{endAdornment}</div> : null}
 			</div>
-			{endAdornment ? <div className="flex shrink-0 items-center">{endAdornment}</div> : null}
 		</BaseCombobox.Chips>
 	);
 }
