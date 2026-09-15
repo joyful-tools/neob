@@ -78,8 +78,8 @@ export const Default: Story = {
 		await expect(card).toBeInTheDocument();
 
 		await userEvent.unhover(trigger);
+		await userEvent.hover(card);
 
-		// Verify it disappeared (waiting for exit animation to complete)
 		await waitFor(async () => {
 			const cardAfterUnhover = bodyCanvas.queryByTestId('preview-skeleton');
 			await expect(cardAfterUnhover).toBeNull();

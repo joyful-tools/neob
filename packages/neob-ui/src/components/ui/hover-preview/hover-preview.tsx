@@ -114,7 +114,7 @@ export function HoverPreview({ children, preview, className, delayDuration = 200
 	}
 
 	return (
-		<BaseTooltip.Root open={isOpen} onOpenChange={handleOpenChange}>
+		<BaseTooltip.Root open={isOpen} onOpenChange={handleOpenChange} disableHoverablePopup>
 			<BaseTooltip.Trigger
 				delay={delayDuration}
 				onPointerMove={handlePointerMove}
@@ -133,7 +133,7 @@ export function HoverPreview({ children, preview, className, delayDuration = 200
 							align="start"
 							sideOffset={25}
 							alignOffset={-15}
-							className="z-20"
+							className="pointer-events-none z-20"
 						>
 							<BaseTooltip.Popup
 								render={
