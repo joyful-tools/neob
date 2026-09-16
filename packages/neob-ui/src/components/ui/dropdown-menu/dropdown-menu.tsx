@@ -100,7 +100,6 @@ function DropdownMenuContent({ children, className, align = 'end', sideOffset, r
 						`z-50 min-w-40 origin-(--transform-origin) rounded-xl border-2 border-edge bg-popover p-1.5 text-popover-foreground shadow-md outline-hidden select-none`,
 						`data-closed:animate-popover-out data-open:animate-popover-in`,
 						`data-[side=bottom]:[--tw-enter-translate-y:-0.5rem] data-[side=left]:[--tw-enter-translate-x:0.5rem] data-[side=right]:[--tw-enter-translate-x:-0.5rem] data-[side=top]:[--tw-enter-translate-y:0.5rem]`,
-						`dark:border-edge dark:shadow-cel-md`,
 						className,
 					)}
 					{...properties}
