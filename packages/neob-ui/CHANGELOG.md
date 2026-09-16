@@ -1,5 +1,17 @@
 # @joyful.tools/neob
 
+## 2.0.0
+
+### Major Changes
+
+- [`6c2fe06`](https://github.com/joyful-tools/neob/commit/6c2fe0601bb4275198fb630a2f1f74cf4faec90e) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Adopt React 19 Actions across mutation-capable components with queued optimistic updates, derived pending states, Error Boundary rollback, and Suspense-preserving transitions.
+
+  This is a breaking API migration: replace mutation callbacks such as `onValueChange`, `onCheckedChange`, `onPressedChange`, `onConfirm`, `setPage`, `onFileDrop`, and `onComplete` with `action`. Remove `Button.isLoading` and confirmation loading props; pending state is now derived from the component or nearest form Action. For `Slider`, `NumericSlider`, and `ResizablePanel`, use `onInput` for urgent continuous feedback and `action` for committed values.
+
+### Patch Changes
+
+- [`6c2fe06`](https://github.com/joyful-tools/neob/commit/6c2fe0601bb4275198fb630a2f1f74cf4faec90e) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Prevent button flicker for synchronous and short Actions by preserving physical button styling and crossfading delayed pending indicators with reduced-motion support.
+
 ## 1.5.4
 
 ### Patch Changes
