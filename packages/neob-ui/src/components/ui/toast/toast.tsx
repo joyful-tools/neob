@@ -3,9 +3,11 @@ import { toast as sonnerToast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 
+import type { Action } from '@/lib/actions';
+
 interface ToastOptions {
 	description?: string;
-	action?: { label: string; onClick: () => void };
+	action?: { label: string; action: Action };
 }
 
 export const toast = {
@@ -22,13 +24,15 @@ export const toast = {
 						variant="ghost"
 						size="icon"
 						className="-mt-3 -mr-3 shrink-0"
-						onClick={() => sonnerToast.dismiss(t)}
+						action={() => {
+							sonnerToast.dismiss(t);
+						}}
 					>
 						<XIcon className="size-4" />
 					</Button>
 				</div>
 				{options?.action && (
-					<Button variant="default" size="sm" onClick={options.action.onClick}>
+					<Button variant="default" size="sm" action={options.action.action}>
 						{options.action.label}
 					</Button>
 				)}
@@ -48,13 +52,15 @@ export const toast = {
 						variant="ghost"
 						size="icon"
 						className="-mt-3 -mr-3 shrink-0"
-						onClick={() => sonnerToast.dismiss(t)}
+						action={() => {
+							sonnerToast.dismiss(t);
+						}}
 					>
 						<XIcon className="size-4" />
 					</Button>
 				</div>
 				{options?.action && (
-					<Button variant="default" size="sm" onClick={options.action.onClick}>
+					<Button variant="default" size="sm" action={options.action.action}>
 						{options.action.label}
 					</Button>
 				)}
@@ -74,13 +80,15 @@ export const toast = {
 						variant="ghost"
 						size="icon"
 						className="-mt-3 -mr-3 shrink-0"
-						onClick={() => sonnerToast.dismiss(t)}
+						action={() => {
+							sonnerToast.dismiss(t);
+						}}
 					>
 						<XIcon className="size-4" />
 					</Button>
 				</div>
 				{options?.action && (
-					<Button variant="default" size="sm" onClick={options.action.onClick}>
+					<Button variant="default" size="sm" action={options.action.action}>
 						{options.action.label}
 					</Button>
 				)}
@@ -100,13 +108,15 @@ export const toast = {
 						variant="ghost"
 						size="icon"
 						className="-mt-3 -mr-3 shrink-0"
-						onClick={() => sonnerToast.dismiss(t)}
+						action={() => {
+							sonnerToast.dismiss(t);
+						}}
 					>
 						<XIcon className="size-4" />
 					</Button>
 				</div>
 				{options?.action && (
-					<Button variant="default" size="sm" onClick={options.action.onClick}>
+					<Button variant="default" size="sm" action={options.action.action}>
 						{options.action.label}
 					</Button>
 				)}
@@ -126,13 +136,15 @@ export const toast = {
 						variant="ghost"
 						size="icon"
 						className="-mt-3 -mr-3 shrink-0"
-						onClick={() => sonnerToast.dismiss(t)}
+						action={() => {
+							sonnerToast.dismiss(t);
+						}}
 					>
 						<XIcon className="size-4" />
 					</Button>
 				</div>
 				{options?.action && (
-					<Button variant="default" size="sm" onClick={options.action.onClick}>
+					<Button variant="default" size="sm" action={options.action.action}>
 						{options.action.label}
 					</Button>
 				)}

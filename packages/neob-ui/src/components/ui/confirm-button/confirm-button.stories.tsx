@@ -15,7 +15,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  * ```tsx
  * import { ConfirmButton } from '@joyful-tools/neob';
  *
- * <ConfirmButton onConfirm={handleDelete} variant="danger">
+ * <ConfirmButton action={handleDelete} variant="danger">
  *   Delete Resource
  * </ConfirmButton>
  * ```
@@ -44,14 +44,14 @@ const colors = ['cyan', 'gold', 'zinc', 'coral', 'blue', 'purple', 'pink', 'yell
 
 export const Default: Story = {
 	render: (args) => (
-		<ConfirmButton {...args} onConfirm={() => action('confirm-button-default-confirm')()}>
+		<ConfirmButton {...args} action={() => action('confirm-button-default-confirm')()}>
 			{args.children}
 		</ConfirmButton>
 	),
 	args: {
 		children: 'Delete Item',
 		confirmLabel: 'Confirm Delete',
-		onConfirm: () => {},
+		action: () => {},
 	},
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
@@ -86,7 +86,7 @@ export const Default: Story = {
 export const Colors: Story = {
 	args: {
 		children: 'Confirm',
-		onConfirm: () => {},
+		action: () => {},
 	},
 	render: () => (
 		<div className="flex max-w-2xl flex-wrap gap-3">
@@ -97,7 +97,7 @@ export const Colors: Story = {
 					confirmColor={color}
 					title={`Confirm ${color}?`}
 					confirmLabel="Confirm"
-					onConfirm={() => action(`confirm-${color}`)()}
+					action={() => action(`confirm-${color}`)()}
 				>
 					{color}
 				</ConfirmButton>
@@ -109,7 +109,7 @@ export const Colors: Story = {
 export const AsyncDelete: Story = {
 	args: {
 		children: 'Delete Item Asynchronously',
-		onConfirm: () => {},
+		action: () => {},
 	},
 	render: (args) => (
 		<ConfirmButton
@@ -117,7 +117,7 @@ export const AsyncDelete: Story = {
 			title="Are you sure you want to delete this resource?"
 			description="This is an asynchronous operation and will display a loading state for 2 seconds."
 			confirmLabel="Delete Item"
-			onConfirm={() => {
+			action={() => {
 				action('confirm-button-async-delete-confirm')();
 				return new Promise<void>((resolve) => setTimeout(resolve, 2000));
 			}}

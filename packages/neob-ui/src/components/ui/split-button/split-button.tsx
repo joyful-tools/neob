@@ -1,17 +1,19 @@
 import { CaretDownIcon } from '@phosphor-icons/react';
-import { ButtonHTMLAttributes, ReactNode, useLayoutEffect, useRef, useState } from 'react';
+import { ButtonHTMLAttributes, MouseEvent, ReactNode, useLayoutEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { DropdownMenu } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utilities';
 
 import type { ButtonProperties } from '@/components/ui/button';
+import type { Action } from '@/lib/actions';
 
-export interface SplitButtonProperties extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color'> {
+export interface SplitButtonProperties extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color' | 'onClick'> {
 	readonly variant?: ButtonProperties['variant'];
 	readonly color?: ButtonProperties['color'];
 	readonly size?: 'default' | 'sm' | 'lg';
 	readonly menuContent: ReactNode;
+	readonly action?: Action<[event: MouseEvent<HTMLButtonElement>]>;
 }
 
 export function SplitButton({
@@ -21,7 +23,7 @@ export function SplitButton({
 	size = 'default',
 	menuContent,
 	className,
-	onClick,
+	action,
 	disabled,
 	...properties
 }: SplitButtonProperties) {
@@ -60,7 +62,7 @@ export function SplitButton({
 				color={color}
 				size={size}
 				disabled={disabled}
-				onClick={onClick}
+				action={action}
 				className="rounded-r-none focus:z-10"
 				{...properties}
 			>

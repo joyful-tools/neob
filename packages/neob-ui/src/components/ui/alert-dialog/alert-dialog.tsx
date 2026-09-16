@@ -14,9 +14,13 @@ import {
 	useState,
 } from 'react';
 
-import { buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { useDialogStackPresence } from '@/components/ui/dialog/dialog-stack';
+import { useQueuedAction } from '@/hooks/use-queued-action';
+import { afterAction } from '@/lib/actions';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 const CONTENT_CLASS_NAME = `
 	relative grid w-full max-w-[calc(100vw-2rem)] gap-4 rounded-xl
@@ -31,7 +35,11 @@ const MOTION_VARIANTS = {
 	transition: { duration: 0.15, ease: [0.34, 1.56, 0.64, 1] as const },
 } as const;
 
-const AlertDialogContext = createContext<{ open: boolean }>({ open: false });
+const AlertDialogContext = createContext<{
+	open: boolean;
+	runAction: (action: Action) => Promise<void>;
+	isPending: boolean;
+} | null>(null);
 
 interface AlertDialogProperties extends Omit<AlertDialogPrimitive.Root.Props, 'children' | 'open' | 'defaultOpen' | 'onOpenChange'> {
 	readonly children?: ReactNode;
@@ -63,7 +71,7 @@ interface AlertDialogActionProperties extends VariantProps<typeof buttonVariants
 	readonly ref?: Ref<HTMLButtonElement>;
 	readonly className?: string;
 	readonly children?: ReactNode;
-	readonly onClick?: MouseEventHandler<HTMLButtonElement>;
+	readonly action: Action;
 }
 
 interface AlertDialogCancelProperties {
@@ -71,6 +79,7 @@ interface AlertDialogCancelProperties {
 	readonly className?: string;
 	readonly children?: ReactNode;
 	readonly onClick?: MouseEventHandler<HTMLButtonElement>;
+	readonly disabled?: boolean;
 }
 
 interface AlertDialogTriggerProperties {
@@ -99,9 +108,10 @@ function AlertDialogRoot({ children, open: controlledOpen, defaultOpen, onOpenCh
 		},
 		[isControlled, onOpenChange],
 	);
+	const { runAction, isPending } = useQueuedAction((action: Action) => afterAction(action(), () => handleOpenChange(false)));
 
 	return (
-		<AlertDialogContext.Provider value={{ open }}>
+		<AlertDialogContext.Provider value={{ open, runAction, isPending }}>
 			<AlertDialogPrimitive.Root open={open} onOpenChange={handleOpenChange} actionsRef={actionsReference} {...properties}>
 				{children}
 			</AlertDialogPrimitive.Root>
@@ -123,7 +133,9 @@ function AlertDialogTrigger({ children, asChild, ref, ...properties }: AlertDial
 
 /** Alert dialog content with animated overlay and panel. */
 function AlertDialogContent({ className, children, ref, onAnimationEnd, ...properties }: AlertDialogContentProperties) {
-	const { open } = useContext(AlertDialogContext);
+	const context = useContext(AlertDialogContext);
+	if (!context) return null;
+	const { open, isPending } = context;
 
 	return (
 		<AnimatePresence onExitComplete={onAnimationEnd}>
@@ -139,6 +151,8 @@ function AlertDialogContent({ className, children, ref, onAnimationEnd, ...prope
 									animate={MOTION_VARIANTS.animate}
 									exit={MOTION_VARIANTS.exit}
 									transition={MOTION_VARIANTS.transition}
+									aria-busy={isPending || undefined}
+									data-pending={isPending ? '' : undefined}
 								/>
 							}
 							{...properties}
@@ -183,17 +197,35 @@ function AlertDialogDescription({ className, ref, ...properties }: AlertDialogDe
 }
 AlertDialogDescription.displayName = 'AlertDialog.Description';
 
-/** Primary action button for alert dialog. Uses AlertDialog.Close internally. */
-function AlertDialogAction({ className, variant, size, ref, ...properties }: AlertDialogActionProperties) {
-	return <AlertDialogPrimitive.Close ref={ref} className={cn(buttonVariants({ variant, size }), className)} {...properties} />;
+/** Primary action button for alert dialog. */
+function AlertDialogAction({ className, variant, size, ref, action, ...properties }: AlertDialogActionProperties) {
+	const context = useContext(AlertDialogContext);
+	if (!context) return null;
+	const { runAction, isPending } = context;
+
+	return (
+		<Button
+			ref={ref}
+			type="button"
+			variant={variant}
+			size={size}
+			action={() => runAction(action)}
+			disabled={isPending}
+			className={className}
+			{...properties}
+		/>
+	);
 }
 AlertDialogAction.displayName = 'AlertDialog.Action';
 
 /** Cancel button for alert dialog. Uses AlertDialog.Close internally. */
 function AlertDialogCancel({ className, ref, ...properties }: AlertDialogCancelProperties) {
+	const context = useContext(AlertDialogContext);
+	if (!context) return null;
 	return (
 		<AlertDialogPrimitive.Close
 			ref={ref}
+			disabled={context.isPending}
 			className={cn(buttonVariants({ variant: 'subtle' }), `mt-2 sm:mt-0`, className)}
 			{...properties}
 		/>

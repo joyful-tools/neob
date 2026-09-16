@@ -9,10 +9,15 @@ import {
 	type ReactElement,
 	type Dispatch,
 	type SetStateAction,
+	type MouseEvent,
 } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { useQueuedAction } from '@/hooks/use-queued-action';
+import { afterAction } from '@/lib/actions';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 interface DropMenuProperties {
 	readonly trigger: (props: {
@@ -26,13 +31,14 @@ interface DropMenuProperties {
 
 export interface DropMenuItemProperties {
 	readonly children: ReactNode;
-	readonly onClick?: () => void;
+	readonly action?: Action;
 	readonly className?: string;
 }
 
 // React Context to communicate close handler safely without manual element cloning or assertions
 const DropMenuContext = createContext<{
-	readonly close: () => void;
+	readonly runItemAction: (action: Action) => Promise<void>;
+	readonly isPending: boolean;
 } | null>(null);
 
 const containerVariants: Variants = {
@@ -97,6 +103,7 @@ export function DropMenu({ trigger, children, className }: DropMenuProperties) {
 		setIsOpen(false);
 		anchorElement?.focus();
 	}, [anchorElement]);
+	const { runAction: runItemAction, isPending } = useQueuedAction((action: Action) => afterAction(action(), closeMenu));
 
 	const triggerNode = trigger({
 		isOpen,
@@ -105,7 +112,7 @@ export function DropMenu({ trigger, children, className }: DropMenuProperties) {
 	});
 
 	return (
-		<DropMenuContext.Provider value={{ close: closeMenu }}>
+		<DropMenuContext.Provider value={{ runItemAction, isPending }}>
 			<Menu.Root open={isOpen} onOpenChange={setIsOpen}>
 				<Menu.Trigger render={triggerNode} />
 
@@ -115,6 +122,8 @@ export function DropMenu({ trigger, children, className }: DropMenuProperties) {
 							role="menu"
 							render={<motion.div variants={containerVariants} initial="hidden" animate={isOpen ? 'show' : 'exit'} />}
 							className={cn('min-w-44 outline-hidden select-none data-closed:animate-[popover-out_350ms_ease-in_forwards]', className)}
+							aria-busy={isPending || undefined}
+							data-pending={isPending ? '' : undefined}
 						>
 							<div className="flex flex-col gap-2 p-2">{children}</div>
 						</Menu.Popup>
@@ -129,18 +138,20 @@ DropMenu.displayName = 'DropMenu';
 /**
  * DropMenuItem animates dynamically using Framer Motion variants and integrates with Base UI Menu.Item.
  */
-export function DropMenuItem({ children, onClick, className }: DropMenuItemProperties) {
+export function DropMenuItem({ children, action, className }: DropMenuItemProperties) {
 	const context = useContext(DropMenuContext);
 
-	const handleItemClick = () => {
-		onClick?.();
-		context?.close();
+	const handleItemClick = (event: MouseEvent) => {
+		event.preventDefault();
+		if (!action || !context) return;
+		void context.runItemAction(action).catch(() => {});
 	};
 
 	return (
 		<motion.div variants={itemVariants} className="w-full">
 			<Menu.Item
 				nativeButton
+				disabled={context?.isPending}
 				render={
 					<Button
 						type="button"

@@ -35,7 +35,7 @@ export const Continuous: Story = {
 		'aria-label': 'Volume',
 		defaultValue: 35,
 		className: 'w-80',
-		onValueChange: action('slider-value-change'),
+		onInput: action('slider-value-change'),
 	},
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);

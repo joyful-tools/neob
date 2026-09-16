@@ -32,7 +32,7 @@ type DatePickerMultipleStoryProperties = {
  * ```tsx
  * import { DatePicker } from '@joyful-tools/neob';
  *
- * <DatePicker mode="single" selected={date} onChange={setDate} />
+ * <DatePicker mode="single" selected={date} action={setDate} />
  * ```
  */
 const meta = {
@@ -58,7 +58,7 @@ export const Single = {
 				<DatePicker
 					mode={args.mode}
 					selected={date}
-					onChange={(selected, triggerDate, modifiers, event_) => {
+					action={(selected, triggerDate, modifiers, event_) => {
 						setDate(selected);
 						action('date-picker-single-change')(selected, triggerDate, modifiers, event_);
 					}}
@@ -94,7 +94,7 @@ export const Range = {
 				<DatePicker
 					mode={args.mode}
 					selected={range}
-					onChange={(selected, triggerDate, modifiers, event_) => {
+					action={(selected, triggerDate, modifiers, event_) => {
 						setRange(selected);
 						action('date-picker-range-change')(selected, triggerDate, modifiers, event_);
 					}}
@@ -135,7 +135,7 @@ export const Multiple = {
 					mode={args.mode}
 					selected={dates}
 					max={args.max}
-					onChange={(selected, triggerDate, modifiers, event_) => {
+					action={(selected, triggerDate, modifiers, event_) => {
 						setDates(selected);
 						action('date-picker-multiple-change')(selected, triggerDate, modifiers, event_);
 					}}
@@ -171,7 +171,7 @@ export const MonthYearNavigation = {
 				<DatePicker
 					mode={args.mode}
 					selected={date}
-					onChange={(selected, triggerDate, modifiers, event_) => {
+					action={(selected, triggerDate, modifiers, event_) => {
 						setDate(selected);
 						action('date-picker-navigation-change')(selected, triggerDate, modifiers, event_);
 					}}

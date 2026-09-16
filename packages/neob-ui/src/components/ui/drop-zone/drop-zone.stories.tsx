@@ -106,7 +106,7 @@ export const Default: Story = {
 			<div className="flex w-112.5 flex-col gap-4">
 				<DropZone
 					accept={['image/*']}
-					onFileDrop={(res) => {
+					action={(res) => {
 						setResults(res);
 						action('onFileDrop')(res);
 					}}
@@ -115,7 +115,7 @@ export const Default: Story = {
 						<div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-edge bg-white p-12 text-black select-none dark:border-edge dark:bg-zinc dark:text-white">
 							<UploadSimpleIcon className="mb-2 size-10 text-cyan" />
 							<span className="mb-4 text-center font-sans text-sm font-bold">Drag images here to upload or</span>
-							<Button type="button" color="gold" size="sm" onClick={openFilePicker}>
+							<Button type="button" color="gold" size="sm" action={openFilePicker}>
 								<PlusIcon className="size-4" />
 								<span>Select File</span>
 							</Button>
@@ -185,7 +185,7 @@ export const InvalidFileRejection: Story = {
 					accept={['.png']}
 					minSize={100}
 					maxSize={1000}
-					onFileDrop={(res) => {
+					action={(res) => {
 						setResults(res);
 					}}
 				>
@@ -193,7 +193,7 @@ export const InvalidFileRejection: Story = {
 						<div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-edge bg-white p-12 text-black select-none dark:bg-zinc dark:text-white">
 							<UploadSimpleIcon className="mb-2 size-10 text-cyan" />
 							<span className="mb-4 text-center font-sans text-sm font-bold">Drag file here (Requires PNG, size: 100B - 1KB)</span>
-							<Button type="button" color="gold" size="sm" onClick={openFilePicker}>
+							<Button type="button" color="gold" size="sm" action={openFilePicker}>
 								<PlusIcon className="size-4" />
 								<span>Select File</span>
 							</Button>
@@ -257,7 +257,7 @@ export const FullPageDropZone: Story = {
 				<DropZone
 					fullscreen={true}
 					accept={['image/*']}
-					onFileDrop={(res) => {
+					action={(res) => {
 						setResults(res);
 						action('onFileDrop')(res);
 					}}
@@ -266,7 +266,7 @@ export const FullPageDropZone: Story = {
 						<div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-edge bg-white p-12 text-black select-none dark:border-edge dark:bg-zinc dark:text-white">
 							<UploadSimpleIcon className="mb-2 size-10 text-cyan" />
 							<span className="mb-4 text-center font-sans text-sm font-bold">Drag files anywhere on the page</span>
-							<Button type="button" color="gold" size="sm" onClick={openFilePicker}>
+							<Button type="button" color="gold" size="sm" action={openFilePicker}>
 								<PlusIcon className="size-4" />
 								<span>Select File</span>
 							</Button>

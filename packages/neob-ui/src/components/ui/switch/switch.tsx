@@ -2,10 +2,19 @@ import { Switch as BaseSwitch } from '@base-ui/react/switch';
 import { CheckIcon, XIcon } from '@phosphor-icons/react';
 import { ComponentPropsWithoutRef, ReactNode, Ref, useId } from 'react';
 
+import { useOptimisticAction } from '@/hooks/use-optimistic-action';
 import { cn } from '@/lib/utilities';
 
-export interface SwitchProperties extends ComponentPropsWithoutRef<typeof BaseSwitch.Root> {
+import type { Action } from '@/lib/actions';
+
+export interface SwitchProperties extends Omit<
+	ComponentPropsWithoutRef<typeof BaseSwitch.Root>,
+	'checked' | 'defaultChecked' | 'onCheckedChange'
+> {
 	readonly ref?: Ref<HTMLButtonElement>;
+	readonly checked?: boolean;
+	readonly defaultChecked?: boolean;
+	readonly action?: Action<[checked: boolean, eventDetails: BaseSwitch.Root.ChangeEventDetails]>;
 	readonly label?: ReactNode;
 	readonly description?: ReactNode;
 	readonly controlFirst?: boolean;
@@ -70,6 +79,9 @@ export function Switch({
 	variant = 'default',
 	className,
 	ref,
+	checked,
+	defaultChecked = false,
+	action,
 	...properties
 }: SwitchProperties) {
 	const descriptionId = useId();
@@ -79,6 +91,7 @@ export function Switch({
 	const isInvalid = hasError || properties['aria-invalid'] === true || properties['aria-invalid'] === 'true';
 
 	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
+	const { optimisticValue, runAction, isPending } = useOptimisticAction({ value: checked, defaultValue: defaultChecked, action });
 
 	const switchControl = (
 		<BaseSwitch.Root
@@ -86,6 +99,10 @@ export function Switch({
 			className={cn(SWITCH_ROOT_CLASSES, isInvalid && 'border-red [--color-ring:var(--ring-invalid)] dark:border-red', className)}
 			aria-describedby={describedBy}
 			aria-invalid={isInvalid ? true : undefined}
+			checked={optimisticValue}
+			onCheckedChange={runAction}
+			aria-busy={isPending || undefined}
+			data-pending={isPending ? '' : undefined}
 			{...properties}
 		>
 			<span aria-hidden="true" className="pointer-events-none absolute inset-0 flex overflow-hidden rounded-[inherit]">

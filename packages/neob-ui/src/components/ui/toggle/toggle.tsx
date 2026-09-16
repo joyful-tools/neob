@@ -3,7 +3,10 @@ import { type VariantProps } from 'class-variance-authority';
 import { isValidElement, ReactNode, Ref } from 'react';
 
 import { buttonVariants } from '@/components/ui/button';
+import { useOptimisticAction } from '@/hooks/use-optimistic-action';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 const TOGGLE_ON_CLASS_NAME = `
 	data-[pressed]:bg-cyan data-[pressed]:text-black
@@ -14,7 +17,7 @@ interface ToggleProperties extends VariantProps<typeof buttonVariants> {
 	readonly ref?: Ref<HTMLButtonElement>;
 	readonly pressed?: boolean;
 	readonly defaultPressed?: boolean;
-	readonly onPressedChange?: (pressed: boolean) => void;
+	readonly action?: Action<[pressed: boolean, eventDetails: TogglePrimitive.ChangeEventDetails]>;
 	readonly disabled?: boolean;
 	readonly className?: string;
 	readonly children?: ReactNode;
@@ -31,21 +34,38 @@ export function Toggle({
 	asChild = false,
 	ref,
 	children,
+	pressed,
+	defaultPressed = false,
+	action,
 	...properties
 }: ToggleProperties) {
+	const { optimisticValue, runAction, isPending } = useOptimisticAction({ value: pressed, defaultValue: defaultPressed, action });
+
 	if (asChild && isValidElement<Record<string, unknown>>(children)) {
 		return (
 			<TogglePrimitive
 				ref={ref}
 				render={children}
 				className={cn(buttonVariants({ variant, size }), TOGGLE_ON_CLASS_NAME, className)}
+				pressed={optimisticValue}
+				onPressedChange={runAction}
+				aria-busy={isPending || undefined}
+				data-pending={isPending ? '' : undefined}
 				{...properties}
 			/>
 		);
 	}
 
 	return (
-		<TogglePrimitive ref={ref} className={cn(buttonVariants({ variant, size }), TOGGLE_ON_CLASS_NAME, className)} {...properties}>
+		<TogglePrimitive
+			ref={ref}
+			className={cn(buttonVariants({ variant, size }), TOGGLE_ON_CLASS_NAME, className)}
+			pressed={optimisticValue}
+			onPressedChange={runAction}
+			aria-busy={isPending || undefined}
+			data-pending={isPending ? '' : undefined}
+			{...properties}
+		>
 			{children}
 		</TogglePrimitive>
 	);

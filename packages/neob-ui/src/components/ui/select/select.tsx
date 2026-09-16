@@ -5,7 +5,10 @@ import { ReactNode, Ref, RefObject, useId } from 'react';
 import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useOptimisticAction } from '@/hooks/use-optimistic-action';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 /** Shape for items that carry extra metadata (disabled state). */
 export interface SelectItemDescriptor {
@@ -18,10 +21,15 @@ export interface SelectItemDescriptor {
 /** Value type accepted by the `items` object-map prop. */
 export type SelectItemValue = ReactNode | SelectItemDescriptor;
 
+type SelectValue<T, Multiple extends boolean | undefined> = Parameters<NonNullable<BaseSelect.Root.Props<T, Multiple>['onValueChange']>>[0];
+
 export interface SelectProps<T = unknown, Multiple extends boolean | undefined = false> extends Omit<
 	BaseSelect.Root.Props<T, Multiple>,
-	'items'
+	'items' | 'value' | 'defaultValue' | 'onValueChange'
 > {
+	value?: SelectValue<T, Multiple>;
+	defaultValue?: SelectValue<T, Multiple>;
+	action?: Action<[value: SelectValue<T, Multiple>, eventDetails: BaseSelect.Root.ChangeEventDetails]>;
 	'aria-label'?: string;
 	'aria-labelledby'?: string;
 	'aria-invalid'?: boolean | 'true' | 'false';
@@ -139,7 +147,8 @@ function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 			}
 		: undefined;
 
-	const { items: _items, ...baseProps } = props;
+	const { items: _items, value, defaultValue, action, ...baseProps } = props;
+	const { optimisticValue, runAction, isPending } = useOptimisticAction({ value, defaultValue, action });
 
 	const triggerId = useId();
 	const descriptionId = useId();
@@ -151,7 +160,13 @@ function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
 
 	const selectControl = (
-		<BaseSelect.Root {...baseProps} items={normalizedItems} disabled={loading || props.disabled}>
+		<BaseSelect.Root
+			{...baseProps}
+			items={normalizedItems}
+			value={optimisticValue}
+			onValueChange={runAction}
+			disabled={loading || props.disabled}
+		>
 			<BaseSelect.Trigger
 				id={triggerId}
 				className={cn(
@@ -164,7 +179,8 @@ function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 				aria-label={ariaLabel}
 				aria-labelledby={ariaLabelledby}
 				aria-invalid={isInvalid ? true : undefined}
-				aria-busy={loading || undefined}
+				aria-busy={loading || isPending || undefined}
+				data-pending={isPending ? '' : undefined}
 			>
 				{loading ? (
 					<Skeleton className="h-4 w-24" />

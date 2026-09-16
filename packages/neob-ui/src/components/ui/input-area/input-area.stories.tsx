@@ -204,10 +204,10 @@ function AutoResizeWithFooterExample() {
 				footer={
 					<>
 						<span className="mr-auto text-xs text-muted-foreground">{value.length}/500</span>
-						<Button type="button" variant="ghost" size="sm" disabled={!value} onClick={() => setValue('')}>
+						<Button type="button" variant="ghost" size="sm" disabled={!value} action={() => setValue('')}>
 							Clear
 						</Button>
-						<Button type="button" size="sm" disabled={!value.trim()} onClick={() => setSubmitted(value)}>
+						<Button type="button" size="sm" disabled={!value.trim()} action={() => setSubmitted(value)}>
 							Add note
 						</Button>
 					</>

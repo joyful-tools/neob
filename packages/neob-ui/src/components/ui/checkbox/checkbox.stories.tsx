@@ -105,7 +105,7 @@ export const ValidationError: Story = {
 					label={args.label}
 					description={args.description}
 					checked={checked}
-					onCheckedChange={(nextChecked) => {
+					action={(nextChecked) => {
 						setChecked(nextChecked);
 						action('checkbox-validation-change')(nextChecked);
 					}}
@@ -161,7 +161,7 @@ export const Group: StoryObj<{ initialValues: string[] }> = {
 				legend="Communication Preferences"
 				description="Choose how you want to receive updates."
 				value={values}
-				onValueChange={(nextValues) => {
+				action={(nextValues) => {
 					setValues(nextValues);
 					action('checkbox-group-change')(nextValues);
 				}}

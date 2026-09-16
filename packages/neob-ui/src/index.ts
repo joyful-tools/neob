@@ -5,6 +5,7 @@ import './index.css';
 
 // Utilities
 export { cn, getThemeColor } from './lib/utilities';
+export type { Action } from './lib/actions';
 
 // Components
 export { Button, buttonVariants } from './components/ui/button';

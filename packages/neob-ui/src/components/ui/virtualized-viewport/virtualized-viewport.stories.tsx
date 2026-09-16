@@ -87,10 +87,10 @@ export const Basic: Story = {
 				<div className="flex items-center justify-between rounded-xl border-2 border-edge bg-muted/40 p-3">
 					<h3 className="font-display text-base">Basic</h3>
 					<div className="flex gap-2">
-						<Button variant="subtle" size="sm" onClick={() => setItems((p) => [...p, ...makeSlabs(50, false, p.length)])}>
+						<Button variant="subtle" size="sm" action={() => setItems((p) => [...p, ...makeSlabs(50, false, p.length)])}>
 							+50
 						</Button>
-						<Button variant="danger" size="sm" onClick={() => setItems([])}>
+						<Button variant="danger" size="sm" action={() => setItems([])}>
 							Clear
 						</Button>
 					</div>
@@ -150,7 +150,7 @@ export const DynamicHeights: Story = {
 						<Button
 							color="gold"
 							size="sm"
-							onClick={() =>
+							action={() =>
 								setItems((prev) => {
 									const lowestLabel = prev.length > 0 ? Math.min(...prev.map((s) => s.label)) : 0;
 									const prepended = Array.from({ length: 10 }, (_, i) => {
@@ -168,7 +168,7 @@ export const DynamicHeights: Story = {
 						>
 							Prepend 10
 						</Button>
-						<Button variant="subtle" size="sm" onClick={() => setItems((p) => [...p, ...makeSlabs(10, true, p.length)])}>
+						<Button variant="subtle" size="sm" action={() => setItems((p) => [...p, ...makeSlabs(10, true, p.length)])}>
 							Append 10
 						</Button>
 					</div>

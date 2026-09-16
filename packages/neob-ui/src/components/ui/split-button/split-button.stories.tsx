@@ -16,8 +16,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  * ```tsx
  * import { SplitButton, DropdownMenu } from '@joyful-tools/neob';
  *
- * <SplitButton label="Save" onClick={handleSave}>
- *   <DropdownMenu.Item onClick={handleSaveAs}>Save As</DropdownMenu.Item>
+ * <SplitButton label="Save" action={handleSave}>
+ *   <DropdownMenu.Item action={handleSaveAs}>Save As</DropdownMenu.Item>
  * </SplitButton>
  * ```
  */
@@ -46,21 +46,21 @@ const PublishButton = ({ children, menuContent: _menuContent, ...props }: Compon
 	const menuContent = (
 		<>
 			<DropdownMenu.Item
-				onSelect={() => {
+				action={() => {
 					action('split-button-save-draft')();
 				}}
 			>
 				Save as Draft
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
-				onSelect={() => {
+				action={() => {
 					action('split-button-schedule-publish')();
 				}}
 			>
 				Schedule Publish
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
-				onSelect={() => {
+				action={() => {
 					action('split-button-archive-post')();
 				}}
 			>
@@ -72,7 +72,7 @@ const PublishButton = ({ children, menuContent: _menuContent, ...props }: Compon
 	return (
 		<div className="p-8">
 			<SplitButton
-				onClick={() => {
+				action={() => {
 					action('split-button-primary-click')();
 				}}
 				menuContent={menuContent}

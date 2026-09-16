@@ -2,9 +2,12 @@ import { AnimatePresence, motion, type Transition } from 'motion/react';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 
 import { Button, buttonVariants } from '@/components/ui/button';
+import { useQueuedAction } from '@/hooks/use-queued-action';
+import { afterAction } from '@/lib/actions';
 import { cn } from '@/lib/utilities';
 
 import type { ButtonProperties } from '@/components/ui/button';
+import type { Action } from '@/lib/actions';
 import type { KeyboardEvent, ReactNode } from 'react';
 
 interface ConfirmButtonProperties {
@@ -13,7 +16,7 @@ interface ConfirmButtonProperties {
 	readonly description?: string;
 	readonly confirmLabel: string;
 	readonly cancelLabel?: string;
-	readonly onConfirm: () => Promise<void> | void;
+	readonly action: Action;
 	readonly variant?: ButtonProperties['variant'];
 	readonly color?: ButtonProperties['color'];
 	readonly size?: ButtonProperties['size'];
@@ -41,7 +44,7 @@ export function ConfirmButton({
 	description,
 	confirmLabel,
 	cancelLabel = 'Cancel',
-	onConfirm,
+	action,
 	variant = 'subtle',
 	color,
 	size = 'sm',
@@ -52,7 +55,6 @@ export function ConfirmButton({
 }: ConfirmButtonProperties) {
 	const [containerElement, setContainerElement] = useState<HTMLDivElement | null>(null);
 	const [open, setOpen] = useState(false);
-	const [isConfirming, setIsConfirming] = useState(false);
 	const [triggerSize, setTriggerSize] = useState<{ width: number; height: number } | null>(null);
 	const titleId = useId();
 	const descriptionId = useId();
@@ -61,6 +63,7 @@ export function ConfirmButton({
 	const confirmButtonRef = useRef<HTMLButtonElement | null>(null);
 	const cancelButtonRef = useRef<HTMLButtonElement>(null);
 	const triggerButtonRef = useRef<HTMLButtonElement>(null);
+	const { runAction, isPending } = useQueuedAction(() => afterAction(action(), () => setOpen(false)));
 
 	useEffect(() => {
 		if (open) {
@@ -104,7 +107,7 @@ export function ConfirmButton({
 
 	// Close on click outside
 	useEffect(() => {
-		if (!open || isConfirming) return;
+		if (!open || isPending) return;
 
 		function handlePointerDown(event: PointerEvent) {
 			if (!(event.target instanceof Node)) return;
@@ -117,24 +120,14 @@ export function ConfirmButton({
 		return () => {
 			document.removeEventListener('pointerdown', handlePointerDown);
 		};
-	}, [open, isConfirming, containerElement]);
-
-	async function handleConfirm() {
-		setIsConfirming(true);
-		try {
-			await onConfirm();
-			setOpen(false);
-		} finally {
-			setIsConfirming(false);
-		}
-	}
+	}, [open, isPending, containerElement]);
 
 	function handleKeyDown(event: KeyboardEvent) {
 		switch (event.key) {
 			case 'Escape': {
 				event.preventDefault();
 				event.stopPropagation();
-				if (!isConfirming) {
+				if (!isPending) {
 					setOpen(false);
 				}
 				return;
@@ -183,6 +176,8 @@ export function ConfirmButton({
 						role="dialog"
 						aria-label={title}
 						aria-describedby={description ? descriptionId : undefined}
+						aria-busy={isPending || undefined}
+						data-pending={isPending ? '' : undefined}
 						onKeyDown={handleKeyDown}
 					>
 						<motion.div
@@ -206,9 +201,9 @@ export function ConfirmButton({
 									type="button"
 									variant="subtle"
 									size="sm"
-									disabled={isConfirming}
+									disabled={isPending}
 									className="h-7 px-3"
-									onClick={() => setOpen(false)}
+									action={() => setOpen(false)}
 								>
 									{cancelLabel}
 								</Button>
@@ -218,8 +213,7 @@ export function ConfirmButton({
 									variant={confirmVariant}
 									color={confirmColor}
 									size="sm"
-									onClick={() => void handleConfirm()}
-									isLoading={isConfirming}
+									action={runAction}
 									className="h-7 px-3"
 								>
 									{confirmLabel}

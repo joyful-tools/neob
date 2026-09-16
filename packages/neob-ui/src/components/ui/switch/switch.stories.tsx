@@ -130,7 +130,7 @@ export const ValidationError: Story = {
 					{...arguments_}
 					label="Email notifications"
 					checked={emailChecked}
-					onCheckedChange={(checked) => {
+					action={(checked) => {
 						setEmailChecked(checked);
 						action('email-notifications-change')(checked);
 					}}
@@ -141,7 +141,7 @@ export const ValidationError: Story = {
 					{...arguments_}
 					label="SMS notifications"
 					checked={smsChecked}
-					onCheckedChange={(checked) => {
+					action={(checked) => {
 						setSmsChecked(checked);
 						action('sms-notifications-change')(checked);
 					}}

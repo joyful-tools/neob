@@ -63,6 +63,26 @@ import { Button } from '@joyful.tools/neob/button';
 import { Card } from '@joyful.tools/neob/card';
 ```
 
+### React Actions and optimistic controls
+
+Mutation-capable components expose one `action` prop. Selection controls render the proposed value immediately, queue rapid Actions in order, and commit uncontrolled state only after success. Command buttons disable themselves and expose `data-pending` and `aria-busy` while their Action runs.
+
+```tsx
+import { Button, Checkbox, type Action } from '@joyful.tools/neob';
+
+const savePreference: Action<[checked: boolean]> = async (checked) => {
+  setChecked(checked); // Keep controlled state synchronized before awaiting.
+  await savePreferenceToServer(checked);
+};
+
+<Checkbox checked={checked} action={savePreference} />;
+<Button action={saveChanges}>Save changes</Button>;
+```
+
+Legacy mutation callbacks and loading flags were removed. Migrate `onValueChange`, `onCheckedChange`, `onPressedChange`, `onConfirm`, `setPage`, and upload/complete callbacks to `action`; replace `Button.isLoading` with an async Button or form Action. Text input remains urgent through DOM-style callbacks such as `onChange` and `onInput`.
+
+When a controlled update must happen after an `await`, wrap that update in a nested `startTransition`, because React does not currently retain the async transition context. Rejected Actions propagate to the nearest Error Boundary. Suspense fallback placement remains under application control.
+
 ### Tailwind CSS v4 Configuration
 
 `neob` leverages Tailwind CSS v4 for styling. To make custom `neob` CSS classes and themes available in your application, configure Tailwind to inspect the package:

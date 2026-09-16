@@ -162,6 +162,62 @@ they are not needed during initial rendering.
 
 ---
 
+## §10 — Use Actions for mutations
+
+Components that own a mutation expose `action`. The exported `Action<Arguments>`
+type resolves with `void`, either synchronously or asynchronously.
+
+```tsx
+import { Pagination, Switch, type Action } from '@joyful.tools/neob';
+
+const changeNotifications: Action<[checked: boolean]> = async (checked) => {
+  setNotificationsEnabled(checked);
+  await updatePreferences({ notificationsEnabled: checked });
+};
+
+<Switch checked={notificationsEnabled} action={changeNotifications} />;
+
+<Pagination
+  page={page}
+  action={(nextPage) => {
+    setPage(nextPage);
+  }}
+  perPage={25}
+  totalCount={500}
+/>;
+```
+
+Controlled Actions should normally update their controlled value synchronously.
+If an update occurs after an `await`, use a nested `startTransition` for that
+update. Uncontrolled controls commit only after a successful Action; rejected
+Actions roll back optimistic state and render through the nearest Error Boundary.
+
+Selection controls stay interactive while queued Actions run. Command controls,
+including `Button`, disable themselves and display their spinner. A submit Button
+also derives pending state from the nearest form Action. All pending owners expose
+`data-pending` and `aria-busy`.
+
+Text entry and filtering stay urgent through `onChange` or `onInput`. `Slider`,
+`NumericSlider`, and `ResizablePanel` use `onInput` for continuous feedback and
+`action` for the pointer or keyboard commit. `OTPField` keeps `onValueChange` for
+editing and uses `action` only when the completed code is submitted.
+
+Applications own Suspense and Error Boundary placement; neob does not insert
+internal boundaries.
+
+### Migration map
+
+| Previous API                                          | Current API                    |
+| ----------------------------------------------------- | ------------------------------ |
+| `onValueChange`, `onCheckedChange`, `onPressedChange` | `action`                       |
+| `onConfirm`, menu command callbacks                   | `action`                       |
+| `Pagination.setPage`                                  | `Pagination.action`            |
+| `DropZone.onFileDrop`, `OTPField.onComplete`          | `action`                       |
+| `Button.isLoading`, confirmation loading props        | Derived from the Action        |
+| Continuous-control change callback                    | `onInput` plus commit `action` |
+
+---
+
 ## Consumer checklist
 
 - [ ] Import `@joyful.tools/neob/dist/index.css` once.
@@ -170,3 +226,5 @@ they are not needed during initial rendering.
 - [ ] Mount one `GlobalDialogBackdrop` when using dialogs.
 - [ ] Import compound parts through their parent namespace.
 - [ ] Use control field props instead of wrapping controls manually.
+- [ ] Update controlled values synchronously inside Actions.
+- [ ] Place Suspense and Error Boundaries around mutation-driven content where needed.

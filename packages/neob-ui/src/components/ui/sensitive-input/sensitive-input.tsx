@@ -49,7 +49,7 @@ export function SensitiveInput({
 				{...properties}
 			/>
 			<InputGroup.Button
-				onClick={() => {
+				action={() => {
 					setIsVisible((prev) => !prev);
 				}}
 				disabled={properties.disabled}

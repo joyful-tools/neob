@@ -16,7 +16,10 @@ import {
 } from 'react';
 
 import { Input as NeoInput } from '@/components/ui/input';
+import { useOptimisticAction } from '@/hooks/use-optimistic-action';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 export type ComboboxSize = 'xs' | 'sm' | 'base' | 'lg';
 
@@ -31,12 +34,14 @@ const ComboboxContext = createContext<{
 	readonly ariaLabel?: string;
 	readonly ariaLabelledby?: string;
 	readonly controlId?: string;
+	readonly isPending: boolean;
 }>({
 	size: 'base',
 	hasError: false,
 	multiple: false,
 	anchorRef: () => {},
 	anchorElement: null,
+	isPending: false,
 });
 
 function getInputStyles(size: ComboboxSize, hasError: boolean, focusRingClass = 'neo-focus-ring-focus') {
@@ -55,10 +60,17 @@ function getInputStyles(size: ComboboxSize, hasError: boolean, focusRingClass = 
 	);
 }
 
-export interface ComboboxProps<Value = unknown, Multiple extends boolean | undefined = false> extends BaseCombobox.Root.Props<
-	Value,
-	Multiple
+type ComboboxValue<Value, Multiple extends boolean | undefined> = Parameters<
+	NonNullable<BaseCombobox.Root.Props<Value, Multiple>['onValueChange']>
+>[0];
+
+export interface ComboboxProps<Value = unknown, Multiple extends boolean | undefined = false> extends Omit<
+	BaseCombobox.Root.Props<Value, Multiple>,
+	'value' | 'defaultValue' | 'onValueChange'
 > {
+	readonly value?: ComboboxValue<Value, Multiple>;
+	readonly defaultValue?: ComboboxValue<Value, Multiple>;
+	readonly action?: Action<[value: ComboboxValue<Value, Multiple>, eventDetails: BaseCombobox.Root.ChangeEventDetails]>;
 	readonly 'aria-label'?: string;
 	readonly 'aria-labelledby'?: string;
 	readonly 'aria-invalid'?: boolean | 'true' | 'false';
@@ -87,6 +99,9 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 	'aria-label': ariaLabel,
 	'aria-labelledby': ariaLabelledby,
 	'aria-invalid': ariaInvalidProp,
+	value,
+	defaultValue,
+	action,
 	...props
 }: ComboboxProps<Value, Multiple>) {
 	const hasError = Boolean(error) || ariaInvalidProp === true || ariaInvalidProp === 'true';
@@ -98,6 +113,7 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 	const hasDescription = Boolean(description);
 
 	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
+	const { optimisticValue, runAction, isPending } = useOptimisticAction({ value, defaultValue, action });
 
 	const comboboxControl = (
 		<ComboboxContext.Provider
@@ -112,9 +128,12 @@ function Root<Value, Multiple extends boolean | undefined = false>({
 				ariaLabel,
 				ariaLabelledby,
 				controlId,
+				isPending,
 			}}
 		>
-			<BaseCombobox.Root {...props}>{children}</BaseCombobox.Root>
+			<BaseCombobox.Root {...props} value={optimisticValue} onValueChange={runAction}>
+				{children}
+			</BaseCombobox.Root>
 		</ComboboxContext.Provider>
 	);
 
@@ -222,7 +241,8 @@ export interface ComboboxTriggerValueProps extends ComponentPropsWithoutRef<type
  * Dropdown trigger button displaying the selected value.
  */
 function TriggerValue({ className, ref, placeholder, ...props }: ComboboxTriggerValueProps) {
-	const { size, hasError, describedBy, ariaInvalid, anchorRef, ariaLabel, ariaLabelledby, controlId } = useContext(ComboboxContext);
+	const { size, hasError, describedBy, ariaInvalid, anchorRef, ariaLabel, ariaLabelledby, controlId, isPending } =
+		useContext(ComboboxContext);
 	const iconStyles = triggerValueIconStyles[size];
 
 	return (
@@ -239,6 +259,8 @@ function TriggerValue({ className, ref, placeholder, ...props }: ComboboxTrigger
 				aria-label={ariaLabel}
 				aria-labelledby={ariaLabelledby}
 				aria-invalid={ariaInvalid ? true : undefined}
+				aria-busy={isPending || undefined}
+				data-pending={isPending ? '' : undefined}
 				onKeyDown={(e) => {
 					if (e.key === ' ') {
 						e.preventDefault();
@@ -275,10 +297,17 @@ export interface ComboboxTriggerProps extends ComponentPropsWithoutRef<typeof Ba
 }
 
 function Trigger({ children, ref, ...props }: ComboboxTriggerProps) {
-	const { ariaLabel, ariaLabelledby } = useContext(ComboboxContext);
+	const { ariaLabel, ariaLabelledby, isPending } = useContext(ComboboxContext);
 
 	return (
-		<BaseCombobox.Trigger ref={ref} aria-label={ariaLabel} aria-labelledby={ariaLabelledby} {...props}>
+		<BaseCombobox.Trigger
+			ref={ref}
+			aria-label={ariaLabel}
+			aria-labelledby={ariaLabelledby}
+			aria-busy={isPending || undefined}
+			data-pending={isPending ? '' : undefined}
+			{...props}
+		>
 			{children}
 		</BaseCombobox.Trigger>
 	);
@@ -330,7 +359,7 @@ function TriggerInput({
 	showOptionsLabel = 'Show options',
 	...props
 }: ComboboxTriggerInputProps) {
-	const { size, hasError, describedBy, ariaInvalid, anchorRef, controlId } = useContext(ComboboxContext);
+	const { size, hasError, describedBy, ariaInvalid, anchorRef, controlId, isPending } = useContext(ComboboxContext);
 	const iconStyles = triggerInputIconStyles[size];
 
 	return (
@@ -342,6 +371,8 @@ function TriggerInput({
 				className={cn(getInputStyles(size, hasError), 'w-full shadow-cel-inset-md', iconStyles.padding)}
 				aria-describedby={describedBy}
 				aria-invalid={ariaInvalid ? true : undefined}
+				aria-busy={isPending || undefined}
+				data-pending={isPending ? '' : undefined}
 				{...props}
 			/>
 
@@ -409,7 +440,7 @@ function TriggerMultipleWithInput<ValueType>({
 	inputProps,
 	endAdornment,
 }: ComboboxTriggerMultipleWithInputProps<ValueType>) {
-	const { size, hasError, describedBy, ariaInvalid, ariaLabel, controlId } = useContext(ComboboxContext);
+	const { size, hasError, describedBy, ariaInvalid, ariaLabel, controlId, isPending } = useContext(ComboboxContext);
 	const chipsToRender = controlledValue;
 	const { className: inputClassName, ...resolvedInputProps } = inputProps ?? {};
 
@@ -430,6 +461,8 @@ function TriggerMultipleWithInput<ValueType>({
 			)}
 			aria-describedby={describedBy}
 			aria-invalid={ariaInvalid ? true : undefined}
+			aria-busy={isPending || undefined}
+			data-pending={isPending ? '' : undefined}
 		>
 			{inputSide === 'top' && (
 				<BaseCombobox.Input

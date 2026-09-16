@@ -98,7 +98,7 @@ export const Clearable: Story = {
 					/>
 					{value && (
 						<InputGroup.Button
-							onClick={() => {
+							action={() => {
 								setValue('');
 								action('input-group-clearable-clear')();
 							}}
@@ -138,7 +138,7 @@ export const Numeric: Story = {
 					<InputGroup.Addon align="end">
 						<NumericSlider
 							value={value}
-							onChange={(nextValue) => {
+							onInput={(nextValue) => {
 								action('input-group-numeric-slider-change')(nextValue);
 								setValue(Math.round(nextValue * 100) / 100);
 							}}

@@ -61,7 +61,7 @@ const showToast = (button: ToastButtonConfiguration) => {
 		action: button.actionLabel
 			? {
 					label: button.actionLabel,
-					onClick: () => action(button.actionEvent ?? 'toast-action')(),
+					action: () => action(button.actionEvent ?? 'toast-action')(),
 				}
 			: undefined,
 	};
@@ -109,7 +109,7 @@ export const AllVariants: Story = {
 	render: (args) => (
 		<div className="flex flex-wrap items-center gap-3">
 			{args.buttons.map((button) => (
-				<Button key={button.label} variant={button.variant} color={button.color} onClick={() => showToast(button)}>
+				<Button key={button.label} variant={button.variant} color={button.color} action={() => showToast(button)}>
 					{button.label}
 				</Button>
 			))}
@@ -158,7 +158,7 @@ export const WithActions: Story = {
 	render: (args) => (
 		<div className="flex flex-wrap items-center gap-3">
 			{args.buttons.map((button) => (
-				<Button key={button.label} variant={button.variant} color={button.color} onClick={() => showToast(button)}>
+				<Button key={button.label} variant={button.variant} color={button.color} action={() => showToast(button)}>
 					{button.label}
 				</Button>
 			))}
@@ -194,7 +194,7 @@ export const Minimal: Story = {
 	render: (args) => (
 		<div className="flex flex-wrap items-center gap-3">
 			{args.buttons.map((button) => (
-				<Button key={button.label} variant={button.variant} color={button.color} onClick={() => showToast(button)}>
+				<Button key={button.label} variant={button.variant} color={button.color} action={() => showToast(button)}>
 					{button.label}
 				</Button>
 			))}
@@ -237,7 +237,7 @@ export const VariantDismissal: Story = {
 	render: (args) => (
 		<div className="flex flex-wrap items-center gap-3">
 			{args.buttons.map((button) => (
-				<Button key={button.label} variant={button.variant} color={button.color} onClick={() => showToast(button)}>
+				<Button key={button.label} variant={button.variant} color={button.color} action={() => showToast(button)}>
 					{button.label}
 				</Button>
 			))}

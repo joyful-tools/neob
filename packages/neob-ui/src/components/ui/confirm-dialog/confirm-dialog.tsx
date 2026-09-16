@@ -4,6 +4,10 @@ import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { useQueuedAction } from '@/hooks/use-queued-action';
+import { afterAction } from '@/lib/actions';
+
+import type { Action } from '@/lib/actions';
 
 export interface ConfirmDialogProperties {
 	readonly open: boolean;
@@ -12,10 +16,9 @@ export interface ConfirmDialogProperties {
 	readonly description: ReactNode;
 	readonly confirmLabel?: string;
 	readonly cancelLabel?: string;
-	readonly onConfirm: () => void;
+	readonly action: Action;
 	readonly variant?: 'default' | 'danger' | 'warning';
 	readonly resourceName?: string;
-	readonly isConfirming?: boolean;
 }
 
 export function ConfirmDialog({
@@ -25,16 +28,16 @@ export function ConfirmDialog({
 	description,
 	confirmLabel = 'Confirm',
 	cancelLabel = 'Cancel',
-	onConfirm,
+	action,
 	variant = 'default',
 	resourceName,
-	isConfirming = false,
 }: ConfirmDialogProperties) {
 	const [typedConfirmation, setTypedConfirmation] = useState('');
 	const [copied, setCopied] = useState(false);
 	const inputId = useId();
 	const copyTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 	const cancelButtonRef = useRef<HTMLButtonElement>(null);
+	const { runAction, isPending } = useQueuedAction(() => afterAction(action(), () => handleOpenChange(false)));
 
 	useEffect(() => () => clearTimeout(copyTimeoutRef.current), []);
 
@@ -66,7 +69,7 @@ export function ConfirmDialog({
 
 	return (
 		<Dialog open={open} onOpenChange={handleOpenChange} preventClose>
-			<Dialog.Content>
+			<Dialog.Content aria-busy={isPending || undefined} data-pending={isPending ? '' : undefined}>
 				<Dialog.Header>
 					<Dialog.Title>{title}</Dialog.Title>
 				</Dialog.Header>
@@ -81,7 +84,7 @@ export function ConfirmDialog({
 										type="button"
 										variant="subtle"
 										size="sm"
-										onClick={handleCopyResourceName}
+										action={handleCopyResourceName}
 										className="mx-0.5 h-6 px-2 font-mono text-xs"
 									>
 										{resourceName}
@@ -95,11 +98,11 @@ export function ConfirmDialog({
 									value={typedConfirmation}
 									onChange={(event) => setTypedConfirmation(event.target.value)}
 									onKeyDown={(event) => {
-										if (event.key === 'Enter' && confirmationMatches && !isConfirming) {
-											onConfirm();
+										if (event.key === 'Enter' && confirmationMatches && !isPending) {
+											void runAction().catch(() => {});
 										}
 									}}
-									disabled={isConfirming}
+									disabled={isPending}
 									placeholder={resourceName}
 									autoComplete="off"
 									className="rounded-md px-3 text-sm shadow-cel-inset-sm"
@@ -109,16 +112,15 @@ export function ConfirmDialog({
 					</div>
 				</Dialog.Body>
 				<Dialog.Footer>
-					<Button ref={cancelButtonRef} type="button" variant="subtle" onClick={() => handleOpenChange(false)} disabled={isConfirming}>
+					<Button ref={cancelButtonRef} type="button" variant="subtle" action={() => handleOpenChange(false)} disabled={isPending}>
 						{cancelLabel}
 					</Button>
 					<Button
 						type="button"
-						onClick={onConfirm}
+						action={runAction}
 						disabled={!confirmationMatches}
 						variant={variant === 'danger' ? 'danger' : 'default'}
 						color={variant === 'warning' ? 'gold' : undefined}
-						isLoading={isConfirming}
 					>
 						{confirmLabel}
 					</Button>

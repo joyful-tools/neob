@@ -1,11 +1,15 @@
 import { CaretUpDownIcon } from '@phosphor-icons/react';
 import { KeyboardEvent, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from 'react';
 
+import { useQueuedAction } from '@/hooks/use-queued-action';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 export interface NumericSliderProperties {
 	readonly value: number;
-	readonly onChange: (value: number) => void;
+	readonly onInput: (value: number) => void;
+	readonly action?: Action<[value: number]>;
 	readonly min?: number;
 	readonly max?: number;
 	readonly step?: number;
@@ -17,7 +21,8 @@ export interface NumericSliderProperties {
 
 export function NumericSlider({
 	value,
-	onChange,
+	onInput,
+	action,
 	min = Number.MIN_SAFE_INTEGER,
 	max = Number.MAX_SAFE_INTEGER,
 	step = 1,
@@ -30,6 +35,7 @@ export function NumericSlider({
 	const [pointerId, setPointerId] = useState<number | null>(null);
 	const targetReference = useRef<HTMLDivElement>(null);
 	const dragValueReference = useRef(value);
+	const { runAction, isPending } = useQueuedAction(action);
 	const clampValue = useCallback((nextValue: number) => Math.min(max, Math.max(min, nextValue)), [max, min]);
 
 	const handlePointerDown = useCallback(
@@ -60,32 +66,36 @@ export function NumericSlider({
 		(event: KeyboardEvent<HTMLDivElement>) => {
 			if (disabled) return;
 			const increment = event.shiftKey ? largeStep : step;
+			let nextValue: number | undefined;
 			switch (event.key) {
 				case 'ArrowUp':
 				case 'ArrowRight': {
 					event.preventDefault();
-					onChange(clampValue(value + increment));
+					nextValue = clampValue(value + increment);
 					break;
 				}
 				case 'ArrowDown':
 				case 'ArrowLeft': {
 					event.preventDefault();
-					onChange(clampValue(value - increment));
+					nextValue = clampValue(value - increment);
 					break;
 				}
 				case 'Home': {
 					event.preventDefault();
-					onChange(min);
+					nextValue = min;
 					break;
 				}
 				case 'End': {
 					event.preventDefault();
-					onChange(max);
+					nextValue = max;
 					break;
 				}
 			}
+			if (nextValue === undefined) return;
+			onInput(nextValue);
+			void runAction(nextValue).catch(() => {});
 		},
-		[clampValue, disabled, largeStep, max, min, onChange, step, value],
+		[clampValue, disabled, largeStep, max, min, onInput, runAction, step, value],
 	);
 
 	useEffect(() => {
@@ -94,7 +104,7 @@ export function NumericSlider({
 				const delta = (-event.movementY / window.devicePixelRatio) * step;
 				const nextValue = clampValue(dragValueReference.current + delta);
 				dragValueReference.current = nextValue;
-				onChange(nextValue);
+				onInput(nextValue);
 			}
 		};
 
@@ -105,7 +115,7 @@ export function NumericSlider({
 		return () => {
 			document.removeEventListener('pointermove', handlePointerMove);
 		};
-	}, [clampValue, onChange, pointerId, pointerLockActive, step]);
+	}, [clampValue, onInput, pointerId, pointerLockActive, step]);
 
 	useEffect(() => {
 		const handlePointerLockChange = () => {
@@ -126,6 +136,7 @@ export function NumericSlider({
 	useEffect(() => {
 		const handlePointerUp = (event: PointerEvent) => {
 			if (pointerId === event.pointerId) {
+				void runAction(dragValueReference.current).catch(() => {});
 				setPointerId(null);
 				try {
 					if (document.pointerLockElement === targetReference.current) {
@@ -146,7 +157,7 @@ export function NumericSlider({
 			globalThis.removeEventListener('pointerup', handlePointerUp);
 			globalThis.removeEventListener('pointercancel', handlePointerUp);
 		};
-	}, [pointerId]);
+	}, [pointerId, runAction]);
 
 	return (
 		<div
@@ -158,6 +169,8 @@ export function NumericSlider({
 			aria-valuemax={max}
 			aria-valuenow={value}
 			aria-disabled={disabled || undefined}
+			aria-busy={isPending || undefined}
+			data-pending={isPending ? '' : undefined}
 			onPointerDown={handlePointerDown}
 			onKeyDown={handleKeyDown}
 			style={{ touchAction: 'none' }}

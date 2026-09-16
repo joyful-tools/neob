@@ -61,7 +61,7 @@ export const Default: Story = {
 		return (
 			<>
 				<Button
-					onClick={() => {
+					action={() => {
 						action('dialog-open-change')(true);
 						setOpen(true);
 					}}
@@ -86,7 +86,7 @@ export const Default: Story = {
 						<Dialog.Footer>
 							<Button
 								variant="subtle"
-								onClick={() => {
+								action={() => {
 									action('dialog-cancel')();
 									action('dialog-open-change')(false);
 									setOpen(false);
@@ -96,7 +96,7 @@ export const Default: Story = {
 							</Button>
 							<Button
 								color="gold"
-								onClick={() => {
+								action={() => {
 									action('dialog-confirm')();
 									action('dialog-open-change')(false);
 									setOpen(false);

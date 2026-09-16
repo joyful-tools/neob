@@ -3,10 +3,12 @@ import { AnimatePresence, motion, Transition } from 'motion/react';
 import { cloneElement, KeyboardEvent, MouseEvent, ReactElement, useCallback, useEffect, useRef, useState, useId } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
+import { useQueuedAction } from '@/hooks/use-queued-action';
+import { afterAction } from '@/lib/actions';
 import { cn } from '@/lib/utilities';
 
 import type { ButtonProperties } from '@/components/ui/button';
+import type { Action } from '@/lib/actions';
 
 export type InlineConfirmGroupDirection = 'left' | 'right';
 export type InlineConfirmGroupIntent = 'danger' | 'info' | 'success';
@@ -16,10 +18,9 @@ export interface InlineConfirmGroupProperties {
 	readonly actionLabel?: string;
 	readonly actionIcon?: ReactElement<{ className?: string }>;
 	readonly intent?: InlineConfirmGroupIntent;
-	readonly onConfirm: () => void;
+	readonly action: Action;
 	readonly onCancel?: () => void;
 	readonly className?: string;
-	readonly isLoading?: boolean;
 	readonly direction?: InlineConfirmGroupDirection;
 	readonly variant?: ButtonProperties['variant'];
 	readonly color?: ButtonProperties['color'];
@@ -43,10 +44,9 @@ export function InlineConfirmGroup({
 	actionLabel = 'Delete',
 	actionIcon = <TrashIcon />,
 	intent = 'danger',
-	onConfirm,
+	action,
 	onCancel,
 	className,
-	isLoading = false,
 	direction = 'left',
 	variant = 'ghost',
 	color,
@@ -63,6 +63,7 @@ export function InlineConfirmGroup({
 	const triggerOriginClassName = direction === 'left' ? 'origin-right' : 'origin-left';
 	const transformOrigin = direction;
 	const actionLabelLowercase = actionLabel.toLowerCase();
+	const { runAction, isPending } = useQueuedAction(() => afterAction(action(), () => setOpen(false)));
 	const renderActionIcon = useCallback(
 		(sizeClassName: string) => cloneElement(actionIcon, { className: cn(sizeClassName, actionIcon.props.className) }),
 		[actionIcon],
@@ -84,7 +85,7 @@ export function InlineConfirmGroup({
 
 	// Auto-focus cancel button on mount so the user has immediate focus there
 	useEffect(() => {
-		if (!open) return;
+		if (!open || isPending) return;
 		cancelButtonReference.current?.focus();
 
 		function handlePointerDown(event: PointerEvent) {
@@ -99,10 +100,12 @@ export function InlineConfirmGroup({
 		return () => {
 			document.removeEventListener('pointerdown', handlePointerDown);
 		};
-	}, [open, onCancel]);
+	}, [open, isPending, onCancel]);
 
 	const handleKeyDown = useCallback(
 		(event: KeyboardEvent) => {
+			if (isPending) return;
+
 			switch (event.key) {
 				case 'Escape': {
 					event.preventDefault();
@@ -128,16 +131,15 @@ export function InlineConfirmGroup({
 				}
 			}
 		},
-		[onCancel],
+		[isPending, onCancel],
 	);
 
 	const handleConfirmClick = useCallback(
 		(event: MouseEvent) => {
 			event.stopPropagation();
-			onConfirm();
-			setOpen(false);
+			void runAction().catch(() => {});
 		},
-		[onConfirm],
+		[runAction],
 	);
 
 	const handleCancelClick = useCallback(
@@ -156,8 +158,8 @@ export function InlineConfirmGroup({
 			variant="subtle"
 			size="icon"
 			tabIndex={0}
-			disabled={isLoading}
-			onClick={handleConfirmClick}
+			disabled={isPending}
+			action={handleConfirmClick}
 			className={cn('size-7 rounded-md border hover:text-white', intentClassNames[intent])}
 			aria-label={`Confirm ${actionLabelLowercase} ${itemName}`}
 		>
@@ -172,8 +174,8 @@ export function InlineConfirmGroup({
 			variant="subtle"
 			size="icon"
 			tabIndex={0}
-			disabled={isLoading}
-			onClick={handleCancelClick}
+			disabled={isPending}
+			action={handleCancelClick}
 			className="size-7 rounded-md border bg-zinc/10 text-black hover:bg-black hover:text-white dark:bg-zinc/20 dark:text-white dark:hover:bg-white dark:hover:text-black"
 			aria-label={`Cancel ${actionLabelLowercase} ${itemName}`}
 		>
@@ -196,6 +198,8 @@ export function InlineConfirmGroup({
 						layoutDependency={open}
 						role="group"
 						aria-label={`${actionLabel} confirmation for ${itemName}`}
+						aria-busy={isPending || undefined}
+						data-pending={isPending ? '' : undefined}
 						transition={spring}
 						style={{ borderRadius: 8, transformOrigin }}
 						className={cn(
@@ -223,14 +227,14 @@ export function InlineConfirmGroup({
 							variant={variant}
 							color={color}
 							size={size}
-							disabled={isLoading}
-							onClick={(event) => {
+							disabled={isPending}
+							action={(event) => {
 								event.stopPropagation();
 								setOpen(true);
 							}}
 							aria-label={`${actionLabel} ${itemName}`}
 						>
-							{isLoading ? <Spinner size="sm" className="size-5" /> : renderActionIcon('size-5')}
+							{renderActionIcon('size-5')}
 						</Button>
 					</motion.div>
 				)}

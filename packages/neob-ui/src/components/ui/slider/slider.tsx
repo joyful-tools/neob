@@ -1,13 +1,22 @@
 import { Slider as BaseSlider } from '@base-ui/react/slider';
 import { CSSProperties, ReactNode } from 'react';
 
+import { useQueuedAction } from '@/hooks/use-queued-action';
 import { cn } from '@/lib/utilities';
 
+import type { Action } from '@/lib/actions';
 import type { SliderRootProps } from '@base-ui/react/slider';
 
 const MAX_GENERATED_TICKS = 100;
 
-export interface SliderProperties extends Omit<SliderRootProps<number | readonly number[]>, 'children'> {
+type SliderValue = number | readonly number[];
+type SliderInputDetails = Parameters<NonNullable<SliderRootProps<SliderValue>['onValueChange']>>[1];
+type SliderCommitDetails = Parameters<NonNullable<SliderRootProps<SliderValue>['onValueCommitted']>>[1];
+
+export interface SliderProperties extends Omit<
+	SliderRootProps<SliderValue>,
+	'children' | 'onInput' | 'onValueChange' | 'onValueCommitted'
+> {
 	readonly mode?: 'continuous' | 'ticks';
 	readonly label?: ReactNode;
 	readonly thumbLabels?: readonly string[];
@@ -18,6 +27,8 @@ export interface SliderProperties extends Omit<SliderRootProps<number | readonly
 	readonly thumbClassName?: string;
 	readonly tickClassName?: string;
 	readonly 'aria-label'?: string;
+	readonly onInput?: (value: SliderValue, eventDetails: SliderInputDetails) => void;
+	readonly action?: Action<[value: SliderValue, eventDetails: SliderCommitDetails]>;
 }
 
 function createTickValues(min: number, max: number, step: number, tickValues: readonly number[] | undefined) {
@@ -75,8 +86,11 @@ export function Slider({
 	tickClassName,
 	'aria-label': ariaLabel,
 	ref,
+	onInput,
+	action,
 	...properties
 }: SliderProperties) {
+	const { runAction, isPending } = useQueuedAction(action);
 	const currentValue = value ?? defaultValue;
 	const thumbCount = typeof currentValue === 'number' || currentValue === undefined ? 1 : Math.max(currentValue.length, 1);
 	const ticks = mode === 'ticks' ? createTickValues(min, max, step, tickValues) : [];
@@ -92,6 +106,12 @@ export function Slider({
 			orientation={orientation}
 			disabled={disabled}
 			className={cn('flex w-full flex-col gap-2 data-[orientation=vertical]:w-fit', className)}
+			onValueChange={onInput}
+			onValueCommitted={(nextValue, eventDetails) => {
+				void runAction(nextValue, eventDetails).catch(() => {});
+			}}
+			aria-busy={isPending || undefined}
+			data-pending={isPending ? '' : undefined}
 			{...properties}
 		>
 			{label && (

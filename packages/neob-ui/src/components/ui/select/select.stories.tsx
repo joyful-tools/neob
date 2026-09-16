@@ -25,7 +25,7 @@ type SelectStoryProperties = {
  * ```tsx
  * import { Select } from '@joyful-tools/neob';
  *
- * <Select value={value} onValueChange={setValue}>
+ * <Select value={value} action={setValue}>
  *   <Select.Option value="first">First Option</Select.Option>
  *   <Select.Option value="second">Second Option</Select.Option>
  * </Select>
@@ -57,7 +57,7 @@ export const Default: Story = {
 					placeholder={args.placeholder}
 					aria-label={args['aria-label']}
 					value={val}
-					onValueChange={(value) => {
+					action={(value) => {
 						setVal(typeof value === 'string' ? value : '');
 						action('select-default-change')(value);
 					}}
@@ -120,7 +120,7 @@ export const ItemsProp: Story = {
 					aria-label={args['aria-label']}
 					items={args.items}
 					value={val}
-					onValueChange={(value) => {
+					action={(value) => {
 						setVal(typeof value === 'string' ? value : '');
 						action('select-items-prop-change')(value);
 					}}
@@ -154,7 +154,7 @@ export const Labeled: Story = {
 					description={args.description}
 					placeholder={args.placeholder}
 					value={val}
-					onValueChange={(value) => {
+					action={(value) => {
 						setVal(typeof value === 'string' ? value : '');
 						action('select-labeled-change')(value);
 					}}

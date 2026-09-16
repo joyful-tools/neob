@@ -1,6 +1,7 @@
 import { EnvelopeIcon, ArrowRightIcon, PlusIcon } from '@phosphor-icons/react';
+import { Component, ReactNode, useState } from 'react';
 import { action } from 'storybook/actions';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { Spinner } from '@/components/ui/spinner';
 import { guardPlay } from '@/lib/storybook-interactions';
@@ -17,7 +18,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  * ```tsx
  * import { Button } from '@joyful-tools/neob';
  *
- * <Button color="gold" size="lg" isLoading={false} onClick={handleClick}>
+ * <Button color="gold" size="lg" action={handleClick}>
  *   Submit
  * </Button>
  * ```
@@ -62,7 +63,7 @@ const getCelDepth = (button: HTMLElement, size: 'sm' | 'md' | 'lg') =>
 
 export const Default: Story = {
 	render: (args) => (
-		<Button {...args} onClick={() => action('button-click')()}>
+		<Button {...args} action={() => action('button-click')()}>
 			{args.children}
 		</Button>
 	),
@@ -84,7 +85,7 @@ export const Colors: Story = {
 	render: () => (
 		<div className="flex max-w-2xl flex-wrap gap-3">
 			{colors.map((color) => (
-				<Button key={color} color={color} onClick={() => action(`${color}-button-click`)()}>
+				<Button key={color} color={color} action={() => action(`${color}-button-click`)()}>
 					{color}
 				</Button>
 			))}
@@ -100,7 +101,7 @@ export const Colors: Story = {
 
 export const Danger: Story = {
 	render: (args) => (
-		<Button {...args} onClick={() => action('danger-button-click')()}>
+		<Button {...args} action={() => action('danger-button-click')()}>
 			{args.children}
 		</Button>
 	),
@@ -118,7 +119,7 @@ export const Danger: Story = {
 
 export const Subtle: Story = {
 	render: (args) => (
-		<Button {...args} onClick={() => action('subtle-button-click')()}>
+		<Button {...args} action={() => action('subtle-button-click')()}>
 			{args.children}
 		</Button>
 	),
@@ -141,7 +142,7 @@ export const SubtleColor: Story = {
 	render: () => (
 		<div className="flex max-w-2xl flex-wrap gap-3">
 			{colors.map((color) => (
-				<Button key={color} variant="subtle" color={color} onClick={() => action(`subtle-${color}-button-click`)()}>
+				<Button key={color} variant="subtle" color={color} action={() => action(`subtle-${color}-button-click`)()}>
 					{color}
 				</Button>
 			))}
@@ -157,7 +158,7 @@ export const SubtleColor: Story = {
 
 export const Ghost: Story = {
 	render: (args) => (
-		<Button {...args} onClick={() => action('ghost-button-click')()}>
+		<Button {...args} action={() => action('ghost-button-click')()}>
 			{args.children}
 		</Button>
 	),
@@ -176,7 +177,7 @@ export const Ghost: Story = {
 
 export const Link: Story = {
 	render: (args) => (
-		<Button {...args} onClick={() => action('link-button-click')()}>
+		<Button {...args} action={() => action('link-button-click')()}>
 			{args.children}
 		</Button>
 	),
@@ -194,7 +195,7 @@ export const Link: Story = {
 
 export const Small: Story = {
 	render: (args) => (
-		<Button {...args} onClick={() => action('small-button-click')()}>
+		<Button {...args} action={() => action('small-button-click')()}>
 			{args.children}
 		</Button>
 	),
@@ -212,7 +213,7 @@ export const Small: Story = {
 
 export const Large: Story = {
 	render: (args) => (
-		<Button {...args} onClick={() => action('large-button-click')()}>
+		<Button {...args} action={() => action('large-button-click')()}>
 			{args.children}
 		</Button>
 	),
@@ -230,7 +231,7 @@ export const Large: Story = {
 
 export const ExtraLarge: Story = {
 	render: (args) => (
-		<Button {...args} onClick={() => action('extra-large-button-click')()}>
+		<Button {...args} action={() => action('extra-large-button-click')()}>
 			{args.children}
 		</Button>
 	),
@@ -248,7 +249,7 @@ export const ExtraLarge: Story = {
 
 export const Icon: Story = {
 	render: (args) => (
-		<Button {...args} onClick={() => action('icon-button-click')()}>
+		<Button {...args} action={() => action('icon-button-click')()}>
 			{args.children}
 		</Button>
 	),
@@ -282,9 +283,97 @@ export const Disabled: Story = {
 	}),
 };
 
+export const AsyncAction: Story = {
+	render: () => (
+		<Button
+			action={() => {
+				return new Promise<void>((resolve) => setTimeout(resolve, 150));
+			}}
+		>
+			Save changes
+		</Button>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const button = within(canvasElement).getByRole('button', { name: 'Save changes' });
+		await userEvent.click(button);
+		await expect(button).toBeDisabled();
+		await expect(button).toHaveAttribute('aria-busy', 'true');
+		await waitFor(() => expect(button).toBeEnabled());
+	}),
+};
+
+export const SynchronousActionDoesNotFlicker: Story = {
+	render: () => {
+		const [count, setCount] = useState(0);
+		return <Button action={() => setCount((currentCount) => currentCount + 1)}>Count {count}</Button>;
+	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const button = canvas.getByRole('button', { name: 'Count 0' });
+
+		await userEvent.click(button);
+
+		await expect(canvas.getByRole('button', { name: 'Count 1' })).not.toHaveAttribute('aria-busy');
+		await expect(button).not.toHaveAttribute('data-pending');
+	}),
+};
+
+export const FormActionPending: Story = {
+	render: () => (
+		<form
+			action={() => {
+				return new Promise<void>((resolve) => setTimeout(resolve, 150));
+			}}
+		>
+			<Button type="submit">Submit form</Button>
+		</form>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const button = within(canvasElement).getByRole('button', { name: 'Submit form' });
+		await userEvent.click(button);
+		await expect(button).toHaveAttribute('aria-busy', 'true');
+		await waitFor(() => expect(button).toBeEnabled());
+	}),
+};
+
+class ActionErrorBoundary extends Component<{ readonly children: ReactNode }, { readonly error: Error | null }> {
+	state: { readonly error: Error | null } = { error: null };
+
+	static getDerivedStateFromError(error: Error) {
+		return { error };
+	}
+
+	render() {
+		if (this.state.error) {
+			return <p role="alert">{this.state.error.message}</p>;
+		}
+		return this.props.children;
+	}
+}
+
+export const RejectedAction: Story = {
+	render: () => (
+		<ActionErrorBoundary>
+			<Button
+				action={async () => {
+					await new Promise<void>((resolve) => setTimeout(resolve, 25));
+					throw new Error('The Action failed');
+				}}
+			>
+				Run failing Action
+			</Button>
+		</ActionErrorBoundary>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await userEvent.click(canvas.getByRole('button', { name: 'Run failing Action' }));
+		await expect(await canvas.findByRole('alert')).toHaveTextContent('The Action failed');
+	}),
+};
+
 export const WithPrefixIcon: Story = {
 	render: (args) => (
-		<Button {...args} onClick={() => action('prefix-icon-button-click')()}>
+		<Button {...args} action={() => action('prefix-icon-button-click')()}>
 			{args.children}
 		</Button>
 	),
@@ -306,7 +395,7 @@ export const WithPrefixIcon: Story = {
 
 export const WithSuffixIcon: Story = {
 	render: (args) => (
-		<Button {...args} onClick={() => action('suffix-icon-button-click')()}>
+		<Button {...args} action={() => action('suffix-icon-button-click')()}>
 			{args.children}
 		</Button>
 	),
@@ -328,7 +417,7 @@ export const WithSuffixIcon: Story = {
 
 export const WithBothIcons: Story = {
 	render: (args) => (
-		<Button {...args} onClick={() => action('both-icons-button-click')()}>
+		<Button {...args} action={() => action('both-icons-button-click')()}>
 			{args.children}
 		</Button>
 	),

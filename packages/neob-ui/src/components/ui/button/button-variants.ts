@@ -24,7 +24,7 @@ export const buttonVariants = cva(
 		neo-focus-ring
 		relative isolate inline-flex cursor-pointer items-center justify-center
 		gap-2 whitespace-nowrap outline-hidden select-none
-		disabled:pointer-events-none disabled:opacity-disabled
+		disabled:pointer-events-none disabled:opacity-disabled data-pending:opacity-100
 	`,
 	{
 		variants: {

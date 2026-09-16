@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
@@ -24,10 +24,10 @@ type PaginationStoryProperties = {
  * import { Pagination } from '@joyful-tools/neob';
  *
  * <Pagination
- *   currentPage={page}
- *   totalItems={100}
- *   pageSize={10}
- *   onPageChange={setPage}
+ *   page={page}
+ *   action={setPage}
+ *   perPage={10}
+ *   totalCount={100}
  * />
  * ```
  */
@@ -59,7 +59,7 @@ export const DefaultCompound: { [key: string]: unknown } & import('@storybook/re
 			<div className="w-full max-w-3xl rounded-xl border border-edge/10 bg-card p-4">
 				<Pagination
 					page={page}
-					setPage={(nextPage) => {
+					action={(nextPage) => {
 						setPage(nextPage);
 						action('pagination-page-change')(nextPage);
 					}}
@@ -70,7 +70,7 @@ export const DefaultCompound: { [key: string]: unknown } & import('@storybook/re
 					<Pagination.Separator />
 					<Pagination.PageSize
 						value={perPage}
-						onChange={(nextPerPage) => {
+						action={(nextPerPage) => {
 							setPerPage(nextPerPage);
 							action('pagination-page-size-change')(nextPerPage);
 						}}
@@ -126,7 +126,7 @@ export const SimpleControls: { [key: string]: unknown } & import('@storybook/rea
 			<div className="w-full max-w-xl rounded-xl border border-edge/10 bg-card p-4">
 				<Pagination
 					page={page}
-					setPage={(nextPage) => {
+					action={(nextPage) => {
 						setPage(nextPage);
 						action('pagination-simple-page-change')(nextPage);
 					}}
@@ -164,7 +164,7 @@ export const DropdownSelector: { [key: string]: unknown } & import('@storybook/r
 			<div className="w-full max-w-xl rounded-xl border border-edge/10 bg-card p-4">
 				<Pagination
 					page={page}
-					setPage={(nextPage) => {
+					action={(nextPage) => {
 						setPage(nextPage);
 						action('pagination-dropdown-page-change')(nextPage);
 					}}
@@ -222,7 +222,7 @@ export const EmptyResultsDisabledState: { [key: string]: unknown } & import('@st
 
 		return (
 			<div className="w-full max-w-xl rounded-xl border border-edge/10 bg-card p-4">
-				<Pagination page={page} setPage={setPage} perPage={args.initialPerPage} totalCount={args.totalCount}>
+				<Pagination page={page} action={setPage} perPage={args.initialPerPage} totalCount={args.totalCount}>
 					<Pagination.Info />
 					<Pagination.Separator />
 					<Pagination.Controls controls={args.controls} pageSelector={args.pageSelector} />
@@ -253,7 +253,7 @@ export const SinglePageDisabledState: { [key: string]: unknown } & import('@stor
 
 		return (
 			<div className="w-full max-w-xl rounded-xl border border-edge/10 bg-card p-4">
-				<Pagination page={page} setPage={setPage} perPage={args.initialPerPage} totalCount={args.totalCount}>
+				<Pagination page={page} action={setPage} perPage={args.initialPerPage} totalCount={args.totalCount}>
 					<Pagination.Info />
 					<Pagination.Separator />
 					<Pagination.Controls controls={args.controls} pageSelector={args.pageSelector} />
@@ -269,5 +269,63 @@ export const SinglePageDisabledState: { [key: string]: unknown } & import('@stor
 		await expect(canvas.getByRole('button', { name: 'Last page' })).toBeDisabled();
 		await expect(canvas.getByRole('spinbutton', { name: 'Page number' })).toBeDisabled();
 		await expect(canvasElement).toHaveTextContent(/1-10/);
+	}),
+};
+
+interface PageResource {
+	read: () => void;
+}
+
+function createPageResource(): PageResource {
+	let ready = false;
+	let promise: Promise<void> | undefined;
+
+	return {
+		read: () => {
+			if (ready) return;
+			promise ??= new Promise<void>((resolve) => {
+				setTimeout(() => {
+					ready = true;
+					resolve();
+				}, 150);
+			});
+			throw promise;
+		},
+	};
+}
+
+function SuspendedPage({ page, resource }: { readonly page: number; readonly resource: PageResource }) {
+	if (page === 2) resource.read();
+	return <p>Page {page} content</p>;
+}
+
+export const PreservesRevealedContentWhileSuspending = {
+	args: {
+		initialPage: 1,
+		initialPerPage: 10,
+		totalCount: 30,
+	},
+	render: (args: PaginationStoryProperties) => {
+		const [page, setPage] = useState(args.initialPage);
+		const [resource] = useState(createPageResource);
+
+		return (
+			<div className="w-full max-w-xl">
+				<Pagination page={page} action={setPage} perPage={args.initialPerPage} totalCount={args.totalCount}>
+					<Pagination.Info />
+					<Pagination.Controls controls="simple" />
+				</Pagination>
+				<Suspense fallback={<p>Replacing revealed content…</p>}>
+					<SuspendedPage page={page} resource={resource} />
+				</Suspense>
+			</div>
+		);
+	},
+	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+		const canvas = within(canvasElement);
+		await userEvent.click(canvas.getByRole('button', { name: 'Next page' }));
+		await expect(canvas.getByText('Page 1 content')).toBeVisible();
+		await expect(canvas.queryByText('Replacing revealed content…')).not.toBeInTheDocument();
+		await waitFor(() => expect(canvas.getByText('Page 2 content')).toBeVisible());
 	}),
 };

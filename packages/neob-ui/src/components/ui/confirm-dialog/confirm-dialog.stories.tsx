@@ -25,7 +25,7 @@ type ConfirmDialogStoryProperties = {
  * ```tsx
  * import { ConfirmDialog, Button } from '@joyful-tools/neob';
  *
- * <ConfirmDialog open={isOpen} onOpenChange={setIsOpen} onConfirm={handleConfirm} title="Are you sure?" description="This deletes files permanently.">
+ * <ConfirmDialog open={isOpen} onOpenChange={setIsOpen} action={handleConfirm} title="Are you sure?" description="This deletes files permanently.">
  *   <Button>Delete Folder</Button>
  * </ConfirmDialog>
  * ```
@@ -61,7 +61,7 @@ const ConfirmDialogWrapper = ({
 			<GlobalDialogBackdrop />
 			<Button
 				variant={variant === 'danger' ? 'danger' : 'default'}
-				onClick={() => {
+				action={() => {
 					action('confirm-dialog-open-change')(true);
 					setOpen(true);
 				}}
@@ -79,7 +79,7 @@ const ConfirmDialogWrapper = ({
 				variant={variant}
 				resourceName={resourceName}
 				confirmLabel={confirmLabel}
-				onConfirm={() => {
+				action={() => {
 					action('confirm-dialog-confirm')();
 					action('confirm-dialog-open-change')(false);
 					setOpen(false);

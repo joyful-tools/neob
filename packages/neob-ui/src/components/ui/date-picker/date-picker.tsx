@@ -1,4 +1,4 @@
-/* eslint-disable better-tailwindcss/no-unknown-classes, @typescript-eslint/no-unsafe-function-type */
+/* eslint-disable better-tailwindcss/no-unknown-classes */
 import { CaretDownIcon, CaretLeftIcon, CaretRightIcon, CaretUpIcon } from '@phosphor-icons/react';
 import { useDrag } from '@use-gesture/react';
 import { AnimatePresence, motion } from 'motion/react';
@@ -17,7 +17,10 @@ import {
 } from 'react-day-picker';
 
 import { Button, buttonVariants } from '@/components/ui/button';
+import { useOptimisticAction } from '@/hooks/use-optimistic-action';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 /**
  * Custom Chevron component using Phosphor icons
@@ -48,6 +51,10 @@ const layoutTransition = {
 } as const;
 
 type PageDirection = 'forward' | 'backward' | 'none';
+type DatePickerValue = Date | Date[] | import('react-day-picker').DateRange | undefined;
+type DatePickerAction<Value extends DatePickerValue> = Action<
+	[selected: Value, triggerDate: Date, modifiers: Modifiers, event: MouseEvent | KeyboardEvent]
+>;
 
 /** Minimum horizontal drag distance (px) to commit a swipe navigation. */
 const SWIPE_DISTANCE_THRESHOLD = 60;
@@ -123,63 +130,36 @@ const DAY_PICKER_BASE_CLASSNAMES = {
 } as const;
 
 /** Base props shared across all DatePicker modes */
-type BaseProps = Omit<PropsBase, 'classNames'> & {
+type BaseProps<Value extends DatePickerValue> = Omit<PropsBase, 'classNames'> & {
 	/** Additional CSS classes merged via `cn()`. */
 	className?: string;
 	/** Custom class names for internal elements */
 	classNames?: PropsBase['classNames'];
+	/** Initially selected value when selection is uncontrolled. */
+	defaultSelected?: Value;
+	/** Runs when the user proposes a new selection. */
+	action?: DatePickerAction<Value>;
 };
 
 /** Single date selection (optional) */
-type SingleProps = BaseProps &
-	Omit<PropsSingle, 'onSelect' | 'classNames'> & {
-		onChange?: PropsSingle['onSelect'];
-	};
+type SingleProps = BaseProps<Date | undefined> & Omit<PropsSingle, 'onSelect' | 'classNames'>;
 
 /** Single date selection (required) */
-type SingleRequiredProps = BaseProps &
-	Omit<PropsSingleRequired, 'onSelect' | 'classNames'> & {
-		onChange?: PropsSingleRequired['onSelect'];
-	};
+type SingleRequiredProps = BaseProps<Date | undefined> & Omit<PropsSingleRequired, 'onSelect' | 'classNames'>;
 
 /** Multiple date selection (optional) */
-type MultipleProps = BaseProps &
-	Omit<PropsMulti, 'onSelect' | 'classNames'> & {
-		onChange?: PropsMulti['onSelect'];
-	};
+type MultipleProps = BaseProps<Date[] | undefined> & Omit<PropsMulti, 'onSelect' | 'classNames'>;
 
 /** Multiple date selection (required) */
-type MultipleRequiredProps = BaseProps &
-	Omit<PropsMultiRequired, 'onSelect' | 'classNames'> & {
-		onChange?: PropsMultiRequired['onSelect'];
-	};
+type MultipleRequiredProps = BaseProps<Date[] | undefined> & Omit<PropsMultiRequired, 'onSelect' | 'classNames'>;
 
 /** Date range selection (optional) */
-type RangeProps = BaseProps &
-	Omit<PropsRange, 'onSelect' | 'classNames'> & {
-		onChange?: PropsRange['onSelect'];
-	};
+type RangeProps = BaseProps<import('react-day-picker').DateRange | undefined> & Omit<PropsRange, 'onSelect' | 'classNames'>;
 
 /** Date range selection (required) */
-type RangeRequiredProps = BaseProps &
-	Omit<PropsRangeRequired, 'onSelect' | 'classNames'> & {
-		onChange?: PropsRangeRequired['onSelect'];
-	};
+type RangeRequiredProps = BaseProps<import('react-day-picker').DateRange | undefined> & Omit<PropsRangeRequired, 'onSelect' | 'classNames'>;
 
 export type DatePickerProps = SingleProps | SingleRequiredProps | MultipleProps | MultipleRequiredProps | RangeProps | RangeRequiredProps;
-
-/**
- * Helper function to safely execute callback without TS union-invocation errors.
- */
-function invokeCallback(
-	fn: Function,
-	selected: Date | Date[] | import('react-day-picker').DateRange | undefined,
-	triggerDate: Date,
-	modifiers: Modifiers,
-	e: MouseEvent | KeyboardEvent,
-) {
-	fn(selected, triggerDate, modifiers, e);
-}
 
 /**
  * DatePicker — a date selection calendar with high-contrast styling.
@@ -191,7 +171,7 @@ function invokeCallback(
  * ```tsx
  * // Single date selection
  * const [date, setDate] = useState<Date>();
- * <DatePicker mode="single" selected={date} onChange={setDate} />
+ * <DatePicker mode="single" selected={date} action={setDate} />
  *
  * // Multiple date selection
  * const [dates, setDates] = useState<Date[]>([]);
@@ -207,6 +187,36 @@ export function DatePicker(fullProps: DatePickerProps) {
 
 	const [view, setView] = useState<'days' | 'months' | 'years'>('days');
 	const [pageDirection, setPageDirection] = useState<PageDirection>('none');
+	const selectionAction: DatePickerAction<DatePickerValue> = async (selected, triggerDate, modifiers, event) => {
+		switch (fullProps.mode) {
+			case 'single': {
+				if (selected instanceof Date || selected === undefined) {
+					await fullProps.action?.(selected, triggerDate, modifiers, event);
+				}
+				return;
+			}
+			case 'multiple': {
+				if (Array.isArray(selected) || selected === undefined) {
+					await fullProps.action?.(selected, triggerDate, modifiers, event);
+				}
+				return;
+			}
+			case 'range': {
+				if (!(selected instanceof Date) && !Array.isArray(selected)) {
+					await fullProps.action?.(selected, triggerDate, modifiers, event);
+				}
+				return;
+			}
+			default: {
+				return;
+			}
+		}
+	};
+	const { optimisticValue, runAction, isPending } = useOptimisticAction<DatePickerValue, [Date, Modifiers, MouseEvent | KeyboardEvent]>({
+		value: fullProps.selected,
+		defaultValue: fullProps.defaultSelected,
+		action: selectionAction,
+	});
 
 	// Selected displayed month tracking (controlled or uncontrolled fallback)
 	const [internalMonth, setInternalMonth] = useState<Date>(() => {
@@ -355,53 +365,78 @@ export function DatePicker(fullProps: DatePickerProps) {
 		};
 
 		if (fullProps.mode === 'single') {
-			const { className: _, classNames: __, components: ___, onChange, ...singleProps } = fullProps;
+			const {
+				className: _,
+				classNames: __,
+				components: ___,
+				action: ____,
+				defaultSelected: _____,
+				selected: ______,
+				...singleProps
+			} = fullProps;
+			const selected = optimisticValue instanceof Date ? optimisticValue : undefined;
 			return (
 				<DayPicker
 					{...dayPickerProps}
 					{...singleProps}
 					mode="single"
+					selected={selected}
 					onSelect={(selected: Date | undefined, triggerDate: Date, modifiers: Modifiers, e: MouseEvent | KeyboardEvent) => {
-						if (onChange) {
-							invokeCallback(onChange, selected, triggerDate, modifiers, e);
-						}
+						runAction(selected, triggerDate, modifiers, e);
 					}}
 				/>
 			);
 		}
 
 		if (fullProps.mode === 'multiple') {
-			const { className: _, classNames: __, components: ___, onChange, ...multiProps } = fullProps;
+			const {
+				className: _,
+				classNames: __,
+				components: ___,
+				action: ____,
+				defaultSelected: _____,
+				selected: ______,
+				...multiProps
+			} = fullProps;
+			const selected = Array.isArray(optimisticValue) ? optimisticValue : undefined;
 			return (
 				<DayPicker
 					{...dayPickerProps}
 					{...multiProps}
 					mode="multiple"
+					selected={selected}
 					onSelect={(selected: Date[] | undefined, triggerDate: Date, modifiers: Modifiers, e: MouseEvent | KeyboardEvent) => {
-						if (onChange) {
-							invokeCallback(onChange, selected, triggerDate, modifiers, e);
-						}
+						runAction(selected, triggerDate, modifiers, e);
 					}}
 				/>
 			);
 		}
 
 		if (fullProps.mode === 'range') {
-			const { className: _, classNames: __, components: ___, onChange, ...rangeProps } = fullProps;
+			const {
+				className: _,
+				classNames: __,
+				components: ___,
+				action: ____,
+				defaultSelected: _____,
+				selected: ______,
+				...rangeProps
+			} = fullProps;
+			const selected =
+				optimisticValue && !(optimisticValue instanceof Date) && !Array.isArray(optimisticValue) ? optimisticValue : undefined;
 			return (
 				<DayPicker
 					{...dayPickerProps}
 					{...rangeProps}
 					mode="range"
+					selected={selected}
 					onSelect={(
 						selected: import('react-day-picker').DateRange | undefined,
 						triggerDate: Date,
 						modifiers: Modifiers,
 						e: MouseEvent | KeyboardEvent,
 					) => {
-						if (onChange) {
-							invokeCallback(onChange, selected, triggerDate, modifiers, e);
-						}
+						runAction(selected, triggerDate, modifiers, e);
 					}}
 				/>
 			);
@@ -424,7 +459,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 							type="button"
 							variant="subtle"
 							color={isSelected ? 'gold' : undefined}
-							onClick={() => {
+							action={() => {
 								changeView('days');
 								handleMonthChange(new Date(year, idx));
 							}}
@@ -452,7 +487,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 							type="button"
 							variant="subtle"
 							color={isSelected ? 'gold' : undefined}
-							onClick={() => {
+							action={() => {
 								changeView('days');
 								handleMonthChange(new Date(y, displayedMonth.getMonth()));
 							}}
@@ -467,7 +502,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 	};
 
 	return (
-		<div className={containerClassName}>
+		<div className={containerClassName} aria-busy={isPending || undefined} data-pending={isPending ? '' : undefined}>
 			<div className="flex h-10 items-center justify-between border-b border-edge/5 pb-2">
 				<div className="flex min-w-0 items-center gap-1 font-sans text-lg font-bold tracking-wider text-black uppercase dark:text-white">
 					<AnimatePresence mode="popLayout" initial={false}>
@@ -514,7 +549,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 						type="button"
 						variant="subtle"
 						size="icon"
-						onClick={handlePrevClick}
+						action={handlePrevClick}
 						aria-label={view === 'days' ? 'Previous month' : view === 'months' ? 'Previous year' : 'Previous years'}
 						className="size-7 rounded-md"
 					>
@@ -524,7 +559,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 						type="button"
 						variant="subtle"
 						size="icon"
-						onClick={handleNextClick}
+						action={handleNextClick}
 						aria-label={view === 'days' ? 'Next month' : view === 'months' ? 'Next year' : 'Next years'}
 						className="size-7 rounded-md"
 					>

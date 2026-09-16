@@ -40,7 +40,7 @@ export const Default: Story = {
 					)}
 				>
 					{items.map((_, i) => (
-						<DropMenuItem key={i} onClick={() => action(`item-click-${i}`)()}>
+						<DropMenuItem key={i} action={() => action(`item-click-${i}`)()}>
 							Hello {i}
 						</DropMenuItem>
 					))}

@@ -14,7 +14,10 @@ import {
 } from 'react';
 import { createPortal } from 'react-dom';
 
+import { useQueuedAction } from '@/hooks/use-queued-action';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 const FILE_INVALID_TYPE = 'file-invalid-type';
 const FILE_TOO_LARGE = 'file-too-large';
@@ -156,7 +159,7 @@ export interface DropZoneProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chi
 	readonly name?: string;
 	readonly minSize?: number;
 	readonly maxSize?: number;
-	readonly onFileDrop?: (result: DropZoneResult) => void;
+	readonly action?: Action<[result: DropZoneResult]>;
 }
 
 /**
@@ -172,7 +175,7 @@ export function DropZone({
 	name,
 	minSize = 0,
 	maxSize = Infinity,
-	onFileDrop,
+	action,
 	className,
 	...properties
 }: DropZoneProps) {
@@ -180,6 +183,7 @@ export function DropZone({
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const dropZoneRef = useRef<HTMLDivElement>(null);
 	const dropOverlayRef = useRef<HTMLDivElement>(null);
+	const { runAction, isPending } = useQueuedAction(action);
 
 	const fullscreenElement = useMemo(() => {
 		if (globalThis.window === undefined) return null;
@@ -201,6 +205,7 @@ export function DropZone({
 	const triggerProps: ButtonHTMLAttributes<HTMLButtonElement> = {
 		type: 'button',
 		onClick: openFilePicker,
+		disabled: isPending,
 	};
 
 	const handleInputChange = useCallback(
@@ -214,9 +219,9 @@ export function DropZone({
 				maxSize,
 			});
 			evt.target.value = '';
-			onFileDrop?.(result);
+			void runAction(result).catch(() => {});
 		},
-		[accept, minSize, maxSize, onFileDrop],
+		[accept, minSize, maxSize, runAction],
 	);
 
 	const handleDragEnter = useCallback((event: ReactDragEvent<HTMLDivElement> | DragEvent) => {
@@ -246,6 +251,7 @@ export function DropZone({
 
 	const handleDrop = useCallback(
 		(event: ReactDragEvent<HTMLDivElement>) => {
+			if (isPending) return;
 			setDragging(false);
 			if (!isDragEventWithFiles(event)) return;
 			event.preventDefault();
@@ -258,12 +264,12 @@ export function DropZone({
 				minSize,
 				maxSize,
 			});
-			onFileDrop?.({
+			void runAction({
 				acceptedFiles: multiple ? result.acceptedFiles : result.acceptedFiles.slice(0, 1),
 				rejectedFiles: result.rejectedFiles,
-			});
+			}).catch(() => {});
 		},
-		[accept, minSize, maxSize, multiple, onFileDrop],
+		[accept, isPending, maxSize, minSize, multiple, runAction],
 	);
 
 	useEffect(() => {
@@ -321,6 +327,8 @@ export function DropZone({
 			ref={dropZoneRef}
 			data-testid="dropzone-container"
 			className={cn('relative', className)}
+			aria-busy={isPending || undefined}
+			data-pending={isPending ? '' : undefined}
 			onDragEnter={handleDragEnter}
 			{...properties}
 		>

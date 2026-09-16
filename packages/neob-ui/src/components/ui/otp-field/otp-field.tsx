@@ -14,7 +14,10 @@ import {
 	RefObject,
 } from 'react';
 
+import { useQueuedAction } from '@/hooks/use-queued-action';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 type ValidationMode = 'numeric' | 'alphanumeric';
 
@@ -41,7 +44,7 @@ interface RootProperties {
 	readonly defaultValue?: string;
 	readonly value?: string;
 	readonly onValueChange?: (value: string) => void;
-	readonly onComplete?: (value: string) => void;
+	readonly action?: Action<[value: string]>;
 	readonly disabled?: boolean;
 	readonly autoFocus?: boolean;
 	readonly validationMode?: ValidationMode;
@@ -140,7 +143,7 @@ function OTPFieldRoot({
 	defaultValue,
 	value: valueProperty,
 	onValueChange,
-	onComplete,
+	action,
 	disabled = false,
 	autoFocus = false,
 	validationMode = 'alphanumeric',
@@ -154,6 +157,7 @@ function OTPFieldRoot({
 	});
 	const [activeInputIndex, setActiveInputIndex] = useState(autoFocus ? 0 : -1);
 	const [selectionTrigger, setSelectionTrigger] = useState(0);
+	const { runAction, isPending } = useQueuedAction(action);
 
 	const inputReferences = useRef<(HTMLInputElement | null)[]>([]);
 	const formReference = useRef<HTMLFormElement | null>(null);
@@ -170,10 +174,10 @@ function OTPFieldRoot({
 		(newValue: string) => {
 			setValue(newValue);
 			if (newValue.length === length) {
-				onComplete?.(newValue);
+				void runAction(newValue).catch(() => {});
 			}
 		},
-		[length, setValue, onComplete],
+		[length, runAction, setValue],
 	);
 
 	const focusInput = useCallback(
@@ -346,7 +350,12 @@ function OTPFieldRoot({
 
 	return (
 		<OTPContext.Provider value={contextValue}>
-			<div className={cn('flex items-center gap-2', className)} role="group">
+			<div
+				className={cn('flex items-center gap-2', className)}
+				role="group"
+				aria-busy={isPending || undefined}
+				data-pending={isPending ? '' : undefined}
+			>
 				{children}
 				<HiddenInput />
 			</div>

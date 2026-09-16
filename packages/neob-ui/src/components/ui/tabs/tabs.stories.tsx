@@ -54,7 +54,7 @@ export const Segmented: Story = {
 			<div className="flex w-96 flex-col items-center gap-5">
 				<Tabs
 					value={value}
-					onValueChange={(nextValue) => {
+					action={(nextValue) => {
 						setValue(nextValue);
 						action('tabs-segmented-change')(nextValue);
 					}}
@@ -74,7 +74,7 @@ export const Segmented: Story = {
 						<p className="text-sm font-medium text-muted-foreground">Manage your system preferences here.</p>
 					</Tabs.Content>
 				</Tabs>
-				<Button onClick={() => setValue(null)}>Reset</Button>
+				<Button action={() => setValue(null)}>Reset</Button>
 			</div>
 		);
 	},
@@ -96,7 +96,7 @@ export const Subtle: Story = {
 			<div className="w-96">
 				<Tabs
 					value={value}
-					onValueChange={(nextValue) => {
+					action={(nextValue) => {
 						setValue(nextValue);
 						action('tabs-subtle-change')(nextValue);
 					}}
@@ -116,7 +116,7 @@ export const Subtle: Story = {
 						<p className="text-sm font-medium text-muted-foreground">Manage your system preferences here.</p>
 					</Tabs.Content>
 				</Tabs>
-				<Button onClick={() => setValue(null)}>Reset</Button>
+				<Button action={() => setValue(null)}>Reset</Button>
 			</div>
 		);
 	},

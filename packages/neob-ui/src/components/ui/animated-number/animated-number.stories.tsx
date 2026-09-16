@@ -44,13 +44,13 @@ export const InteractiveCounter: Story = {
 				</div>
 
 				<div className="flex flex-wrap justify-center gap-2">
-					<Button variant="subtle" size="sm" onClick={() => setValue((previous) => previous - 100)} className="font-mono">
+					<Button variant="subtle" size="sm" action={() => setValue((previous) => previous - 100)} className="font-mono">
 						-100
 					</Button>
 					<Button
 						variant="subtle"
 						size="sm"
-						onClick={() => setValue((previous) => previous - 10)}
+						action={() => setValue((previous) => previous - 10)}
 						className="flex items-center gap-1 font-mono"
 					>
 						<Minus className="size-3.5" /> 10
@@ -58,26 +58,21 @@ export const InteractiveCounter: Story = {
 					<Button
 						variant="subtle"
 						size="sm"
-						onClick={() => setValue((previous) => previous - 1)}
+						action={() => setValue((previous) => previous - 1)}
 						className="flex items-center gap-1 font-mono"
 					>
 						<Minus className="size-3.5" /> 1
 					</Button>
-					<Button variant="subtle" size="sm" onClick={() => setValue(0)} className="flex items-center gap-1 font-mono">
+					<Button variant="subtle" size="sm" action={() => setValue(0)} className="flex items-center gap-1 font-mono">
 						<ArrowClockwise className="size-3.5" /> Reset
 					</Button>
-					<Button color="gold" size="sm" onClick={() => setValue((previous) => previous + 1)} className="flex items-center gap-1 font-mono">
+					<Button color="gold" size="sm" action={() => setValue((previous) => previous + 1)} className="flex items-center gap-1 font-mono">
 						<Plus className="size-3.5" /> 1
 					</Button>
-					<Button
-						color="gold"
-						size="sm"
-						onClick={() => setValue((previous) => previous + 10)}
-						className="flex items-center gap-1 font-mono"
-					>
+					<Button color="gold" size="sm" action={() => setValue((previous) => previous + 10)} className="flex items-center gap-1 font-mono">
 						<Plus className="size-3.5" /> 10
 					</Button>
-					<Button color="gold" size="sm" onClick={() => setValue((previous) => previous + 100)} className="font-mono">
+					<Button color="gold" size="sm" action={() => setValue((previous) => previous + 100)} className="font-mono">
 						+100
 					</Button>
 				</div>
@@ -112,7 +107,7 @@ export const ContinuousOdometerReel: Story = {
 				<div className="flex gap-3">
 					<Button
 						color="gold"
-						onClick={triggerRandomSpin}
+						action={triggerRandomSpin}
 						className="border-2 border-edge bg-cyan font-mono text-sm font-bold text-edge hover:bg-cyan-light"
 					>
 						Spin Odometer (+50 to +450)
@@ -176,7 +171,7 @@ export const FinancialMarketTicker: Story = {
 					<Button
 						variant="danger"
 						size="sm"
-						onClick={() => simulateTrade('down')}
+						action={() => simulateTrade('down')}
 						className="flex-1 border-2 border-edge font-mono text-xs text-edge"
 					>
 						Simulate Dip
@@ -184,7 +179,7 @@ export const FinancialMarketTicker: Story = {
 					<Button
 						color="gold"
 						size="sm"
-						onClick={() => simulateTrade('up')}
+						action={() => simulateTrade('up')}
 						className="flex-1 border-2 border-edge bg-green font-mono text-xs text-edge hover:bg-green-light"
 					>
 						Simulate Rally
@@ -222,7 +217,7 @@ export const AnalyticsDashboardGrid: Story = {
 							<h3 className="font-display text-lg font-black tracking-tight text-foreground">Live Performance Analytics</h3>
 							<p className="font-mono text-xs text-muted-foreground">Real-time synchronized metrics</p>
 						</div>
-						<Button variant="subtle" size="sm" onClick={refreshAllMetrics} className="flex items-center gap-1.5 font-mono text-xs">
+						<Button variant="subtle" size="sm" action={refreshAllMetrics} className="flex items-center gap-1.5 font-mono text-xs">
 							<ArrowClockwise className="size-3.5" /> Refresh
 						</Button>
 					</div>
@@ -281,7 +276,7 @@ export const AnimatedNumberModes: Story = {
 					</div>
 				</div>
 
-				<Button color="gold" onClick={() => setValue(Math.floor(Math.random() * 900) + 100)} className="font-mono text-xs">
+				<Button color="gold" action={() => setValue(Math.floor(Math.random() * 900) + 100)} className="font-mono text-xs">
 					Randomize (100 - 999)
 				</Button>
 			</Card>

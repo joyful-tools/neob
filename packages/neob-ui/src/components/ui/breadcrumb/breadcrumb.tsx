@@ -165,7 +165,7 @@ function BreadcrumbClipboard({ text, className, onClick, ...props }: BreadcrumbC
 				'size-7 border text-black/60 opacity-0 transition-opacity [--focus-ring-inner-size:var(--focus-ring-compact-inner-size)] [--focus-ring-outer-size:var(--focus-ring-compact-outer-size)] hover:text-black focus-visible:opacity-100 active:opacity-100 dark:text-white/60 dark:hover:text-white group-hover-always:opacity-100',
 				className,
 			)}
-			onClick={handleClick}
+			action={handleClick}
 			aria-label="Copy breadcrumb text"
 			title="Copy"
 			{...props}

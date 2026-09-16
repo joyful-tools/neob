@@ -3,7 +3,10 @@ import { CheckboxGroup as BaseCheckboxGroup } from '@base-ui/react/checkbox-grou
 import { CheckIcon, MinusIcon } from '@phosphor-icons/react';
 import { ComponentPropsWithoutRef, createContext, ReactNode, Ref, useContext, useId } from 'react';
 
+import { useOptimisticAction } from '@/hooks/use-optimistic-action';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 const CheckboxGroupContext = createContext<{ controlFirst?: boolean }>({ controlFirst: true });
 
@@ -20,20 +23,32 @@ const CHECKBOX_ROOT_CLASSES = `
 	dark:data-[indeterminate]:text-black
 `;
 
-export interface CheckboxProperties extends ComponentPropsWithoutRef<typeof BaseCheckbox.Root> {
+export interface CheckboxProperties extends Omit<
+	ComponentPropsWithoutRef<typeof BaseCheckbox.Root>,
+	'checked' | 'defaultChecked' | 'onCheckedChange'
+> {
 	readonly ref?: Ref<HTMLElement>;
+	readonly checked?: boolean;
+	readonly defaultChecked?: boolean;
+	readonly action?: Action<[checked: boolean, eventDetails: BaseCheckbox.Root.ChangeEventDetails]>;
 	readonly label?: ReactNode;
 	readonly description?: ReactNode;
 	readonly controlFirst?: boolean;
 	readonly error?: string;
 }
 
-export interface CheckboxItemProperties extends ComponentPropsWithoutRef<typeof BaseCheckbox.Root> {
+export interface CheckboxItemProperties extends CheckboxProperties {
 	readonly ref?: Ref<HTMLElement>;
 	readonly label: ReactNode;
 }
 
-export interface CheckboxGroupProperties extends ComponentPropsWithoutRef<typeof BaseCheckboxGroup> {
+export interface CheckboxGroupProperties extends Omit<
+	ComponentPropsWithoutRef<typeof BaseCheckboxGroup>,
+	'value' | 'defaultValue' | 'onValueChange'
+> {
+	readonly value?: string[];
+	readonly defaultValue?: string[];
+	readonly action?: Action<[value: string[], eventDetails: BaseCheckboxGroup.ChangeEventDetails]>;
 	readonly legend?: ReactNode;
 	readonly description?: ReactNode;
 	readonly error?: string;
@@ -44,7 +59,18 @@ export interface CheckboxGroupProperties extends ComponentPropsWithoutRef<typeof
  * Standard Checkbox component.
  * Can be used standalone or with a label and helper states.
  */
-function CheckboxRoot({ label, description, controlFirst = true, error, className, ref, ...properties }: CheckboxProperties) {
+function CheckboxRoot({
+	label,
+	description,
+	controlFirst = true,
+	error,
+	className,
+	ref,
+	checked,
+	defaultChecked = false,
+	action,
+	...properties
+}: CheckboxProperties) {
 	const descriptionId = useId();
 	const errorId = useId();
 	const hasDescription = Boolean(description);
@@ -52,6 +78,7 @@ function CheckboxRoot({ label, description, controlFirst = true, error, classNam
 	const isInvalid = hasError || properties['aria-invalid'] === true || properties['aria-invalid'] === 'true';
 
 	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
+	const { optimisticValue, runAction, isPending } = useOptimisticAction({ value: checked, defaultValue: defaultChecked, action });
 
 	const checkboxControl = (
 		<BaseCheckbox.Root
@@ -59,6 +86,10 @@ function CheckboxRoot({ label, description, controlFirst = true, error, classNam
 			className={cn(CHECKBOX_ROOT_CLASSES, isInvalid && 'border-red [--color-ring:var(--ring-invalid)] dark:border-red', className)}
 			aria-describedby={describedBy}
 			aria-invalid={isInvalid ? true : undefined}
+			checked={optimisticValue}
+			onCheckedChange={runAction}
+			aria-busy={isPending || undefined}
+			data-pending={isPending ? '' : undefined}
 			{...properties}
 		>
 			<BaseCheckbox.Indicator
@@ -119,17 +150,37 @@ CheckboxItem.displayName = 'Checkbox.Item';
  * CheckboxGroup container.
  * Groups multiple CheckboxItems inside an accessible fieldset.
  */
-function CheckboxGroup({ legend, description, error, controlFirst = true, className, children, ...properties }: CheckboxGroupProperties) {
+function CheckboxGroup({
+	legend,
+	description,
+	error,
+	controlFirst = true,
+	className,
+	children,
+	value,
+	defaultValue = [],
+	action,
+	...properties
+}: CheckboxGroupProperties) {
 	const descriptionId = useId();
 	const errorId = useId();
 	const hasDescription = Boolean(description);
 	const hasError = Boolean(error);
 
 	const describedBy = cn(hasDescription && descriptionId, hasError && errorId) || undefined;
+	const { optimisticValue, runAction, isPending } = useOptimisticAction({ value, defaultValue, action });
 
 	return (
 		<CheckboxGroupContext.Provider value={{ controlFirst }}>
-			<BaseCheckboxGroup {...properties} aria-describedby={describedBy} aria-invalid={hasError ? true : undefined}>
+			<BaseCheckboxGroup
+				{...properties}
+				value={optimisticValue}
+				onValueChange={runAction}
+				aria-describedby={describedBy}
+				aria-invalid={hasError ? true : undefined}
+				aria-busy={isPending || undefined}
+				data-pending={isPending ? '' : undefined}
+			>
 				<fieldset className={cn('m-0 flex flex-col gap-4 border-0 p-0', className)}>
 					{legend && <legend className="font-display text-lg font-bold text-black dark:text-white">{legend}</legend>}
 					{description && (

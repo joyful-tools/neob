@@ -350,7 +350,7 @@ export const Default: StoryObj<FruitComboboxStoryProperties> = {
 			<div className="w-75">
 				<Combobox
 					value={value}
-					onValueChange={(nextValue) => {
+					action={(nextValue) => {
 						setValue(nextValue);
 						action('combobox-default-change')(nextValue);
 					}}
@@ -398,7 +398,7 @@ export const SearchableInside: StoryObj<LanguageComboboxStoryProperties> = {
 				<Combobox
 					aria-label={args.ariaLabel}
 					value={value}
-					onValueChange={(nextValue) => {
+					action={(nextValue) => {
 						setValue(nextValue);
 						action('combobox-searchable-inside-change')(nextValue);
 					}}
@@ -450,7 +450,7 @@ export const SearchableSelect: StoryObj<LanguageComboboxStoryProperties> = {
 				<Combobox
 					aria-label={args.ariaLabel}
 					value={value}
-					onValueChange={(nextValue) => {
+					action={(nextValue) => {
 						setValue(nextValue);
 						action('combobox-searchable-select-change')(nextValue);
 					}}
@@ -498,7 +498,7 @@ export const Grouped: StoryObj<GroupedComboboxStoryProperties> = {
 			<div className="size-75">
 				<Combobox
 					value={value}
-					onValueChange={(nextValue) => {
+					action={(nextValue) => {
 						setValue(nextValue);
 						action('combobox-grouped-change')(nextValue);
 					}}
@@ -552,7 +552,7 @@ export const Multiple: StoryObj<MultipleComboboxStoryProperties> = {
 			<div className="w-100">
 				<Combobox
 					value={value}
-					onValueChange={(nextValue) => {
+					action={(nextValue) => {
 						setValue(nextValue);
 						action('combobox-multiple-change')(nextValue);
 					}}
@@ -611,7 +611,7 @@ export const MultipleWrappingInput: StoryObj<MultipleComboboxStoryProperties> = 
 			<div className="w-75">
 				<Combobox
 					value={value}
-					onValueChange={setValue}
+					action={setValue}
 					items={workspaceApps}
 					isItemEqualToValue={(app: WorkspaceAppItem, selected: WorkspaceAppItem) => app.value === selected.value}
 					multiple
@@ -672,7 +672,7 @@ export const WithField: StoryObj<FieldComboboxStoryProperties> = {
 				<Combobox
 					items={databases}
 					value={value}
-					onValueChange={(nextValue) => {
+					action={(nextValue) => {
 						setValue(nextValue);
 						action('combobox-with-field-change')(nextValue);
 					}}
@@ -772,7 +772,7 @@ export const DisabledItems: StoryObj<DisabledItemsComboboxStoryProperties> = {
 			<div className="h-75 w-80">
 				<Combobox
 					value={value}
-					onValueChange={(nextValue) => {
+					action={(nextValue) => {
 						setValue(nextValue);
 						action('combobox-disabled-items-change')(nextValue);
 					}}
@@ -834,7 +834,7 @@ export const Error: StoryObj<ErrorComboboxStoryProperties> = {
 				<Combobox
 					items={databases}
 					value={value}
-					onValueChange={(nextValue) => {
+					action={(nextValue) => {
 						setValue(nextValue);
 						action('combobox-error-change')(nextValue);
 					}}
@@ -885,7 +885,7 @@ export const Sizes: StoryObj<SizesComboboxStoryProperties> = {
 				<Combobox
 					size="sm"
 					value={smValue}
-					onValueChange={(nextValue) => {
+					action={(nextValue) => {
 						setSmValue(nextValue);
 						action('combobox-size-sm-change')(nextValue);
 					}}
@@ -906,7 +906,7 @@ export const Sizes: StoryObj<SizesComboboxStoryProperties> = {
 				<Combobox
 					size="base"
 					value={baseValue}
-					onValueChange={(nextValue) => {
+					action={(nextValue) => {
 						setBaseValue(nextValue);
 						action('combobox-size-base-change')(nextValue);
 					}}
@@ -956,7 +956,7 @@ export const SizesSearchableInside: StoryObj<SizesSearchableStoryProperties> = {
 					aria-label={args.smAriaLabel}
 					size="sm"
 					value={smValue}
-					onValueChange={(nextValue) => {
+					action={(nextValue) => {
 						setSmValue(nextValue);
 						action('combobox-size-searchable-sm-change')(nextValue);
 					}}
@@ -979,7 +979,7 @@ export const SizesSearchableInside: StoryObj<SizesSearchableStoryProperties> = {
 					aria-label={args.baseAriaLabel}
 					size="base"
 					value={baseValue}
-					onValueChange={(nextValue) => {
+					action={(nextValue) => {
 						setBaseValue(nextValue);
 						action('combobox-size-searchable-base-change')(nextValue);
 					}}
@@ -1025,7 +1025,7 @@ export const CustomTrigger: StoryObj<CustomTriggerComboboxStoryProperties> = {
 				<Combobox
 					aria-label={args.ariaLabel}
 					value={value}
-					onValueChange={(nextValue) => {
+					action={(nextValue) => {
 						setValue(nextValue);
 						action('combobox-custom-trigger-change')(nextValue);
 					}}

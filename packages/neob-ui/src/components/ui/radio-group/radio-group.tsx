@@ -3,7 +3,10 @@ import { RadioGroup as RadioGroupPrimitive } from '@base-ui/react/radio-group';
 import { CheckIcon } from '@phosphor-icons/react';
 import { ComponentPropsWithoutRef, CSSProperties, Ref } from 'react';
 
+import { useOptimisticAction } from '@/hooks/use-optimistic-action';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 const RADIO_ITEM_CLASS_NAME = `
 	aspect-square size-5 shrink-0 cursor-pointer rounded-full border-2
@@ -15,8 +18,14 @@ const RADIO_ITEM_CLASS_NAME = `
 	dark:data-[checked]:text-black
 `;
 
-interface RadioGroupProperties extends ComponentPropsWithoutRef<typeof RadioGroupPrimitive> {
+interface RadioGroupProperties extends Omit<
+	ComponentPropsWithoutRef<typeof RadioGroupPrimitive>,
+	'value' | 'defaultValue' | 'onValueChange'
+> {
 	readonly ref?: Ref<HTMLDivElement>;
+	readonly value?: string;
+	readonly defaultValue?: string;
+	readonly action?: Action<[value: string, eventDetails: RadioGroupPrimitive.ChangeEventDetails]>;
 }
 
 interface RadioGroupItemProperties {
@@ -29,8 +38,19 @@ interface RadioGroupItemProperties {
 }
 
 /** Radio group container. Wraps Base UI RadioGroup primitive. */
-function RadioGroupRoot({ className, ref, ...properties }: RadioGroupProperties) {
-	return <RadioGroupPrimitive className={cn('grid gap-2', className)} {...properties} ref={ref} />;
+function RadioGroupRoot({ className, ref, value, defaultValue = '', action, ...properties }: RadioGroupProperties) {
+	const { optimisticValue, runAction, isPending } = useOptimisticAction({ value, defaultValue, action });
+	return (
+		<RadioGroupPrimitive
+			className={cn('grid gap-2', className)}
+			{...properties}
+			ref={ref}
+			value={optimisticValue}
+			onValueChange={runAction}
+			aria-busy={isPending || undefined}
+			data-pending={isPending ? '' : undefined}
+		/>
+	);
 }
 RadioGroupRoot.displayName = 'RadioGroup';
 

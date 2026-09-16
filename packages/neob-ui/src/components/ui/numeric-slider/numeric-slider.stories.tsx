@@ -15,7 +15,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  * ```tsx
  * import { NumericSlider } from '@joyful-tools/neob';
  *
- * <NumericSlider min={0} max={100} value={value} onChange={setValue} />
+ * <NumericSlider min={0} max={100} value={value} onInput={setValue} />
  * ```
  */
 const meta = {
@@ -33,7 +33,7 @@ type Story = StoryObj<typeof meta>;
 export const PointerLockLifecycle: Story = {
 	args: {
 		value: 100,
-		onChange: () => {},
+		onInput: () => {},
 	},
 	render: (args) => {
 		const [value, setValue] = useState(100);
@@ -42,7 +42,7 @@ export const PointerLockLifecycle: Story = {
 				<NumericSlider
 					{...args}
 					value={value}
-					onChange={(nextValue) => {
+					onInput={(nextValue) => {
 						action('numeric-slider-change')(nextValue);
 						setValue(Math.round(nextValue * 100) / 100);
 					}}

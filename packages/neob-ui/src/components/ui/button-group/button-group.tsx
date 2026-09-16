@@ -3,7 +3,10 @@ import { RadioGroup as RadioGroupPrimitive } from '@base-ui/react/radio-group';
 import { Children, cloneElement, ComponentPropsWithoutRef, createContext, isValidElement, Ref, useContext, useMemo } from 'react';
 
 import { buttonVariants } from '@/components/ui/button';
+import { useOptimisticAction } from '@/hooks/use-optimistic-action';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 interface InternalButtonGroupButtonProperties extends ButtonGroupButtonProperties {
 	readonly _isFirst?: boolean;
@@ -16,17 +19,24 @@ interface ButtonGroupContextProps {
 
 const ButtonGroupContext = createContext<ButtonGroupContextProps>({});
 
-export interface ButtonGroupProps extends ComponentPropsWithoutRef<typeof RadioGroupPrimitive> {
+export interface ButtonGroupProps extends Omit<
+	ComponentPropsWithoutRef<typeof RadioGroupPrimitive>,
+	'value' | 'defaultValue' | 'onValueChange'
+> {
 	readonly ref?: Ref<HTMLDivElement>;
 	readonly size?: ButtonGroupContextProps['size'];
+	readonly value?: string;
+	readonly defaultValue?: string;
+	readonly action?: Action<[value: string, eventDetails: RadioGroupPrimitive.ChangeEventDetails]>;
 }
 
 /**
  * Root ButtonGroup component.
  * Flex container that provides radio-group keyboard navigation and accessibility semantics.
  */
-function ButtonGroupRoot({ className, size, ref, children, ...properties }: ButtonGroupProps) {
+function ButtonGroupRoot({ className, size, ref, children, value, defaultValue = '', action, ...properties }: ButtonGroupProps) {
 	const contextValue = useMemo(() => ({ size }), [size]);
+	const { optimisticValue, runAction, isPending } = useOptimisticAction({ value, defaultValue, action });
 
 	const childrenArray = Children.toArray(children);
 	const totalChildren = childrenArray.length;
@@ -42,7 +52,15 @@ function ButtonGroupRoot({ className, size, ref, children, ...properties }: Butt
 	});
 
 	return (
-		<RadioGroupPrimitive ref={ref} className={cn('isolate inline-flex items-stretch', className)} {...properties}>
+		<RadioGroupPrimitive
+			ref={ref}
+			className={cn('isolate inline-flex items-stretch', className)}
+			{...properties}
+			value={optimisticValue}
+			onValueChange={runAction}
+			aria-busy={isPending || undefined}
+			data-pending={isPending ? '' : undefined}
+		>
 			<ButtonGroupContext.Provider value={contextValue}>{modifiedChildren}</ButtonGroupContext.Provider>
 		</RadioGroupPrimitive>
 	);

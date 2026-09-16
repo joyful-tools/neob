@@ -2,7 +2,10 @@ import { Tabs as BaseTabs } from '@base-ui/react/tabs';
 import { AnimatePresence, motion } from 'motion/react';
 import { ComponentPropsWithoutRef, createContext, Ref, useContext, useId } from 'react';
 
+import { useOptimisticAction } from '@/hooks/use-optimistic-action';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 export type TabsVariant = 'segmented' | 'subtle';
 
@@ -13,12 +16,36 @@ const TabsIdContext = createContext<string>('');
  * Root Tabs container.
  * Wraps Base UI Tabs.Root.
  */
-function TabsRoot({ children, ...properties }: ComponentPropsWithoutRef<typeof BaseTabs.Root>) {
+interface TabsRootProperties<Value extends string | number = string> extends Omit<
+	ComponentPropsWithoutRef<typeof BaseTabs.Root>,
+	'value' | 'defaultValue' | 'onValueChange'
+> {
+	readonly value?: Value | null;
+	readonly defaultValue?: Value | null;
+	readonly action?: Action<[value: Value | null, eventDetails: BaseTabs.Root.ChangeEventDetails]>;
+}
+
+function TabsRoot<Value extends string | number = string>({
+	children,
+	value,
+	defaultValue,
+	action,
+	...properties
+}: TabsRootProperties<Value>) {
 	const id = useId();
+	const { optimisticValue, runAction, isPending } = useOptimisticAction({ value, defaultValue, action });
 
 	return (
 		<TabsIdContext.Provider value={id}>
-			<BaseTabs.Root {...properties}>{children}</BaseTabs.Root>
+			<BaseTabs.Root
+				{...properties}
+				value={optimisticValue}
+				onValueChange={runAction}
+				aria-busy={isPending || undefined}
+				data-pending={isPending ? '' : undefined}
+			>
+				{children}
+			</BaseTabs.Root>
 		</TabsIdContext.Provider>
 	);
 }

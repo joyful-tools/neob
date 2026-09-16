@@ -44,7 +44,7 @@
 		inset 0 max(0px, calc(var(--button-rest-depth) - var(--button-depth))) 0 0 var(--button-inset-color);
 	translate: 0 calc(var(--button-rest-depth) - var(--button-depth));
 	box-shadow: var(--tw-ring-offset-shadow, 0 0 transparent), var(--tw-ring-shadow, 0 0 transparent), var(--tw-shadow);
-	transition-property: --button-depth, --button-shadow-color, border-color, background-color, color;
+	transition-property: --button-depth, --button-shadow-color, border-color, background-color, color, opacity;
 	transition-duration: var(--duration-press);
 	transition-timing-function: var(--ease-press);
 
@@ -60,7 +60,7 @@
 		--button-shadow-color: var(--button-hover-shadow-color);
 	}
 
-	&:disabled {
+	&:disabled:not([data-pending]) {
 		--button-depth: var(--button-rest-depth);
 		--button-shadow-color: var(--button-disabled-shadow-color);
 	}

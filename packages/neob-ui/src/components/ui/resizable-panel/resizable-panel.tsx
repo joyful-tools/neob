@@ -9,7 +9,10 @@ import {
 	ReactNode,
 } from 'react';
 
+import { useQueuedAction } from '@/hooks/use-queued-action';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 export interface ResizablePanelProperties {
 	readonly children?: ReactNode;
@@ -17,7 +20,8 @@ export interface ResizablePanelProperties {
 	readonly defaultSize?: number;
 	readonly minSize?: number;
 	readonly maxSize?: number;
-	readonly onSizeChange?: (size: number) => void;
+	readonly onInput?: (size: number) => void;
+	readonly action?: Action<[size: number]>;
 	readonly className?: string;
 	readonly handlePosition?: 'start' | 'end';
 }
@@ -28,7 +32,8 @@ export function ResizablePanel({
 	defaultSize = 200,
 	minSize = 100,
 	maxSize = 800,
-	onSizeChange,
+	onInput,
+	action,
 	className,
 	handlePosition = 'end',
 }: ResizablePanelProperties) {
@@ -38,6 +43,8 @@ export function ResizablePanel({
 	const panelReference = useRef<HTMLDivElement>(null);
 	const startPositionReference = useRef(0);
 	const startSizeReference = useRef(0);
+	const latestSizeReference = useRef(size);
+	const { runAction, isPending } = useQueuedAction(action);
 
 	const handlePointerDown = useCallback(
 		(event: ReactPointerEvent) => {
@@ -61,12 +68,14 @@ export function ResizablePanel({
 			const adjustedDelta = handlePosition === 'start' ? -delta : delta;
 
 			const newSize = Math.min(maxSize, Math.max(minSize, startSizeReference.current + adjustedDelta));
+			latestSizeReference.current = newSize;
 			setSize(newSize);
-			onSizeChange?.(newSize);
+			onInput?.(newSize);
 		};
 
 		const handlePointerUp = () => {
 			setIsResizing(false);
+			void runAction(latestSizeReference.current).catch(() => {});
 		};
 
 		document.addEventListener('pointermove', handlePointerMove);
@@ -78,7 +87,7 @@ export function ResizablePanel({
 			document.removeEventListener('pointerup', handlePointerUp);
 			document.removeEventListener('pointercancel', handlePointerUp);
 		};
-	}, [isResizing, direction, minSize, maxSize, onSizeChange, handlePosition]);
+	}, [action, direction, handlePosition, isResizing, maxSize, minSize, onInput, runAction]);
 
 	// Prevent text selection during resize
 	useEffect(() => {
@@ -130,7 +139,9 @@ export function ResizablePanel({
 
 		event.preventDefault();
 		setSize(nextSize);
-		onSizeChange?.(nextSize);
+		latestSizeReference.current = nextSize;
+		onInput?.(nextSize);
+		void runAction(nextSize).catch(() => {});
 	};
 
 	const handleProperties = {
@@ -177,7 +188,13 @@ export function ResizablePanel({
 	}
 
 	return (
-		<div ref={panelReference} className={cn('relative flex shrink-0', isHorizontal ? 'flex-row' : 'flex-col', className)} style={sizeStyle}>
+		<div
+			ref={panelReference}
+			className={cn('relative flex shrink-0', isHorizontal ? 'flex-row' : 'flex-col', className)}
+			style={sizeStyle}
+			aria-busy={isPending || undefined}
+			data-pending={isPending ? '' : undefined}
+		>
 			{handlePosition === 'start' && renderHandle()}
 			<div className="flex-1 overflow-hidden">{children}</div>
 			{handlePosition === 'end' && renderHandle()}

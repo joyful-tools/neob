@@ -69,7 +69,7 @@ export const EpochAndLocaleChanges: Story = {
 		return (
 			<Tooltip.Provider>
 				<div className="flex flex-col items-center gap-4 p-8">
-					<Button type="button" onClick={() => setLocale('de')}>
+					<Button type="button" action={() => setLocale('de')}>
 						Use German
 					</Button>
 					<HumanizedTime

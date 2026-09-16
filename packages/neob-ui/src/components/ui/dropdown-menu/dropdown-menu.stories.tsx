@@ -22,8 +22,8 @@ type DropdownMenuStoryProperties = {
  * <DropdownMenu>
  *   <DropdownMenu.Trigger>Actions</DropdownMenu.Trigger>
  *   <DropdownMenu.Content>
- *     <DropdownMenu.Item onClick={edit}>Edit</DropdownMenu.Item>
- *     <DropdownMenu.Item onClick={remove} className="text-red">Delete</DropdownMenu.Item>
+ *     <DropdownMenu.Item action={edit}>Edit</DropdownMenu.Item>
+ *     <DropdownMenu.Item action={remove}>Delete</DropdownMenu.Item>
  *   </DropdownMenu.Content>
  * </DropdownMenu>
  * ```
@@ -54,16 +54,16 @@ export const Default: Story = {
 					<DropdownMenu.Label>Account Settings</DropdownMenu.Label>
 					<DropdownMenu.Separator />
 					<DropdownMenu.Group>
-						<DropdownMenu.Item onSelect={() => action('dropdown-view-profile')()}>View Profile</DropdownMenu.Item>
-						<DropdownMenu.Item onSelect={() => action('dropdown-open-billing-plans')()}>Open Billing & Plans</DropdownMenu.Item>
-						<DropdownMenu.Item onSelect={() => action('dropdown-open-security-settings')()}>Open Security Settings</DropdownMenu.Item>
+						<DropdownMenu.Item action={() => action('dropdown-view-profile')()}>View Profile</DropdownMenu.Item>
+						<DropdownMenu.Item action={() => action('dropdown-open-billing-plans')()}>Open Billing & Plans</DropdownMenu.Item>
+						<DropdownMenu.Item action={() => action('dropdown-open-security-settings')()}>Open Security Settings</DropdownMenu.Item>
 					</DropdownMenu.Group>
 					<DropdownMenu.Separator />
 					<DropdownMenu.Item disabled>Developer API (Beta)</DropdownMenu.Item>
 					<DropdownMenu.Separator />
 					<DropdownMenu.Item
 						className="text-red-dark focus:bg-red focus:text-black dark:text-red-light"
-						onSelect={() => action('dropdown-sign-out')()}
+						action={() => action('dropdown-sign-out')()}
 					>
 						Sign Out
 					</DropdownMenu.Item>

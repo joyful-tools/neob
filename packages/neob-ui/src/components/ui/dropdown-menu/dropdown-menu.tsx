@@ -12,12 +12,17 @@ import {
 	useState,
 } from 'react';
 
+import { useQueuedAction } from '@/hooks/use-queued-action';
 import { useTransformOrigin } from '@/hooks/use-transform-origin';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 const DropdownMenuContext = createContext<{
 	readonly anchorRef: RefCallback<HTMLDivElement | null>;
 	readonly anchorElement: HTMLDivElement | null;
+	readonly runItemAction: (action: Action) => Promise<void>;
+	readonly isPending: boolean;
 } | null>(null);
 
 interface DropdownMenuProperties {
@@ -30,13 +35,16 @@ interface DropdownMenuProperties {
 
 function DropdownMenuRoot({ children, ...properties }: DropdownMenuProperties) {
 	const [anchorElement, setAnchorElement] = useState<HTMLDivElement | null>(null);
+	const { runAction: runItemAction, isPending } = useQueuedAction((action: Action) => action());
 
 	const contextValue = useMemo(() => {
 		return {
 			anchorRef: setAnchorElement,
 			anchorElement,
+			runItemAction,
+			isPending,
 		};
-	}, [anchorElement]);
+	}, [anchorElement, isPending, runItemAction]);
 
 	return (
 		<DropdownMenuContext.Provider value={contextValue}>
@@ -96,6 +104,8 @@ function DropdownMenuContent({ children, className, align = 'end', sideOffset, r
 						className,
 					)}
 					{...properties}
+					aria-busy={context?.isPending || undefined}
+					data-pending={context?.isPending ? '' : undefined}
 				>
 					{children}
 				</Menu.Popup>
@@ -109,17 +119,22 @@ interface DropdownMenuItemProperties {
 	readonly children: ReactNode;
 	readonly className?: string;
 	readonly disabled?: boolean;
-	readonly onSelect?: () => void;
+	readonly action?: Action;
 	readonly ref?: Ref<HTMLDivElement>;
 	readonly 'aria-current'?: 'true' | undefined;
 }
 
-function DropdownMenuItem({ children, className, disabled, onSelect, ref, 'aria-current': ariaCurrent }: DropdownMenuItemProperties) {
+function DropdownMenuItem({ children, className, disabled, action, ref, 'aria-current': ariaCurrent }: DropdownMenuItemProperties) {
+	const context = useContext(DropdownMenuContext);
+
 	return (
 		<Menu.Item
 			ref={ref}
-			disabled={disabled}
-			onClick={onSelect}
+			disabled={disabled || context?.isPending}
+			onClick={() => {
+				if (!action || !context) return;
+				void context.runItemAction(action).catch(() => {});
+			}}
 			aria-current={ariaCurrent}
 			className={cn(
 				`relative flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-bold text-black outline-hidden transition-all select-none focus:bg-cyan focus:text-black data-disabled:pointer-events-none data-disabled:opacity-disabled dark:text-white dark:focus:text-black`,

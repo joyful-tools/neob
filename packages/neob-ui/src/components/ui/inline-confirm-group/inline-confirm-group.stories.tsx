@@ -21,7 +21,7 @@ type InlineConfirmGroupStoryProperties = Pick<InlineConfirmGroupProperties, 'var
  * ```tsx
  * import { InlineConfirmGroup, Button } from '@joyful-tools/neob';
  *
- * <InlineConfirmGroup onConfirm={handleConfirm} onCancel={handleCancel}>
+ * <InlineConfirmGroup action={handleConfirm} onCancel={handleCancel}>
  *   <Button>Confirm Delete</Button>
  * </InlineConfirmGroup>
  * ```
@@ -96,17 +96,13 @@ function getActionProperties(kind: FileAction): {
 
 const RealWorldList = ({ initialFiles, variant, color, size }: InlineConfirmGroupStoryProperties) => {
 	const [files, setFiles] = useState<FileItem[]>(initialFiles);
-	const [loadingActionIds, setLoadingActionIds] = useState<string[]>([]);
 
 	const handleAction = async (id: string, kind: FileAction) => {
-		const actionId = `${id}-${kind}`;
 		action('inline-confirm-action')({ id, kind });
-		setLoadingActionIds((previous) => [...previous, actionId]);
 		await new Promise((resolve) => setTimeout(resolve, 1500));
 		if (kind !== 'download') {
 			setFiles((previous) => previous.filter((file) => file.id !== id));
 		}
-		setLoadingActionIds((previous) => previous.filter((loadingId) => loadingId !== actionId));
 	};
 
 	return (
@@ -137,8 +133,7 @@ const RealWorldList = ({ initialFiles, variant, color, size }: InlineConfirmGrou
 										variant={variant}
 										color={color}
 										size={size}
-										onConfirm={() => void handleAction(file.id, fileAction.kind)}
-										isLoading={loadingActionIds.includes(actionId)}
+										action={() => void handleAction(file.id, fileAction.kind)}
 									/>
 								);
 							})}

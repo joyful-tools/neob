@@ -3,7 +3,10 @@ import { createContext, KeyboardEvent, ReactNode, useContext, useMemo, useState 
 
 import { Button } from '@/components/ui/button';
 import { Select } from '@/components/ui/select';
+import { useOptimisticAction } from '@/hooks/use-optimistic-action';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 const DEFAULT_PAGE_SIZE_OPTIONS = [25, 50, 100, 250] as const;
 
@@ -46,6 +49,7 @@ interface PaginationContextValue {
 	editingPage: number;
 	setEditingPage: (page: number) => void;
 	labels: Required<PaginationLabels>;
+	isPending: boolean;
 }
 
 const PaginationContext = createContext<PaginationContextValue | null>(null);
@@ -88,9 +92,11 @@ PaginationInfo.displayName = 'Pagination.Info';
 
 export interface PaginationPageSizeProps {
 	/** Current page size value */
-	readonly value: number;
-	/** Callback when page size changes */
-	readonly onChange: (size: number) => void;
+	readonly value?: number;
+	/** Initial page size in uncontrolled mode. */
+	readonly defaultValue?: number;
+	/** Action run when page size changes. */
+	readonly action?: Action<[size: number]>;
 	/** Available page size options */
 	readonly options?: readonly number[];
 	/**
@@ -104,20 +110,28 @@ export interface PaginationPageSizeProps {
 
 function PaginationPageSize({
 	value,
-	onChange,
+	defaultValue,
+	action,
 	options = DEFAULT_PAGE_SIZE_OPTIONS,
 	label = 'Per page:',
 	className,
 }: PaginationPageSizeProps) {
 	const { labels } = usePaginationContext();
+	const fallbackValue = defaultValue ?? options[0] ?? 25;
+	const { optimisticValue, runAction, isPending } = useOptimisticAction({ value, defaultValue: fallbackValue, action });
 
 	return (
-		<div data-slot="pagination-page-size" className={cn('flex items-center gap-2 select-none', className)}>
+		<div
+			data-slot="pagination-page-size"
+			className={cn('flex items-center gap-2 select-none', className)}
+			aria-busy={isPending || undefined}
+			data-pending={isPending ? '' : undefined}
+		>
 			{label && <span className="text-sm font-bold text-black dark:text-white">{label}</span>}
 			<div className="p-1">
 				<Select
-					value={String(value)}
-					onValueChange={(v) => onChange(Number(v))}
+					value={String(optimisticValue)}
+					action={(nextValue) => runAction(Number(nextValue))}
 					aria-label={labels.pageSize}
 					size="sm"
 					className="h-8 border-2 border-edge px-2.5 text-xs font-black dark:border-edge [&_svg]:size-3"
@@ -169,7 +183,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						size="sm"
 						aria-label={labels.firstPage}
 						disabled={isFirstPageDisabled}
-						onClick={() => {
+						action={() => {
 							setPage(1);
 							setEditingPage(1);
 						}}
@@ -184,7 +198,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 					size="sm"
 					aria-label={labels.previousPage}
 					disabled={isFirstPageDisabled}
-					onClick={() => {
+					action={() => {
 						const previousPage = Math.max(page - 1, 1);
 						setPage(previousPage);
 						setEditingPage(previousPage);
@@ -201,7 +215,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						<div className="-ml-0.5 w-18 shadow-cel-sm focus-within:z-10">
 							<Select
 								value={String(page)}
-								onValueChange={(value) => {
+								action={(value) => {
 									const num = Number(value);
 									setPage(num);
 									setEditingPage(num);
@@ -266,7 +280,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 					size="sm"
 					aria-label={labels.nextPage}
 					disabled={isLastPageDisabled}
-					onClick={() => {
+					action={() => {
 						const nextPage = Math.min(page + 1, maxPage);
 						setPage(nextPage);
 						setEditingPage(nextPage);
@@ -285,7 +299,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						size="sm"
 						aria-label={labels.lastPage}
 						disabled={isLastPageDisabled}
-						onClick={() => {
+						action={() => {
 							setPage(maxPage);
 							setEditingPage(maxPage);
 						}}
@@ -313,13 +327,15 @@ function PaginationSeparator({ className }: PaginationSeparatorProps) {
 PaginationSeparator.displayName = 'Pagination.Separator';
 
 export interface PaginationProps {
-	/** Callback fired when the current page changes. */
-	readonly setPage: (page: number) => void;
+	/** Action run when the current page changes. */
+	readonly action?: Action<[page: number]>;
 	/**
 	 * Current page number (1-indexed).
 	 * @default 1
 	 */
 	readonly page?: number;
+	/** Initial page in uncontrolled mode. */
+	readonly defaultPage?: number;
 	/** Number of items displayed per page. */
 	readonly perPage?: number;
 	/** Total number of items across all pages. */
@@ -338,47 +354,54 @@ export interface PaginationProps {
 }
 
 function PaginationRoot(props: PaginationProps) {
-	const { page = 1, perPage, totalCount, setPage, children, className, labels: labelsProp } = props;
+	const { page, defaultPage = 1, perPage, totalCount, action, children, className, labels: labelsProp } = props;
+	const { optimisticValue = defaultPage, runAction, isPending } = useOptimisticAction({ value: page, defaultValue: defaultPage, action });
 
-	const [prevPage, setPrevPage] = useState(page);
-	const [editingPage, setEditingPage] = useState(page);
+	const [prevPage, setPrevPage] = useState(optimisticValue);
+	const [editingPage, setEditingPage] = useState(optimisticValue);
 
-	if (page !== prevPage) {
-		setPrevPage(page);
-		setEditingPage(page);
+	if (optimisticValue !== prevPage) {
+		setPrevPage(optimisticValue);
+		setEditingPage(optimisticValue);
 	}
 
 	const labels = useMemo<Required<PaginationLabels>>(() => ({ ...DEFAULT_LABELS, ...labelsProp }), [labelsProp]);
 
 	const pageShowingRange = useMemo(() => {
-		let lower = page * (perPage ?? 1) - (perPage ?? 0) + 1;
-		let upper = Math.min(page * (perPage ?? 0), totalCount ?? 0);
+		let lower = optimisticValue * (perPage ?? 1) - (perPage ?? 0) + 1;
+		let upper = Math.min(optimisticValue * (perPage ?? 0), totalCount ?? 0);
 
 		if (Number.isNaN(lower)) lower = 0;
 		if (Number.isNaN(upper)) upper = 0;
 
 		return `${lower}-${upper}`;
-	}, [page, perPage, totalCount]);
+	}, [optimisticValue, perPage, totalCount]);
 
 	const maxPage = useMemo(() => {
 		return Math.max(1, Math.ceil((totalCount ?? 1) / (perPage ?? 1)));
 	}, [totalCount, perPage]);
 
 	const contextValue: PaginationContextValue = {
-		page,
+		page: optimisticValue,
 		perPage,
 		totalCount,
 		maxPage,
 		pageShowingRange,
-		setPage,
+		setPage: runAction,
 		editingPage,
 		setEditingPage,
 		labels,
+		isPending,
 	};
 
 	return (
 		<PaginationContext.Provider value={contextValue}>
-			<div data-slot="pagination" className={cn('flex w-full items-center gap-4 py-2 select-none', className)}>
+			<div
+				data-slot="pagination"
+				className={cn('flex w-full items-center gap-4 py-2 select-none', className)}
+				aria-busy={isPending || undefined}
+				data-pending={isPending ? '' : undefined}
+			>
 				{children}
 			</div>
 		</PaginationContext.Provider>

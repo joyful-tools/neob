@@ -3,21 +3,43 @@ import { CaretDownIcon } from '@phosphor-icons/react';
 import { motion } from 'motion/react';
 import { ComponentPropsWithoutRef, Ref } from 'react';
 
+import { useOptimisticAction } from '@/hooks/use-optimistic-action';
 import { cn } from '@/lib/utilities';
+
+import type { Action } from '@/lib/actions';
 
 /**
  * Root Accordion container.
  * Wraps Base UI Accordion.Root.
  */
-function AccordionRoot({
+interface AccordionRootProperties<Value> extends Omit<BaseAccordion.Root.Props<Value>, 'value' | 'defaultValue' | 'onValueChange'> {
+	readonly value?: Value[];
+	readonly defaultValue?: Value[];
+	readonly action?: Action<[value: Value[], eventDetails: BaseAccordion.Root.ChangeEventDetails]>;
+}
+
+function AccordionRoot<Value>({
 	className,
 	ref,
 	multiple = false,
+	value,
+	defaultValue = [],
+	action,
 	...properties
-}: ComponentPropsWithoutRef<typeof BaseAccordion.Root> & {
-	readonly ref?: Ref<HTMLDivElement>;
-}) {
-	return <BaseAccordion.Root ref={ref} multiple={multiple} className={cn('w-full', className)} {...properties} />;
+}: AccordionRootProperties<Value> & { readonly ref?: Ref<HTMLDivElement> }) {
+	const { optimisticValue, runAction, isPending } = useOptimisticAction({ value, defaultValue, action });
+	return (
+		<BaseAccordion.Root
+			ref={ref}
+			multiple={multiple}
+			className={cn('w-full', className)}
+			{...properties}
+			value={optimisticValue}
+			onValueChange={runAction}
+			aria-busy={isPending || undefined}
+			data-pending={isPending ? '' : undefined}
+		/>
+	);
 }
 AccordionRoot.displayName = 'Accordion';
 
