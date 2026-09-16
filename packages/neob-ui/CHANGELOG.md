@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 1.5.4
+
+### Patch Changes
+
+- [`e88ffe3`](https://github.com/joyful-tools/neob/commit/e88ffe3bfdca6218b7309991d58acfabb0559fc0) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Fix multi-select combobox input and adornment wrapping
+
 ## 1.5.3
 
 ### Patch Changes
