@@ -599,6 +599,64 @@ export const Multiple: StoryObj<MultipleComboboxStoryProperties> = {
 	}),
 };
 
+export const MultipleWrappingInput: StoryObj<MultipleComboboxStoryProperties> = {
+	args: {
+		initialValue: workspaceApps.slice(0, 4),
+		placeholder: 'Add apps',
+	},
+	render: (args: MultipleComboboxStoryProperties) => {
+		const [value, setValue] = useState<WorkspaceAppItem[]>(args.initialValue);
+
+		return (
+			<div className="w-75">
+				<Combobox
+					value={value}
+					onValueChange={setValue}
+					items={workspaceApps}
+					isItemEqualToValue={(app: WorkspaceAppItem, selected: WorkspaceAppItem) => app.value === selected.value}
+					multiple
+				>
+					<Combobox.TriggerMultipleWithInput
+						className="w-full"
+						placeholder={args.placeholder}
+						inputProps={{ 'aria-label': 'Search more workspace apps' }}
+						endAdornment={<span className="px-1 text-xs text-muted-foreground">⌘K</span>}
+						renderItem={(selected: WorkspaceAppItem) => <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>}
+						inputSide="right"
+					/>
+					<Combobox.Content className="max-h-50 overflow-y-auto">
+						<Combobox.Empty />
+						<Combobox.List>
+							{(item: WorkspaceAppItem) => (
+								<Combobox.Item key={item.value} value={item}>
+									<Text>{item.label}</Text>
+								</Combobox.Item>
+							)}
+						</Combobox.List>
+					</Combobox.Content>
+				</Combobox>
+			</div>
+		);
+	},
+	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+		const canvas = within(canvasElement);
+		const combobox = canvas.getByRole('combobox', { name: 'Search more workspace apps' });
+		const firstChip = canvas.getByText('Notion');
+		const adornment = canvas.getByText('⌘K');
+		const trigger = combobox.parentElement?.parentElement;
+
+		await userEvent.type(combobox, 'An unusually long workspace application name');
+		await waitFor(() => {
+			const inputBounds = combobox.getBoundingClientRect();
+			const chipBounds = firstChip.getBoundingClientRect();
+			const adornmentBounds = adornment.getBoundingClientRect();
+			expect(inputBounds.top).toBeGreaterThan(chipBounds.top);
+			expect(Math.abs(inputBounds.top + inputBounds.height / 2 - (adornmentBounds.top + adornmentBounds.height / 2))).toBeLessThan(2);
+			expect(trigger?.scrollWidth).toBeLessThanOrEqual(trigger?.clientWidth ?? 0);
+		});
+	}),
+};
+
 export const WithField: StoryObj<FieldComboboxStoryProperties> = {
 	args: {
 		initialValue: null,

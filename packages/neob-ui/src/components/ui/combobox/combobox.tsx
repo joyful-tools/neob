@@ -445,7 +445,7 @@ function TriggerMultipleWithInput<ValueType>({
 					{...resolvedInputProps}
 				/>
 			)}
-			<div className="flex flex-1 flex-wrap items-center gap-1">
+			<div className="flex min-w-0 flex-1 flex-wrap items-center gap-1">
 				{chipsToRender !== undefined && chipsToRender.length > 0 && chipsToRender.map((item) => renderItem(item))}
 				<BaseCombobox.Value>
 					{(internalValue: ValueType[]) => {
@@ -454,20 +454,23 @@ function TriggerMultipleWithInput<ValueType>({
 					}}
 				</BaseCombobox.Value>
 				{inputSide === 'right' && (
-					<BaseCombobox.Input
-						id={controlId}
-						placeholder={placeholder}
-						aria-label={ariaLabel ?? 'Search options'}
-						className={cn(
-							'min-w-20 flex-1 border-0 bg-transparent px-1 py-0.5 text-sm font-medium text-black outline-hidden dark:text-white',
-							inputClassName,
-						)}
-						aria-describedby={describedBy}
-						aria-invalid={ariaInvalid ? true : undefined}
-						{...resolvedInputProps}
-					/>
+					<div className="flex max-w-full min-w-20 flex-[1_0_auto] items-center gap-1">
+						<BaseCombobox.Input
+							id={controlId}
+							placeholder={placeholder}
+							aria-label={ariaLabel ?? 'Search options'}
+							className={cn(
+								'field-sizing-content max-w-full min-w-0 flex-[1_1_auto] border-0 bg-transparent px-1 py-0.5 text-sm font-medium whitespace-nowrap text-black outline-hidden dark:text-white',
+								inputClassName,
+							)}
+							aria-describedby={describedBy}
+							aria-invalid={ariaInvalid ? true : undefined}
+							{...resolvedInputProps}
+						/>
+						{endAdornment ? <div className="flex shrink-0 items-center">{endAdornment}</div> : null}
+					</div>
 				)}
-				{endAdornment ? <div className="flex shrink-0 items-center">{endAdornment}</div> : null}
+				{inputSide === 'top' && endAdornment ? <div className="flex shrink-0 items-center">{endAdornment}</div> : null}
 			</div>
 		</BaseCombobox.Chips>
 	);
