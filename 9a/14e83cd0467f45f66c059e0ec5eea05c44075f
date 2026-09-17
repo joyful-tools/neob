@@ -1,0 +1,23 @@
+.changeset/long-guests-strive.md
+  s_286780bfc6381e::t_3e0e94f8fcf8cb 1-5
+packages/neob-ui/src/components/ui/confirm-button/confirm-button.stories.tsx
+  s_286780bfc6381e::t_9dc8c1b1556521 198-253
+packages/neob-ui/src/components/ui/confirm-button/confirm-button.tsx
+  s_286780bfc6381e::t_526b34d25a015e 41-60,68-69,74-75
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "9a14e83cd0467f45f66c059e0ec5eea05c44075f",
+  "prompts": {},
+  "sessions": {
+    "s_286780bfc6381e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0ad3d-aac7-7be1-ba5f-0fc8a9157b1b",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
