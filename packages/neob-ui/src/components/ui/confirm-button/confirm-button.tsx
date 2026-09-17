@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, type Transition } from 'motion/react';
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 
 import { Button, buttonVariants } from '@/components/ui/button';
 import { useQueuedAction } from '@/hooks/use-queued-action';
@@ -24,6 +24,38 @@ interface ConfirmButtonProperties {
 	readonly confirmColor?: ButtonProperties['color'];
 	readonly className?: string;
 	readonly disabled?: boolean;
+}
+
+interface ViewportOffset {
+	readonly x: number;
+	readonly y: number;
+}
+
+const VIEWPORT_GAP = 8;
+const ZERO_VIEWPORT_OFFSET: ViewportOffset = { x: 0, y: 0 };
+
+function clamp(value: number, minimum: number, maximum: number): number {
+	return Math.min(Math.max(value, minimum), maximum);
+}
+
+function getViewportOffset(anchor: HTMLElement, overlay: HTMLElement): ViewportOffset {
+	const anchorRect = anchor.getBoundingClientRect();
+	const visualViewport = window.visualViewport;
+	const viewportLeft = visualViewport?.offsetLeft ?? 0;
+	const viewportTop = visualViewport?.offsetTop ?? 0;
+	const viewportWidth = visualViewport?.width ?? document.documentElement.clientWidth;
+	const viewportHeight = visualViewport?.height ?? document.documentElement.clientHeight;
+	const preferredLeft = anchorRect.left + (anchorRect.width - overlay.offsetWidth) / 2;
+	const preferredTop = anchorRect.top + (anchorRect.height - overlay.offsetHeight) / 2;
+	const minimumLeft = viewportLeft + VIEWPORT_GAP;
+	const minimumTop = viewportTop + VIEWPORT_GAP;
+	const maximumLeft = Math.max(minimumLeft, viewportLeft + viewportWidth - VIEWPORT_GAP - overlay.offsetWidth);
+	const maximumTop = Math.max(minimumTop, viewportTop + viewportHeight - VIEWPORT_GAP - overlay.offsetHeight);
+
+	return {
+		x: clamp(preferredLeft, minimumLeft, maximumLeft) - preferredLeft,
+		y: clamp(preferredTop, minimumTop, maximumTop) - preferredTop,
+	};
 }
 
 const springOpen: Transition = {
@@ -56,6 +88,7 @@ export function ConfirmButton({
 	const [containerElement, setContainerElement] = useState<HTMLDivElement | null>(null);
 	const [open, setOpen] = useState(false);
 	const [triggerSize, setTriggerSize] = useState<{ width: number; height: number } | null>(null);
+	const [viewportOffset, setViewportOffset] = useState<ViewportOffset>(ZERO_VIEWPORT_OFFSET);
 	const titleId = useId();
 	const descriptionId = useId();
 	const layoutId = useId();
@@ -63,6 +96,7 @@ export function ConfirmButton({
 	const confirmButtonRef = useRef<HTMLButtonElement | null>(null);
 	const cancelButtonRef = useRef<HTMLButtonElement>(null);
 	const triggerButtonRef = useRef<HTMLButtonElement>(null);
+	const overlayRef = useRef<HTMLDivElement>(null);
 	const { runAction, isPending } = useQueuedAction(() => afterAction(action(), () => setOpen(false)));
 
 	useEffect(() => {
@@ -104,6 +138,44 @@ export function ConfirmButton({
 			}
 		}
 	}, [open]);
+
+	const updateViewportOffset = useCallback(() => {
+		if (!containerElement || !overlayRef.current) return;
+
+		const overlay = overlayRef.current;
+		const nextOffset = getViewportOffset(containerElement, overlay);
+		// Individual translate composes with Motion's shared-layout transform so the surface still morphs from its trigger.
+		overlay.style.translate = `${nextOffset.x}px ${nextOffset.y}px`;
+		setViewportOffset((currentOffset) => {
+			if (currentOffset.x === nextOffset.x && currentOffset.y === nextOffset.y) {
+				return currentOffset;
+			}
+			return nextOffset;
+		});
+	}, [containerElement]);
+
+	useLayoutEffect(() => {
+		if (!open || !containerElement || !overlayRef.current) return;
+
+		const overlay = overlayRef.current;
+		updateViewportOffset();
+
+		const resizeObserver = new ResizeObserver(updateViewportOffset);
+		resizeObserver.observe(containerElement);
+		resizeObserver.observe(overlay);
+		window.addEventListener('resize', updateViewportOffset);
+		document.addEventListener('scroll', updateViewportOffset, true);
+		window.visualViewport?.addEventListener('resize', updateViewportOffset);
+		window.visualViewport?.addEventListener('scroll', updateViewportOffset);
+
+		return () => {
+			resizeObserver.disconnect();
+			window.removeEventListener('resize', updateViewportOffset);
+			document.removeEventListener('scroll', updateViewportOffset, true);
+			window.visualViewport?.removeEventListener('resize', updateViewportOffset);
+			window.visualViewport?.removeEventListener('scroll', updateViewportOffset);
+		};
+	}, [containerElement, open, updateViewportOffset]);
 
 	// Close on click outside
 	useEffect(() => {
@@ -151,6 +223,10 @@ export function ConfirmButton({
 	}
 
 	const borderRadius = size === 'sm' ? 6 : size === 'lg' || size === 'xl' ? 12 : 8;
+	const openConfirmation = () => {
+		setViewportOffset(ZERO_VIEWPORT_OFFSET);
+		setOpen(true);
+	};
 
 	return (
 		<div
@@ -164,13 +240,14 @@ export function ConfirmButton({
 			<AnimatePresence initial={false}>
 				{open ? (
 					<motion.div
+						ref={overlayRef}
 						key="popover"
 						layoutId={layoutId}
-						layoutDependency={open}
+						layoutDependency={`${open}-${viewportOffset.x}-${viewportOffset.y}`}
 						transition={springOpen}
 						style={{ borderRadius: 12 }}
 						className={cn(
-							`absolute z-20 flex min-w-56 flex-col items-center rounded-xl border-2 border-edge bg-white p-3 text-black shadow-md dark:bg-zinc dark:text-white`,
+							`absolute z-20 flex max-h-[calc(100vh-1rem)] max-w-[calc(100vw-1rem)] min-w-[min(14rem,calc(100vw-1rem))] flex-col items-center overflow-auto rounded-xl border-2 border-edge bg-white p-3 text-black shadow-md dark:bg-zinc dark:text-white`,
 							'origin-center',
 						)}
 						role="dialog"
@@ -231,7 +308,7 @@ export function ConfirmButton({
 						transition={springClose}
 						className={cn(buttonVariants({ variant, color, size, className }), 'relative')}
 						disabled={disabled}
-						onClick={() => setOpen(true)}
+						onClick={openConfirmation}
 						style={{ borderRadius, transition: 'none' }}
 					>
 						<span className="inline-flex items-center gap-2">{children}</span>

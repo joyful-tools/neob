@@ -132,3 +132,66 @@ export const AsyncDelete: Story = {
 		await userEvent.click(canvas.getByRole('button', { name: 'Delete Item' }));
 	}),
 };
+
+interface ViewportEdgeCase {
+	readonly label: string;
+	readonly className: string;
+}
+
+const viewportEdgeCases: readonly ViewportEdgeCase[] = [
+	{ label: 'Top left', className: 'flex items-start justify-start' },
+	{ label: 'Top right', className: 'flex items-start justify-end' },
+	{ label: 'Bottom left', className: 'flex items-end justify-start' },
+	{ label: 'Bottom right', className: 'flex items-end justify-end' },
+];
+
+export const ViewportEdges: Story = {
+	parameters: {
+		layout: 'fullscreen',
+	},
+	args: {
+		children: 'Confirm',
+		action: () => {},
+	},
+	render: () => (
+		<div className="grid h-screen grid-cols-2 grid-rows-2">
+			{viewportEdgeCases.map(({ label, className }) => (
+				<div key={label} className={className}>
+					<ConfirmButton
+						title={`Confirm ${label}?`}
+						description="This overlay stays inside the viewport."
+						confirmLabel="Confirm"
+						action={() => action(`confirm-button-${label.toLowerCase().replaceAll(' ', '-')}`)()}
+					>
+						{label}
+					</ConfirmButton>
+				</div>
+			))}
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const viewport = canvasElement.ownerDocument.documentElement;
+		const minimumViewportGap = 7.5;
+
+		for (const { label } of viewportEdgeCases) {
+			const trigger = canvas.getByRole('button', { name: label });
+			await userEvent.click(trigger);
+			const dialog = await canvas.findByRole('dialog', { name: `Confirm ${label}?` });
+
+			await waitFor(() => {
+				const bounds = dialog.getBoundingClientRect();
+				expect(bounds.left).toBeGreaterThanOrEqual(minimumViewportGap);
+				expect(bounds.top).toBeGreaterThanOrEqual(minimumViewportGap);
+				expect(bounds.right).toBeLessThanOrEqual(viewport.clientWidth - minimumViewportGap);
+				expect(bounds.bottom).toBeLessThanOrEqual(viewport.clientHeight - minimumViewportGap);
+			});
+
+			await userEvent.keyboard('{Escape}');
+			await waitFor(() => {
+				expect(canvas.queryByRole('dialog', { name: `Confirm ${label}?` })).not.toBeInTheDocument();
+			});
+			await expect(canvas.getByRole('button', { name: label })).toHaveFocus();
+		}
+	}),
+};
