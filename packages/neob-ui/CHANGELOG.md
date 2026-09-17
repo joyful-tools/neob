@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 2.1.0
+
+### Minor Changes
+
+- [`5235acc`](https://github.com/joyful-tools/neob/commit/5235acc13bb5436eb75fa5c2c946915abd7c5a28) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Keep ConfirmButton confirmation overlays within the viewport while preserving their expansion animation.
+
 ## 2.0.0
 
 ### Major Changes
