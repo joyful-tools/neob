@@ -1,0 +1,21 @@
+packages/neob-ui/src/components/ui/confirm-button/confirm-button.stories.tsx
+  s_286780bfc6381e::t_e1c2f196f5fa60 135-197
+packages/neob-ui/src/components/ui/confirm-button/confirm-button.tsx
+  s_286780bfc6381e::t_363e9f4af5d9cd 2,29-60,91,99,142-179,226-229,243,246,250,311
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "5235acc13bb5436eb75fa5c2c946915abd7c5a28",
+  "prompts": {},
+  "sessions": {
+    "s_286780bfc6381e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0ad3d-aac7-7be1-ba5f-0fc8a9157b1b",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
