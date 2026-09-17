@@ -195,6 +195,7 @@ export const Default = {
 		await userEvent.keyboard('{Escape}');
 		await waitFor(() => {
 			expect(canvas.queryByRole('group', { name: 'Archive confirmation for invoices.csv' })).not.toBeInTheDocument();
+			expect(canvas.getByRole('button', { name: 'Archive invoices.csv' })).toBeVisible();
 		});
 
 		await userEvent.click(canvas.getByRole('button', { name: 'Archive invoices.csv' }));
@@ -205,6 +206,7 @@ export const Default = {
 		await userEvent.click(canvas.getByText('Project Directory Files'));
 		await waitFor(() => {
 			expect(canvas.queryByRole('group', { name: 'Archive confirmation for invoices.csv' })).not.toBeInTheDocument();
+			expect(canvas.getByRole('button', { name: 'Archive invoices.csv' })).toBeVisible();
 		});
 	}),
 };

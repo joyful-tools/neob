@@ -195,3 +195,59 @@ export const ViewportEdges: Story = {
 		}
 	}),
 };
+
+export const ScrollRelease: Story = {
+	parameters: {
+		layout: 'fullscreen',
+	},
+	args: {
+		children: 'Confirm while scrolling',
+		action: () => {},
+	},
+	render: () => (
+		<div className="relative h-[200vh]">
+			<div className="absolute top-[50vh] left-1/2 -translate-x-1/2">
+				<ConfirmButton
+					title="Keep scrolling?"
+					description="The overlay leaves with its trigger once the trigger is outside the viewport."
+					confirmLabel="Confirm"
+					action={() => action('confirm-button-scroll-release')()}
+				>
+					Confirm while scrolling
+				</ConfirmButton>
+			</div>
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const storyWindow = canvasElement.ownerDocument.defaultView;
+		if (!storyWindow) throw new Error('Story window is unavailable.');
+
+		storyWindow.scrollTo(0, 0);
+		await userEvent.click(canvas.getByRole('button', { name: 'Confirm while scrolling' }));
+		const dialog = await canvas.findByRole('dialog', { name: 'Keep scrolling?' });
+		const anchor = dialog.parentElement;
+		if (!anchor) throw new Error('ConfirmButton anchor is unavailable.');
+
+		storyWindow.scrollBy(0, anchor.getBoundingClientRect().bottom + 1);
+		await waitFor(() => {
+			expect(anchor.getBoundingClientRect().bottom).toBeLessThanOrEqual(0);
+			expect(dialog.getBoundingClientRect().top).toBeLessThan(8);
+			expect(dialog.getBoundingClientRect().bottom).toBeGreaterThan(0);
+		});
+
+		const releasedTop = dialog.getBoundingClientRect().top;
+		storyWindow.scrollBy(0, 40);
+		await waitFor(() => {
+			expect(dialog.getBoundingClientRect().top).toBeLessThanOrEqual(releasedTop - 39.5);
+		});
+
+		storyWindow.scrollBy(0, dialog.getBoundingClientRect().bottom + 1);
+		await waitFor(() => {
+			expect(dialog.getBoundingClientRect().bottom).toBeLessThanOrEqual(0);
+		});
+
+		await userEvent.keyboard('{Escape}');
+		storyWindow.scrollTo(0, 0);
+	}),
+};

@@ -38,6 +38,26 @@ function clamp(value: number, minimum: number, maximum: number): number {
 	return Math.min(Math.max(value, minimum), maximum);
 }
 
+function getViewportAxisOffset(
+	preferredStart: number,
+	anchorStart: number,
+	anchorEnd: number,
+	overlaySize: number,
+	viewportStart: number,
+	viewportEnd: number,
+): number {
+	const minimumStart = viewportStart + VIEWPORT_GAP;
+	const maximumStart = Math.max(minimumStart, viewportEnd - VIEWPORT_GAP - overlaySize);
+
+	if (anchorEnd <= viewportStart) {
+		return minimumStart + anchorEnd - viewportStart - preferredStart;
+	}
+	if (anchorStart >= viewportEnd) {
+		return maximumStart + anchorStart - viewportEnd - preferredStart;
+	}
+	return clamp(preferredStart, minimumStart, maximumStart) - preferredStart;
+}
+
 function getViewportOffset(anchor: HTMLElement, overlay: HTMLElement): ViewportOffset {
 	const anchorRect = anchor.getBoundingClientRect();
 	const visualViewport = window.visualViewport;
@@ -45,16 +65,14 @@ function getViewportOffset(anchor: HTMLElement, overlay: HTMLElement): ViewportO
 	const viewportTop = visualViewport?.offsetTop ?? 0;
 	const viewportWidth = visualViewport?.width ?? document.documentElement.clientWidth;
 	const viewportHeight = visualViewport?.height ?? document.documentElement.clientHeight;
+	const viewportRight = viewportLeft + viewportWidth;
+	const viewportBottom = viewportTop + viewportHeight;
 	const preferredLeft = anchorRect.left + (anchorRect.width - overlay.offsetWidth) / 2;
 	const preferredTop = anchorRect.top + (anchorRect.height - overlay.offsetHeight) / 2;
-	const minimumLeft = viewportLeft + VIEWPORT_GAP;
-	const minimumTop = viewportTop + VIEWPORT_GAP;
-	const maximumLeft = Math.max(minimumLeft, viewportLeft + viewportWidth - VIEWPORT_GAP - overlay.offsetWidth);
-	const maximumTop = Math.max(minimumTop, viewportTop + viewportHeight - VIEWPORT_GAP - overlay.offsetHeight);
 
 	return {
-		x: clamp(preferredLeft, minimumLeft, maximumLeft) - preferredLeft,
-		y: clamp(preferredTop, minimumTop, maximumTop) - preferredTop,
+		x: getViewportAxisOffset(preferredLeft, anchorRect.left, anchorRect.right, overlay.offsetWidth, viewportLeft, viewportRight),
+		y: getViewportAxisOffset(preferredTop, anchorRect.top, anchorRect.bottom, overlay.offsetHeight, viewportTop, viewportBottom),
 	};
 }
 
