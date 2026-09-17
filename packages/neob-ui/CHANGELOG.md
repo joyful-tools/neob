@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 2.1.2
+
+### Patch Changes
+
+- [`958c1e9`](https://github.com/joyful-tools/neob/commit/958c1e963761c9aa6c3d82bd611a3603fff17a29) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Keep InlineConfirmGroup surfaces opaque and rounded during morphs, and preserve trigger visibility when interrupted transitions are dismissed.
+
 ## 2.1.1
 
 ### Patch Changes
