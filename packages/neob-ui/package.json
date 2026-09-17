@@ -1,6 +1,6 @@
 {
 	"name": "@joyful.tools/neob",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"description": "Accessible React 19 components with a bold Neo-Brutalist design system",
 	"type": "module",
 	"license": "MIT",
