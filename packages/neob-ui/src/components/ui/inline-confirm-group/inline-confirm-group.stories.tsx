@@ -3,6 +3,8 @@ import { ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
+import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
 import { guardPlay } from '@/lib/storybook-interactions';
 
 import { InlineConfirmGroup } from './inline-confirm-group';
@@ -77,13 +79,6 @@ function getActionProperties(kind: FileAction): {
 				intent: 'info',
 			};
 		}
-		case 'download': {
-			return {
-				actionLabel: 'Download',
-				actionIcon: <DownloadSimpleIcon />,
-				intent: 'success',
-			};
-		}
 		default: {
 			return {
 				actionLabel: 'Delete',
@@ -94,15 +89,28 @@ function getActionProperties(kind: FileAction): {
 	}
 }
 
+function handleDownload(id: string) {
+	action('download-file')({ id });
+}
+
 const RealWorldList = ({ initialFiles, variant, color, size }: InlineConfirmGroupStoryProperties) => {
 	const [files, setFiles] = useState<FileItem[]>(initialFiles);
+	const [pendingActionIds, setPendingActionIds] = useState<Set<string>>(() => new Set<string>());
 
-	const handleAction = async (id: string, kind: FileAction) => {
-		action('inline-confirm-action')({ id, kind });
+	const removeFile = (id: string) => {
+		setFiles((previous) => previous.filter((file) => file.id !== id));
+	};
+
+	const handleArchive = (id: string) => {
+		action('archive-file')({ id });
+		removeFile(id);
+	};
+
+	const handleDelete = async (id: string, actionId: string) => {
+		action('delete-file')({ id });
+		setPendingActionIds((previous) => new Set(previous).add(actionId));
 		await new Promise((resolve) => setTimeout(resolve, 1500));
-		if (kind !== 'download') {
-			setFiles((previous) => previous.filter((file) => file.id !== id));
-		}
+		removeFile(id);
 	};
 
 	return (
@@ -120,21 +128,46 @@ const RealWorldList = ({ initialFiles, variant, color, size }: InlineConfirmGrou
 						</div>
 						<div className="flex items-center gap-2">
 							{file.actions.map((fileAction) => {
-								const actionProperties = getActionProperties(fileAction.kind);
 								const actionId = `${file.id}-${fileAction.kind}`;
+								if (fileAction.kind === 'download') {
+									return (
+										<Button
+											key={actionId}
+											type="button"
+											variant={variant}
+											color={color}
+											size={size}
+											action={() => handleDownload(file.id)}
+											aria-label={`Download ${file.name}`}
+										>
+											<DownloadSimpleIcon className="size-5" />
+										</Button>
+									);
+								}
+
+								const actionProperties = getActionProperties(fileAction.kind);
+								const isPending = pendingActionIds.has(actionId);
 
 								return (
-									<InlineConfirmGroup
+									<div
 										key={actionId}
-										itemName={file.name}
-										actionLabel={actionProperties.actionLabel}
-										actionIcon={actionProperties.actionIcon}
-										intent={actionProperties.intent}
-										variant={variant}
-										color={color}
-										size={size}
-										action={() => void handleAction(file.id, fileAction.kind)}
-									/>
+										role={isPending ? 'status' : undefined}
+										aria-label={isPending ? `Delete ${file.name} in progress` : undefined}
+										className="inline-flex"
+									>
+										<div className="inline-flex" inert={isPending ? true : undefined}>
+											<InlineConfirmGroup
+												itemName={file.name}
+												actionLabel={actionProperties.actionLabel}
+												actionIcon={isPending ? <Spinner size="sm" /> : actionProperties.actionIcon}
+												intent={actionProperties.intent}
+												variant={variant}
+												color={color}
+												size={size}
+												action={fileAction.kind === 'archive' ? () => handleArchive(file.id) : () => void handleDelete(file.id, actionId)}
+											/>
+										</div>
+									</div>
 								);
 							})}
 						</div>
@@ -181,6 +214,9 @@ export const Default = {
 	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 		const canvas = within(canvasElement);
 
+		await userEvent.click(canvas.getByRole('button', { name: 'Download invoices.csv' }));
+		await expect(canvas.queryByRole('group', { name: 'Download confirmation for invoices.csv' })).not.toBeInTheDocument();
+
 		await userEvent.click(canvas.getByRole('button', { name: 'Archive invoices.csv' }));
 		await waitFor(() => {
 			expect(canvas.getByRole('button', { name: 'Cancel archive invoices.csv' })).toHaveFocus();
@@ -208,5 +244,24 @@ export const Default = {
 			expect(canvas.queryByRole('group', { name: 'Archive confirmation for invoices.csv' })).not.toBeInTheDocument();
 			expect(canvas.getByRole('button', { name: 'Archive invoices.csv' })).toBeVisible();
 		});
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Archive invoices.csv' }));
+		await userEvent.click(canvas.getByRole('button', { name: 'Confirm archive invoices.csv' }));
+		await waitFor(() => {
+			expect(canvas.queryByText('invoices.csv')).not.toBeInTheDocument();
+		});
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Delete release-notes.md' }));
+		await userEvent.click(canvas.getByRole('button', { name: 'Confirm delete release-notes.md' }));
+		await waitFor(() => {
+			expect(canvas.queryByRole('group', { name: 'Delete confirmation for release-notes.md' })).not.toBeInTheDocument();
+			expect(canvas.getByRole('status', { name: 'Delete release-notes.md in progress' })).toBeVisible();
+		});
+		await waitFor(
+			() => {
+				expect(canvas.queryByText('release-notes.md')).not.toBeInTheDocument();
+			},
+			{ timeout: 2500 },
+		);
 	}),
 };
