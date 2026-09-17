@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 2.1.1
+
+### Patch Changes
+
+- [`b1f7744`](https://github.com/joyful-tools/neob/commit/b1f77446870c47179c9060aee2cff7a21a53aa80) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Release ConfirmButton overlays from the viewport edge once their triggers scroll fully out of view.
+
 ## 2.1.0
 
 ### Minor Changes
