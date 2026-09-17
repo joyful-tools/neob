@@ -234,6 +234,18 @@ export const Default = {
 			expect(canvas.getByRole('button', { name: 'Archive invoices.csv' })).toBeVisible();
 		});
 
+		await userEvent.click(canvas.getByRole('button', { name: 'Delete package.json' }));
+		await userEvent.click(canvas.getByRole('button', { name: 'Cancel delete package.json' }));
+		const restoredTrigger = canvas.getByRole('button', { name: 'Delete package.json' });
+		const restoredTriggerContainer = restoredTrigger.parentElement;
+		if (!restoredTriggerContainer) throw new Error('Expected the restored trigger to have a motion container.');
+		await waitFor(() => {
+			expect(restoredTrigger).toBeVisible();
+			expect(getComputedStyle(restoredTriggerContainer).opacity).toBe('1');
+		});
+		await new Promise((resolve) => setTimeout(resolve, 500));
+		await expect(restoredTrigger).toBeVisible();
+
 		await userEvent.click(canvas.getByRole('button', { name: 'Archive invoices.csv' }));
 		await waitFor(() => {
 			expect(canvas.getByRole('group', { name: 'Archive confirmation for invoices.csv' })).toBeInTheDocument();
@@ -252,6 +264,11 @@ export const Default = {
 		});
 
 		await userEvent.click(canvas.getByRole('button', { name: 'Delete release-notes.md' }));
+		const deleteConfirmation = canvas.getByRole('group', { name: 'Delete confirmation for release-notes.md' });
+		await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+		const deleteConfirmationStyle = getComputedStyle(deleteConfirmation);
+		await expect(deleteConfirmationStyle.opacity).toBe('1');
+		await expect(deleteConfirmationStyle.borderTopLeftRadius).toBe('8px');
 		await userEvent.click(canvas.getByRole('button', { name: 'Confirm delete release-notes.md' }));
 		await waitFor(() => {
 			expect(canvas.queryByRole('group', { name: 'Delete confirmation for release-notes.md' })).not.toBeInTheDocument();

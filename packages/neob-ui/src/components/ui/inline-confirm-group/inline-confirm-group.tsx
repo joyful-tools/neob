@@ -1,6 +1,6 @@
 import { TrashIcon, XIcon } from '@phosphor-icons/react';
 import { AnimatePresence, motion, Transition } from 'motion/react';
-import { cloneElement, KeyboardEvent, MouseEvent, ReactElement, useCallback, useEffect, useRef, useState, useId } from 'react';
+import { cloneElement, KeyboardEvent, MouseEvent, ReactElement, useCallback, useEffect, useId, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { useQueuedAction } from '@/hooks/use-queued-action';
@@ -53,6 +53,7 @@ export function InlineConfirmGroup({
 	size = 'icon',
 }: InlineConfirmGroupProperties) {
 	const [open, setOpen] = useState(false);
+	const [transitionId, setTransitionId] = useState(0);
 	const [triggerSize, setTriggerSize] = useState<{ width: number; height: number } | null>(null);
 	const containerReference = useRef<HTMLDivElement>(null);
 	const triggerButtonReference = useRef<HTMLButtonElement>(null);
@@ -193,14 +194,18 @@ export function InlineConfirmGroup({
 			<AnimatePresence mode="popLayout" initial={false}>
 				{open ? (
 					<motion.div
-						key="group"
+						key={`group-${transitionId}`}
 						layoutId={layoutId}
+						layoutCrossfade={false}
 						layoutDependency={open}
 						role="group"
 						aria-label={`${actionLabel} confirmation for ${itemName}`}
 						aria-busy={isPending || undefined}
 						data-pending={isPending ? '' : undefined}
 						transition={spring}
+						initial={{ opacity: 1 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0, transition: { duration: 0.12, ease: 'easeOut' } }}
 						style={{ borderRadius: 8, transformOrigin }}
 						className={cn(
 							`absolute top-1/2 z-10 flex shrink-0 -translate-y-1/2 items-center gap-1.5 rounded-lg border-2 border-edge bg-white p-1 shadow-sm dark:bg-zinc`,
@@ -214,11 +219,15 @@ export function InlineConfirmGroup({
 					</motion.div>
 				) : (
 					<motion.div
-						key="trigger"
+						key={`trigger-${transitionId}`}
 						layoutId={layoutId}
+						layoutCrossfade={false}
 						layoutDependency={open}
 						transition={spring}
-						style={{ transformOrigin }}
+						initial={{ opacity: 1 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0, transition: { duration: 0.12, ease: 'easeOut' } }}
+						style={{ borderRadius: 8, transformOrigin }}
 						className={cn('inline-flex items-center justify-center', triggerOriginClassName)}
 					>
 						<Button
@@ -230,6 +239,7 @@ export function InlineConfirmGroup({
 							disabled={isPending}
 							action={(event) => {
 								event.stopPropagation();
+								setTransitionId((current) => current + 1);
 								setOpen(true);
 							}}
 							aria-label={`${actionLabel} ${itemName}`}
