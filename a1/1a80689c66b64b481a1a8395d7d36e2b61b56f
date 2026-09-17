@@ -1,0 +1,21 @@
+.changeset/tame-dolls-notice.md
+  s_286780bfc6381e::t_d87823a5a0addd 1-5
+packages/neob-ui/src/components/ui/inline-confirm-group/inline-confirm-group.stories.tsx
+  s_286780bfc6381e::t_394ee3e30a1353 6-7,92-95,98,100-111,113,132-149,152,154-170,217-219,247-265
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "a11a80689c66b64b481a1a8395d7d36e2b61b56f",
+  "prompts": {},
+  "sessions": {
+    "s_286780bfc6381e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0ad3d-aac7-7be1-ba5f-0fc8a9157b1b",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
