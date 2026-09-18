@@ -24,6 +24,35 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Report released packages
+        if: startsWith(github.event.head_commit.message, 'Version Packages')
+        run: |
+          released_packages="$({
+            git diff --name-only "$GITHUB_SHA^" "$GITHUB_SHA" -- 'packages/*/package.json' |
+              while IFS= read -r package_json; do
+                jq --compact-output '{ name, version }' "$package_json"
+              done
+          })"
+
+          if [[ -z "$released_packages" ]]; then
+            exit 0
+          fi
+
+          {
+            echo "## Released packages"
+            echo ""
+            echo "| Package | Version | npm | GitHub Packages | GitHub release |"
+            echo "| --- | --- | --- | --- | --- |"
+            jq --slurp --raw-output --arg repository "$GITHUB_REPOSITORY" '
+              .[] |
+              .name as $name |
+              .version as $version |
+              ($name | split("/") | last | @uri) as $github_package |
+              ("\($name)@\($version)" | @uri) as $tag |
+              "| `\($name)` | `\($version)` | [View](https://www.npmjs.com/package/\($name)/v/\($version)) | [View](https://github.com/\($repository)/pkgs/npm/\($github_package)) | [View](https://github.com/\($repository)/releases/tag/\($tag)) |"
+            ' <<< "$released_packages"
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
@@ -71,23 +100,3 @@ jobs:
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Report released packages
-        if: steps.changesets.outputs.published == 'true'
-        env:
-          PUBLISHED_PACKAGES: ${{ steps.changesets.outputs.publishedPackages }}
-        run: |
-          {
-            echo "## Released packages"
-            echo ""
-            echo "| Package | Version | npm | GitHub Packages | GitHub release |"
-            echo "| --- | --- | --- | --- | --- |"
-            jq --raw-output --arg repository "$GITHUB_REPOSITORY" '
-              .[] |
-              .name as $name |
-              .version as $version |
-              ($name | split("/") | last | @uri) as $github_package |
-              ("\($name)@\($version)" | @uri) as $tag |
-              "| `\($name)` | `\($version)` | [View](https://www.npmjs.com/package/\($name)/v/\($version)) | [View](https://github.com/\($repository)/pkgs/npm/\($github_package)) | [View](https://github.com/\($repository)/releases/tag/\($tag)) |"
-            ' <<< "$PUBLISHED_PACKAGES"
-          } >> "$GITHUB_STEP_SUMMARY"
