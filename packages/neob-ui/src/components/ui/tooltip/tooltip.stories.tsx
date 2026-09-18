@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { Button } from '@/components/ui/button';
@@ -48,6 +49,22 @@ export const Default: Story = {
 		const canvas = within(canvasElement);
 		await userEvent.hover(canvas.getByRole('button', { name: 'Hover Me' }));
 		await expect(await within(document.body).findByRole('tooltip')).toHaveTextContent('This is a high-contrast tooltip!');
+	}),
+};
+
+export const ButtonAction: Story = {
+	render: () => {
+		const [count, setCount] = useState(0);
+		return (
+			<Tooltip content="Action remains available">
+				<Button action={() => setCount((currentCount) => currentCount + 1)}>Count {count}</Button>
+			</Tooltip>
+		);
+	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await userEvent.click(canvas.getByRole('button', { name: 'Count 0' }));
+		await expect(canvas.getByRole('button', { name: 'Count 1' })).toBeInTheDocument();
 	}),
 };
 

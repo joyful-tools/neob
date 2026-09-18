@@ -1,4 +1,5 @@
 import { Button as BaseButton } from '@base-ui/react/button';
+import { mergeProps } from '@base-ui/react/merge-props';
 import { type VariantProps } from 'class-variance-authority';
 import { AnimatePresence, motion } from 'motion/react';
 import { ButtonHTMLAttributes, isValidElement, MouseEvent, Ref } from 'react';
@@ -44,6 +45,7 @@ export function Button({
 				void runAction(event).catch(() => {});
 			}
 		: undefined;
+	const mergedProperties = mergeProps({ onClick: handleClick }, properties);
 
 	if (asChild && isValidElement(children)) {
 		return (
@@ -52,10 +54,9 @@ export function Button({
 				disabled={isDisabledOrPending}
 				className={buttonClass}
 				render={children}
-				onClick={handleClick}
 				aria-busy={isPending || undefined}
 				data-pending={isPending ? '' : undefined}
-				{...properties}
+				{...mergedProperties}
 			/>
 		);
 	}
@@ -66,10 +67,9 @@ export function Button({
 			type={type}
 			disabled={isDisabledOrPending}
 			className={buttonClass}
-			onClick={handleClick}
 			aria-busy={isPending || undefined}
 			data-pending={isPending ? '' : undefined}
-			{...properties}
+			{...mergedProperties}
 		>
 			<span
 				className={cn(
