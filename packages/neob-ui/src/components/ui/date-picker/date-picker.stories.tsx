@@ -1,32 +1,32 @@
 import { useState } from 'react';
-import { type DateRange } from 'react-day-picker';
 import { action } from 'storybook/actions';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { Temporal } from 'temporal-polyfill';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 
-import { DatePicker } from './date-picker';
+import { DatePicker, type DatePickerRange } from './date-picker';
 
 import type { Meta } from '@storybook/react-vite';
 
 type DatePickerSingleStoryProperties = {
 	mode: 'single';
-	initialSelected?: Date;
+	initialSelected?: Temporal.PlainDate;
 };
 
 type DatePickerRangeStoryProperties = {
 	mode: 'range';
-	initialSelected?: DateRange;
+	initialSelected?: DatePickerRange;
 };
 
 type DatePickerMultipleStoryProperties = {
 	mode: 'multiple';
-	initialSelected?: Date[];
+	initialSelected?: Temporal.PlainDate[];
 	max?: number;
 };
 
 /**
- * DatePicker is a date selection calendar component built on react-day-picker.
+ * DatePicker is a date selection calendar component built on Temporal.PlainDate.
  *
  * ### Usage
  * ```tsx
@@ -49,10 +49,10 @@ export default meta;
 export const Single = {
 	args: {
 		mode: 'single',
-		initialSelected: new Date(2026, 4, 15),
+		initialSelected: Temporal.PlainDate.from('2026-05-15'),
 	},
 	render: (args: DatePickerSingleStoryProperties) => {
-		const [date, setDate] = useState<Date | undefined>(args.initialSelected);
+		const [date, setDate] = useState<Temporal.PlainDate | undefined>(args.initialSelected);
 		return (
 			<div className="flex flex-col items-center gap-4">
 				<DatePicker
@@ -67,7 +67,7 @@ export const Single = {
 					}}
 				/>
 				<div className="rounded-lg border-2 border-edge bg-muted px-3 py-1.5 font-mono text-sm font-bold dark:bg-zinc">
-					Selected Date: {date ? date.toLocaleDateString() : 'None'}
+					Selected Date: {date ? date.toLocaleString() : 'None'}
 				</div>
 			</div>
 		);
@@ -83,12 +83,12 @@ export const Range = {
 	args: {
 		mode: 'range',
 		initialSelected: {
-			from: new Date(2026, 4, 10),
-			to: new Date(2026, 4, 18),
+			from: Temporal.PlainDate.from('2026-05-10'),
+			to: Temporal.PlainDate.from('2026-05-18'),
 		},
 	},
 	render: (args: DatePickerRangeStoryProperties) => {
-		const [range, setRange] = useState<DateRange | undefined>(args.initialSelected);
+		const [range, setRange] = useState<DatePickerRange | undefined>(args.initialSelected);
 		return (
 			<div className="flex flex-col items-center gap-4">
 				<DatePicker
@@ -103,15 +103,15 @@ export const Range = {
 					}}
 				/>
 				<div className="rounded-lg border-2 border-edge bg-muted px-3 py-1.5 font-mono text-sm font-bold dark:bg-zinc">
-					Selected Range: {range?.from ? range.from.toLocaleDateString() : 'None'} – {range?.to ? range.to.toLocaleDateString() : 'None'}
+					Selected Range: {range?.from ? range.from.toLocaleString() : 'None'} – {range?.to ? range.to.toLocaleString() : 'None'}
 				</div>
 			</div>
 		);
 	},
 	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 		const canvas = within(canvasElement);
-		const preservedStartDate = new Date(2026, 4, 10).toLocaleDateString();
-		const endDate = new Date(2026, 4, 24).toLocaleDateString();
+		const preservedStartDate = Temporal.PlainDate.from('2026-05-10').toLocaleString();
+		const endDate = Temporal.PlainDate.from('2026-05-24').toLocaleString();
 		await userEvent.click(canvas.getByText('20'));
 		await userEvent.click(canvas.getByText('24'));
 		await waitFor(() => {
@@ -124,11 +124,11 @@ export const Range = {
 export const Multiple = {
 	args: {
 		mode: 'multiple',
-		initialSelected: [new Date(2026, 4, 12), new Date(2026, 4, 15), new Date(2026, 4, 19)],
+		initialSelected: ['2026-05-12', '2026-05-15', '2026-05-19'].map((value) => Temporal.PlainDate.from(value)),
 		max: 5,
 	},
 	render: (args: DatePickerMultipleStoryProperties) => {
-		const [dates, setDates] = useState<Date[] | undefined>(args.initialSelected);
+		const [dates, setDates] = useState<readonly Temporal.PlainDate[] | undefined>(args.initialSelected);
 		return (
 			<div className="flex flex-col items-center gap-4">
 				<DatePicker
@@ -144,14 +144,14 @@ export const Multiple = {
 					}}
 				/>
 				<div className="max-w-xs rounded-lg border-2 border-edge bg-muted px-3 py-1.5 text-center font-mono text-sm font-bold dark:bg-zinc">
-					Selected Dates: {dates && dates.length > 0 ? dates.map((d) => d.toLocaleDateString()).join(', ') : 'None'}
+					Selected Dates: {dates && dates.length > 0 ? dates.map((date) => date.toLocaleString()).join(', ') : 'None'}
 				</div>
 			</div>
 		);
 	},
 	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 		const canvas = within(canvasElement);
-		const nextDate = new Date(2026, 4, 20).toLocaleDateString();
+		const nextDate = Temporal.PlainDate.from('2026-05-20').toLocaleString();
 		await userEvent.click(canvas.getByText('20'));
 		await waitFor(() => {
 			expect(canvas.getByText(/Selected Dates:/i)).toHaveTextContent(nextDate);
@@ -162,10 +162,10 @@ export const Multiple = {
 export const MonthYearNavigation = {
 	args: {
 		mode: 'single',
-		initialSelected: new Date(2026, 4, 15),
+		initialSelected: Temporal.PlainDate.from('2026-05-15'),
 	},
 	render: (args: DatePickerSingleStoryProperties) => {
-		const [date, setDate] = useState<Date | undefined>(args.initialSelected);
+		const [date, setDate] = useState<Temporal.PlainDate | undefined>(args.initialSelected);
 		return (
 			<div className="flex flex-col items-center gap-4">
 				<DatePicker
@@ -180,7 +180,7 @@ export const MonthYearNavigation = {
 					}}
 				/>
 				<div className="rounded-lg border-2 border-edge bg-muted px-3 py-1.5 font-mono text-sm font-bold dark:bg-zinc">
-					Selected Date: {date ? date.toLocaleDateString() : 'None'}
+					Selected Date: {date ? date.toLocaleString() : 'None'}
 				</div>
 			</div>
 		);

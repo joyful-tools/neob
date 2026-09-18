@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
+import { Temporal } from 'temporal-polyfill';
 
 import { Button } from '@/components/ui/button';
 import { Tooltip } from '@/components/ui/tooltip';
@@ -16,7 +17,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  * ```tsx
  * import { HumanizedTime } from '@joyful-tools/neob';
  *
- * <HumanizedTime date={new Date()} />
+ * <HumanizedTime date={Temporal.Now.instant()} />
  * ```
  */
 const meta = {
@@ -33,7 +34,7 @@ type Story = StoryObj<typeof meta>;
 
 export const FiveMinutesAgo: Story = {
 	render: () => {
-		const dateVal = useMemo(() => new Date(Date.now() - 5 * 60 * 1000), []);
+		const dateVal = useMemo(() => Temporal.Now.instant().subtract({ minutes: 5 }), []);
 		return (
 			<Tooltip.Provider>
 				<div className="p-8">
@@ -74,7 +75,7 @@ export const EpochAndLocaleChanges: Story = {
 					</Button>
 					<HumanizedTime
 						data-testid="epoch-time"
-						date={0}
+						date={Temporal.Instant.fromEpochMilliseconds(0)}
 						locale={locale}
 						className="cursor-pointer rounded-lg border border-edge bg-muted px-3 py-1.5 font-sans text-sm font-bold"
 					/>
@@ -86,7 +87,7 @@ export const EpochAndLocaleChanges: Story = {
 		const canvas = within(canvasElement);
 		const timeElement = canvas.getByTestId('epoch-time');
 		await expect(timeElement).toBeInTheDocument();
-		await expect(timeElement).toHaveAttribute('datetime', new Date(0).toISOString());
+		await expect(timeElement).toHaveAttribute('datetime', Temporal.Instant.fromEpochMilliseconds(0).toString());
 		await expect(timeElement).toHaveTextContent(/ago/i);
 
 		await userEvent.click(canvas.getByRole('button', { name: 'Use German' }));
@@ -96,7 +97,7 @@ export const EpochAndLocaleChanges: Story = {
 
 export const JustNow: Story = {
 	render: () => {
-		const dateVal = useMemo(() => new Date(), []);
+		const dateVal = useMemo(() => Temporal.Now.instant(), []);
 		return (
 			<Tooltip.Provider>
 				<div className="p-8">

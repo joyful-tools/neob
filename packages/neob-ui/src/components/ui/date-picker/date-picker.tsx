@@ -2,101 +2,138 @@
 import { CaretDownIcon, CaretLeftIcon, CaretRightIcon, CaretUpIcon } from '@phosphor-icons/react';
 import { useDrag } from '@use-gesture/react';
 import { AnimatePresence, motion } from 'motion/react';
-import { KeyboardEvent, MouseEvent, useState } from 'react';
-import {
-	DayPicker,
-	type CustomComponents,
-	type PropsBase,
-	type PropsSingle,
-	type PropsSingleRequired,
-	type PropsMulti,
-	type PropsMultiRequired,
-	type PropsRange,
-	type PropsRangeRequired,
-	type Modifiers,
-} from 'react-day-picker';
+import { FocusEvent, KeyboardEvent, MouseEvent, useState } from 'react';
+import { DayPicker, type CustomComponents, type DateRange, type Modifiers, type PropsBase } from 'react-day-picker';
+import { Temporal } from 'temporal-polyfill';
 
 import { Button, buttonVariants } from '@/components/ui/button';
 import { useOptimisticAction } from '@/hooks/use-optimistic-action';
+import { fromLegacyDate, toLegacyDate } from '@/lib/temporal-date-compat';
 import { cn } from '@/lib/utilities';
 
 import type { Action } from '@/lib/actions';
-
-/**
- * Custom Chevron component using Phosphor icons
- */
-const Chevron: CustomComponents['Chevron'] = ({ orientation, ...props }) => {
-	const Icon =
-		orientation === 'left' ? CaretLeftIcon : orientation === 'right' ? CaretRightIcon : orientation === 'up' ? CaretUpIcon : CaretDownIcon;
-	return <Icon size={14} {...props} />;
-};
-
-const fadeTransition = {
-	duration: 0.05,
-	ease: 'easeOut',
-} as const;
-
-const slideTransition = {
-	type: 'spring',
-	stiffness: 720,
-	damping: 40,
-	mass: 0.55,
-} as const;
-
-const layoutTransition = {
-	type: 'spring',
-	stiffness: 540,
-	damping: 38,
-	mass: 0.7,
-} as const;
+import type { Transition, Variants } from 'motion/react';
 
 type PageDirection = 'forward' | 'backward' | 'none';
-type DatePickerValue = Date | Date[] | import('react-day-picker').DateRange | undefined;
-type DatePickerAction<Value extends DatePickerValue> = Action<
-	[selected: Value, triggerDate: Date, modifiers: Modifiers, event: MouseEvent | KeyboardEvent]
->;
+type CalendarView = 'days' | 'months' | 'years';
+type DatePickerEvent = MouseEvent | KeyboardEvent;
 
-/** Minimum horizontal drag distance (px) to commit a swipe navigation. */
+export interface DatePickerRange {
+	readonly from?: Temporal.PlainDate;
+	readonly to?: Temporal.PlainDate;
+}
+
+export type DatePickerModifiers = Readonly<Modifiers>;
+
+export type DatePickerMatcher =
+	| boolean
+	| Temporal.PlainDate
+	| readonly Temporal.PlainDate[]
+	| DatePickerRange
+	| { readonly after: Temporal.PlainDate }
+	| { readonly before: Temporal.PlainDate }
+	| { readonly after: Temporal.PlainDate; readonly before: Temporal.PlainDate }
+	| { readonly dayOfWeek: number | number[] }
+	| ((date: Temporal.PlainDate) => boolean);
+
+export type DatePickerClassNames = NonNullable<PropsBase['classNames']>;
+
+type SingleValue = Temporal.PlainDate | undefined;
+type MultipleValue = readonly Temporal.PlainDate[] | undefined;
+type RangeValue = DatePickerRange | undefined;
+type DatePickerValue = SingleValue | MultipleValue | RangeValue;
+type DatePickerAction<Value extends DatePickerValue> = Action<
+	[selected: Value, triggerDate: Temporal.PlainDate, modifiers: DatePickerModifiers, event: DatePickerEvent]
+>;
+type DatePickerDayEventHandler<Event> = (date: Temporal.PlainDate, modifiers: DatePickerModifiers, event: Event) => void;
+
+type DateBearingBaseProp =
+	| 'classNames'
+	| 'components'
+	| 'dateLib'
+	| 'defaultMonth'
+	| 'disabled'
+	| 'endMonth'
+	| 'formatters'
+	| 'hidden'
+	| 'labels'
+	| 'modifiers'
+	| 'month'
+	| 'onDayBlur'
+	| 'onDayClick'
+	| 'onDayFocus'
+	| 'onDayKeyDown'
+	| 'onDayMouseEnter'
+	| 'onDayMouseLeave'
+	| 'onMonthChange'
+	| 'onNextClick'
+	| 'onPrevClick'
+	| 'startMonth'
+	| 'today';
+
+interface BaseProps<Value extends DatePickerValue> extends Omit<PropsBase, DateBearingBaseProp | 'mode' | 'required'> {
+	readonly action?: DatePickerAction<Value>;
+	readonly classNames?: PropsBase['classNames'];
+	readonly components?: PropsBase['components'];
+	readonly defaultMonth?: Temporal.PlainDate;
+	readonly defaultSelected?: Value;
+	readonly disabled?: DatePickerMatcher | readonly DatePickerMatcher[];
+	readonly endMonth?: Temporal.PlainDate;
+	readonly hidden?: DatePickerMatcher | readonly DatePickerMatcher[];
+	readonly modifiers?: Record<string, DatePickerMatcher | readonly DatePickerMatcher[] | undefined>;
+	readonly month?: Temporal.PlainDate;
+	readonly onDayBlur?: DatePickerDayEventHandler<FocusEvent>;
+	readonly onDayClick?: DatePickerDayEventHandler<MouseEvent>;
+	readonly onDayFocus?: DatePickerDayEventHandler<FocusEvent>;
+	readonly onDayKeyDown?: DatePickerDayEventHandler<KeyboardEvent>;
+	readonly onDayMouseEnter?: DatePickerDayEventHandler<MouseEvent>;
+	readonly onDayMouseLeave?: DatePickerDayEventHandler<MouseEvent>;
+	readonly onMonthChange?: (month: Temporal.PlainDate) => void;
+	readonly onNextClick?: (month: Temporal.PlainDate) => void;
+	readonly onPrevClick?: (month: Temporal.PlainDate) => void;
+	readonly required?: boolean;
+	readonly selected?: Value;
+	readonly startMonth?: Temporal.PlainDate;
+	readonly today?: Temporal.PlainDate;
+}
+
+interface SingleProps extends BaseProps<SingleValue> {
+	readonly mode: 'single';
+}
+
+interface MultipleProps extends BaseProps<MultipleValue> {
+	readonly max?: number;
+	readonly min?: number;
+	readonly mode: 'multiple';
+}
+
+interface RangeProps extends BaseProps<RangeValue> {
+	readonly max?: number;
+	readonly min?: number;
+	readonly mode: 'range';
+}
+
+export type DatePickerProps = SingleProps | MultipleProps | RangeProps;
+
 const SWIPE_DISTANCE_THRESHOLD = 60;
-/** Minimum fling velocity (px/ms) to commit a swipe with a shorter drag distance. */
 const SWIPE_VELOCITY_THRESHOLD = 0.5;
+const fadeTransition = { duration: 0.05, ease: 'easeOut' } satisfies Transition;
+const slideTransition = { type: 'spring', stiffness: 720, damping: 40, mass: 0.55 } satisfies Transition;
+const layoutTransition = { type: 'spring', stiffness: 540, damping: 38, mass: 0.7 } satisfies Transition;
 
 const bodyVariants = {
 	enter: (direction: PageDirection) => {
-		if (direction === 'forward') {
-			return { opacity: 0, x: 12, transition: slideTransition };
-		}
-
-		if (direction === 'backward') {
-			return { opacity: 0, x: -12, transition: slideTransition };
-		}
-
+		if (direction === 'forward') return { opacity: 0, x: 12, transition: slideTransition };
+		if (direction === 'backward') return { opacity: 0, x: -12, transition: slideTransition };
 		return { opacity: 0, transition: fadeTransition };
 	},
-	center: {
-		opacity: 1,
-		x: 0,
-	},
+	center: { opacity: 1, x: 0 },
 	exit: (direction: PageDirection) => {
-		if (direction === 'forward') {
-			return { opacity: 0, x: -12, transition: slideTransition };
-		}
-
-		if (direction === 'backward') {
-			return { opacity: 0, x: 12, transition: slideTransition };
-		}
-
+		if (direction === 'forward') return { opacity: 0, x: -12, transition: slideTransition };
+		if (direction === 'backward') return { opacity: 0, x: 12, transition: slideTransition };
 		return { opacity: 0, transition: fadeTransition };
 	},
-} as const;
-
-function getFadeMotion() {
-	return {
-		initial: { opacity: 0 },
-		animate: { opacity: 1 },
-		exit: { opacity: 0 },
-	} as const;
-}
+} satisfies Variants;
 
 const SELECTED_DAY_BUTTON_CLASSES =
 	'[&_button]:relative [&_button]:z-10 [&_button]:border-2 [&_button]:border-edge [&_button]:bg-cyan [&_button]:text-black dark:[&_button]:bg-cyan-dark dark:[&_button]:text-white hover:[&_button]:bg-cyan/90 dark:hover:[&_button]:bg-cyan-dark/90';
@@ -127,382 +164,386 @@ const DAY_PICKER_BASE_CLASSNAMES = {
 	),
 	outside: 'text-muted-foreground opacity-100',
 	disabled: 'text-muted-foreground opacity-30 cursor-not-allowed pointer-events-none [&_button]:pointer-events-none',
-} as const;
-
-/** Base props shared across all DatePicker modes */
-type BaseProps<Value extends DatePickerValue> = Omit<PropsBase, 'classNames'> & {
-	/** Additional CSS classes merged via `cn()`. */
-	className?: string;
-	/** Custom class names for internal elements */
-	classNames?: PropsBase['classNames'];
-	/** Initially selected value when selection is uncontrolled. */
-	defaultSelected?: Value;
-	/** Runs when the user proposes a new selection. */
-	action?: DatePickerAction<Value>;
 };
 
-/** Single date selection (optional) */
-type SingleProps = BaseProps<Date | undefined> & Omit<PropsSingle, 'onSelect' | 'classNames'>;
+const Chevron: CustomComponents['Chevron'] = ({ orientation, ...properties }) => {
+	const Icon =
+		orientation === 'left' ? CaretLeftIcon : orientation === 'right' ? CaretRightIcon : orientation === 'up' ? CaretUpIcon : CaretDownIcon;
+	return <Icon size={14} {...properties} />;
+};
 
-/** Single date selection (required) */
-type SingleRequiredProps = BaseProps<Date | undefined> & Omit<PropsSingleRequired, 'onSelect' | 'classNames'>;
+function isSameDate(left: Temporal.PlainDate | undefined, right: Temporal.PlainDate | undefined): boolean {
+	return Boolean(left && right && Temporal.PlainDate.compare(left, right) === 0);
+}
 
-/** Multiple date selection (optional) */
-type MultipleProps = BaseProps<Date[] | undefined> & Omit<PropsMulti, 'onSelect' | 'classNames'>;
+function isPlainDateArray(value: unknown): value is readonly Temporal.PlainDate[] {
+	return Array.isArray(value) && value.every((item) => item instanceof Temporal.PlainDate);
+}
 
-/** Multiple date selection (required) */
-type MultipleRequiredProps = BaseProps<Date[] | undefined> & Omit<PropsMultiRequired, 'onSelect' | 'classNames'>;
+function isMatcherArray(value: unknown): value is readonly DatePickerMatcher[] {
+	return Array.isArray(value);
+}
 
-/** Date range selection (optional) */
-type RangeProps = BaseProps<import('react-day-picker').DateRange | undefined> & Omit<PropsRange, 'onSelect' | 'classNames'>;
+function matchesDate(date: Temporal.PlainDate, matcher: DatePickerMatcher): boolean {
+	if (typeof matcher === 'boolean') return matcher;
+	if (matcher instanceof Temporal.PlainDate) return isSameDate(date, matcher);
+	if (isPlainDateArray(matcher)) return matcher.some((candidate) => isSameDate(date, candidate));
+	if (typeof matcher === 'function') return matcher(date);
+	if ('dayOfWeek' in matcher) {
+		const days = Array.isArray(matcher.dayOfWeek) ? matcher.dayOfWeek : [matcher.dayOfWeek];
+		return days.includes(date.dayOfWeek % 7);
+	}
+	if ('after' in matcher && 'before' in matcher) {
+		return Temporal.PlainDate.compare(date, matcher.after) > 0 && Temporal.PlainDate.compare(date, matcher.before) < 0;
+	}
+	if ('after' in matcher) return Temporal.PlainDate.compare(date, matcher.after) > 0;
+	if ('before' in matcher) return Temporal.PlainDate.compare(date, matcher.before) < 0;
 
-/** Date range selection (required) */
-type RangeRequiredProps = BaseProps<import('react-day-picker').DateRange | undefined> & Omit<PropsRangeRequired, 'onSelect' | 'classNames'>;
+	const afterStart = !matcher.from || Temporal.PlainDate.compare(date, matcher.from) >= 0;
+	const beforeEnd = !matcher.to || Temporal.PlainDate.compare(date, matcher.to) <= 0;
+	return afterStart && beforeEnd;
+}
 
-export type DatePickerProps = SingleProps | SingleRequiredProps | MultipleProps | MultipleRequiredProps | RangeProps | RangeRequiredProps;
+function createLegacyMatcher(matchers: DatePickerMatcher | readonly DatePickerMatcher[] | undefined, timeZone: string) {
+	if (matchers === undefined) return;
+	const matcherList = isMatcherArray(matchers) ? matchers : [matchers];
+	return (legacyDate: Date) => {
+		const date = fromLegacyDate(legacyDate, timeZone);
+		return matcherList.some((matcher) => matchesDate(date, matcher));
+	};
+}
+
+function createLegacyModifiers(modifiers: BaseProps<DatePickerValue>['modifiers'], timeZone: string) {
+	if (!modifiers) return;
+	return Object.fromEntries(Object.entries(modifiers).map(([name, matchers]) => [name, createLegacyMatcher(matchers, timeZone)]));
+}
+
+function getInitialMonth(props: DatePickerProps): Temporal.PlainDate {
+	if (props.month) return props.month.with({ day: 1 });
+	if (props.defaultMonth) return props.defaultMonth.with({ day: 1 });
+
+	const selected = props.selected ?? props.defaultSelected;
+	if (selected instanceof Temporal.PlainDate) return selected.with({ day: 1 });
+	if (isPlainDateArray(selected) && selected[0]) return selected[0].with({ day: 1 });
+	if (selected && 'from' in selected && selected.from) return selected.from.with({ day: 1 });
+	return Temporal.Now.plainDateISO().with({ day: 1 });
+}
+
+function toModifiers(modifiers: Modifiers): DatePickerModifiers {
+	return { ...modifiers };
+}
+
+function getFadeMotion() {
+	return { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } };
+}
 
 /**
- * DatePicker — a date selection calendar with high-contrast styling.
- *
- * Built on [react-day-picker](https://daypicker.dev) with custom neob styling.
- * Supports three selection modes: single, multiple, and range.
- *
- * @example
- * ```tsx
- * // Single date selection
- * const [date, setDate] = useState<Date>();
- * <DatePicker mode="single" selected={date} action={setDate} />
- *
- * // Multiple date selection
- * const [dates, setDates] = useState<Date[]>([]);
- * <DatePicker mode="multiple" selected={dates} onChange={setDates} max={5} />
- *
- * // Date range selection
- * const [range, setRange] = useState<DateRange>();
- * <DatePicker mode="range" selected={range} onChange={setRange} numberOfMonths={2} />
- * ```
+ * DatePicker exposes Temporal.PlainDate values while retaining react-day-picker through a narrow compatibility bridge.
  */
 export function DatePicker(fullProps: DatePickerProps) {
-	const { className, classNames, components, fixedWeeks = true } = fullProps;
-
-	const [view, setView] = useState<'days' | 'months' | 'years'>('days');
+	const {
+		action: _action,
+		className,
+		classNames,
+		components,
+		defaultMonth: _defaultMonth,
+		defaultSelected: _defaultSelected,
+		disabled: _disabled,
+		endMonth: _endMonth,
+		hidden: _hidden,
+		modifiers: _modifiers,
+		month: _month,
+		onDayBlur: _onDayBlur,
+		onDayClick: _onDayClick,
+		onDayFocus: _onDayFocus,
+		onDayKeyDown: _onDayKeyDown,
+		onDayMouseEnter: _onDayMouseEnter,
+		onDayMouseLeave: _onDayMouseLeave,
+		onMonthChange: _onMonthChange,
+		onNextClick: _onNextClick,
+		onPrevClick: _onPrevClick,
+		selected: _selected,
+		startMonth: _startMonth,
+		today: _today,
+		fixedWeeks = true,
+		...dayPickerPassthroughProps
+	} = fullProps;
+	const [view, setView] = useState<CalendarView>('days');
 	const [pageDirection, setPageDirection] = useState<PageDirection>('none');
+	const [internalMonth, setInternalMonth] = useState(() => getInitialMonth(fullProps));
+	const displayedMonth = (fullProps.month ?? internalMonth).with({ day: 1 });
+	const [yearsStart, setYearsStart] = useState(displayedMonth.year - 4);
+	const timeZone = fullProps.timeZone ?? Temporal.Now.timeZoneId();
+	const toPickerDate = (date: Temporal.PlainDate) => toLegacyDate(date, timeZone);
+	const fromPickerDate = (date: Date) => fromLegacyDate(date, timeZone);
+
 	const selectionAction: DatePickerAction<DatePickerValue> = async (selected, triggerDate, modifiers, event) => {
 		switch (fullProps.mode) {
 			case 'single': {
-				if (selected instanceof Date || selected === undefined) {
+				if (selected instanceof Temporal.PlainDate || selected === undefined) {
 					await fullProps.action?.(selected, triggerDate, modifiers, event);
 				}
 				return;
 			}
 			case 'multiple': {
-				if (Array.isArray(selected) || selected === undefined) {
+				if (isPlainDateArray(selected) || selected === undefined) {
 					await fullProps.action?.(selected, triggerDate, modifiers, event);
 				}
 				return;
 			}
 			case 'range': {
-				if (!(selected instanceof Date) && !Array.isArray(selected)) {
+				if (!isPlainDateArray(selected) && !(selected instanceof Temporal.PlainDate)) {
 					await fullProps.action?.(selected, triggerDate, modifiers, event);
 				}
-				return;
-			}
-			default: {
-				return;
 			}
 		}
 	};
-	const { optimisticValue, runAction, isPending } = useOptimisticAction<DatePickerValue, [Date, Modifiers, MouseEvent | KeyboardEvent]>({
-		value: fullProps.selected,
-		defaultValue: fullProps.defaultSelected,
-		action: selectionAction,
-	});
+	const { optimisticValue, runAction, isPending } = useOptimisticAction<
+		DatePickerValue,
+		[Temporal.PlainDate, DatePickerModifiers, DatePickerEvent]
+	>({ value: fullProps.selected, defaultValue: fullProps.defaultSelected, action: selectionAction });
 
-	// Selected displayed month tracking (controlled or uncontrolled fallback)
-	const [internalMonth, setInternalMonth] = useState<Date>(() => {
-		const sel = fullProps.selected;
-		if (sel) {
-			if (sel instanceof Date) {
-				return sel;
-			}
-			if (Array.isArray(sel) && sel[0] instanceof Date) {
-				return sel[0];
-			}
-			if (typeof sel === 'object' && 'from' in sel && sel.from instanceof Date) {
-				return sel.from;
-			}
-		}
-		return fullProps.defaultMonth || new Date();
-	});
+	const singleSelection = optimisticValue instanceof Temporal.PlainDate ? optimisticValue : undefined;
+	const multipleSelection = isPlainDateArray(optimisticValue) ? optimisticValue : undefined;
+	const rangeSelection =
+		optimisticValue && !isPlainDateArray(optimisticValue) && !(optimisticValue instanceof Temporal.PlainDate) ? optimisticValue : undefined;
 
-	const displayedMonth = fullProps.month || internalMonth;
-
-	// Page starting year for Year grid selection
-	const [yearsStart, setYearsStart] = useState<number>(displayedMonth.getFullYear() - 4);
-
-	const handleMonthChange = (newMonth: Date) => {
-		setInternalMonth(newMonth);
-		fullProps.onMonthChange?.(newMonth);
+	const handleMonthChange = (newMonth: Temporal.PlainDate) => {
+		const normalizedMonth = newMonth.with({ day: 1 });
+		setInternalMonth(normalizedMonth);
+		fullProps.onMonthChange?.(normalizedMonth);
 	};
-
-	const changeView = (nextView: 'days' | 'months' | 'years') => {
+	const changeView = (nextView: CalendarView) => {
 		setPageDirection('none');
 		setView(nextView);
 	};
-
-	const monthLabel = displayedMonth.toLocaleString('default', { month: 'long' });
-	const yearLabel = displayedMonth.getFullYear().toString();
-
 	const handlePrevClick = () => {
-		switch (view) {
-			case 'days': {
-				setPageDirection('backward');
-				handleMonthChange(new Date(displayedMonth.getFullYear(), displayedMonth.getMonth() - 1));
-
-				break;
-			}
-			case 'months': {
-				setPageDirection('backward');
-				handleMonthChange(new Date(displayedMonth.getFullYear() - 1, displayedMonth.getMonth()));
-
-				break;
-			}
-			case 'years': {
-				setPageDirection('backward');
-				setYearsStart((prev) => prev - 12);
-
-				break;
-			}
-			// No default
+		if (view === 'days') {
+			setPageDirection('backward');
+			handleMonthChange(displayedMonth.subtract({ months: 1 }));
+			return;
 		}
+		if (view === 'months') {
+			setPageDirection('backward');
+			handleMonthChange(displayedMonth.subtract({ years: 1 }));
+			return;
+		}
+		setPageDirection('backward');
+		setYearsStart((previous) => previous - 12);
 	};
-
 	const handleNextClick = () => {
-		switch (view) {
-			case 'days': {
-				setPageDirection('forward');
-				handleMonthChange(new Date(displayedMonth.getFullYear(), displayedMonth.getMonth() + 1));
-
-				break;
-			}
-			case 'months': {
-				setPageDirection('forward');
-				handleMonthChange(new Date(displayedMonth.getFullYear() + 1, displayedMonth.getMonth()));
-
-				break;
-			}
-			case 'years': {
-				setPageDirection('forward');
-				setYearsStart((prev) => prev + 12);
-
-				break;
-			}
-			// No default
+		if (view === 'days') {
+			setPageDirection('forward');
+			handleMonthChange(displayedMonth.add({ months: 1 }));
+			return;
 		}
+		if (view === 'months') {
+			setPageDirection('forward');
+			handleMonthChange(displayedMonth.add({ years: 1 }));
+			return;
+		}
+		setPageDirection('forward');
+		setYearsStart((previous) => previous + 12);
 	};
 
 	const bindSwipe = useDrag(
-		({ last, axis, movement: [mx], velocity: [vx], direction: [dx] }) => {
-			if (!last || axis !== 'x') {
-				return;
-			}
-
-			const flung = vx > SWIPE_VELOCITY_THRESHOLD && Math.abs(mx) > SWIPE_DISTANCE_THRESHOLD / 2;
-			const swipedLeft = mx < -SWIPE_DISTANCE_THRESHOLD || (flung && dx < 0);
-			const swipedRight = mx > SWIPE_DISTANCE_THRESHOLD || (flung && dx > 0);
-
-			if (swipedLeft) {
+		({ last, axis, movement: [movementX], velocity: [velocityX], direction: [directionX] }) => {
+			if (!last || axis !== 'x') return;
+			const flung = velocityX > SWIPE_VELOCITY_THRESHOLD && Math.abs(movementX) > SWIPE_DISTANCE_THRESHOLD / 2;
+			if (movementX < -SWIPE_DISTANCE_THRESHOLD || (flung && directionX < 0)) {
 				handleNextClick();
 				return;
 			}
-
-			if (swipedRight) {
-				handlePrevClick();
-			}
+			if (movementX > SWIPE_DISTANCE_THRESHOLD || (flung && directionX > 0)) handlePrevClick();
 		},
 		{ axis: 'x', pointer: { touch: true } },
 	);
 
-	const containerClassName = cn(
-		'rdp-root relative box-border flex h-94 w-78 flex-col justify-between rounded-xl border-2 border-edge bg-white p-4 text-black shadow-sm select-none dark:bg-zinc dark:text-white',
-		className,
+	const dayPickerProps = {
+		...dayPickerPassthroughProps,
+		showOutsideDays: fullProps.showOutsideDays ?? true,
+		fixedWeeks,
+		month: toPickerDate(displayedMonth),
+		onMonthChange: (month: Date) => handleMonthChange(fromPickerDate(month)),
+		onNextClick: fullProps.onNextClick ? (month: Date) => fullProps.onNextClick?.(fromPickerDate(month)) : undefined,
+		onPrevClick: fullProps.onPrevClick ? (month: Date) => fullProps.onPrevClick?.(fromPickerDate(month)) : undefined,
+		onDayClick: fullProps.onDayClick
+			? (date: Date, modifiers: Modifiers, event: MouseEvent) => fullProps.onDayClick?.(fromPickerDate(date), toModifiers(modifiers), event)
+			: undefined,
+		onDayFocus: fullProps.onDayFocus
+			? (date: Date, modifiers: Modifiers, event: FocusEvent) => fullProps.onDayFocus?.(fromPickerDate(date), toModifiers(modifiers), event)
+			: undefined,
+		onDayBlur: fullProps.onDayBlur
+			? (date: Date, modifiers: Modifiers, event: FocusEvent) => fullProps.onDayBlur?.(fromPickerDate(date), toModifiers(modifiers), event)
+			: undefined,
+		onDayKeyDown: fullProps.onDayKeyDown
+			? (date: Date, modifiers: Modifiers, event: KeyboardEvent) =>
+					fullProps.onDayKeyDown?.(fromPickerDate(date), toModifiers(modifiers), event)
+			: undefined,
+		onDayMouseEnter: fullProps.onDayMouseEnter
+			? (date: Date, modifiers: Modifiers, event: MouseEvent) =>
+					fullProps.onDayMouseEnter?.(fromPickerDate(date), toModifiers(modifiers), event)
+			: undefined,
+		onDayMouseLeave: fullProps.onDayMouseLeave
+			? (date: Date, modifiers: Modifiers, event: MouseEvent) =>
+					fullProps.onDayMouseLeave?.(fromPickerDate(date), toModifiers(modifiers), event)
+			: undefined,
+		hideNavigation: true,
+		disableNavigation: true,
+		startMonth: fullProps.startMonth ? toPickerDate(fullProps.startMonth) : undefined,
+		endMonth: fullProps.endMonth ? toPickerDate(fullProps.endMonth) : undefined,
+		today: fullProps.today ? toPickerDate(fullProps.today) : undefined,
+		disabled: createLegacyMatcher(fullProps.disabled, timeZone),
+		hidden: createLegacyMatcher(fullProps.hidden, timeZone),
+		modifiers: createLegacyModifiers(fullProps.modifiers, timeZone),
+		classNames: {
+			...DAY_PICKER_BASE_CLASSNAMES,
+			selected: fullProps.mode === 'range' ? '' : SELECTED_DAY_BUTTON_CLASSES,
+			...classNames,
+		},
+		components: { Chevron, ...components },
+	};
+
+	const rangeHasMultipleDays = Boolean(
+		fullProps.mode === 'range' &&
+		fullProps.selected?.from &&
+		fullProps.selected.to &&
+		Temporal.PlainDate.compare(fullProps.selected.from, fullProps.selected.to) !== 0,
 	);
+	const rangeClassNames = {
+		range_start: cn(
+			'relative z-10',
+			SELECTED_DAY_BUTTON_CLASSES,
+			rangeHasMultipleDays && '[&_button]:rounded-l-lg [&_button]:rounded-r-sm',
+			rangeHasMultipleDays && RANGE_INDICATOR_BASE,
+			rangeHasMultipleDays && 'before:right-0 before:left-[calc(50%+16px)]',
+			classNames?.range_start,
+		),
+		range_end: cn(
+			'relative z-10',
+			SELECTED_DAY_BUTTON_CLASSES,
+			rangeHasMultipleDays && '[&_button]:rounded-l-sm [&_button]:rounded-r-lg',
+			rangeHasMultipleDays && RANGE_INDICATOR_BASE,
+			rangeHasMultipleDays && 'before:right-[calc(50%+16px)] before:left-0',
+			classNames?.range_end,
+		),
+	};
 
 	const renderDays = () => {
-		const isMultiDayRange = Boolean(
-			fullProps.mode === 'range' &&
-			fullProps.selected?.from &&
-			fullProps.selected?.to &&
-			fullProps.selected.from.toDateString() !== fullProps.selected.to.toDateString(),
-		);
-
-		const startButtonRadius = isMultiDayRange ? '[&_button]:rounded-l-lg [&_button]:rounded-r-sm' : '[&_button]:rounded-lg';
-		const endButtonRadius = isMultiDayRange ? '[&_button]:rounded-r-lg [&_button]:rounded-l-sm' : '[&_button]:rounded-lg';
-
-		const startRangeIndicator = isMultiDayRange ? cn(RANGE_INDICATOR_BASE, 'before:right-0 before:left-[calc(50%+16px)]') : '';
-		const endRangeIndicator = isMultiDayRange ? cn(RANGE_INDICATOR_BASE, 'before:right-[calc(50%+16px)] before:left-0') : '';
-
-		const selectedClass = fullProps.mode === 'range' ? '' : SELECTED_DAY_BUTTON_CLASSES;
-
-		const dayPickerProps = {
-			showOutsideDays: true,
-			fixedWeeks,
-			month: displayedMonth,
-			onMonthChange: handleMonthChange,
-			hideNavigation: true,
-			disableNavigation: true,
-			classNames: {
-				...DAY_PICKER_BASE_CLASSNAMES,
-				selected: selectedClass,
-				range_start: cn('relative z-10', SELECTED_DAY_BUTTON_CLASSES, startButtonRadius, startRangeIndicator),
-				range_end: cn('relative z-10', SELECTED_DAY_BUTTON_CLASSES, endButtonRadius, endRangeIndicator),
-				...classNames,
-			},
-			components: {
-				Chevron,
-				...components,
-			},
-		};
-
 		if (fullProps.mode === 'single') {
-			const {
-				className: _,
-				classNames: __,
-				components: ___,
-				action: ____,
-				defaultSelected: _____,
-				selected: ______,
-				...singleProps
-			} = fullProps;
-			const selected = optimisticValue instanceof Date ? optimisticValue : undefined;
 			return (
 				<DayPicker
 					{...dayPickerProps}
-					{...singleProps}
 					mode="single"
-					selected={selected}
-					onSelect={(selected: Date | undefined, triggerDate: Date, modifiers: Modifiers, e: MouseEvent | KeyboardEvent) => {
-						runAction(selected, triggerDate, modifiers, e);
+					required={fullProps.required}
+					selected={singleSelection ? toPickerDate(singleSelection) : undefined}
+					onSelect={(selected: Date | undefined, triggerDate: Date, modifiers: Modifiers, event: MouseEvent | KeyboardEvent) => {
+						runAction(selected ? fromPickerDate(selected) : undefined, fromPickerDate(triggerDate), toModifiers(modifiers), event);
 					}}
 				/>
 			);
 		}
 
 		if (fullProps.mode === 'multiple') {
-			const {
-				className: _,
-				classNames: __,
-				components: ___,
-				action: ____,
-				defaultSelected: _____,
-				selected: ______,
-				...multiProps
-			} = fullProps;
-			const selected = Array.isArray(optimisticValue) ? optimisticValue : undefined;
 			return (
 				<DayPicker
 					{...dayPickerProps}
-					{...multiProps}
 					mode="multiple"
-					selected={selected}
-					onSelect={(selected: Date[] | undefined, triggerDate: Date, modifiers: Modifiers, e: MouseEvent | KeyboardEvent) => {
-						runAction(selected, triggerDate, modifiers, e);
+					required={fullProps.required}
+					min={fullProps.min}
+					max={fullProps.max}
+					selected={multipleSelection?.map((date) => toPickerDate(date))}
+					onSelect={(selected: Date[] | undefined, triggerDate: Date, modifiers: Modifiers, event: MouseEvent | KeyboardEvent) => {
+						runAction(
+							selected?.map((date) => fromPickerDate(date)),
+							fromPickerDate(triggerDate),
+							toModifiers(modifiers),
+							event,
+						);
 					}}
 				/>
 			);
 		}
 
-		if (fullProps.mode === 'range') {
-			const {
-				className: _,
-				classNames: __,
-				components: ___,
-				action: ____,
-				defaultSelected: _____,
-				selected: ______,
-				...rangeProps
-			} = fullProps;
-			const selected =
-				optimisticValue && !(optimisticValue instanceof Date) && !Array.isArray(optimisticValue) ? optimisticValue : undefined;
-			return (
-				<DayPicker
-					{...dayPickerProps}
-					{...rangeProps}
-					mode="range"
-					selected={selected}
-					onSelect={(
-						selected: import('react-day-picker').DateRange | undefined,
-						triggerDate: Date,
-						modifiers: Modifiers,
-						e: MouseEvent | KeyboardEvent,
-					) => {
-						runAction(selected, triggerDate, modifiers, e);
+		return (
+			<DayPicker
+				{...dayPickerProps}
+				mode="range"
+				required={fullProps.required}
+				min={fullProps.min}
+				max={fullProps.max}
+				classNames={{ ...dayPickerProps.classNames, ...rangeClassNames }}
+				selected={
+					rangeSelection
+						? {
+								from: rangeSelection.from ? toPickerDate(rangeSelection.from) : undefined,
+								to: rangeSelection.to ? toPickerDate(rangeSelection.to) : undefined,
+							}
+						: undefined
+				}
+				onSelect={(selected: DateRange | undefined, triggerDate: Date, modifiers: Modifiers, event: MouseEvent | KeyboardEvent) => {
+					const range = selected
+						? { from: selected.from ? fromPickerDate(selected.from) : undefined, to: selected.to ? fromPickerDate(selected.to) : undefined }
+						: undefined;
+					runAction(range, fromPickerDate(triggerDate), toModifiers(modifiers), event);
+				}}
+			/>
+		);
+	};
+
+	const renderMonths = () => (
+		<div className="box-border grid h-69 flex-1 grid-cols-3 items-center gap-2 py-1">
+			{['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((monthName, index) => (
+				<Button
+					key={`${monthName}-${index}`}
+					type="button"
+					variant="subtle"
+					color={displayedMonth.month === index + 1 ? 'gold' : undefined}
+					action={() => {
+						changeView('days');
+						handleMonthChange(displayedMonth.with({ month: index + 1, day: 1 }));
 					}}
-				/>
-			);
-		}
+					className="h-12 w-full text-sm"
+				>
+					{monthName.toUpperCase()}
+				</Button>
+			))}
+		</div>
+	);
 
-		return null;
-	};
+	const renderYears = () => (
+		<div className="box-border grid h-69 flex-1 grid-cols-3 items-center gap-2 py-1">
+			{Array.from({ length: 12 }, (_, index) => yearsStart + index).map((year) => (
+				<Button
+					key={year}
+					type="button"
+					variant="subtle"
+					color={displayedMonth.year === year ? 'gold' : undefined}
+					action={() => {
+						changeView('days');
+						handleMonthChange(displayedMonth.with({ year, day: 1 }));
+					}}
+					className="h-12 w-full text-sm"
+				>
+					{year}
+				</Button>
+			))}
+		</div>
+	);
 
-	const renderMonths = () => {
-		const year = displayedMonth.getFullYear();
-		const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-		return (
-			<div className="box-border grid h-69 flex-1 grid-cols-3 items-center gap-2 py-1">
-				{months.map((monthName, idx) => {
-					const isSelected = displayedMonth.getMonth() === idx;
-					return (
-						<Button
-							key={monthName}
-							type="button"
-							variant="subtle"
-							color={isSelected ? 'gold' : undefined}
-							action={() => {
-								changeView('days');
-								handleMonthChange(new Date(year, idx));
-							}}
-							className="h-12 w-full text-sm"
-						>
-							{monthName.toUpperCase()}
-						</Button>
-					);
-				})}
-			</div>
-		);
-	};
-
-	const renderYears = () => {
-		const currentYear = displayedMonth.getFullYear();
-		const years = Array.from({ length: 12 }, (_, i) => yearsStart + i);
-
-		return (
-			<div className="box-border grid h-69 flex-1 grid-cols-3 items-center gap-2 py-1">
-				{years.map((y) => {
-					const isSelected = currentYear === y;
-					return (
-						<Button
-							key={y}
-							type="button"
-							variant="subtle"
-							color={isSelected ? 'gold' : undefined}
-							action={() => {
-								changeView('days');
-								handleMonthChange(new Date(y, displayedMonth.getMonth()));
-							}}
-							className="h-12 w-full text-sm"
-						>
-							{y}
-						</Button>
-					);
-				})}
-			</div>
-		);
-	};
+	const monthLabel = displayedMonth.toLocaleString(undefined, { month: 'long' });
+	const yearLabel = displayedMonth.year.toString();
+	const navigationLabel = view === 'days' ? 'month' : view === 'months' ? 'year' : 'years';
 
 	return (
-		<div className={containerClassName} aria-busy={isPending || undefined} data-pending={isPending ? '' : undefined}>
+		<div
+			className={cn(
+				'rdp-root relative box-border flex h-94 w-78 flex-col justify-between rounded-xl border-2 border-edge bg-white p-4 text-black shadow-sm select-none dark:bg-zinc dark:text-white',
+				className,
+			)}
+			aria-busy={isPending || undefined}
+			data-pending={isPending ? '' : undefined}
+		>
 			<div className="flex h-10 items-center justify-between border-b border-edge/5 pb-2">
 				<div className="flex min-w-0 items-center gap-1 font-sans text-lg font-bold tracking-wider text-black uppercase dark:text-white">
 					<AnimatePresence mode="popLayout" initial={false}>
@@ -528,7 +569,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 							key={`header-year-${yearLabel}`}
 							type="button"
 							onClick={() => {
-								setYearsStart(displayedMonth.getFullYear() - 4);
+								setYearsStart(displayedMonth.year - 4);
 								changeView(view === 'years' ? 'days' : 'years');
 							}}
 							{...getFadeMotion()}
@@ -550,7 +591,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 						variant="subtle"
 						size="icon"
 						action={handlePrevClick}
-						aria-label={view === 'days' ? 'Previous month' : view === 'months' ? 'Previous year' : 'Previous years'}
+						aria-label={`Previous ${navigationLabel}`}
 						className="size-7 rounded-md"
 					>
 						<CaretLeftIcon size={14} />
@@ -560,7 +601,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 						variant="subtle"
 						size="icon"
 						action={handleNextClick}
-						aria-label={view === 'days' ? 'Next month' : view === 'months' ? 'Next year' : 'Next years'}
+						aria-label={`Next ${navigationLabel}`}
 						className="size-7 rounded-md"
 					>
 						<CaretRightIcon size={14} />
@@ -568,7 +609,6 @@ export function DatePicker(fullProps: DatePickerProps) {
 				</div>
 			</div>
 
-			{/* Views Content Grid — supports swipe navigation in addition to the prev/next buttons */}
 			<div {...bindSwipe()} className="relative flex flex-1 touch-pan-y flex-col justify-between">
 				<AnimatePresence
 					mode={pageDirection === 'none' ? 'wait' : 'sync'}
@@ -578,7 +618,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 				>
 					{view === 'days' && (
 						<motion.div
-							key={`days-${displayedMonth.getFullYear()}-${displayedMonth.getMonth()}`}
+							key={`days-${displayedMonth.year}-${displayedMonth.month}`}
 							layout={pageDirection === 'none' ? false : 'position'}
 							transition={layoutTransition}
 							variants={bodyVariants}
@@ -593,7 +633,7 @@ export function DatePicker(fullProps: DatePickerProps) {
 					)}
 					{view === 'months' && (
 						<motion.div
-							key={`months-${displayedMonth.getFullYear()}`}
+							key={`months-${displayedMonth.year}`}
 							variants={bodyVariants}
 							custom={pageDirection}
 							initial="enter"

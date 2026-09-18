@@ -1,102 +1,82 @@
 import { TimeHTMLAttributes, useEffect, useMemo, useState } from 'react';
+import { Temporal } from 'temporal-polyfill';
 
 import { Tooltip } from '@/components/ui/tooltip';
 
+export type HumanizedTimeValue = Temporal.Instant | Temporal.ZonedDateTime | string;
+
 export interface HumanizedTimeProps extends TimeHTMLAttributes<HTMLTimeElement> {
-	readonly date?: Date | number | string;
-	readonly updateInterval?: number | { total: (options: { unit: 'milliseconds' }) => number };
+	readonly date?: HumanizedTimeValue;
+	readonly updateInterval?: Temporal.Duration;
 	readonly locale?: string;
 	readonly placement?: 'top' | 'right' | 'bottom' | 'left';
+	readonly timeZone?: string;
 }
 
-export function getHumanizedTimeString(dateInput: Date | number | string, locale = 'en'): string {
-	const date = new Date(dateInput);
-	const now = new Date();
-	const diffMs = date.getTime() - now.getTime();
-	const diffSecs = Math.round(diffMs / 1000);
+const DEFAULT_UPDATE_INTERVAL = Temporal.Duration.from({ minutes: 1 });
 
-	const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
+function toInstant(dateInput: HumanizedTimeValue): Temporal.Instant {
+	if (dateInput instanceof Temporal.Instant) return dateInput;
+	if (dateInput instanceof Temporal.ZonedDateTime) return dateInput.toInstant();
+	return Temporal.Instant.from(dateInput);
+}
 
-	const absSecs = Math.abs(diffSecs);
-	if (absSecs < 60) {
-		return rtf.format(diffSecs, 'second');
-	}
+export function getHumanizedTimeString(dateInput: HumanizedTimeValue, locale = 'en'): string {
+	const target = toInstant(dateInput);
+	const diffSeconds = Math.round(target.since(Temporal.Now.instant()).total({ unit: 'seconds' }));
+	const relativeTime = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
 
-	const diffMins = Math.round(diffSecs / 60);
-	const absMins = Math.abs(diffMins);
-	if (absMins < 60) {
-		return rtf.format(diffMins, 'minute');
-	}
+	const absoluteSeconds = Math.abs(diffSeconds);
+	if (absoluteSeconds < 60) return relativeTime.format(diffSeconds, 'second');
 
-	const diffHours = Math.round(diffMins / 60);
-	const absHours = Math.abs(diffHours);
-	if (absHours < 24) {
-		return rtf.format(diffHours, 'hour');
-	}
+	const diffMinutes = Math.round(diffSeconds / 60);
+	if (Math.abs(diffMinutes) < 60) return relativeTime.format(diffMinutes, 'minute');
+
+	const diffHours = Math.round(diffMinutes / 60);
+	if (Math.abs(diffHours) < 24) return relativeTime.format(diffHours, 'hour');
 
 	const diffDays = Math.round(diffHours / 24);
-	const absDays = Math.abs(diffDays);
-	if (absDays < 7) {
-		return rtf.format(diffDays, 'day');
-	}
+	if (Math.abs(diffDays) < 7) return relativeTime.format(diffDays, 'day');
 
 	const diffWeeks = Math.round(diffDays / 7);
-	const absWeeks = Math.abs(diffWeeks);
-	if (absWeeks < 4) {
-		return rtf.format(diffWeeks, 'week');
-	}
+	if (Math.abs(diffWeeks) < 4) return relativeTime.format(diffWeeks, 'week');
 
 	const diffMonths = Math.round(diffDays / 30);
-	const absMonths = Math.abs(diffMonths);
-	if (absMonths < 12) {
-		return rtf.format(diffMonths, 'month');
-	}
+	if (Math.abs(diffMonths) < 12) return relativeTime.format(diffMonths, 'month');
 
-	const diffYears = Math.round(diffDays / 365);
-	return rtf.format(diffYears, 'year');
+	return relativeTime.format(Math.round(diffDays / 365), 'year');
 }
 
-export function getFullDateTimeString(dateInput: Date | number | string, locale = 'en'): string {
-	const date = new Date(dateInput);
-	return new Intl.DateTimeFormat(locale, {
+export function getFullDateTimeString(dateInput: HumanizedTimeValue, locale = 'en', timeZone = Temporal.Now.timeZoneId()): string {
+	return toInstant(dateInput).toLocaleString(locale, {
 		dateStyle: 'full',
 		timeStyle: 'medium',
-	}).format(date);
+		timeZone,
+	});
 }
 
-/**
- * HumanizedTime component.
- * Displays relative time in a <time> element, wrapped in a Tooltip showing the full absolute date.
- */
-export function HumanizedTime({ date, updateInterval = 60_000, locale = 'en', placement = 'top', ...properties }: HumanizedTimeProps) {
+/** Displays a locale-aware relative time with the absolute timestamp in a tooltip. */
+export function HumanizedTime({
+	date,
+	updateInterval = DEFAULT_UPDATE_INTERVAL,
+	locale = 'en',
+	placement = 'top',
+	timeZone,
+	...properties
+}: HumanizedTimeProps) {
 	const [lastDate, setLastDate] = useState(date);
 	const [lastLocale, setLastLocale] = useState(locale);
 	const [relativeTime, setRelativeTime] = useState(() => (date === undefined ? '' : getHumanizedTimeString(date, locale)));
 
-	// Sync state when date or locale props change during rendering (React-recommended pattern)
 	if (date !== lastDate || locale !== lastLocale) {
 		setLastDate(date);
 		setLastLocale(locale);
 		setRelativeTime(date === undefined ? '' : getHumanizedTimeString(date, locale));
 	}
 
-	const fullDateTime = useMemo(() => (date === undefined ? '' : getFullDateTimeString(date, locale)), [date, locale]);
-	const datetimeAttribute = useMemo(() => {
-		if (date === undefined) return '';
-		const parsedDate = new Date(date);
-		return Number.isNaN(parsedDate.getTime()) ? '' : parsedDate.toISOString();
-	}, [date]);
-
-	const intervalMs = useMemo(() => {
-		if (typeof updateInterval === 'number') {
-			return Number.isFinite(updateInterval) ? Math.max(1000, updateInterval) : 60_000;
-		}
-		if (updateInterval && typeof updateInterval.total === 'function') {
-			const total = updateInterval.total({ unit: 'milliseconds' });
-			return Number.isFinite(total) ? Math.max(1000, total) : 60_000;
-		}
-		return 60_000;
-	}, [updateInterval]);
+	const fullDateTime = useMemo(() => (date === undefined ? '' : getFullDateTimeString(date, locale, timeZone)), [date, locale, timeZone]);
+	const datetimeAttribute = useMemo(() => (date === undefined ? '' : toInstant(date).toString()), [date]);
+	const intervalMilliseconds = useMemo(() => Math.max(1000, updateInterval.total({ unit: 'milliseconds' })), [updateInterval]);
 
 	useEffect(() => {
 		if (date === undefined) return;
@@ -107,7 +87,7 @@ export function HumanizedTime({ date, updateInterval = 60_000, locale = 'en', pl
 			clearInterval(timer);
 			if (!document.hidden) {
 				update();
-				timer = setInterval(update, intervalMs);
+				timer = setInterval(update, intervalMilliseconds);
 			}
 		};
 
@@ -117,11 +97,9 @@ export function HumanizedTime({ date, updateInterval = 60_000, locale = 'en', pl
 			clearInterval(timer);
 			document.removeEventListener('visibilitychange', updateTimer);
 		};
-	}, [date, locale, intervalMs]);
+	}, [date, locale, intervalMilliseconds]);
 
-	if (date === undefined) {
-		return null;
-	}
+	if (date === undefined) return null;
 
 	return (
 		<Tooltip content={fullDateTime} side={placement}>
@@ -131,4 +109,5 @@ export function HumanizedTime({ date, updateInterval = 60_000, locale = 'en', pl
 		</Tooltip>
 	);
 }
+
 HumanizedTime.displayName = 'HumanizedTime';

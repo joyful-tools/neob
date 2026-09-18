@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, within } from 'storybook/test';
+import { Temporal } from 'temporal-polyfill';
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -156,7 +157,7 @@ export const DynamicHeights: Story = {
 									const prepended = Array.from({ length: 10 }, (_, i) => {
 										const label = lowestLabel - 10 + i;
 										return {
-											id: `pre-${Date.now()}-${i}`,
+											id: `pre-${Temporal.Now.instant().epochNanoseconds}-${i}`,
 											label,
 											bg: BG[((label % BG.length) + BG.length) % BG.length] ?? 'bg-cyan',
 											height: [48, 72, 96][((label % 3) + 3) % 3] ?? 48,

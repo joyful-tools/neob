@@ -139,7 +139,13 @@ export type {
 } from './components/ui/table';
 
 export { DatePicker } from './components/ui/date-picker';
-export type { DatePickerProps } from './components/ui/date-picker';
+export type {
+	DatePickerClassNames,
+	DatePickerMatcher,
+	DatePickerModifiers,
+	DatePickerProps,
+	DatePickerRange,
+} from './components/ui/date-picker';
 
 export { Pagination } from './components/ui/pagination';
 export type {
@@ -177,7 +183,7 @@ export type { SmartStickyProps } from './components/ui/smart-sticky';
 export { StackHeader } from './components/ui/stack-header';
 export type { StackHeaderProps } from './components/ui/stack-header';
 export { HumanizedTime } from './components/ui/humanized-time';
-export type { HumanizedTimeProps } from './components/ui/humanized-time';
+export type { HumanizedTimeProps, HumanizedTimeValue } from './components/ui/humanized-time';
 export { Marquee } from './components/ui/marquee';
 export type { MarqueeProps } from './components/ui/marquee';
 

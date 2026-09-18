@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Temporal } from 'temporal-polyfill';
 
 import { cn } from '@/lib/utilities';
 
@@ -85,7 +86,7 @@ export function TypeWords({ text, speed = 12, className, onglyph, onstart, onfin
 		const triggerGlyph = () => {
 			const currentCallback = onglyphRef.current;
 			if (!currentCallback) return;
-			const now = Date.now();
+			const now = Temporal.Now.instant().epochMilliseconds;
 			const throttleMs = 50;
 
 			if (now - lastCall >= throttleMs) {
@@ -96,7 +97,7 @@ export function TypeWords({ text, speed = 12, className, onglyph, onstart, onfin
 				timeoutId = setTimeout(
 					() => {
 						currentCallback(elementRef.current);
-						lastCall = Date.now();
+						lastCall = Temporal.Now.instant().epochMilliseconds;
 					},
 					throttleMs - (now - lastCall),
 				);
