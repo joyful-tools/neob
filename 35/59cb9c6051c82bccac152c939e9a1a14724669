@@ -1,0 +1,19 @@
+.github/workflows/release.yml
+  s_2196ef4931491d::t_36bca970bfb060 74-93
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "3559cb9c6051c82bccac152c939e9a1a14724669",
+  "prompts": {},
+  "sessions": {
+    "s_2196ef4931491d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0b264-44b3-7c31-9445-54efc189c875",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
