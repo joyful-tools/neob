@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 2.1.3
+
+### Patch Changes
+
+- [`9d5f1cd`](https://github.com/joyful-tools/neob/commit/9d5f1cd67ffea90cdd5dcbf0482f7ca3e91492c6) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Preserve Button Actions when Buttons are rendered as triggers by composing injected click handlers.
+
 ## 2.1.2
 
 ### Patch Changes
