@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react';
 import { action } from 'storybook/actions';
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, fireEvent, userEvent, waitFor, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 
@@ -55,31 +55,58 @@ export const Default: Story = {
 	},
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
+		const body = within(canvasElement.ownerDocument.body);
 
 		// Keyboard interaction test (opens and cancels via Escape)
 		const trigger1 = canvas.getByRole('button', { name: 'Delete Item' });
 		trigger1.focus();
 		await userEvent.keyboard('{Enter}');
-		await expect(await canvas.findByText('Are you sure?')).toBeInTheDocument();
-		await expect(canvas.getByRole('button', { name: 'Cancel' })).toHaveFocus();
+		await expect(await body.findByText('Are you sure?')).toBeInTheDocument();
+		await expect(body.getByRole('button', { name: 'Cancel' })).toHaveFocus();
+		const keyboardDialog = body.getByRole('dialog', { name: 'Are you sure?' });
+		await waitFor(() => {
+			expect(keyboardDialog).not.toHaveAttribute('data-opening');
+		});
 
 		await userEvent.keyboard('{ArrowRight}');
-		await expect(canvas.getByRole('button', { name: 'Confirm Delete' })).toHaveFocus();
+		await expect(body.getByRole('button', { name: 'Confirm Delete' })).toHaveFocus();
 
 		await userEvent.keyboard('{Tab}');
-		await expect(canvas.getByRole('button', { name: 'Cancel' })).toHaveFocus();
+		await expect(body.getByRole('button', { name: 'Cancel' })).toHaveFocus();
 
-		await userEvent.keyboard('{Escape}');
+		fireEvent.keyDown(keyboardDialog, { key: 'Escape' });
+		expect(keyboardDialog).toHaveAttribute('data-closing', '');
+		expect(getComputedStyle(trigger1).visibility).toBe('hidden');
 		await waitFor(() => {
-			expect(canvas.queryByText('Are you sure?')).not.toBeInTheDocument();
+			expect(body.queryByText('Are you sure?')).not.toBeInTheDocument();
 		});
 
 		// Mouse click interaction test (opens and confirms)
 		const trigger2 = await canvas.findByRole('button', { name: 'Delete Item' });
-		await userEvent.click(trigger2);
-		await expect(await canvas.findByText('Are you sure?')).toBeInTheDocument();
-		await expect(canvas.getByRole('button', { name: 'Cancel' })).toHaveFocus();
-		await userEvent.click(canvas.getByRole('button', { name: 'Confirm Delete' }));
+		fireEvent.click(trigger2);
+		const animatedDialog = body.getByRole('dialog', { name: 'Are you sure?' });
+		await waitFor(() => {
+			expect(animatedDialog.style.transform).not.toBe('');
+		});
+		await expect(animatedDialog).toBeInTheDocument();
+		await expect(body.getByRole('button', { name: 'Cancel' })).toHaveFocus();
+		await waitFor(() => {
+			expect(animatedDialog).not.toHaveAttribute('data-opening');
+		});
+		fireEvent.click(canvasElement);
+		expect(animatedDialog).toHaveAttribute('data-closing', '');
+		expect(getComputedStyle(trigger2).visibility).toBe('hidden');
+		await waitFor(() => {
+			expect(body.queryByText('Are you sure?')).not.toBeInTheDocument();
+		});
+		const restoredTrigger = await canvas.findByRole('button', { name: 'Delete Item' });
+		await waitFor(() => {
+			expect(restoredTrigger).toHaveFocus();
+		});
+
+		await userEvent.click(restoredTrigger);
+		await expect(await body.findByText('Are you sure?')).toBeInTheDocument();
+		await userEvent.click(body.getByRole('button', { name: 'Confirm Delete' }));
 	}),
 };
 
@@ -127,9 +154,18 @@ export const AsyncDelete: Story = {
 	),
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
+		const body = within(canvasElement.ownerDocument.body);
 		await userEvent.click(canvas.getByRole('button', { name: 'Delete Item Asynchronously' }));
-		await expect(canvas.getByText('Are you sure you want to delete this resource?')).toBeInTheDocument();
-		await userEvent.click(canvas.getByRole('button', { name: 'Delete Item' }));
+		await expect(body.getByText('Are you sure you want to delete this resource?')).toBeInTheDocument();
+		await userEvent.click(body.getByRole('button', { name: 'Delete Item' }));
+		await userEvent.keyboard('{Escape}');
+		await expect(body.getByRole('dialog', { name: 'Are you sure you want to delete this resource?' })).toBeInTheDocument();
+		await waitFor(
+			() => {
+				expect(body.queryByRole('dialog', { name: 'Are you sure you want to delete this resource?' })).not.toBeInTheDocument();
+			},
+			{ timeout: 2500 },
+		);
 	}),
 };
 
@@ -171,13 +207,14 @@ export const ViewportEdges: Story = {
 	),
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
+		const body = within(canvasElement.ownerDocument.body);
 		const viewport = canvasElement.ownerDocument.documentElement;
 		const minimumViewportGap = 7.5;
 
 		for (const { label } of viewportEdgeCases) {
 			const trigger = canvas.getByRole('button', { name: label });
 			await userEvent.click(trigger);
-			const dialog = await canvas.findByRole('dialog', { name: `Confirm ${label}?` });
+			const dialog = await body.findByRole('dialog', { name: `Confirm ${label}?` });
 
 			await waitFor(() => {
 				const bounds = dialog.getBoundingClientRect();
@@ -185,18 +222,57 @@ export const ViewportEdges: Story = {
 				expect(bounds.top).toBeGreaterThanOrEqual(minimumViewportGap);
 				expect(bounds.right).toBeLessThanOrEqual(viewport.clientWidth - minimumViewportGap);
 				expect(bounds.bottom).toBeLessThanOrEqual(viewport.clientHeight - minimumViewportGap);
+				expect(getComputedStyle(trigger).visibility).toBe('hidden');
 			});
 
-			await userEvent.keyboard('{Escape}');
+			fireEvent.keyDown(dialog, { key: 'Escape' });
+			expect(dialog).toHaveAttribute('data-closing', '');
+			expect(getComputedStyle(trigger).visibility).toBe('hidden');
 			await waitFor(() => {
-				expect(canvas.queryByRole('dialog', { name: `Confirm ${label}?` })).not.toBeInTheDocument();
+				expect(body.queryByRole('dialog', { name: `Confirm ${label}?` })).not.toBeInTheDocument();
 			});
-			await expect(canvas.getByRole('button', { name: label })).toHaveFocus();
+			const restoredTrigger = canvas.getByRole('button', { name: label });
+			await waitFor(() => {
+				expect(restoredTrigger).toHaveFocus();
+				expect(getComputedStyle(restoredTrigger).visibility).toBe('visible');
+			});
 		}
 	}),
 };
 
-export const ScrollRelease: Story = {
+export const ClippingContainers: Story = {
+	args: {
+		children: 'Delete clipped item',
+		action: () => {},
+	},
+	render: (args) => (
+		<div data-testid="clipping-container" className="h-24 w-32 overflow-hidden rounded-xl border-2 border-edge bg-white dark:bg-zinc">
+			<div className="h-full overflow-auto">
+				<div className="flex min-h-48 items-start justify-center pt-2">
+					<ConfirmButton {...args} title="Delete the clipped item?" confirmLabel="Delete" action={() => action('confirm-clipped-item')()}>
+						Delete clipped item
+					</ConfirmButton>
+				</div>
+			</div>
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const body = within(canvasElement.ownerDocument.body);
+		const clippingContainer = canvas.getByTestId('clipping-container');
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Delete clipped item' }));
+		const dialog = await body.findByRole('dialog', { name: 'Delete the clipped item?' });
+
+		await waitFor(() => {
+			expect(clippingContainer.contains(dialog)).toBe(false);
+			expect(dialog.getBoundingClientRect().width).toBeGreaterThan(clippingContainer.getBoundingClientRect().width);
+			expect(dialog).toBeVisible();
+		});
+	}),
+};
+
+export const ScrollTracking: Story = {
 	parameters: {
 		layout: 'fullscreen',
 	},
@@ -209,9 +285,9 @@ export const ScrollRelease: Story = {
 			<div className="absolute top-[50vh] left-1/2 -translate-x-1/2">
 				<ConfirmButton
 					title="Keep scrolling?"
-					description="The overlay leaves with its trigger once the trigger is outside the viewport."
+					description="The portaled overlay tracks its trigger while the page scrolls."
 					confirmLabel="Confirm"
-					action={() => action('confirm-button-scroll-release')()}
+					action={() => action('confirm-button-scroll-tracking')()}
 				>
 					Confirm while scrolling
 				</ConfirmButton>
@@ -220,31 +296,34 @@ export const ScrollRelease: Story = {
 	),
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
+		const body = within(canvasElement.ownerDocument.body);
 		const storyWindow = canvasElement.ownerDocument.defaultView;
 		if (!storyWindow) throw new Error('Story window is unavailable.');
 
 		storyWindow.scrollTo(0, 0);
-		await userEvent.click(canvas.getByRole('button', { name: 'Confirm while scrolling' }));
-		const dialog = await canvas.findByRole('dialog', { name: 'Keep scrolling?' });
-		const anchor = dialog.parentElement;
+		const trigger = canvas.getByRole('button', { name: 'Confirm while scrolling' });
+		const anchor = trigger.parentElement;
 		if (!anchor) throw new Error('ConfirmButton anchor is unavailable.');
-
-		storyWindow.scrollBy(0, anchor.getBoundingClientRect().bottom + 1);
+		const closedAnchorBounds = anchor.getBoundingClientRect();
+		const closedTriggerBounds = trigger.getBoundingClientRect();
+		await userEvent.click(trigger);
+		const dialog = await body.findByRole('dialog', { name: 'Keep scrolling?' });
 		await waitFor(() => {
-			expect(anchor.getBoundingClientRect().bottom).toBeLessThanOrEqual(0);
-			expect(dialog.getBoundingClientRect().top).toBeLessThan(8);
-			expect(dialog.getBoundingClientRect().bottom).toBeGreaterThan(0);
+			expect(dialog).not.toHaveAttribute('data-opening');
 		});
+		const openAnchorBounds = anchor.getBoundingClientRect();
+		const openTriggerBounds = trigger.getBoundingClientRect();
+		expect(openAnchorBounds.width).toBe(closedAnchorBounds.width);
+		expect(openAnchorBounds.height).toBe(closedAnchorBounds.height);
+		expect(openTriggerBounds.width).toBe(closedTriggerBounds.width);
+		expect(openTriggerBounds.height).toBe(closedTriggerBounds.height);
+		expect(trigger.style.transform).toBe('');
+		const initialOffset = dialog.getBoundingClientRect().top - openAnchorBounds.top;
 
-		const releasedTop = dialog.getBoundingClientRect().top;
 		storyWindow.scrollBy(0, 40);
 		await waitFor(() => {
-			expect(dialog.getBoundingClientRect().top).toBeLessThanOrEqual(releasedTop - 39.5);
-		});
-
-		storyWindow.scrollBy(0, dialog.getBoundingClientRect().bottom + 1);
-		await waitFor(() => {
-			expect(dialog.getBoundingClientRect().bottom).toBeLessThanOrEqual(0);
+			const currentOffset = dialog.getBoundingClientRect().top - anchor.getBoundingClientRect().top;
+			expect(Math.abs(currentOffset - initialOffset)).toBeLessThan(1);
 		});
 
 		await userEvent.keyboard('{Escape}');
