@@ -1,0 +1,21 @@
+packages/neob-ui/src/components/ui/confirm-button/confirm-button.stories.tsx
+  s_286780bfc6381e::t_e1c2f196f5fa60 220-223
+  s_286780bfc6381e::t_da0f840d6fc732 219
+  s_286780bfc6381e::t_c0bdcf136e93a8 224
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "4d9486db132cdc009606f8a75f71ccaaec126223",
+  "prompts": {},
+  "sessions": {
+    "s_286780bfc6381e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0ad3d-aac7-7be1-ba5f-0fc8a9157b1b",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
