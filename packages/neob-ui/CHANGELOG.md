@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 2.2.1
+
+### Patch Changes
+
+- [`b0c8868`](https://github.com/joyful-tools/neob/commit/b0c8868146796cc642d8c0a96a3cd22bae38d22d) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Portal ConfirmButton confirmation surfaces so explanatory prompts escape clipped and scrolling containers while preserving their button-to-overlay morph.
+
 ## 2.2.0
 
 ### Minor Changes
