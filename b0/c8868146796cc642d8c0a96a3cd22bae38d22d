@@ -1,0 +1,34 @@
+packages/neob-ui/src/components/ui/confirm-button/confirm-button.tsx
+  s_035b3f0ba0f026::t_d16adf54d205da 75,77-84,87-100,256
+  s_035b3f0ba0f026::t_c6d1cbf0095945 73-74
+  s_035b3f0ba0f026::t_fbb92f5225731d 253-255
+  s_035b3f0ba0f026::t_69bb8a399ecbcc 257-259
+packages/neob-ui/src/components/ui/confirm-button/confirm-button.stories.tsx
+  s_286780bfc6381e::t_e1c2f196f5fa60 228-231,233-234,236
+  s_286780bfc6381e::t_da0f840d6fc732 232
+  s_286780bfc6381e::t_c0bdcf136e93a8 237
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "b0c8868146796cc642d8c0a96a3cd22bae38d22d",
+  "prompts": {},
+  "sessions": {
+    "s_035b3f0ba0f026": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0aae2-955d-7851-9778-80cfc571c395",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    },
+    "s_286780bfc6381e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0ad3d-aac7-7be1-ba5f-0fc8a9157b1b",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
