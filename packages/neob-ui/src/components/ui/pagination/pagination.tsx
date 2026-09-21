@@ -175,7 +175,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 
 	return (
 		<div data-slot="pagination-controls" className={cn('flex items-center gap-2', className)}>
-			<nav aria-label={labels.navigation} className="flex items-center select-none">
+			<nav aria-label={labels.navigation} className={cn('flex items-center select-none', maxPage <= 1 && 'opacity-disabled')}>
 				{controls === 'full' && (
 					<Button
 						type="button"
@@ -187,7 +187,10 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							setPage(1);
 							setEditingPage(1);
 						}}
-						className="size-8 rounded-r-none p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100"
+						className={cn(
+							'size-8 rounded-r-none p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100',
+							maxPage <= 1 && 'opacity-100!',
+						)}
 					>
 						<CaretDoubleLeftIcon className={cn('size-4', isFirstPageDisabled && 'opacity-30')} />
 					</Button>
@@ -206,6 +209,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 					className={cn(
 						'size-8 p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100',
 						controls === 'full' ? '-ml-0.5 rounded-none' : 'rounded-r-none',
+						maxPage <= 1 && 'opacity-100!',
 					)}
 				>
 					<CaretLeftIcon className={cn('size-4', isFirstPageDisabled && 'opacity-30')} />
@@ -223,7 +227,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 								disabled={maxPage <= 1}
 								aria-label={labels.pageNumber}
 								size="sm"
-								className={cn('rounded-none', maxPage <= 1 && 'disabled:opacity-100 [&_svg]:opacity-30 [&>span]:opacity-30')}
+								className={cn('rounded-none', maxPage <= 1 && 'opacity-100! [&_svg]:opacity-30 [&>span]:opacity-30')}
 							>
 								{Array.from({ length: maxPage }, (_, i) => i + 1).map((p) => (
 									<Select.Option key={p} value={String(p)} className="px-2 py-1 text-xs">
@@ -288,6 +292,7 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 					className={cn(
 						'-ml-0.5 size-8 p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100',
 						controls === 'full' ? 'rounded-none' : 'rounded-l-none',
+						maxPage <= 1 && 'opacity-100!',
 					)}
 				>
 					<CaretRightIcon className={cn('size-4', isLastPageDisabled && 'opacity-30')} />
@@ -303,7 +308,10 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							setPage(maxPage);
 							setEditingPage(maxPage);
 						}}
-						className="-ml-0.5 size-8 rounded-l-none p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100"
+						className={cn(
+							'-ml-0.5 size-8 rounded-l-none p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100',
+							maxPage <= 1 && 'opacity-100!',
+						)}
 					>
 						<CaretDoubleRightIcon className={cn('size-4', isLastPageDisabled && 'opacity-30')} />
 					</Button>
