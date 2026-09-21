@@ -1,0 +1,21 @@
+.changeset/better-clouds-start.md
+  s_7926d38bf51246::t_cec532be585f21 1-5
+packages/neob-ui/src/components/ui/pagination/pagination.tsx
+  s_7926d38bf51246::t_d7531bb73cd8a4 178,190-193,212,230,295,311-314
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "e1744253594b0c778e812b4fa1e9386a5214e1fd",
+  "prompts": {},
+  "sessions": {
+    "s_7926d38bf51246": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c662-b5ce-79b1-b5ee-787e720bcb5f",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
