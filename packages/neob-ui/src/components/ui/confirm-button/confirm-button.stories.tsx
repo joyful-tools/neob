@@ -217,6 +217,13 @@ export const ViewportEdges: Story = {
 			const trigger = canvas.getByRole('button', { name: label });
 			await userEvent.click(trigger);
 			const dialog = await body.findByRole('dialog', { name: `Confirm ${label}?` });
+			await waitFor(
+				() => {
+					expect(trigger).toHaveAttribute('data-morph-source', 'hidden');
+					expect(getComputedStyle(trigger).visibility).toBe('hidden');
+				},
+				{ timeout: 2500 },
+			);
 
 			await waitFor(() => {
 				const bounds = dialog.getBoundingClientRect();
@@ -224,7 +231,6 @@ export const ViewportEdges: Story = {
 				expect(bounds.top).toBeGreaterThanOrEqual(minimumViewportGap);
 				expect(bounds.right).toBeLessThanOrEqual(viewport.clientWidth - minimumViewportGap);
 				expect(bounds.bottom).toBeLessThanOrEqual(viewport.clientHeight - minimumViewportGap);
-				expect(getComputedStyle(trigger).visibility).toBe('hidden');
 			});
 
 			fireEvent.keyDown(dialog, { key: 'Escape' });

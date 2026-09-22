@@ -11,6 +11,9 @@ export type { Action } from './lib/actions';
 export { Button, buttonVariants } from './components/ui/button';
 export type { ButtonProperties } from './components/ui/button';
 
+export { CopyButton } from './components/ui/copy-button';
+export type { CopyButtonProperties } from './components/ui/copy-button';
+
 export { Card, Card3d, Hover3d } from './components/ui/card';
 export type { Card3dProperties, Hover3dProperties } from './components/ui/card';
 

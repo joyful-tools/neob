@@ -1,5 +1,5 @@
 import { FolderIcon, HouseIcon, FileTextIcon } from '@phosphor-icons/react';
-import { expect, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 
@@ -62,6 +62,9 @@ export const Default: Story = {
 		const canvas = within(canvasElement);
 		await expect(canvas.getByRole('link', { name: 'Home' })).toBeInTheDocument();
 		await expect(canvas.getAllByText('Breadcrumb').length).toBeGreaterThan(0);
+		const copyButton = canvas.getByRole('button', { name: 'Copy breadcrumb text' });
+		await userEvent.click(copyButton);
+		await waitFor(() => expect(canvas.getByRole('button', { name: 'Copied breadcrumb text' })).toHaveAttribute('data-copied'));
 	}),
 };
 

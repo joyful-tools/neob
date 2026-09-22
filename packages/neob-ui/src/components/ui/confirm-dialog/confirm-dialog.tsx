@@ -79,7 +79,7 @@ export function ConfirmDialog({
 						{resourceName && (
 							<div className="flex flex-col gap-3">
 								<label htmlFor={inputId} className="text-sm text-black/80 dark:text-white/80">
-									Type in{' '}
+									Enter{' '}
 									<Button
 										type="button"
 										variant="subtle"

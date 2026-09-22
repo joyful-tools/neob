@@ -1,5 +1,5 @@
 import { useRender } from '@base-ui/react';
-import { CaretRightIcon, CheckIcon, CopyIcon, DotsThreeIcon } from '@phosphor-icons/react';
+import { CaretRightIcon, DotsThreeIcon } from '@phosphor-icons/react';
 import {
 	AnchorHTMLAttributes,
 	ButtonHTMLAttributes,
@@ -7,14 +7,11 @@ import {
 	cloneElement,
 	HTMLAttributes,
 	isValidElement,
-	MouseEvent,
 	ReactElement,
 	ReactNode,
-	useEffect,
-	useState,
 } from 'react';
 
-import { Button } from '@/components/ui/button';
+import { CopyButton } from '@/components/ui/copy-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utilities';
 
@@ -131,47 +128,18 @@ function BreadcrumbEllipsis({ className, ...props }: BreadcrumbEllipsisProps) {
 }
 
 function BreadcrumbClipboard({ text, className, onClick, ...props }: BreadcrumbClipboardProps) {
-	const [isCopied, setIsCopied] = useState(false);
-
-	useEffect(() => {
-		if (!isCopied) {
-			return;
-		}
-
-		const timeoutId = globalThis.setTimeout(() => setIsCopied(false), 2000);
-		return () => globalThis.clearTimeout(timeoutId);
-	}, [isCopied]);
-
-	const handleClick = async (event: MouseEvent<HTMLButtonElement>) => {
-		onClick?.(event);
-		if (event.defaultPrevented || !text) {
-			return;
-		}
-
-		try {
-			await navigator.clipboard.writeText(text);
-			setIsCopied(true);
-		} catch {
-			return;
-		}
-	};
-
 	return (
-		<Button
-			type="button"
-			variant="ghost"
-			size="icon"
+		<CopyButton
+			text={text}
+			copyLabel="Copy breadcrumb text"
+			copiedLabel="Copied breadcrumb text"
 			className={cn(
 				'size-7 border text-black/60 opacity-0 transition-opacity [--focus-ring-inner-size:var(--focus-ring-compact-inner-size)] [--focus-ring-outer-size:var(--focus-ring-compact-outer-size)] hover:text-black focus-visible:opacity-100 active:opacity-100 dark:text-white/60 dark:hover:text-white group-hover-always:opacity-100',
 				className,
 			)}
-			action={handleClick}
-			aria-label="Copy breadcrumb text"
-			title="Copy"
+			onClick={onClick}
 			{...props}
-		>
-			{isCopied ? <CheckIcon className="size-4" /> : <CopyIcon className="size-4" />}
-		</Button>
+		/>
 	);
 }
 

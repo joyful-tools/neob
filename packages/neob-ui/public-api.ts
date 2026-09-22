@@ -12,6 +12,7 @@ export const publicComponentEntries = [
 	'combobox',
 	'confirm-button',
 	'confirm-dialog',
+	'copy-button',
 	'cursor',
 	'date-picker',
 	'dialog',

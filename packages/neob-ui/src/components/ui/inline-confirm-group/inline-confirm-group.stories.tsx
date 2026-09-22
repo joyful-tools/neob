@@ -307,10 +307,15 @@ export const Default = {
 
 		await userEvent.click(canvas.getByRole('button', { name: 'Delete release-notes.md' }));
 		const deleteConfirmation = body.getByRole('group', { name: 'Delete confirmation for release-notes.md' });
-		await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-		const deleteConfirmationStyle = getComputedStyle(deleteConfirmation);
-		await expect(deleteConfirmationStyle.opacity).toBe('1');
-		await expect(deleteConfirmationStyle.borderTopLeftRadius).toBe('8px');
+		await waitFor(
+			() => {
+				const deleteConfirmationStyle = getComputedStyle(deleteConfirmation);
+				expect(deleteConfirmation).not.toHaveAttribute('data-opening');
+				expect(deleteConfirmationStyle.opacity).toBe('1');
+				expect(deleteConfirmationStyle.borderTopLeftRadius).toBe('8px');
+			},
+			{ timeout: 2500 },
+		);
 		await userEvent.click(body.getByRole('button', { name: 'Confirm delete release-notes.md' }));
 		await waitFor(() => {
 			expect(body.queryByRole('group', { name: 'Delete confirmation for release-notes.md' })).not.toBeInTheDocument();
