@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 2.3.0
+
+### Minor Changes
+
+- [`f601f0c`](https://github.com/joyful-tools/neob/commit/f601f0c3bee80e166adee46d8f49df820c8817b8) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Add a self-contained CopyButton with clipboard success feedback and reuse it for breadcrumb copying.
+
 ## 2.2.3
 
 ### Patch Changes
