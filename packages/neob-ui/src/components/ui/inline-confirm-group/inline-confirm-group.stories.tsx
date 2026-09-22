@@ -1,7 +1,7 @@
 import { ArchiveIcon, DownloadSimpleIcon, TrashIcon } from '@phosphor-icons/react';
 import { ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, fireEvent, userEvent, waitFor, within } from 'storybook/test';
 
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
@@ -12,7 +12,7 @@ import { InlineConfirmGroup } from './inline-confirm-group';
 import type { InlineConfirmGroupIntent, InlineConfirmGroupProperties } from './inline-confirm-group';
 import type { Meta } from '@storybook/react-vite';
 
-type InlineConfirmGroupStoryProperties = Pick<InlineConfirmGroupProperties, 'variant' | 'color' | 'size'> & {
+type InlineConfirmGroupStoryProperties = Pick<InlineConfirmGroupProperties, 'variant' | 'color' | 'size' | 'direction'> & {
 	initialFiles: FileItem[];
 };
 
@@ -47,6 +47,10 @@ const meta = {
 		size: {
 			control: 'select',
 			options: ['default', 'sm', 'lg', 'xl', 'icon'],
+		},
+		direction: {
+			control: 'select',
+			options: ['left', 'right'],
 		},
 	},
 } satisfies Meta<typeof InlineConfirmGroup>;
@@ -93,7 +97,7 @@ function handleDownload(id: string) {
 	action('download-file')({ id });
 }
 
-const RealWorldList = ({ initialFiles, variant, color, size }: InlineConfirmGroupStoryProperties) => {
+const RealWorldList = ({ initialFiles, variant, color, size, direction }: InlineConfirmGroupStoryProperties) => {
 	const [files, setFiles] = useState<FileItem[]>(initialFiles);
 	const [pendingActionIds, setPendingActionIds] = useState<Set<string>>(() => new Set<string>());
 
@@ -161,6 +165,7 @@ const RealWorldList = ({ initialFiles, variant, color, size }: InlineConfirmGrou
 												actionLabel={actionProperties.actionLabel}
 												actionIcon={isPending ? <Spinner size="sm" /> : actionProperties.actionIcon}
 												intent={actionProperties.intent}
+												direction={direction}
 												variant={variant}
 												color={color}
 												size={size}
@@ -183,6 +188,7 @@ export const Default = {
 	args: {
 		variant: 'ghost',
 		size: 'icon',
+		direction: 'left',
 		initialFiles: [
 			{
 				id: '1',
@@ -213,65 +219,100 @@ export const Default = {
 	render: (args: InlineConfirmGroupStoryProperties) => <RealWorldList {...args} />,
 	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 		const canvas = within(canvasElement);
+		const body = within(canvasElement.ownerDocument.body);
 
 		await userEvent.click(canvas.getByRole('button', { name: 'Download invoices.csv' }));
-		await expect(canvas.queryByRole('group', { name: 'Download confirmation for invoices.csv' })).not.toBeInTheDocument();
+		await expect(body.queryByRole('group', { name: 'Download confirmation for invoices.csv' })).not.toBeInTheDocument();
 
-		await userEvent.click(canvas.getByRole('button', { name: 'Archive invoices.csv' }));
+		const archiveTrigger = canvas.getByRole('button', { name: 'Archive invoices.csv' });
+		const archiveTriggerBounds = archiveTrigger.getBoundingClientRect();
+		fireEvent.click(archiveTrigger);
+		const archiveConfirmation = body.getByRole('group', { name: 'Archive confirmation for invoices.csv' });
+		expect(canvasElement.contains(archiveConfirmation)).toBe(false);
+		await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+		const archiveMorphBounds = archiveConfirmation.getBoundingClientRect();
+		expect(Math.abs(archiveMorphBounds.right - archiveTriggerBounds.right)).toBeLessThan(1);
+		expect(archiveConfirmation.style.backgroundColor).toBe('');
+		expect(archiveConfirmation.style.color).toBe('');
 		await waitFor(() => {
-			expect(canvas.getByRole('button', { name: 'Cancel archive invoices.csv' })).toHaveFocus();
+			expect(archiveConfirmation.style.transform).not.toBe('');
+			expect(archiveConfirmation).not.toHaveAttribute('data-opening');
+			expect(body.getByRole('button', { name: 'Cancel archive invoices.csv' })).toHaveFocus();
 		});
+		const archiveMorphBorder = archiveConfirmation.querySelector<HTMLElement>('[data-morph-border]');
+		if (!archiveMorphBorder) throw new Error('Expected the confirmation morph border.');
+		const archiveSurfaceBorder = archiveConfirmation.querySelector<HTMLElement>('[data-surface-border]');
+		if (!archiveSurfaceBorder) throw new Error('Expected the confirmation surface border.');
+		expect(getComputedStyle(archiveMorphBorder).borderTopWidth).toBe('0px');
+		expect(getComputedStyle(archiveMorphBorder).borderRightWidth).toBe('0px');
+		expect(getComputedStyle(archiveMorphBorder).borderBottomWidth).toBe('0px');
+		expect(getComputedStyle(archiveMorphBorder).borderLeftWidth).toBe('0px');
+		expect(getComputedStyle(archiveSurfaceBorder).opacity).toBe('1');
+		const cancelArchiveBounds = body.getByRole('button', { name: 'Cancel archive invoices.csv' }).getBoundingClientRect();
+		const confirmArchiveBounds = body.getByRole('button', { name: 'Confirm archive invoices.csv' }).getBoundingClientRect();
+		expect(
+			Math.abs(cancelArchiveBounds.left + cancelArchiveBounds.width / 2 - (archiveTriggerBounds.left + archiveTriggerBounds.width / 2)),
+		).toBeLessThan(2);
+		expect(confirmArchiveBounds.right).toBeLessThanOrEqual(archiveTriggerBounds.left + 1);
 
 		await userEvent.keyboard('{ArrowRight}');
-		await expect(canvas.getByRole('button', { name: 'Confirm archive invoices.csv' })).toHaveFocus();
+		await expect(body.getByRole('button', { name: 'Confirm archive invoices.csv' })).toHaveFocus();
 
 		await userEvent.keyboard('{Tab}');
-		await expect(canvas.getByRole('button', { name: 'Cancel archive invoices.csv' })).toHaveFocus();
+		await expect(body.getByRole('button', { name: 'Cancel archive invoices.csv' })).toHaveFocus();
 
-		await userEvent.keyboard('{Escape}');
+		fireEvent.keyDown(archiveConfirmation, { key: 'Escape' });
+		expect(archiveConfirmation).toHaveAttribute('data-closing', '');
+		expect(getComputedStyle(archiveTrigger).visibility).toBe('hidden');
+		await waitFor(() => expect(getComputedStyle(archiveSurfaceBorder).opacity).toBe('0'));
 		await waitFor(() => {
-			expect(canvas.queryByRole('group', { name: 'Archive confirmation for invoices.csv' })).not.toBeInTheDocument();
-			expect(canvas.getByRole('button', { name: 'Archive invoices.csv' })).toBeVisible();
+			expect(body.queryByRole('group', { name: 'Archive confirmation for invoices.csv' })).not.toBeInTheDocument();
+			expect(canvas.getByRole('button', { name: 'Archive invoices.csv' })).toHaveFocus();
+			expect(getComputedStyle(archiveTrigger).visibility).toBe('visible');
 		});
 
-		await userEvent.click(canvas.getByRole('button', { name: 'Delete package.json' }));
-		await userEvent.click(canvas.getByRole('button', { name: 'Cancel delete package.json' }));
+		const deleteTrigger = canvas.getByRole('button', { name: 'Delete package.json' });
+		const deleteTriggerBounds = deleteTrigger.getBoundingClientRect();
+		fireEvent.click(deleteTrigger);
+		const packageDeleteConfirmation = body.getByRole('group', { name: 'Delete confirmation for package.json' });
+		await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+		const deleteMorphBounds = packageDeleteConfirmation.getBoundingClientRect();
+		expect(Math.abs(deleteMorphBounds.right - deleteTriggerBounds.right)).toBeLessThan(1);
+		await userEvent.click(body.getByRole('button', { name: 'Cancel delete package.json' }));
 		const restoredTrigger = canvas.getByRole('button', { name: 'Delete package.json' });
-		const restoredTriggerContainer = restoredTrigger.parentElement;
-		if (!restoredTriggerContainer) throw new Error('Expected the restored trigger to have a motion container.');
 		await waitFor(() => {
 			expect(restoredTrigger).toBeVisible();
-			expect(getComputedStyle(restoredTriggerContainer).opacity).toBe('1');
+			expect(restoredTrigger).toHaveFocus();
 		});
 		await new Promise((resolve) => setTimeout(resolve, 500));
 		await expect(restoredTrigger).toBeVisible();
 
 		await userEvent.click(canvas.getByRole('button', { name: 'Archive invoices.csv' }));
 		await waitFor(() => {
-			expect(canvas.getByRole('group', { name: 'Archive confirmation for invoices.csv' })).toBeInTheDocument();
+			expect(body.getByRole('group', { name: 'Archive confirmation for invoices.csv' })).toBeInTheDocument();
 		});
 
 		await userEvent.click(canvas.getByText('Project Directory Files'));
 		await waitFor(() => {
-			expect(canvas.queryByRole('group', { name: 'Archive confirmation for invoices.csv' })).not.toBeInTheDocument();
+			expect(body.queryByRole('group', { name: 'Archive confirmation for invoices.csv' })).not.toBeInTheDocument();
 			expect(canvas.getByRole('button', { name: 'Archive invoices.csv' })).toBeVisible();
 		});
 
 		await userEvent.click(canvas.getByRole('button', { name: 'Archive invoices.csv' }));
-		await userEvent.click(canvas.getByRole('button', { name: 'Confirm archive invoices.csv' }));
+		await userEvent.click(body.getByRole('button', { name: 'Confirm archive invoices.csv' }));
 		await waitFor(() => {
 			expect(canvas.queryByText('invoices.csv')).not.toBeInTheDocument();
 		});
 
 		await userEvent.click(canvas.getByRole('button', { name: 'Delete release-notes.md' }));
-		const deleteConfirmation = canvas.getByRole('group', { name: 'Delete confirmation for release-notes.md' });
+		const deleteConfirmation = body.getByRole('group', { name: 'Delete confirmation for release-notes.md' });
 		await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 		const deleteConfirmationStyle = getComputedStyle(deleteConfirmation);
 		await expect(deleteConfirmationStyle.opacity).toBe('1');
 		await expect(deleteConfirmationStyle.borderTopLeftRadius).toBe('8px');
-		await userEvent.click(canvas.getByRole('button', { name: 'Confirm delete release-notes.md' }));
+		await userEvent.click(body.getByRole('button', { name: 'Confirm delete release-notes.md' }));
 		await waitFor(() => {
-			expect(canvas.queryByRole('group', { name: 'Delete confirmation for release-notes.md' })).not.toBeInTheDocument();
+			expect(body.queryByRole('group', { name: 'Delete confirmation for release-notes.md' })).not.toBeInTheDocument();
 			expect(canvas.getByRole('status', { name: 'Delete release-notes.md in progress' })).toBeVisible();
 		});
 		await waitFor(
@@ -280,5 +321,40 @@ export const Default = {
 			},
 			{ timeout: 2500 },
 		);
+	}),
+};
+
+export const Directions = {
+	render: () => (
+		<div className="flex items-center gap-24">
+			<InlineConfirmGroup itemName="left item" direction="left" action={() => {}} />
+			<InlineConfirmGroup itemName="right item" direction="right" action={() => {}} />
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+		const canvas = within(canvasElement);
+		const body = within(canvasElement.ownerDocument.body);
+
+		for (const direction of ['left', 'right']) {
+			const trigger = canvas.getByRole('button', { name: `Delete ${direction} item` });
+			const triggerBounds = trigger.getBoundingClientRect();
+			fireEvent.click(trigger);
+			const confirmation = body.getByRole('group', { name: `Delete confirmation for ${direction} item` });
+			await waitFor(() => expect(confirmation).not.toHaveAttribute('data-opening'));
+
+			await waitFor(() => {
+				const cancelBounds = body.getByRole('button', { name: `Cancel delete ${direction} item` }).getBoundingClientRect();
+				const confirmBounds = body.getByRole('button', { name: `Confirm delete ${direction} item` }).getBoundingClientRect();
+				expect(Math.abs(cancelBounds.left + cancelBounds.width / 2 - (triggerBounds.left + triggerBounds.width / 2))).toBeLessThan(2);
+				if (direction === 'left') {
+					expect(confirmBounds.right).toBeLessThanOrEqual(triggerBounds.left + 1);
+				} else {
+					expect(confirmBounds.left).toBeGreaterThanOrEqual(triggerBounds.right - 1);
+				}
+			});
+
+			fireEvent.keyDown(confirmation, { key: 'Escape' });
+			await waitFor(() => expect(body.queryByRole('group', { name: `Delete confirmation for ${direction} item` })).not.toBeInTheDocument());
+		}
 	}),
 };

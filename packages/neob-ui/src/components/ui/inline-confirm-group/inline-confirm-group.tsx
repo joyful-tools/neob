@@ -1,6 +1,7 @@
+import { Popover } from '@base-ui/react/popover';
 import { TrashIcon, XIcon } from '@phosphor-icons/react';
-import { AnimatePresence, motion, Transition } from 'motion/react';
-import { cloneElement, KeyboardEvent, MouseEvent, ReactElement, useCallback, useEffect, useId, useRef, useState } from 'react';
+import { motion, useAnimationControls, type TargetAndTransition, type Transition } from 'motion/react';
+import { cloneElement, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { useQueuedAction } from '@/hooks/use-queued-action';
@@ -9,6 +10,7 @@ import { cn } from '@/lib/utilities';
 
 import type { ButtonProperties } from '@/components/ui/button';
 import type { Action } from '@/lib/actions';
+import type { KeyboardEvent, MouseEvent, ReactElement } from 'react';
 
 export type InlineConfirmGroupDirection = 'left' | 'right';
 export type InlineConfirmGroupIntent = 'danger' | 'info' | 'success';
@@ -52,56 +54,85 @@ export function InlineConfirmGroup({
 	color,
 	size = 'icon',
 }: InlineConfirmGroupProperties) {
+	const [anchorElement, setAnchorElement] = useState<HTMLDivElement | null>(null);
 	const [open, setOpen] = useState(false);
-	const [transitionId, setTransitionId] = useState(0);
-	const [triggerSize, setTriggerSize] = useState<{ width: number; height: number } | null>(null);
-	const containerReference = useRef<HTMLDivElement>(null);
+	const [popupElement, setPopupElement] = useState<HTMLDivElement | null>(null);
+	const [morphTarget, setMorphTarget] = useState<TargetAndTransition | null>(null);
+	const [morphBorderTarget, setMorphBorderTarget] = useState<TargetAndTransition | null>(null);
+	const [morphScale, setMorphScale] = useState({ x: 1, y: 1 });
+	const [surfaceHandedOff, setSurfaceHandedOff] = useState(false);
+	const [opening, setOpening] = useState(false);
+	const [closing, setClosing] = useState(false);
+	const wasOpen = useRef(false);
 	const triggerButtonReference = useRef<HTMLButtonElement>(null);
 	const confirmButtonReference = useRef<HTMLButtonElement>(null);
 	const cancelButtonReference = useRef<HTMLButtonElement>(null);
-	const layoutId = useId();
-	const groupPositionClassName = direction === 'left' ? 'right-0 origin-right' : 'left-0 origin-left';
-	const triggerOriginClassName = direction === 'left' ? 'origin-right' : 'origin-left';
-	const transformOrigin = direction;
+	const closingReference = useRef(false);
+	const popupAnimation = useAnimationControls();
+	const borderAnimation = useAnimationControls();
 	const actionLabelLowercase = actionLabel.toLowerCase();
-	const { runAction, isPending } = useQueuedAction(() => afterAction(action(), () => setOpen(false)));
+	const transformOrigin = direction === 'left' ? 'right center' : 'left center';
 	const renderActionIcon = useCallback(
 		(sizeClassName: string) => cloneElement(actionIcon, { className: cn(sizeClassName, actionIcon.props.className) }),
 		[actionIcon],
 	);
 
-	useEffect(() => {
-		const triggerButton = triggerButtonReference.current;
-		if (open || !triggerButton) return;
+	const closeConfirmation = useCallback(() => {
+		if (closingReference.current) return;
 
-		const updateTriggerSize = () => {
-			setTriggerSize({ width: triggerButton.offsetWidth, height: triggerButton.offsetHeight });
-		};
-		const resizeObserver = new ResizeObserver(updateTriggerSize);
-
-		updateTriggerSize();
-		resizeObserver.observe(triggerButton);
-		return () => resizeObserver.disconnect();
-	}, [open]);
-
-	// Auto-focus cancel button on mount so the user has immediate focus there
-	useEffect(() => {
-		if (!open || isPending) return;
-		cancelButtonReference.current?.focus();
-
-		function handlePointerDown(event: PointerEvent) {
-			if (!(event.target instanceof Node)) return;
-			if (!containerReference.current?.contains(event.target)) {
-				setOpen(false);
-				onCancel?.();
-			}
+		if (!morphTarget) {
+			setOpen(false);
+			setOpening(false);
+			setSurfaceHandedOff(false);
+			return;
 		}
 
-		document.addEventListener('pointerdown', handlePointerDown);
-		return () => {
-			document.removeEventListener('pointerdown', handlePointerDown);
-		};
-	}, [open, isPending, onCancel]);
+		closingReference.current = true;
+		setClosing(true);
+		const animations = [popupAnimation.start({ ...morphTarget, transition: spring })];
+		if (morphBorderTarget) animations.push(borderAnimation.start({ ...morphBorderTarget, transition: spring }));
+		void Promise.all(animations).then(() => {
+			setOpen(false);
+			setSurfaceHandedOff(false);
+			setMorphTarget(null);
+			setMorphBorderTarget(null);
+			setOpening(false);
+			setClosing(false);
+			closingReference.current = false;
+		});
+	}, [borderAnimation, morphBorderTarget, morphTarget, popupAnimation]);
+
+	const openConfirmation = useCallback(() => {
+		setOpening(true);
+		setOpen(true);
+	}, []);
+
+	const { runAction, isPending } = useQueuedAction(() => afterAction(action(), closeConfirmation));
+
+	useEffect(() => {
+		if (open) wasOpen.current = true;
+	}, [open]);
+
+	useLayoutEffect(() => {
+		if (open || surfaceHandedOff || !wasOpen.current) return;
+
+		triggerButtonReference.current?.focus();
+		wasOpen.current = false;
+	}, [open, surfaceHandedOff]);
+
+	const handleOpenChange = useCallback(
+		(nextOpen: boolean) => {
+			if (nextOpen) {
+				openConfirmation();
+				return;
+			}
+
+			if (isPending) return;
+			closeConfirmation();
+			onCancel?.();
+		},
+		[closeConfirmation, isPending, onCancel, openConfirmation],
+	);
 
 	const handleKeyDown = useCallback(
 		(event: KeyboardEvent) => {
@@ -111,7 +142,7 @@ export function InlineConfirmGroup({
 				case 'Escape': {
 					event.preventDefault();
 					event.stopPropagation();
-					setOpen(false);
+					closeConfirmation();
 					onCancel?.();
 					return;
 				}
@@ -132,7 +163,7 @@ export function InlineConfirmGroup({
 				}
 			}
 		},
-		[isPending, onCancel],
+		[closeConfirmation, isPending, onCancel],
 	);
 
 	const handleConfirmClick = useCallback(
@@ -146,11 +177,80 @@ export function InlineConfirmGroup({
 	const handleCancelClick = useCallback(
 		(event: MouseEvent) => {
 			event.stopPropagation();
-			setOpen(false);
+			closeConfirmation();
 			onCancel?.();
 		},
-		[onCancel],
+		[closeConfirmation, onCancel],
 	);
+
+	useLayoutEffect(() => {
+		if (!open || !anchorElement || !popupElement || !triggerButtonReference.current) return;
+
+		const ownerWindow = popupElement.ownerDocument.defaultView;
+		if (!ownerWindow) return;
+
+		let animationFrame = ownerWindow.requestAnimationFrame(() => {
+			const anchorBounds = anchorElement.getBoundingClientRect();
+			const popupBounds = popupElement.getBoundingClientRect();
+			if (popupBounds.width === 0 || popupBounds.height === 0) return;
+			const scaleX = anchorBounds.width / popupBounds.width;
+			const scaleY = anchorBounds.height / popupBounds.height;
+
+			const triggerStyles = ownerWindow.getComputedStyle(triggerButtonReference.current!);
+			const popupStyles = ownerWindow.getComputedStyle(popupElement);
+			const popupBoxShadow = popupStyles.boxShadow;
+			const borderTarget: TargetAndTransition = {
+				borderTopWidth: `${Number.parseFloat(triggerStyles.borderTopWidth) / scaleY}px`,
+				borderRightWidth: `${Number.parseFloat(triggerStyles.borderRightWidth) / scaleX}px`,
+				borderBottomWidth: `${Number.parseFloat(triggerStyles.borderBottomWidth) / scaleY}px`,
+				borderLeftWidth: `${Number.parseFloat(triggerStyles.borderLeftWidth) / scaleX}px`,
+				borderTopColor: triggerStyles.borderTopColor,
+				borderRightColor: triggerStyles.borderRightColor,
+				borderBottomColor: triggerStyles.borderBottomColor,
+				borderLeftColor: triggerStyles.borderLeftColor,
+			};
+			const target: TargetAndTransition = {
+				x: direction === 'left' ? anchorBounds.right - popupBounds.right : anchorBounds.left - popupBounds.left,
+				y: anchorBounds.top + anchorBounds.height / 2 - (popupBounds.top + popupBounds.height / 2),
+				scaleX,
+				scaleY,
+				borderRadius: `${8 / scaleX}px / ${8 / scaleY}px`,
+				boxShadow: triggerStyles.boxShadow,
+				opacity: 1,
+			};
+
+			setMorphTarget(target);
+			setMorphBorderTarget(borderTarget);
+			setMorphScale({ x: scaleX, y: scaleY });
+			borderAnimation.set(borderTarget);
+			popupAnimation.set(target);
+			animationFrame = ownerWindow.requestAnimationFrame(() => {
+				setSurfaceHandedOff(true);
+				void popupAnimation
+					.start({
+						x: 0,
+						y: 0,
+						scaleX: 1,
+						scaleY: 1,
+						borderRadius: '8px / 8px',
+						boxShadow: popupBoxShadow,
+						opacity: 1,
+						transition: spring,
+					})
+					.then(() => setOpening(false));
+				void borderAnimation.start({
+					borderTopWidth: 0,
+					borderRightWidth: 0,
+					borderBottomWidth: 0,
+					borderLeftWidth: 0,
+					transition: spring,
+				});
+			});
+		});
+
+		return () => ownerWindow.cancelAnimationFrame(animationFrame);
+	}, [anchorElement, borderAnimation, direction, open, popupAnimation, popupElement]);
+
 	const confirmButton = (
 		<Button
 			key="confirm"
@@ -186,70 +286,109 @@ export function InlineConfirmGroup({
 	const confirmationButtons = direction === 'left' ? [confirmButton, cancelButton] : [cancelButton, confirmButton];
 
 	return (
-		<div
-			ref={containerReference}
-			className="relative inline-flex items-center justify-center"
-			style={open && triggerSize ? { width: triggerSize.width, height: triggerSize.height } : undefined}
-		>
-			<AnimatePresence mode="popLayout" initial={false}>
-				{open ? (
-					<motion.div
-						key={`group-${transitionId}`}
-						layoutId={layoutId}
-						layoutCrossfade={false}
-						layoutDependency={open}
-						role="group"
-						aria-label={`${actionLabel} confirmation for ${itemName}`}
-						aria-busy={isPending || undefined}
-						data-pending={isPending ? '' : undefined}
+		<Popover.Root open={open} onOpenChange={handleOpenChange}>
+			<div ref={setAnchorElement} className="relative inline-flex items-center justify-center">
+				<Button
+					ref={triggerButtonReference}
+					type="button"
+					variant={variant}
+					color={color}
+					size={size}
+					disabled={isPending}
+					aria-hidden={open || undefined}
+					tabIndex={open ? -1 : undefined}
+					action={(event) => {
+						event.stopPropagation();
+						openConfirmation();
+					}}
+					aria-label={`${actionLabel} ${itemName}`}
+					style={{ pointerEvents: open ? 'none' : undefined, visibility: surfaceHandedOff ? 'hidden' : undefined }}
+					data-morph-source={surfaceHandedOff ? 'hidden' : undefined}
+				>
+					<motion.span
+						initial={false}
+						animate={open && !closing ? { opacity: 0, scale: 0.35 } : { opacity: 1, scale: 1 }}
 						transition={spring}
-						initial={{ opacity: 1 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0, transition: { duration: 0.12, ease: 'easeOut' } }}
-						style={{ borderRadius: 8, transformOrigin }}
-						className={cn(
-							`absolute top-1/2 z-10 flex shrink-0 -translate-y-1/2 items-center gap-1.5 rounded-lg border-2 border-edge bg-white p-1 shadow-sm dark:bg-zinc`,
-							groupPositionClassName,
-							className,
-						)}
-						onClick={(event) => event.stopPropagation()}
-						onKeyDown={handleKeyDown}
+						className="inline-flex items-center justify-center"
 					>
-						{confirmationButtons}
-					</motion.div>
-				) : (
-					<motion.div
-						key={`trigger-${transitionId}`}
-						layoutId={layoutId}
-						layoutCrossfade={false}
-						layoutDependency={open}
-						transition={spring}
-						initial={{ opacity: 1 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0, transition: { duration: 0.12, ease: 'easeOut' } }}
-						style={{ borderRadius: 8, transformOrigin }}
-						className={cn('inline-flex items-center justify-center', triggerOriginClassName)}
+						{renderActionIcon('size-5')}
+					</motion.span>
+				</Button>
+			</div>
+			{open ? (
+				<Popover.Portal>
+					<Popover.Positioner
+						anchor={anchorElement}
+						positionMethod="fixed"
+						side="bottom"
+						align="center"
+						alignOffset={({ anchor, positioner }) =>
+							direction === 'left' ? -(positioner.width - anchor.width) / 2 : (positioner.width - anchor.width) / 2
+						}
+						sideOffset={({ anchor, positioner }) => -(anchor.height + positioner.height) / 2}
+						collisionAvoidance={{ side: 'none', align: 'none', fallbackAxisSide: 'none' }}
+						className="z-100"
 					>
-						<Button
-							ref={triggerButtonReference}
-							type="button"
-							variant={variant}
-							color={color}
-							size={size}
-							disabled={isPending}
-							action={(event) => {
-								event.stopPropagation();
-								setTransitionId((current) => current + 1);
-								setOpen(true);
-							}}
-							aria-label={`${actionLabel} ${itemName}`}
+						<Popover.Popup
+							ref={setPopupElement}
+							render={<motion.div initial={{ opacity: 0 }} animate={popupAnimation} style={{ borderRadius: 8, transformOrigin }} />}
+							initialFocus={cancelButtonReference}
+							finalFocus={false}
+							role="group"
+							aria-label={`${actionLabel} confirmation for ${itemName}`}
+							aria-busy={isPending || undefined}
+							data-pending={isPending ? '' : undefined}
+							data-opening={opening ? '' : undefined}
+							data-closing={closing ? '' : undefined}
+							className={cn(
+								'relative flex shrink-0 items-center gap-1.5 rounded-lg border-2 border-transparent bg-white p-1 shadow-sm outline-hidden dark:bg-zinc',
+								className,
+							)}
+							onClick={(event) => event.stopPropagation()}
+							onKeyDown={handleKeyDown}
 						>
-							{renderActionIcon('size-5')}
-						</Button>
-					</motion.div>
-				)}
-			</AnimatePresence>
-		</div>
+							<motion.span
+								aria-hidden="true"
+								initial={{ opacity: 0 }}
+								animate={{ opacity: closing ? 0 : 1 }}
+								transition={{ duration: 0.12, ease: 'easeOut' }}
+								style={{ borderRadius: 'inherit' }}
+								className="pointer-events-none absolute inset-0 border-2 border-edge"
+								data-surface-border=""
+							/>
+							<motion.span
+								aria-hidden="true"
+								initial={false}
+								animate={borderAnimation}
+								style={{ borderRadius: 'inherit', borderStyle: 'solid' }}
+								className="pointer-events-none absolute inset-0"
+								data-morph-border=""
+							/>
+							<motion.div
+								initial={{ opacity: 0 }}
+								animate={{ opacity: closing ? 0 : 1 }}
+								transition={{ duration: 0.12, ease: 'easeOut' }}
+								className="flex items-center gap-1.5"
+							>
+								{confirmationButtons}
+							</motion.div>
+							<motion.span
+								aria-hidden="true"
+								initial={false}
+								animate={
+									closing ? { opacity: 1, scaleX: 1 / morphScale.x, scaleY: 1 / morphScale.y } : { opacity: 0, scaleX: 0.35, scaleY: 0.35 }
+								}
+								transition={closing ? spring : { duration: 0.12, ease: 'easeOut' }}
+								className="pointer-events-none absolute inset-0 flex items-center justify-center"
+								data-morph-label=""
+							>
+								{renderActionIcon('size-5')}
+							</motion.span>
+						</Popover.Popup>
+					</Popover.Positioner>
+				</Popover.Portal>
+			) : null}
+		</Popover.Root>
 	);
 }
 
