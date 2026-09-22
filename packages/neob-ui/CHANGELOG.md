@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 2.2.3
+
+### Patch Changes
+
+- [`f9ab5da`](https://github.com/joyful-tools/neob/commit/f9ab5dac60ddc225fd828b05293fd99e53be42d6) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Prevent scrollbars during ConfirmButton close animations and smoothly fade InlineConfirmGroup ghost surfaces into their trigger.
+
 ## 2.2.2
 
 ### Patch Changes
