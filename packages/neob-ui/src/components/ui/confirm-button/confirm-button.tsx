@@ -310,7 +310,7 @@ export function ConfirmButton({
 							initialFocus={cancelButtonRef}
 							finalFocus={false}
 							className={cn(
-								`relative flex max-h-[min(var(--available-height),calc(100vh-1rem))] max-w-[calc(100vw-1rem)] min-w-[min(14rem,calc(100vw-1rem))] flex-col items-center overflow-auto rounded-xl border-2 border-edge bg-white p-3 text-black shadow-md outline-hidden dark:bg-zinc dark:text-white`,
+								`relative flex max-h-[min(var(--available-height),calc(100vh-1rem))] max-w-[calc(100vw-1rem)] min-w-[min(14rem,calc(100vw-1rem))] flex-col items-center overflow-hidden rounded-xl border-2 border-edge bg-white p-3 text-black shadow-md outline-hidden dark:bg-zinc dark:text-white`,
 							)}
 							role="dialog"
 							aria-labelledby={titleId}

@@ -72,6 +72,7 @@ export function InlineConfirmGroup({
 	const borderAnimation = useAnimationControls();
 	const actionLabelLowercase = actionLabel.toLowerCase();
 	const transformOrigin = direction === 'left' ? 'right center' : 'left center';
+	const shouldTransitionSurface = variant === 'ghost' || variant === 'dark-ghost';
 	const renderActionIcon = useCallback(
 		(sizeClassName: string) => cloneElement(actionIcon, { className: cn(sizeClassName, actionIcon.props.className) }),
 		[actionIcon],
@@ -198,16 +199,27 @@ export function InlineConfirmGroup({
 
 			const triggerStyles = ownerWindow.getComputedStyle(triggerButtonReference.current!);
 			const popupStyles = ownerWindow.getComputedStyle(popupElement);
-			const popupBoxShadow = popupStyles.boxShadow;
+			const popupBackgroundColor = popupStyles.backgroundColor;
+			const popupColor = popupStyles.color;
+			const popupBorderTopWidth = popupStyles.borderTopWidth;
+			const popupBorderRightWidth = popupStyles.borderRightWidth;
+			const popupBorderBottomWidth = popupStyles.borderBottomWidth;
+			const popupBorderLeftWidth = popupStyles.borderLeftWidth;
+			const targetBackgroundColor = shouldTransitionSurface ? triggerStyles.backgroundColor : popupBackgroundColor;
+			const targetColor = shouldTransitionSurface ? triggerStyles.color : popupColor;
+			const targetBorderTopColor = shouldTransitionSurface ? 'transparent' : triggerStyles.borderTopColor;
+			const targetBorderRightColor = shouldTransitionSurface ? 'transparent' : triggerStyles.borderRightColor;
+			const targetBorderBottomColor = shouldTransitionSurface ? 'transparent' : triggerStyles.borderBottomColor;
+			const targetBorderLeftColor = shouldTransitionSurface ? 'transparent' : triggerStyles.borderLeftColor;
 			const borderTarget: TargetAndTransition = {
-				borderTopWidth: `${Number.parseFloat(triggerStyles.borderTopWidth) / scaleY}px`,
-				borderRightWidth: `${Number.parseFloat(triggerStyles.borderRightWidth) / scaleX}px`,
-				borderBottomWidth: `${Number.parseFloat(triggerStyles.borderBottomWidth) / scaleY}px`,
-				borderLeftWidth: `${Number.parseFloat(triggerStyles.borderLeftWidth) / scaleX}px`,
-				borderTopColor: triggerStyles.borderTopColor,
-				borderRightColor: triggerStyles.borderRightColor,
-				borderBottomColor: triggerStyles.borderBottomColor,
-				borderLeftColor: triggerStyles.borderLeftColor,
+				borderTopWidth: `${Math.max(0, Number.parseFloat(triggerStyles.borderTopWidth) / scaleY - (shouldTransitionSurface ? 0 : Number.parseFloat(popupBorderTopWidth)))}px`,
+				borderRightWidth: `${Math.max(0, Number.parseFloat(triggerStyles.borderRightWidth) / scaleX - (shouldTransitionSurface ? 0 : Number.parseFloat(popupBorderRightWidth)))}px`,
+				borderBottomWidth: `${Math.max(0, Number.parseFloat(triggerStyles.borderBottomWidth) / scaleY - (shouldTransitionSurface ? 0 : Number.parseFloat(popupBorderBottomWidth)))}px`,
+				borderLeftWidth: `${Math.max(0, Number.parseFloat(triggerStyles.borderLeftWidth) / scaleX - (shouldTransitionSurface ? 0 : Number.parseFloat(popupBorderLeftWidth)))}px`,
+				borderTopColor: targetBorderTopColor,
+				borderRightColor: targetBorderRightColor,
+				borderBottomColor: targetBorderBottomColor,
+				borderLeftColor: targetBorderLeftColor,
 			};
 			const target: TargetAndTransition = {
 				x: direction === 'left' ? anchorBounds.right - popupBounds.right : anchorBounds.left - popupBounds.left,
@@ -215,7 +227,8 @@ export function InlineConfirmGroup({
 				scaleX,
 				scaleY,
 				borderRadius: `${8 / scaleX}px / ${8 / scaleY}px`,
-				boxShadow: triggerStyles.boxShadow,
+				backgroundColor: targetBackgroundColor,
+				color: targetColor,
 				opacity: 1,
 			};
 
@@ -233,7 +246,8 @@ export function InlineConfirmGroup({
 						scaleX: 1,
 						scaleY: 1,
 						borderRadius: '8px / 8px',
-						boxShadow: popupBoxShadow,
+						backgroundColor: popupBackgroundColor,
+						color: popupColor,
 						opacity: 1,
 						transition: spring,
 					})
@@ -249,7 +263,7 @@ export function InlineConfirmGroup({
 		});
 
 		return () => ownerWindow.cancelAnimationFrame(animationFrame);
-	}, [anchorElement, borderAnimation, direction, open, popupAnimation, popupElement]);
+	}, [anchorElement, borderAnimation, direction, open, popupAnimation, popupElement, shouldTransitionSurface]);
 
 	const confirmButton = (
 		<Button
@@ -341,7 +355,7 @@ export function InlineConfirmGroup({
 							data-opening={opening ? '' : undefined}
 							data-closing={closing ? '' : undefined}
 							className={cn(
-								'relative flex shrink-0 items-center gap-1.5 rounded-lg border-2 border-transparent bg-white p-1 shadow-sm outline-hidden dark:bg-zinc',
+								'relative flex shrink-0 items-center gap-1.5 rounded-lg border-2 border-transparent bg-white p-1 outline-hidden dark:bg-zinc',
 								className,
 							)}
 							onClick={(event) => event.stopPropagation()}
@@ -349,12 +363,13 @@ export function InlineConfirmGroup({
 						>
 							<motion.span
 								aria-hidden="true"
-								initial={{ opacity: 0 }}
-								animate={{ opacity: closing ? 0 : 1 }}
-								transition={{ duration: 0.12, ease: 'easeOut' }}
+								initial={{ opacity: shouldTransitionSurface ? 0 : 1 }}
+								animate={{ opacity: shouldTransitionSurface && closing ? 0 : 1 }}
+								transition={spring}
 								style={{ borderRadius: 'inherit' }}
-								className="pointer-events-none absolute inset-0 border-2 border-edge"
+								className="pointer-events-none absolute inset-0 border-2 border-edge shadow-sm"
 								data-surface-border=""
+								data-surface-transition={shouldTransitionSurface ? 'fade' : undefined}
 							/>
 							<motion.span
 								aria-hidden="true"

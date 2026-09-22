@@ -76,6 +76,8 @@ export const Default: Story = {
 
 		fireEvent.keyDown(keyboardDialog, { key: 'Escape' });
 		expect(keyboardDialog).toHaveAttribute('data-closing', '');
+		expect(getComputedStyle(keyboardDialog).overflowX).toBe('hidden');
+		expect(getComputedStyle(keyboardDialog).overflowY).toBe('hidden');
 		expect(getComputedStyle(trigger1).visibility).toBe('hidden');
 		await waitFor(() => {
 			expect(body.queryByText('Are you sure?')).not.toBeInTheDocument();

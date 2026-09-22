@@ -232,13 +232,14 @@ export const Default = {
 		await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 		const archiveMorphBounds = archiveConfirmation.getBoundingClientRect();
 		expect(Math.abs(archiveMorphBounds.right - archiveTriggerBounds.right)).toBeLessThan(1);
-		expect(archiveConfirmation.style.backgroundColor).toBe('');
-		expect(archiveConfirmation.style.color).toBe('');
 		await waitFor(() => {
 			expect(archiveConfirmation.style.transform).not.toBe('');
 			expect(archiveConfirmation).not.toHaveAttribute('data-opening');
 			expect(body.getByRole('button', { name: 'Cancel archive invoices.csv' })).toHaveFocus();
 		});
+		expect(archiveConfirmation.style.backgroundColor).not.toBe('');
+		expect(archiveConfirmation.style.borderTopColor).toBe('');
+		expect(archiveConfirmation.style.boxShadow).toBe('');
 		const archiveMorphBorder = archiveConfirmation.querySelector<HTMLElement>('[data-morph-border]');
 		if (!archiveMorphBorder) throw new Error('Expected the confirmation morph border.');
 		const archiveSurfaceBorder = archiveConfirmation.querySelector<HTMLElement>('[data-surface-border]');
@@ -247,6 +248,7 @@ export const Default = {
 		expect(getComputedStyle(archiveMorphBorder).borderRightWidth).toBe('0px');
 		expect(getComputedStyle(archiveMorphBorder).borderBottomWidth).toBe('0px');
 		expect(getComputedStyle(archiveMorphBorder).borderLeftWidth).toBe('0px');
+		expect(getComputedStyle(archiveMorphBorder).borderTopColor).toBe('rgba(0, 0, 0, 0)');
 		expect(getComputedStyle(archiveSurfaceBorder).opacity).toBe('1');
 		const cancelArchiveBounds = body.getByRole('button', { name: 'Cancel archive invoices.csv' }).getBoundingClientRect();
 		const confirmArchiveBounds = body.getByRole('button', { name: 'Confirm archive invoices.csv' }).getBoundingClientRect();
@@ -264,7 +266,6 @@ export const Default = {
 		fireEvent.keyDown(archiveConfirmation, { key: 'Escape' });
 		expect(archiveConfirmation).toHaveAttribute('data-closing', '');
 		expect(getComputedStyle(archiveTrigger).visibility).toBe('hidden');
-		await waitFor(() => expect(getComputedStyle(archiveSurfaceBorder).opacity).toBe('0'));
 		await waitFor(() => {
 			expect(body.queryByRole('group', { name: 'Archive confirmation for invoices.csv' })).not.toBeInTheDocument();
 			expect(canvas.getByRole('button', { name: 'Archive invoices.csv' })).toHaveFocus();
@@ -279,7 +280,7 @@ export const Default = {
 		const deleteMorphBounds = packageDeleteConfirmation.getBoundingClientRect();
 		expect(Math.abs(deleteMorphBounds.right - deleteTriggerBounds.right)).toBeLessThan(1);
 		await userEvent.click(body.getByRole('button', { name: 'Cancel delete package.json' }));
-		const restoredTrigger = canvas.getByRole('button', { name: 'Delete package.json' });
+		const restoredTrigger = await canvas.findByRole('button', { name: 'Delete package.json' }, { timeout: 2500 });
 		await waitFor(() => {
 			expect(restoredTrigger).toBeVisible();
 			expect(restoredTrigger).toHaveFocus();
@@ -355,6 +356,38 @@ export const Directions = {
 
 			fireEvent.keyDown(confirmation, { key: 'Escape' });
 			await waitFor(() => expect(body.queryByRole('group', { name: `Delete confirmation for ${direction} item` })).not.toBeInTheDocument());
+		}
+	}),
+};
+
+export const TriggerStyles = {
+	render: () => (
+		<div className="flex items-center gap-6">
+			<InlineConfirmGroup itemName="ghost item" variant="ghost" action={() => {}} />
+			<InlineConfirmGroup itemName="filled item" variant="default" action={() => {}} />
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+		const canvas = within(canvasElement);
+		const body = within(canvasElement.ownerDocument.body);
+
+		for (const { itemName, shouldFade } of [
+			{ itemName: 'ghost item', shouldFade: true },
+			{ itemName: 'filled item', shouldFade: false },
+		]) {
+			fireEvent.click(canvas.getByRole('button', { name: `Delete ${itemName}` }));
+			const confirmation = body.getByRole('group', { name: `Delete confirmation for ${itemName}` });
+			await waitFor(() => expect(confirmation).not.toHaveAttribute('data-opening'));
+			const surfaceBorder = confirmation.querySelector<HTMLElement>('[data-surface-border]');
+			if (!surfaceBorder) throw new Error('Expected the confirmation surface border.');
+			if (shouldFade) {
+				expect(surfaceBorder).toHaveAttribute('data-surface-transition', 'fade');
+			} else {
+				expect(surfaceBorder).not.toHaveAttribute('data-surface-transition');
+			}
+
+			fireEvent.keyDown(confirmation, { key: 'Escape' });
+			await waitFor(() => expect(body.queryByRole('group', { name: `Delete confirmation for ${itemName}` })).not.toBeInTheDocument());
 		}
 	}),
 };
