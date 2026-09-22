@@ -1,0 +1,23 @@
+.changeset/orange-cloths-vanish.md
+  s_3c977305fef01b::t_cacd9ec6129395 1-5
+packages/neob-ui/src/components/ui/inline-confirm-group/inline-confirm-group.stories.tsx
+  s_3c977305fef01b::t_0f2f1f35e4f85c 4,15,51-54,100,168,191,222,225,227-236,238-240,242-256,259,262,264-267,269-271,274-281,285,292,297,302,308,313,315,326-360
+packages/neob-ui/src/components/ui/inline-confirm-group/inline-confirm-group.tsx
+  s_3c977305fef01b::t_c2abdc5b5a3bc9 1,3-4,13,57,59-66,70-72,74,80-81,83-88,90-110,113-121,123-127,130-135,145,166,180,183,185-253,289-310,312,314-330,332-348,350-391
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "fe70d0e637a2885e4dc691545dbe9134ed48f9a7",
+  "prompts": {},
+  "sessions": {
+    "s_3c977305fef01b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c661-e4d6-7440-b0f3-6da53ef55e36",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
