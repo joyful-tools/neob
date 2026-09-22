@@ -1,5 +1,13 @@
 # @joyful.tools/neob
 
+## 2.2.2
+
+### Patch Changes
+
+- [`eb899fc`](https://github.com/joyful-tools/neob/commit/eb899fc8dc071dc392f6186a8a2317d97a5c0322) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Make disabled pagination borders uniformly subtle when only one page is available.
+
+- [`fe70d0e`](https://github.com/joyful-tools/neob/commit/fe70d0e637a2885e4dc691545dbe9134ed48f9a7) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Portal InlineConfirmGroup confirmation surfaces while preserving their trigger morph, and restore trigger focus after dismissal.
+
 ## 2.2.1
 
 ### Patch Changes
