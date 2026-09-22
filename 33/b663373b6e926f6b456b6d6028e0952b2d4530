@@ -1,0 +1,37 @@
+.changeset/slimy-tigers-hang.md
+  s_f6ae56101a84c6::t_7ae5511d70b0d7 1-5
+packages/neob-ui/public-api.ts
+  s_f6ae56101a84c6::t_72917fcfeb78cc 15
+packages/neob-ui/src/components/ui/breadcrumb/breadcrumb.stories.tsx
+  s_f6ae56101a84c6::t_c5d4ccf366d558 2,65-67
+packages/neob-ui/src/components/ui/breadcrumb/breadcrumb.tsx
+  s_f6ae56101a84c6::t_f3f160f0a47d73 2,14,132-135,140,142
+packages/neob-ui/src/components/ui/confirm-button/confirm-button.stories.tsx
+  s_f6ae56101a84c6::t_c85681dece5c8a 220-226
+packages/neob-ui/src/components/ui/copy-button/copy-button.stories.tsx
+  s_f6ae56101a84c6::t_eb1ce40efe18df 1-73
+packages/neob-ui/src/components/ui/copy-button/copy-button.tsx
+  s_f6ae56101a84c6::t_bf4a47c0ee6aca 1-84
+packages/neob-ui/src/components/ui/copy-button/index.ts
+  s_f6ae56101a84c6::t_81e84fda5beaeb 1-2
+packages/neob-ui/src/components/ui/inline-confirm-group/inline-confirm-group.stories.tsx
+  s_f6ae56101a84c6::t_9c8d6988f96bec 310-318
+packages/neob-ui/src/index.ts
+  s_f6ae56101a84c6::t_c0249ee1c2f6bf 14-16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "33b663373b6e926f6b456b6d6028e0952b2d4530",
+  "prompts": {},
+  "sessions": {
+    "s_f6ae56101a84c6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0cb0d-81f9-7b52-9f1d-78b74e8da4d4",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
