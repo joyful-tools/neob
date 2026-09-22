@@ -1,0 +1,23 @@
+.changeset/icy-cases-peel.md
+  s_c34363a09c38bb::t_eb831b660ba44a 1-5
+packages/neob-ui/src/components/ui/confirm-button/confirm-button.stories.tsx
+  s_c34363a09c38bb::t_9e429a1161d577 79-80
+packages/neob-ui/src/components/ui/confirm-button/confirm-button.tsx
+  s_c34363a09c38bb::t_8c82a50a8eb4b8 313
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "786ef70138829490f13e8eab39cb396904d5060d",
+  "prompts": {},
+  "sessions": {
+    "s_c34363a09c38bb": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c9ec-ee7e-7fe2-bba4-3dc4a43ba2e9",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
