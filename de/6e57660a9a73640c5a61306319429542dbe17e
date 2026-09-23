@@ -1,0 +1,23 @@
+.changeset/khaki-paws-nail.md
+  s_8e6af64c8ef522::t_8d63ad1c3aa3cd 1-5
+packages/neob-ui/src/components/ui/confirm-button/confirm-button.stories.tsx
+  s_8e6af64c8ef522::t_20de623a5694d5 174-205
+packages/neob-ui/src/components/ui/confirm-button/confirm-button.tsx
+  s_8e6af64c8ef522::t_c6db37357dfd70 313,337,341-344,348,355,367
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "de6e57660a9a73640c5a61306319429542dbe17e",
+  "prompts": {},
+  "sessions": {
+    "s_8e6af64c8ef522": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0d011-8f63-7dd2-a3db-5d537fb6d662",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
