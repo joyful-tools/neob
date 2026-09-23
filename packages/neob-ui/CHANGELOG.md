@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 2.3.1
+
+### Patch Changes
+
+- [`de6e576`](https://github.com/joyful-tools/neob/commit/de6e57660a9a73640c5a61306319429542dbe17e) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Constrain ConfirmButton overlays to a readable width and wrap long titles, descriptions, and action labels to prevent overflow.
+
 ## 2.3.0
 
 ### Minor Changes
