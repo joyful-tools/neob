@@ -171,6 +171,38 @@ export const AsyncDelete: Story = {
 	}),
 };
 
+export const LongContent: Story = {
+	args: {
+		children: 'Review long confirmation',
+		title: 'Confirm applying these changes to every selected production environment?',
+		description:
+			'This confirmation contains intentionally long copy and an uninterrupted identifier-that-must-wrap-within-the-overlay-without-making-it-wider.',
+		cancelLabel: 'Go back without applying changes',
+		confirmLabel: 'Apply changes to every environment',
+		action: () => {},
+	},
+	render: (args) => (
+		<ConfirmButton {...args} action={() => action('confirm-button-long-content-confirm')()}>
+			{args.children}
+		</ConfirmButton>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const body = within(canvasElement.ownerDocument.body);
+		await userEvent.click(canvas.getByRole('button', { name: 'Review long confirmation' }));
+		const dialog = await body.findByRole('dialog', {
+			name: 'Confirm applying these changes to every selected production environment?',
+		});
+		const confirmButton = body.getByRole('button', { name: 'Apply changes to every environment' });
+
+		await waitFor(() => {
+			expect(dialog.getBoundingClientRect().width).toBeLessThanOrEqual(384);
+			expect(dialog.scrollWidth).toBeLessThanOrEqual(dialog.clientWidth);
+			expect(getComputedStyle(confirmButton).whiteSpace).toBe('normal');
+		});
+	}),
+};
+
 interface ViewportEdgeCase {
 	readonly label: string;
 	readonly className: string;

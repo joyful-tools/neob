@@ -310,7 +310,7 @@ export function ConfirmButton({
 							initialFocus={cancelButtonRef}
 							finalFocus={false}
 							className={cn(
-								`relative flex max-h-[min(var(--available-height),calc(100vh-1rem))] max-w-[calc(100vw-1rem)] min-w-[min(14rem,calc(100vw-1rem))] flex-col items-center overflow-hidden rounded-xl border-2 border-edge bg-white p-3 text-black shadow-md outline-hidden dark:bg-zinc dark:text-white`,
+								`relative flex max-h-[min(var(--available-height),calc(100vh-1rem))] max-w-[min(24rem,calc(100vw-1rem))] min-w-[min(14rem,calc(100vw-1rem))] flex-col items-center overflow-hidden rounded-xl border-2 border-edge bg-white p-3 wrap-anywhere text-black shadow-md outline-hidden dark:bg-zinc dark:text-white`,
 							)}
 							role="dialog"
 							aria-labelledby={titleId}
@@ -334,22 +334,25 @@ export function ConfirmButton({
 								transition={{ duration: 0.18, ease: 'easeOut' }}
 								className="flex w-full flex-col items-center"
 							>
-								<Popover.Title id={titleId} className="text-center text-sm font-bold text-black dark:text-white">
+								<Popover.Title id={titleId} className="w-full text-center text-sm font-bold text-black dark:text-white">
 									{title}
 								</Popover.Title>
 								{description && (
-									<Popover.Description id={descriptionId} className="mt-1 text-center text-xs/relaxed text-black/60 dark:text-white/60">
+									<Popover.Description
+										id={descriptionId}
+										className="mt-1 w-full text-center text-xs/relaxed text-black/60 dark:text-white/60"
+									>
 										{description}
 									</Popover.Description>
 								)}
-								<div className="mt-3 flex w-full items-center justify-center gap-1.5">
+								<div className="mt-3 flex w-full min-w-0 items-center justify-center gap-1.5">
 									<Button
 										ref={cancelButtonRef}
 										type="button"
 										variant="subtle"
 										size="sm"
 										disabled={isPending}
-										className="h-7 px-3"
+										className="h-auto min-h-7 max-w-full min-w-0 px-3 py-1 whitespace-normal"
 										action={closeOverlay}
 									>
 										{cancelLabel}
@@ -361,7 +364,7 @@ export function ConfirmButton({
 										color={confirmColor}
 										size="sm"
 										action={runAction}
-										className="h-7 px-3"
+										className="h-auto min-h-7 max-w-full min-w-0 px-3 py-1 whitespace-normal"
 									>
 										{confirmLabel}
 									</Button>
