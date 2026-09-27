@@ -69,7 +69,7 @@ export function ConfirmDialog({
 
 	return (
 		<Dialog open={open} onOpenChange={handleOpenChange} preventClose>
-			<Dialog.Content aria-busy={isPending || undefined} data-pending={isPending ? '' : undefined}>
+			<Dialog.Content role="alertdialog" aria-busy={isPending || undefined} data-pending={isPending ? '' : undefined}>
 				<Dialog.Header>
 					<Dialog.Title>{title}</Dialog.Title>
 				</Dialog.Header>
@@ -78,23 +78,25 @@ export function ConfirmDialog({
 						<Dialog.Description>{description}</Dialog.Description>
 						{resourceName && (
 							<div className="flex flex-col gap-3">
-								<label htmlFor={inputId} className="text-sm text-black/80 dark:text-white/80">
+								<div className="text-sm text-black/80 dark:text-white/80">
 									Enter{' '}
 									<Button
 										type="button"
 										variant="subtle"
 										size="sm"
 										action={handleCopyResourceName}
+										aria-label={`Copy ${resourceName} to clipboard`}
 										className="mx-0.5 h-6 px-2 font-mono text-xs"
 									>
 										{resourceName}
 										{copied ? <CheckIcon className="size-3" /> : <CopyIcon className="size-3" />}
 									</Button>{' '}
 									to confirm:
-								</label>
+								</div>
 								<Input
 									id={inputId}
 									type="text"
+									aria-label={`Enter ${resourceName} to confirm`}
 									value={typedConfirmation}
 									onChange={(event) => setTypedConfirmation(event.target.value)}
 									onKeyDown={(event) => {
@@ -103,8 +105,10 @@ export function ConfirmDialog({
 										}
 									}}
 									disabled={isPending}
-									placeholder={resourceName}
 									autoComplete="off"
+									autoCorrect="off"
+									autoCapitalize="off"
+									spellCheck={false}
 									className="rounded-md px-3 text-sm shadow-cel-inset-sm"
 								/>
 							</div>

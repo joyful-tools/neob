@@ -49,6 +49,7 @@ interface DialogProperties extends Omit<DialogPrimitive.Root.Props, 'children' |
 
 interface DialogContentProperties {
 	readonly ref?: Ref<HTMLDivElement>;
+	readonly role?: 'dialog' | 'alertdialog';
 	readonly className?: string;
 	readonly children?: ReactNode;
 	readonly onAnimationEnd?: () => void;

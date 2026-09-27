@@ -101,6 +101,7 @@ export const NormalConfirm = {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
 		await userEvent.click(canvas.getByRole('button', { name: 'Open Save Confirmation' }));
+		await expect(body.getByRole('alertdialog')).toBeInTheDocument();
 		await expect(body.getByText('Save Changes?')).toBeInTheDocument();
 		await expect(body.getByRole('button', { name: 'Cancel' })).toHaveFocus();
 		await userEvent.click(body.getByRole('button', { name: 'Save' }));
@@ -121,7 +122,10 @@ export const Destructive = {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
 		await userEvent.click(canvas.getByRole('button', { name: 'Open Delete Confirmation' }));
+		await expect(body.getByRole('alertdialog')).toBeInTheDocument();
 		await expect(body.getByText('Delete Production Database?')).toBeInTheDocument();
+		await expect(body.getByRole('button', { name: 'Copy delete-production-db to clipboard' })).toBeInTheDocument();
+		await expect(body.getByRole('textbox', { name: 'Enter delete-production-db to confirm' })).not.toHaveAttribute('placeholder');
 		await expect(body.getByRole('button', { name: 'Delete Permanently' })).toBeInTheDocument();
 	}),
 };
