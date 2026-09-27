@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 2.3.3
+
+### Patch Changes
+
+- [`c8605cf`](https://github.com/joyful-tools/neob/commit/c8605cf9f397ec520be384a66b11206ee855d2b9) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Remove resource-name placeholders from destructive confirmation inputs while preserving explicit accessible names for the dialog, input, and copy control.
+
 ## 2.3.2
 
 ### Patch Changes
