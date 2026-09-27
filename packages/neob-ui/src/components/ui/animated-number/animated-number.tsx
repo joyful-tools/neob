@@ -35,7 +35,7 @@ export interface RollingDigitProps {
 }
 
 /**
- * Neo-Brutalist rolling digit display powered by Number Flow.
+ * High-contrast rolling digit display powered by Number Flow.
  * Features layout-aware digit transitions, continuous reel rotation, and synchronized subtle container width animations.
  */
 export function RollingDigit({

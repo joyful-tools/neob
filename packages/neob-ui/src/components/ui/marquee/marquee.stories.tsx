@@ -41,7 +41,7 @@ export const Horizontal: Story = {
 	render: () => (
 		<div className="w-125 overflow-hidden rounded-2xl border border-edge/10 bg-muted/10 p-4">
 			<Marquee duration="10s">
-				<Item text="BRUTAL" />
+				<Item text="BOLD" />
 				<Item text="STARK" />
 				<Item text="REACT 19" />
 				<Item text="BASE UI" />
@@ -52,7 +52,7 @@ export const Horizontal: Story = {
 	play: guardPlay(async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
-		const items = canvas.getAllByText('BRUTAL');
+		const items = canvas.getAllByText('BOLD');
 		await expect(items.length).toBeGreaterThan(1);
 
 		const animator = items[0].parentElement;

@@ -1,7 +1,7 @@
 {
 	"name": "@joyful.tools/neob",
 	"version": "2.3.3",
-	"description": "Accessible React 19 components with a bold Neo-Brutalist design system",
+	"description": "Accessible React 19 components with a bold, high-contrast design system",
 	"type": "module",
 	"license": "MIT",
 	"author": "Timo Wilhelm",

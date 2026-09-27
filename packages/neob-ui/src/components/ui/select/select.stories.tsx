@@ -196,7 +196,7 @@ export const Groups: Story = {
 						<Select.GroupLabel>Custom Themes</Select.GroupLabel>
 						<Select.Option value="light">Light Theme</Select.Option>
 						<Select.Option value="dark">Dark Theme</Select.Option>
-						<Select.Option value="brutal">Brutal Gold Theme</Select.Option>
+						<Select.Option value="gold">Gold Theme</Select.Option>
 					</Select.Group>
 				</Select>
 			</div>
