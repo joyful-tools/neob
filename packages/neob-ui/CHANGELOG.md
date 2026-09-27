@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 2.3.2
+
+### Patch Changes
+
+- [`73cbf3d`](https://github.com/joyful-tools/neob/commit/73cbf3d6f8dd9a6bfba1ecb61d7d7277205bf22f) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Keep layered dialogs mounted through their exit animations so shared backdrop dismissal consistently targets the topmost dialog.
+
 ## 2.3.1
 
 ### Patch Changes
