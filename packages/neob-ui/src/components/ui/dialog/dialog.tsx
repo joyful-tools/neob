@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { createContext, useCallback, useContext, useRef, useState } from 'react';
 
 import { buttonVariants } from '@/components/ui/button';
+import { useDeferredOpen } from '@/hooks/use-deferred-open';
 import { cn } from '@/lib/utilities';
 
 import { useDialogStackPresence } from './dialog-stack';
@@ -28,7 +29,14 @@ const springSnappy = {
 	damping: 28,
 } as const;
 
-const DialogContext = createContext<{ open: boolean; preventClose: boolean; isComposed?: boolean }>({ open: false, preventClose: false });
+const DialogContext = createContext<{
+	open: boolean;
+	preventClose: boolean;
+	isComposed?: boolean;
+	isTop: boolean;
+	dialogOpen: boolean;
+	onExitComplete: () => void;
+}>({ open: false, preventClose: false, isTop: false, dialogOpen: false, onExitComplete: () => {} });
 
 interface DialogProperties extends Omit<DialogPrimitive.Root.Props, 'children' | 'open' | 'defaultOpen' | 'onOpenChange'> {
 	readonly children?: ReactNode;
@@ -75,13 +83,28 @@ function DialogRoot({ children, open: controlledOpen, defaultOpen, onOpenChange,
 		},
 		[isControlled, onOpenChange],
 	);
-
-	useDialogStackPresence(open, preventClose ? undefined : () => handleOpenChange(false));
+	const { isTop, onExitComplete: unregisterFromStack } = useDialogStackPresence(
+		open,
+		preventClose ? undefined : () => handleOpenChange(false),
+	);
+	const { dialogOpen, show, onExitComplete } = useDeferredOpen(open && isTop);
 
 	return (
-		<DialogContext.Provider value={{ open, preventClose, isComposed: false }}>
+		<DialogContext.Provider
+			value={{
+				open: show,
+				preventClose,
+				isComposed: false,
+				isTop,
+				dialogOpen,
+				onExitComplete: () => {
+					onExitComplete();
+					unregisterFromStack();
+				},
+			}}
+		>
 			<DialogPrimitive.Root
-				open={open}
+				open={dialogOpen}
 				onOpenChange={handleOpenChange}
 				actionsRef={actionsReference}
 				disablePointerDismissal={preventClose}
@@ -98,32 +121,46 @@ const DialogTrigger = DialogPrimitive.Trigger;
 
 /** Dialog content with animated overlay and panel. */
 function DialogContent({ className, children, ref, onAnimationEnd, ...properties }: DialogContentProperties) {
-	const { open } = useContext(DialogContext);
+	const { open, isTop, dialogOpen, onExitComplete } = useContext(DialogContext);
 
 	return (
-		<AnimatePresence onExitComplete={onAnimationEnd}>
-			{open && (
+		<>
+			{dialogOpen && (
 				<DialogPrimitive.Portal keepMounted>
-					<div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4">
-						<DialogPrimitive.Popup
-							ref={ref}
-							render={
-								<motion.div
-									className={cn(CONTENT_CLASS_NAME, 'pointer-events-auto', className)}
-									initial={MOTION_VARIANTS.initial}
-									animate={MOTION_VARIANTS.animate}
-									exit={MOTION_VARIANTS.exit}
-									transition={springSnappy}
-								/>
-							}
-							{...properties}
+					<div
+						className={cn(
+							'pointer-events-none fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4',
+							!isTop && 'invisible',
+						)}
+					>
+						<AnimatePresence
+							onExitComplete={() => {
+								onExitComplete();
+								onAnimationEnd?.();
+							}}
 						>
-							{children}
-						</DialogPrimitive.Popup>
+							{open && (
+								<DialogPrimitive.Popup
+									ref={ref}
+									render={
+										<motion.div
+											className={cn(CONTENT_CLASS_NAME, 'pointer-events-auto', className)}
+											initial={MOTION_VARIANTS.initial}
+											animate={MOTION_VARIANTS.animate}
+											exit={MOTION_VARIANTS.exit}
+											transition={springSnappy}
+										/>
+									}
+									{...properties}
+								>
+									{children}
+								</DialogPrimitive.Popup>
+							)}
+						</AnimatePresence>
 					</div>
 				</DialogPrimitive.Portal>
 			)}
-		</AnimatePresence>
+		</>
 	);
 }
 DialogContent.displayName = 'Dialog.Content';

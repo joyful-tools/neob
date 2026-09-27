@@ -1,10 +1,22 @@
-import { createContext, createElement, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import {
+	createContext,
+	createElement,
+	ReactNode,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+	useSyncExternalStore,
+} from 'react';
 
 type DialogStackListener = () => void;
 
 export interface DialogStackStore {
 	readonly subscribe: (listener: DialogStackListener) => () => void;
 	readonly getSnapshot: () => number;
+	readonly getTopDialogId: () => number | undefined;
 	readonly register: (dialogId: number, onClose: () => void) => () => void;
 	readonly closeTop: () => void;
 }
@@ -26,6 +38,7 @@ export function createDialogStackStore(): DialogStackStore {
 			return () => listeners.delete(listener);
 		},
 		getSnapshot: () => openDialogIds.length,
+		getTopDialogId: () => openDialogIds.at(-1),
 		register: (dialogId, onClose) => {
 			const existingIndex = openDialogIds.indexOf(dialogId);
 			if (existingIndex !== -1) {
@@ -89,14 +102,21 @@ export function closeTopDialog(): void {
  *
  * Pass `onClose` to make the dialog dismissible via a backdrop click.
  * Omit it (e.g. for AlertDialog / ConfirmDialog) to keep it non-dismissible.
+ *
+ * A closing top dialog remains registered until its exit animation completes,
+ * keeping lower dialogs hidden until the top layer has fully left the screen.
  */
-export function useDialogStackPresence(open: boolean, onClose?: () => void): void {
+export function useDialogStackPresence(open: boolean, onClose?: () => void): { isTop: boolean; onExitComplete: () => void } {
 	const store = useDialogStackStore();
 	const [dialogId] = useState(() => {
 		const resolvedDialogId = nextDialogId;
 		nextDialogId += 1;
 		return resolvedDialogId;
 	});
+	const unregisterReference = useRef<() => void>(undefined);
+	const registeredReference = useRef(false);
+	const topDialogId = useSyncExternalStore(store.subscribe, store.getTopDialogId, store.getTopDialogId);
+	const isTop = topDialogId === dialogId;
 
 	// Keep the callback ref current without re-running the effect on every render.
 	const onCloseReference = useRef(onClose);
@@ -104,11 +124,31 @@ export function useDialogStackPresence(open: boolean, onClose?: () => void): voi
 		onCloseReference.current = onClose;
 	});
 
+	const unregister = useCallback(() => {
+		unregisterReference.current?.();
+		unregisterReference.current = undefined;
+		registeredReference.current = false;
+	}, []);
+
 	useEffect(() => {
-		if (!open) {
+		if (open && !registeredReference.current) {
+			unregisterReference.current = store.register(dialogId, () => onCloseReference.current?.());
+			registeredReference.current = true;
 			return;
 		}
 
-		return store.register(dialogId, () => onCloseReference.current?.());
-	}, [open, dialogId, store]);
+		if (!open && !isTop) {
+			unregister();
+		}
+	}, [dialogId, isTop, open, store, unregister]);
+
+	useEffect(() => unregister, [unregister]);
+
+	const onExitComplete = useCallback(() => {
+		if (!open) {
+			unregister();
+		}
+	}, [open, unregister]);
+
+	return { isTop, onExitComplete };
 }

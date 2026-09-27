@@ -16,6 +16,7 @@ import {
 
 import { Button, buttonVariants } from '@/components/ui/button';
 import { useDialogStackPresence } from '@/components/ui/dialog/dialog-stack';
+import { useDeferredOpen } from '@/hooks/use-deferred-open';
 import { useQueuedAction } from '@/hooks/use-queued-action';
 import { afterAction } from '@/lib/actions';
 import { cn } from '@/lib/utilities';
@@ -39,6 +40,9 @@ const AlertDialogContext = createContext<{
 	open: boolean;
 	runAction: (action: Action) => Promise<void>;
 	isPending: boolean;
+	isTop: boolean;
+	dialogOpen: boolean;
+	onExitComplete: () => void;
 } | null>(null);
 
 interface AlertDialogProperties extends Omit<AlertDialogPrimitive.Root.Props, 'children' | 'open' | 'defaultOpen' | 'onOpenChange'> {
@@ -96,8 +100,8 @@ function AlertDialogRoot({ children, open: controlledOpen, defaultOpen, onOpenCh
 
 	const isControlled = controlledOpen !== undefined;
 	const open = isControlled ? controlledOpen : uncontrolledOpen;
-
-	useDialogStackPresence(open);
+	const { isTop, onExitComplete: unregisterFromStack } = useDialogStackPresence(open);
+	const { dialogOpen, show, onExitComplete } = useDeferredOpen(open && isTop);
 
 	const handleOpenChange = useCallback(
 		(nextOpen: boolean) => {
@@ -111,8 +115,20 @@ function AlertDialogRoot({ children, open: controlledOpen, defaultOpen, onOpenCh
 	const { runAction, isPending } = useQueuedAction((action: Action) => afterAction(action(), () => handleOpenChange(false)));
 
 	return (
-		<AlertDialogContext.Provider value={{ open, runAction, isPending }}>
-			<AlertDialogPrimitive.Root open={open} onOpenChange={handleOpenChange} actionsRef={actionsReference} {...properties}>
+		<AlertDialogContext.Provider
+			value={{
+				open: show,
+				runAction,
+				isPending,
+				isTop,
+				dialogOpen,
+				onExitComplete: () => {
+					onExitComplete();
+					unregisterFromStack();
+				},
+			}}
+		>
+			<AlertDialogPrimitive.Root open={dialogOpen} onOpenChange={handleOpenChange} actionsRef={actionsReference} {...properties}>
 				{children}
 			</AlertDialogPrimitive.Root>
 		</AlertDialogContext.Provider>
@@ -135,34 +151,48 @@ function AlertDialogTrigger({ children, asChild, ref, ...properties }: AlertDial
 function AlertDialogContent({ className, children, ref, onAnimationEnd, ...properties }: AlertDialogContentProperties) {
 	const context = useContext(AlertDialogContext);
 	if (!context) return null;
-	const { open, isPending } = context;
+	const { open, isPending, isTop, dialogOpen, onExitComplete } = context;
 
 	return (
-		<AnimatePresence onExitComplete={onAnimationEnd}>
-			{open && (
+		<>
+			{dialogOpen && (
 				<AlertDialogPrimitive.Portal keepMounted>
-					<div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4">
-						<AlertDialogPrimitive.Popup
-							ref={ref}
-							render={
-								<motion.div
-									className={cn(CONTENT_CLASS_NAME, 'pointer-events-auto', className)}
-									initial={MOTION_VARIANTS.initial}
-									animate={MOTION_VARIANTS.animate}
-									exit={MOTION_VARIANTS.exit}
-									transition={MOTION_VARIANTS.transition}
-									aria-busy={isPending || undefined}
-									data-pending={isPending ? '' : undefined}
-								/>
-							}
-							{...properties}
+					<div
+						className={cn(
+							'pointer-events-none fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4',
+							!isTop && 'invisible',
+						)}
+					>
+						<AnimatePresence
+							onExitComplete={() => {
+								onExitComplete();
+								onAnimationEnd?.();
+							}}
 						>
-							{children}
-						</AlertDialogPrimitive.Popup>
+							{open && (
+								<AlertDialogPrimitive.Popup
+									ref={ref}
+									render={
+										<motion.div
+											className={cn(CONTENT_CLASS_NAME, 'pointer-events-auto', className)}
+											initial={MOTION_VARIANTS.initial}
+											animate={MOTION_VARIANTS.animate}
+											exit={MOTION_VARIANTS.exit}
+											transition={MOTION_VARIANTS.transition}
+											aria-busy={isPending || undefined}
+											data-pending={isPending ? '' : undefined}
+										/>
+									}
+									{...properties}
+								>
+									{children}
+								</AlertDialogPrimitive.Popup>
+							)}
+						</AnimatePresence>
 					</div>
 				</AlertDialogPrimitive.Portal>
 			)}
-		</AnimatePresence>
+		</>
 	);
 }
 AlertDialogContent.displayName = 'AlertDialog.Content';

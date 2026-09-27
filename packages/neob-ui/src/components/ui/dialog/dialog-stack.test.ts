@@ -13,6 +13,7 @@ describe('createDialogStackStore', () => {
 		const unregisterTop = firstStore.register(2, closeTop);
 
 		expect(firstStore.getSnapshot()).toBe(2);
+		expect(firstStore.getTopDialogId()).toBe(2);
 		expect(secondStore.getSnapshot()).toBe(0);
 
 		firstStore.closeTop();
@@ -20,6 +21,7 @@ describe('createDialogStackStore', () => {
 		expect(closeFirst).not.toHaveBeenCalled();
 
 		unregisterTop();
+		expect(firstStore.getTopDialogId()).toBe(1);
 		unregisterFirst();
 		expect(firstStore.getSnapshot()).toBe(0);
 	});
@@ -37,6 +39,21 @@ describe('createDialogStackStore', () => {
 
 		unregisterOlder();
 		unregisterNewer();
+	});
+
+	it('restores the previous dialog when the top dialog unregisters', () => {
+		const store = createDialogStackStore();
+		const closeFirst = vi.fn();
+		const closeSecond = vi.fn();
+		const unregisterFirst = store.register(1, closeFirst);
+		const unregisterSecond = store.register(2, closeSecond);
+
+		expect(store.getTopDialogId()).toBe(2);
+
+		unregisterSecond();
+		expect(store.getTopDialogId()).toBe(1);
+
+		unregisterFirst();
 	});
 
 	it('does not dismiss a lower dialog through a protected top dialog', () => {

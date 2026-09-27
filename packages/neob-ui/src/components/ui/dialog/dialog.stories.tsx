@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { action } from 'storybook/actions';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { Button } from '@/components/ui/button';
 import { guardPlay } from '@/lib/storybook-interactions';
 
 import { Dialog } from './dialog';
+import { GlobalDialogBackdrop } from './global-dialog-backdrop';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
@@ -60,6 +61,7 @@ export const Default: Story = {
 		const [open, setOpen] = useState(false);
 		return (
 			<>
+				<GlobalDialogBackdrop />
 				<Button
 					action={() => {
 						action('dialog-open-change')(true);
@@ -116,5 +118,61 @@ export const Default: Story = {
 		await userEvent.click(canvas.getByRole('button', { name: 'Open Dialog' }));
 		await expect(body.getByText('Dialog Title')).toBeInTheDocument();
 		await userEvent.click(body.getByRole('button', { name: 'Confirm' }));
+	}),
+};
+
+export const Layered: Story = {
+	args: {
+		triggerLabel: 'Open Dialog',
+		title: 'First Dialog',
+		description: 'The first layer remains available after dismissing the second.',
+		body: 'Open a second dialog above this one.',
+	},
+	render: (args) => {
+		const [firstOpen, setFirstOpen] = useState(false);
+		const [secondOpen, setSecondOpen] = useState(false);
+
+		return (
+			<>
+				<GlobalDialogBackdrop />
+				<Button action={() => setFirstOpen(true)}>{args.triggerLabel}</Button>
+				<Dialog open={firstOpen} onOpenChange={setFirstOpen}>
+					<Dialog.Content>
+						<Dialog.Header>
+							<Dialog.Title>{args.title}</Dialog.Title>
+							<Dialog.Description>{args.description}</Dialog.Description>
+						</Dialog.Header>
+						<Dialog.Body>
+							<p className="text-sm">{args.body}</p>
+						</Dialog.Body>
+						<Dialog.Footer>
+							<Button action={() => setSecondOpen(true)}>Open Second Dialog</Button>
+						</Dialog.Footer>
+					</Dialog.Content>
+				</Dialog>
+				<Dialog open={secondOpen} onOpenChange={setSecondOpen}>
+					<Dialog.Content>
+						<Dialog.Header>
+							<Dialog.Title>Second Dialog</Dialog.Title>
+							<Dialog.Description>Dismiss this dialog to return to the first.</Dialog.Description>
+						</Dialog.Header>
+					</Dialog.Content>
+				</Dialog>
+			</>
+		);
+	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const body = within(document.body);
+
+		await userEvent.click(canvas.getByRole('button', { name: 'Open Dialog' }));
+		await userEvent.click(body.getByRole('button', { name: 'Open Second Dialog' }));
+		await expect(body.getByText('Second Dialog')).toBeVisible();
+		expect(body.queryByText('First Dialog')).not.toBeInTheDocument();
+		expect(body.getAllByTestId('modal-backdrop')).toHaveLength(1);
+
+		await userEvent.click(body.getByTestId('modal-backdrop'));
+		await waitFor(() => expect(body.queryByText('Second Dialog')).not.toBeInTheDocument());
+		await waitFor(() => expect(body.getByText('First Dialog')).toBeVisible());
 	}),
 };
