@@ -16,7 +16,8 @@ type PillCollectionStoryProperties = {
 };
 
 /**
- * Pill is a small tag / label capsule component.
+ * Pill is a compact treatment for a status, category, or count that benefits from standing out from surrounding text.
+ * Avoid pills that only repeat an adjacent label or routine state.
  *
  * ### Usage
  * ```tsx

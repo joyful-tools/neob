@@ -2,17 +2,16 @@ import { cva } from 'class-variance-authority';
 
 export const pillVariants = cva(
 	`
-		inline-flex items-center justify-center border-2 border-edge
-		leading-none font-bold tracking-wide transition-all
-		select-none
+		inline-flex shrink-0 items-center justify-center
+		leading-none font-medium select-none
 	`,
 	{
 		variants: {
 			size: {
-				xs: 'gap-0.5 px-1 py-px text-[9px]',
-				sm: 'gap-1 px-1.5 py-0.5 text-[10px]',
-				md: 'gap-1.5 px-2 py-0.5 text-xs',
-				lg: 'gap-2 px-3 py-1 text-sm',
+				xs: 'h-5 gap-0.5 px-1.5 text-[10px]',
+				sm: 'h-7 gap-1.5 px-2.5 text-xs',
+				md: 'h-8 gap-1.5 px-3 text-sm',
+				lg: 'h-9 gap-2 px-3.5 text-base',
 			},
 			rounded: {
 				full: 'rounded-full',
@@ -20,17 +19,17 @@ export const pillVariants = cva(
 				sm: 'rounded-sm',
 			},
 			color: {
-				default: 'bg-background text-foreground',
-				cyan: 'border-cyan-darkest bg-cyan text-cyan-darkest',
-				gold: 'border-gold-darkest bg-gold text-gold-darkest',
-				red: 'border-red-darkest bg-red text-red-darkest',
-				green: 'border-green-darkest bg-green text-green-darkest',
-				blue: 'border-blue-darkest bg-blue text-blue-darkest',
-				purple: 'border-purple-darkest bg-purple text-purple-darkest',
-				pink: 'border-pink-darkest bg-pink text-pink-darkest',
-				yellow: 'border-yellow-darkest bg-yellow text-yellow-darkest',
-				zinc: 'bg-zinc text-zinc-lightest',
-				white: 'bg-white text-black',
+				default: 'bg-muted text-muted-foreground',
+				cyan: 'bg-cyan/15 text-cyan-darkest dark:bg-cyan/20 dark:text-cyan-light',
+				gold: 'bg-gold/15 text-gold-darkest dark:bg-gold/20 dark:text-gold-light',
+				red: 'bg-red/15 text-red-darkest dark:bg-red/20 dark:text-red-light',
+				green: 'bg-green/15 text-green-darkest dark:bg-green/20 dark:text-green-light',
+				blue: 'bg-blue/15 text-blue-darkest dark:bg-blue/20 dark:text-blue-light',
+				purple: 'bg-purple/15 text-purple-darkest dark:bg-purple/20 dark:text-purple-light',
+				pink: 'bg-pink/15 text-pink-darkest dark:bg-pink/20 dark:text-pink-light',
+				yellow: 'bg-yellow/15 text-yellow-darkest dark:bg-yellow/20 dark:text-yellow-light',
+				zinc: 'bg-zinc/15 text-zinc-darkest dark:bg-zinc/30 dark:text-zinc-lightest',
+				white: 'bg-white/90 text-black',
 			},
 		},
 		defaultVariants: {
