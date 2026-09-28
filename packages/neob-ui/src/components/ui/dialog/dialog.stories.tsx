@@ -116,8 +116,12 @@ export const Default: Story = {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
 		await userEvent.click(canvas.getByRole('button', { name: 'Open Dialog' }));
-		await expect(body.getByText('Dialog Title')).toBeInTheDocument();
+		const title = body.getByText('Dialog Title');
+		const backdrop = body.getByTestId('modal-backdrop');
+		await expect(title).toBeInTheDocument();
+		await waitFor(() => expect(backdrop).toHaveStyle({ opacity: '1' }));
 		await userEvent.click(body.getByRole('button', { name: 'Confirm' }));
+		await waitFor(() => expect(backdrop).toHaveStyle({ pointerEvents: 'none' }));
 	}),
 };
 

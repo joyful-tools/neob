@@ -14,7 +14,9 @@ import { useDialogStackStore } from './dialog-stack';
 export function GlobalDialogBackdrop() {
 	const store = useDialogStackStore();
 	const count = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getSnapshot);
+	const topDialogId = useSyncExternalStore(store.subscribe, store.getTopDialogId, store.getTopDialogId);
 	const visible = count > 0;
+	const interactive = topDialogId !== undefined;
 
 	if (typeof document === 'undefined') {
 		return null;
@@ -27,7 +29,7 @@ export function GlobalDialogBackdrop() {
 			initial={false}
 			animate={{ opacity: visible ? 1 : 0 }}
 			transition={{ duration: 0.15, ease: 'easeOut' }}
-			style={{ pointerEvents: visible ? 'auto' : 'none' }}
+			style={{ pointerEvents: interactive ? 'auto' : 'none' }}
 			onClick={store.closeTop}
 			className="fixed inset-0 z-40 bg-black/60"
 		/>,

@@ -5,6 +5,7 @@ import {
 	useCallback,
 	useContext,
 	useEffect,
+	useLayoutEffect,
 	useMemo,
 	useRef,
 	useState,
@@ -18,12 +19,14 @@ export interface DialogStackStore {
 	readonly getSnapshot: () => number;
 	readonly getTopDialogId: () => number | undefined;
 	readonly register: (dialogId: number, onClose: () => void) => () => void;
+	readonly setOpen: (dialogId: number, open: boolean) => void;
 	readonly closeTop: () => void;
 }
 
 export function createDialogStackStore(): DialogStackStore {
 	const listeners = new Set<DialogStackListener>();
-	const openDialogIds: number[] = [];
+	const presentDialogIds: number[] = [];
+	const openDialogIds = new Set<number>();
 	const closeCallbacks = new Map<number, () => void>();
 
 	const emit = () => {
@@ -37,28 +40,40 @@ export function createDialogStackStore(): DialogStackStore {
 			listeners.add(listener);
 			return () => listeners.delete(listener);
 		},
-		getSnapshot: () => openDialogIds.length,
-		getTopDialogId: () => openDialogIds.at(-1),
+		getSnapshot: () => openDialogIds.size,
+		getTopDialogId: () => presentDialogIds.at(-1),
 		register: (dialogId, onClose) => {
-			const existingIndex = openDialogIds.indexOf(dialogId);
+			const existingIndex = presentDialogIds.indexOf(dialogId);
 			if (existingIndex !== -1) {
-				openDialogIds.splice(existingIndex, 1);
+				presentDialogIds.splice(existingIndex, 1);
 			}
-			openDialogIds.push(dialogId);
+			presentDialogIds.push(dialogId);
+			openDialogIds.add(dialogId);
 			closeCallbacks.set(dialogId, onClose);
 			emit();
 			return () => {
-				const index = openDialogIds.indexOf(dialogId);
+				const index = presentDialogIds.indexOf(dialogId);
 				if (index !== -1) {
-					openDialogIds.splice(index, 1);
+					presentDialogIds.splice(index, 1);
+					openDialogIds.delete(dialogId);
 					closeCallbacks.delete(dialogId);
 					emit();
 				}
 			};
 		},
+		setOpen: (dialogId, open) => {
+			if (!presentDialogIds.includes(dialogId) || openDialogIds.has(dialogId) === open) return;
+
+			if (open) {
+				openDialogIds.add(dialogId);
+			} else {
+				openDialogIds.delete(dialogId);
+			}
+			emit();
+		},
 		closeTop: () => {
-			const topId = openDialogIds.at(-1);
-			if (topId === undefined) return;
+			const topId = presentDialogIds.at(-1);
+			if (topId === undefined || !openDialogIds.has(topId)) return;
 			closeCallbacks.get(topId)?.();
 		},
 	};
@@ -103,8 +118,10 @@ export function closeTopDialog(): void {
  * Pass `onClose` to make the dialog dismissible via a backdrop click.
  * Omit it (e.g. for AlertDialog / ConfirmDialog) to keep it non-dismissible.
  *
- * A closing top dialog remains registered until its exit animation completes,
+ * A closing top dialog remains present until its exit animation completes,
  * keeping lower dialogs hidden until the top layer has fully left the screen.
+ * It stops counting as open immediately so the backdrop can exit alongside the
+ * last dialog rather than waiting for the panel animation to finish.
  */
 export function useDialogStackPresence(open: boolean, onClose?: () => void): { isTop: boolean; onExitComplete: () => void } {
 	const store = useDialogStackStore();
@@ -130,7 +147,7 @@ export function useDialogStackPresence(open: boolean, onClose?: () => void): { i
 		registeredReference.current = false;
 	}, []);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (open && !registeredReference.current) {
 			unregisterReference.current = store.register(dialogId, () => onCloseReference.current?.());
 			registeredReference.current = true;
@@ -139,10 +156,15 @@ export function useDialogStackPresence(open: boolean, onClose?: () => void): { i
 
 		if (!open && !isTop) {
 			unregister();
+			return;
+		}
+
+		if (registeredReference.current) {
+			store.setOpen(dialogId, open);
 		}
 	}, [dialogId, isTop, open, store, unregister]);
 
-	useEffect(() => unregister, [unregister]);
+	useLayoutEffect(() => unregister, [unregister]);
 
 	const onExitComplete = useCallback(() => {
 		if (!open) {
