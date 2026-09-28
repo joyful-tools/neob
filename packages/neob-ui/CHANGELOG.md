@@ -1,5 +1,15 @@
 # @joyful.tools/neob
 
+## 2.3.4
+
+### Patch Changes
+
+- [`562f1c5`](https://github.com/joyful-tools/neob/commit/562f1c5238f7a0634ea29064d5f04df49a2ce986) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Restyle Pill as a calm, borderless capsule with soft semantic colors while preserving its sizes, rounding options, color variants, refs, and custom attributes.
+
+- [`71fd17e`](https://github.com/joyful-tools/neob/commit/71fd17e114fcf400e63fa72d8709678a3e0cc846) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Refresh published package metadata and component examples to use consistent high-contrast design language.
+
+- [`d544f6d`](https://github.com/joyful-tools/neob/commit/d544f6d398170369de94974884f902c5711c7774) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Fade the shared backdrop alongside the final dialog's exit while preserving layered dialog transitions and rapid reopen behavior.
+
 ## 2.3.3
 
 ### Patch Changes
