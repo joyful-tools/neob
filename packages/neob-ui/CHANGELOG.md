@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 2.3.5
+
+### Patch Changes
+
+- [`9c942d4`](https://github.com/joyful-tools/neob/commit/9c942d40e3b4accc9366c2807d2c06af5d6db6c1) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Fade out ConfirmButton and InlineConfirmGroup content quickly on close before restoring the trigger label or icon, preventing overlapping content during the closing morph.
+
 ## 2.3.4
 
 ### Patch Changes
