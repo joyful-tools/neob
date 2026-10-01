@@ -16,6 +16,7 @@
 		"@storybook/addon-vitest": "^10.4.1",
 		"@storybook/react-vite": "^10.4.1",
 		"@tailwindcss/vite": "^4.1.18",
+		"@types/node": "^22.20.3",
 		"@types/react": "^19.2.8",
 		"@types/react-dom": "^19.2.3",
 		"@types/three": "^0.185.4",
