@@ -35,6 +35,8 @@ const spring: Transition = {
 	damping: 40,
 };
 
+const contentExitDuration = 0.06;
+
 const intentClassNames: Record<InlineConfirmGroupIntent, string> = {
 	danger: 'bg-red/10 text-red hover:bg-red dark:bg-red/20 dark:text-red-light dark:hover:text-black',
 	info: 'bg-blue/10 text-blue hover:bg-blue dark:bg-blue/20 dark:text-blue-light dark:hover:text-black',
@@ -382,7 +384,7 @@ export function InlineConfirmGroup({
 							<motion.div
 								initial={{ opacity: 0 }}
 								animate={{ opacity: closing ? 0 : 1 }}
-								transition={{ duration: 0.12, ease: 'easeOut' }}
+								transition={{ duration: closing ? contentExitDuration : 0.12, ease: 'easeOut' }}
 								className="flex items-center gap-1.5"
 							>
 								{confirmationButtons}
@@ -393,7 +395,11 @@ export function InlineConfirmGroup({
 								animate={
 									closing ? { opacity: 1, scaleX: 1 / morphScale.x, scaleY: 1 / morphScale.y } : { opacity: 0, scaleX: 0.35, scaleY: 0.35 }
 								}
-								transition={closing ? spring : { duration: 0.12, ease: 'easeOut' }}
+								transition={
+									closing
+										? { ...spring, opacity: { delay: contentExitDuration, duration: 0.12, ease: 'easeOut' } }
+										: { duration: 0.12, ease: 'easeOut' }
+								}
 								className="pointer-events-none absolute inset-0 flex items-center justify-center"
 								data-morph-label=""
 							>

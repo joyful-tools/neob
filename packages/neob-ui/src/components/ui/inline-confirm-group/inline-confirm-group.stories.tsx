@@ -1,4 +1,5 @@
 import { ArchiveIcon, DownloadSimpleIcon, TrashIcon } from '@phosphor-icons/react';
+import { MotionGlobalConfig } from 'motion/react';
 import { ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, fireEvent, userEvent, waitFor, within } from 'storybook/test';
@@ -263,9 +264,30 @@ export const Default = {
 		await userEvent.keyboard('{Tab}');
 		await expect(body.getByRole('button', { name: 'Cancel archive invoices.csv' })).toHaveFocus();
 
-		fireEvent.keyDown(archiveConfirmation, { key: 'Escape' });
-		expect(archiveConfirmation).toHaveAttribute('data-closing', '');
-		expect(getComputedStyle(archiveTrigger).visibility).toBe('hidden');
+		const confirmationContent = body.getByRole('button', { name: 'Cancel archive invoices.csv' }).parentElement;
+		const morphLabel = archiveConfirmation.querySelector<HTMLElement>('[data-morph-label]');
+		if (!confirmationContent || !morphLabel) throw new Error('Expected confirmation content and morph label.');
+
+		const skipAnimations = MotionGlobalConfig.skipAnimations;
+		MotionGlobalConfig.skipAnimations = false;
+		try {
+			fireEvent.keyDown(archiveConfirmation, { key: 'Escape' });
+			expect(archiveConfirmation).toHaveAttribute('data-closing', '');
+			expect(getComputedStyle(archiveTrigger).visibility).toBe('hidden');
+			let observedClosingLabel = false;
+			while (archiveConfirmation.isConnected) {
+				await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+				if (!archiveConfirmation.isConnected) break;
+				expect(getComputedStyle(archiveConfirmation).opacity).toBe('1');
+				if (Number(getComputedStyle(morphLabel).opacity) > 0.01) {
+					observedClosingLabel = true;
+					expect(Number(getComputedStyle(confirmationContent).opacity)).toBeLessThanOrEqual(0.01);
+				}
+			}
+			expect(observedClosingLabel).toBe(true);
+		} finally {
+			MotionGlobalConfig.skipAnimations = skipAnimations;
+		}
 		await waitFor(() => {
 			expect(body.queryByRole('group', { name: 'Archive confirmation for invoices.csv' })).not.toBeInTheDocument();
 			expect(canvas.getByRole('button', { name: 'Archive invoices.csv' })).toHaveFocus();

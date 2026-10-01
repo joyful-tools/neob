@@ -39,6 +39,8 @@ const springClose: Transition = {
 	damping: 40,
 };
 
+const contentExitDuration = 0.06;
+
 export function ConfirmButton({
 	children,
 	title,
@@ -331,7 +333,7 @@ export function ConfirmButton({
 							<motion.div
 								initial={{ opacity: 0 }}
 								animate={{ opacity: closing ? 0 : 1 }}
-								transition={{ duration: 0.18, ease: 'easeOut' }}
+								transition={{ duration: closing ? contentExitDuration : 0.18, ease: 'easeOut' }}
 								className="flex w-full flex-col items-center"
 							>
 								<Popover.Title id={titleId} className="w-full text-center text-sm font-bold text-black dark:text-white">
@@ -376,7 +378,11 @@ export function ConfirmButton({
 								animate={
 									closing ? { opacity: 1, scaleX: 1 / morphScale.x, scaleY: 1 / morphScale.y } : { opacity: 0, scaleX: 0.35, scaleY: 0.35 }
 								}
-								transition={closing ? springClose : { duration: 0.12, ease: 'easeOut' }}
+								transition={
+									closing
+										? { ...springClose, opacity: { delay: contentExitDuration, duration: 0.12, ease: 'easeOut' } }
+										: { duration: 0.12, ease: 'easeOut' }
+								}
 								style={morphLabelStyle}
 								className="pointer-events-none absolute inset-0 flex items-center justify-center"
 								data-morph-label=""

@@ -1,3 +1,4 @@
+import { MotionGlobalConfig } from 'motion/react';
 import { ComponentProps } from 'react';
 import { action } from 'storybook/actions';
 import { expect, fireEvent, userEvent, waitFor, within } from 'storybook/test';
@@ -74,11 +75,32 @@ export const Default: Story = {
 		await userEvent.keyboard('{Tab}');
 		await expect(body.getByRole('button', { name: 'Cancel' })).toHaveFocus();
 
-		fireEvent.keyDown(keyboardDialog, { key: 'Escape' });
-		expect(keyboardDialog).toHaveAttribute('data-closing', '');
-		expect(getComputedStyle(keyboardDialog).overflowX).toBe('hidden');
-		expect(getComputedStyle(keyboardDialog).overflowY).toBe('hidden');
-		expect(getComputedStyle(trigger1).visibility).toBe('hidden');
+		const confirmationContent = body.getByText('Are you sure?').parentElement;
+		const morphLabel = keyboardDialog.querySelector<HTMLElement>('[data-morph-label]');
+		if (!confirmationContent || !morphLabel) throw new Error('Expected confirmation content and morph label.');
+
+		const skipAnimations = MotionGlobalConfig.skipAnimations;
+		MotionGlobalConfig.skipAnimations = false;
+		try {
+			fireEvent.keyDown(keyboardDialog, { key: 'Escape' });
+			expect(keyboardDialog).toHaveAttribute('data-closing', '');
+			expect(getComputedStyle(keyboardDialog).overflowX).toBe('hidden');
+			expect(getComputedStyle(keyboardDialog).overflowY).toBe('hidden');
+			expect(getComputedStyle(trigger1).visibility).toBe('hidden');
+			let observedClosingLabel = false;
+			while (keyboardDialog.isConnected) {
+				await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+				if (!keyboardDialog.isConnected) break;
+				expect(getComputedStyle(keyboardDialog).opacity).toBe('1');
+				if (Number(getComputedStyle(morphLabel).opacity) > 0.01) {
+					observedClosingLabel = true;
+					expect(Number(getComputedStyle(confirmationContent).opacity)).toBeLessThanOrEqual(0.01);
+				}
+			}
+			expect(observedClosingLabel).toBe(true);
+		} finally {
+			MotionGlobalConfig.skipAnimations = skipAnimations;
+		}
 		await waitFor(() => {
 			expect(body.queryByText('Are you sure?')).not.toBeInTheDocument();
 		});
