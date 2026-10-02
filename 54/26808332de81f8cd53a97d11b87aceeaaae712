@@ -1,0 +1,23 @@
+.changeset/slow-islands-see.md
+  s_120742d6d00207::t_c32d6f40f5b811 1-5
+packages/neob-ui/src/components/ui/toast/toast.stories.tsx
+  s_120742d6d00207::t_989b0b2a774d21 192-193,205,207-258
+packages/neob-ui/src/components/ui/toast/toast.tsx
+  s_120742d6d00207::t_60bee6ed299413 16-19,26,44-47,54,72-75,82,100-103,110,128-131,138
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "5426808332de81f8cd53a97d11b87aceeaaae712",
+  "prompts": {},
+  "sessions": {
+    "s_120742d6d00207": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0f8e2-c680-7460-b720-b4b10835716f",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
