@@ -189,6 +189,8 @@ export const Minimal: Story = {
 			{ label: 'Title Only', variant: 'default', kind: 'custom', title: 'Copied to clipboard' },
 			{ label: 'Success Title Only', variant: 'default', color: 'green', kind: 'success', title: 'Saved' },
 			{ label: 'Error Title Only', variant: 'danger', kind: 'error', title: 'Failed' },
+			{ label: 'Info Title Only', variant: 'subtle', kind: 'info', title: 'Updated' },
+			{ label: 'Warning Title Only', variant: 'default', kind: 'warning', title: 'Unsaved changes' },
 		],
 	},
 	render: (args) => (
@@ -200,10 +202,60 @@ export const Minimal: Story = {
 			))}
 		</div>
 	),
-	play: guardPlay(async ({ canvasElement }) => {
+	play: guardPlay(async ({ canvasElement, args }) => {
 		const canvas = within(canvasElement);
-		await userEvent.click(canvas.getByRole('button', { name: 'Title Only' }));
-		await expect(document.body.querySelector('[data-sonner-toast]')).not.toBeNull();
+		const body = within(document.body);
+
+		for (const button of args.buttons) {
+			await userEvent.click(canvas.getByRole('button', { name: button.label }));
+			const toastElement = body.getByText(button.title).closest('[data-sonner-toast]');
+			if (!(toastElement instanceof HTMLElement)) throw new Error('Expected a toast notification.');
+
+			const closeButton = within(toastElement).getByRole('button', { name: 'Close notification' });
+			await expect(toastElement.offsetHeight).toBeGreaterThan(0);
+			await expect(toastElement.offsetHeight).toBeLessThanOrEqual(52);
+			await expect(closeButton.offsetWidth).toBe(40);
+			await expect(closeButton.offsetHeight).toBe(40);
+			await expect(toastElement.querySelector('p')).toBeNull();
+
+			await userEvent.click(closeButton);
+			await waitFor(() => expect(toastElement.isConnected).toBe(false));
+		}
+	}),
+};
+
+export const LongContent: Story = {
+	args: {
+		buttons: [
+			{
+				label: 'Long notification',
+				variant: 'default',
+				kind: 'custom',
+				title: 'Your workspace changes have been saved and are ready to share with your team',
+				description: 'Uploaded workspace-backup-with-a-very-long-unbroken-filename-2026-10-01-final.json successfully.',
+				actionLabel: 'View workspace',
+			},
+		],
+	},
+	render: (args) => <Button action={() => showToast(args.buttons[0])}>{args.buttons[0].label}</Button>,
+	play: guardPlay(async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+		const body = within(document.body);
+		const button = args.buttons[0];
+		await userEvent.click(canvas.getByRole('button', { name: button.label }));
+
+		const heading = body.getByRole('heading', { name: button.title });
+		const toastElement = heading.closest('[data-sonner-toast]');
+		if (!(toastElement instanceof HTMLElement)) throw new Error('Expected a toast notification.');
+
+		const closeButton = within(toastElement).getByRole('button', { name: 'Close notification' });
+		await expect(toastElement.offsetHeight).toBeGreaterThan(52);
+		await expect(toastElement.scrollWidth).toBeLessThanOrEqual(toastElement.clientWidth);
+		await expect(heading.getBoundingClientRect().right).toBeLessThanOrEqual(closeButton.getBoundingClientRect().left);
+		await expect(within(toastElement).getByRole('button', { name: 'View workspace' })).toBeInTheDocument();
+
+		await userEvent.click(closeButton);
+		await waitFor(() => expect(toastElement.isConnected).toBe(false));
 	}),
 };
 
