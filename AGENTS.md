@@ -12,6 +12,7 @@ High-contrast React 19 component library (`neob`). Form-focused inputs with opt-
 neob/
 ├── .storybook/                    # Storybook configuration and theme setup
 ├── packages/
+│   ├── neob-storybook/             # Private cf deployment workspace (static assets only)
 │   └── neob-ui/
 │       ├── src/
 │       │   ├── components/ui/     # Component folders, implementations, and stories
@@ -117,6 +118,9 @@ Execute all commands using `bun`:
 
 ```bash
 bun run storybook           # Launch Storybook dev server (localhost:6006)
+bun run storybook:build     # Build Storybook assets and the cf Build Output
+bun run storybook:deploy:dry-run  # Build and validate production without uploading
+bun run storybook:preview:dry-run # Build and validate a version upload without uploading
 bun run build               # Build the library bundle via Vite
 bun run lint                # Prettier checks + ESLint checking
 bun run format              # Format files using Prettier and ESLint autofix
@@ -143,7 +147,7 @@ bun run check               # Run lint + typecheck + storybook tests with covera
 
 | Tool         | Version       | Notes                                                 |
 | :----------- | :------------ | :---------------------------------------------------- |
-| Node         | ^20.x / ^22.x | Runtime environment                                   |
+| Node         | >=22 (CI: 24) | Required by cf; used alongside Bun                    |
 | Bun          | ^1.x          | Package manager and runner (driven by `bun.lock`)     |
 | React        | ^19.2.3       | Core framework                                        |
 | Vite         | ^6.4.2        | Bundler (library build mode)                          |
@@ -152,6 +156,15 @@ bun run check               # Run lint + typecheck + storybook tests with covera
 | Prettier     | ^3.7.4        | Code formatting                                       |
 | Vitest       | ^4.1.7        | Test runner supporting playwright browser environment |
 | Storybook    | ^10.4.1       | UI component playground and testing environment       |
+| cf           | 1.0.0-beta.12 | Storybook Worker deployment CLI (private workspace)   |
+
+## STORYBOOK DEPLOYMENT
+
+- Keep deployment configuration in `packages/neob-storybook/`, not the Bun workspace root or the published UI package. `cf build` runs from the Worker's package; the root remains the library and Storybook orchestrator.
+- `bun run storybook:build` builds `storybook-static/` before packaging it through the Wrangler bundler. The private workspace declares its own pinned `cf` and Wrangler dependencies; do not rely on globally installed or root-hoisted tools.
+- Keep the original root `wrangler.jsonc` unchanged for rollback reference. The active configuration is `packages/neob-storybook/cloudflare.config.ts`; bundler settings live alongside it in `wrangler.config.ts`.
+- CI must build before using `--prebuilt`. PR previews use `cf workers versions create --prebuilt --preview-alias`, not `cf deploy`, so they do not move production traffic. Preserve CI-success, same-repository, checked-SHA, main-branch, and GitHub environment gates.
+- Scope `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` to the upload/deploy step only; never expose credentials to the static-site build.
 
 ---
 

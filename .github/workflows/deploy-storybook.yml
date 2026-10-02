@@ -30,6 +30,11 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2.2.0
 
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
@@ -38,12 +43,23 @@ jobs:
 
       - name: Deploy preview
         id: deploy_preview
-        uses: cloudflare/wrangler-action@v4.0.0
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: versions upload --preview-alias pr-${{ github.event.workflow_run.pull_requests[0].number }}
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: packages/neob-storybook
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PREVIEW_ALIAS: pr-${{ github.event.workflow_run.pull_requests[0].number }}
+          WRANGLER_OUTPUT_FILE_PATH: ${{ runner.temp }}/storybook-preview.ndjson
+        run: |
+          : > "$WRANGLER_OUTPUT_FILE_PATH"
+          bun run cf workers versions create --prebuilt --preview-alias "$PREVIEW_ALIAS"
+          deployment_url=$(jq -ser '
+            map(select(.type == "version-upload" and .worker_name == "neob-storybook" and .version_id != null))
+            | last
+            | (.preview_url // .preview_alias_url)
+            | select(type == "string" and startswith("https://"))
+          ' "$WRANGLER_OUTPUT_FILE_PATH")
+          echo "deployment-url=$deployment_url" >> "$GITHUB_OUTPUT"
 
       - name: Add preview summary
         env:
@@ -73,6 +89,11 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2.2.0
 
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
@@ -81,12 +102,22 @@ jobs:
 
       - name: Deploy
         id: deploy_production
-        uses: cloudflare/wrangler-action@v4.0.0
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: packages/neob-storybook
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_OUTPUT_FILE_PATH: ${{ runner.temp }}/storybook-production.ndjson
+        run: |
+          : > "$WRANGLER_OUTPUT_FILE_PATH"
+          bun run deploy
+          deployment_url=$(jq -ser '
+            map(select(.type == "deploy" and .worker_name == "neob-storybook" and .version_id != null))
+            | last
+            | [.targets[]? | select(. == "neob.joyful.tools (custom domain)") | "https://neob.joyful.tools"]
+            | first
+          ' "$WRANGLER_OUTPUT_FILE_PATH")
+          echo "deployment-url=$deployment_url" >> "$GITHUB_OUTPUT"
 
       - name: Add production summary
         env:

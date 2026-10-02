@@ -1,0 +1,4 @@
+{
+	"extends": "../../tsconfig.json",
+	"include": ["cloudflare.config.ts", "wrangler.config.ts"]
+}

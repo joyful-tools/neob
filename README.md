@@ -124,3 +124,17 @@ Refer to the available package scripts for testing and linting:
 bun run check        # Run linting, typechecking, and storybook tests
 bun run build        # Build the library bundle
 ```
+
+### Storybook Worker
+
+Use Node.js 22 or newer (CI uses Node.js 24) alongside Bun. `bun install --frozen-lockfile` installs the pinned cf CLI and Wrangler bundler in the private `packages/neob-storybook` workspace. The published UI library and its Vite build are unchanged.
+
+```bash
+bun run storybook:build           # Build the static site, then cf Build Output
+bun run storybook:deploy:dry-run  # Validate production deployment; upload nothing
+bun run storybook:preview:dry-run # Validate a version upload; upload nothing
+```
+
+Deployment configuration lives in `packages/neob-storybook/cloudflare.config.ts`; `wrangler.config.ts` points to the root `storybook-static/` assets. Keep the original root `wrangler.jsonc` as a rollback reference. Generated `.cloudflare/` output is ignored.
+
+CI builds without Cloudflare credentials, then uses the private workspace's prebuilt output. Successful same-repository PRs upload an undeployed version with a `pr-<number>` alias; successful pushes to `main` deploy production. Existing GitHub environments and concurrency gates still apply. Tokens remain GitHub secrets scoped to the deployment step. Live deployment is separate from the local dry-run commands above.

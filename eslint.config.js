@@ -15,7 +15,16 @@ import tseslint from 'typescript-eslint';
 
 export default defineConfig(
 	{
-		ignores: ['**/dist', '**/storybook-static', '**/coverage', 'vite.config.ts', 'packages/neob-ui/vite.config.ts', 'raw_pagination.tsx'],
+		ignores: [
+			'**/dist',
+			'**/storybook-static',
+			'**/.cloudflare',
+			'**/.wrangler',
+			'**/coverage',
+			'vite.config.ts',
+			'packages/neob-ui/vite.config.ts',
+			'raw_pagination.tsx',
+		],
 	},
 
 	js.configs.recommended,

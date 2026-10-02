@@ -37,6 +37,8 @@
 		"packages/neob-ui/vite.config.ts",
 		"packages/neob-ui/vitest.config.ts",
 		"packages/neob-ui/vitest.unit.config.ts",
+		"packages/neob-storybook/cloudflare.config.ts",
+		"packages/neob-storybook/wrangler.config.ts",
 		"vitest.workspace.ts"
 	]
 }

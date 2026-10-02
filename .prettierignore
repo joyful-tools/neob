@@ -1,5 +1,7 @@
 dist
 storybook-static
+.cloudflare
+.wrangler
 coverage
 node_modules
 package-lock.json
