@@ -1,0 +1,35 @@
+.changeset/thick-tables-repair.md
+  s_808039f1093cd3::t_c9c5966928eedc 1-5
+packages/neob-ui/USAGE.md
+  s_808039f1093cd3::t_40b96dc60ad275 196-202
+packages/neob-ui/src/components/ui/button/button.stories.tsx
+  s_808039f1093cd3::t_0e71e45bce791a 2-3,34-40,71-127,355,363-416,431,434,440,446-457
+packages/neob-ui/src/components/ui/button/button.tsx
+  s_808039f1093cd3::t_17b14e3baa5bc8 76-77,85,92,94
+packages/neob-ui/src/components/ui/pagination/pagination.stories.tsx
+  s_1291e375106dd5::t_a235f21a9a0395 1,42-48,53-57,292,303,323-360,376-384,388-390
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "7417fab47e72b25b3e35b8ba0f005bcebfcdb676",
+  "prompts": {},
+  "sessions": {
+    "s_1291e375106dd5": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0ff47-381e-7301-8183-b7f242b47f6e",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    },
+    "s_808039f1093cd3": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0ff39-261e-7442-84ff-d8d606e8403e",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
