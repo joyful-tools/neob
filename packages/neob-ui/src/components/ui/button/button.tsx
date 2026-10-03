@@ -73,8 +73,8 @@ export function Button({
 		>
 			<span
 				className={cn(
-					'inline-flex items-center gap-2 transition-opacity duration-150 ease-out motion-reduce:transition-none',
-					isPending ? 'opacity-0 delay-100' : 'opacity-100 delay-0',
+					'inline-flex items-center gap-2 transition-opacity duration-150 ease-out motion-reduce:duration-0',
+					isPending ? 'opacity-0 delay-200' : 'opacity-100 delay-0',
 				)}
 			>
 				{children}
@@ -82,15 +82,16 @@ export function Button({
 			<AnimatePresence initial={false}>
 				{isPending && (
 					<motion.span
+						data-slot="button-spinner"
 						className="absolute inset-0 flex items-center justify-center"
 						initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.9 }}
 						animate={{ opacity: 1, scale: 1 }}
 						exit={{
 							opacity: 0,
 							scale: prefersReducedMotion ? 1 : 0.9,
-							transition: { duration: prefersReducedMotion ? 0 : 0.1 },
+							transition: { duration: prefersReducedMotion ? 0 : 0.1, delay: 0 },
 						}}
-						transition={{ duration: prefersReducedMotion ? 0 : 0.15, delay: 0.1, ease: 'easeOut' }}
+						transition={{ duration: prefersReducedMotion ? 0 : 0.15, delay: 0.2, ease: 'easeOut' }}
 					>
 						<Spinner className="size-4" />
 					</motion.span>

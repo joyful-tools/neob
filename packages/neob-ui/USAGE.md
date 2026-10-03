@@ -193,9 +193,13 @@ update. Uncontrolled controls commit only after a successful Action; rejected
 Actions roll back optimistic state and render through the nearest Error Boundary.
 
 Selection controls stay interactive while queued Actions run. Command controls,
-including `Button`, disable themselves and display their spinner. A submit Button
-also derives pending state from the nearest form Action. All pending owners expose
-`data-pending` and `aria-busy`.
+including `Button`, disable themselves immediately. Buttons keep their label or
+icon visible for the first 200 ms and only crossfade to a spinner if the Action is
+still pending, so quick Actions and Suspense transitions do not flash a loading
+indicator. This delay affects only visual feedback, not Action execution or
+completion, and still applies when reduced motion disables the crossfade. A
+submit Button also derives pending state from the nearest form Action. All
+pending owners expose `data-pending` and `aria-busy` immediately.
 
 Text entry and filtering stay urgent through `onChange` or `onInput`. `Slider`,
 `NumericSlider`, and `ResizablePanel` use `onInput` for continuous feedback and

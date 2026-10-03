@@ -1,3 +1,4 @@
+import { MotionGlobalConfig } from 'motion/react';
 import { Suspense, useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
@@ -38,9 +39,21 @@ const meta = {
 		layout: 'padded',
 	},
 	tags: ['autodocs'],
+	beforeEach: () => {
+		const skipAnimations = MotionGlobalConfig.skipAnimations;
+		MotionGlobalConfig.skipAnimations = false;
+		return () => {
+			MotionGlobalConfig.skipAnimations = skipAnimations;
+		};
+	},
 } satisfies Meta<typeof Pagination>;
 
 export default meta;
+
+function getLoadingOpacity(button: HTMLElement, slot: 'content' | 'spinner') {
+	const element = slot === 'content' ? button.firstElementChild : button.querySelector('[data-slot="button-spinner"]');
+	return element instanceof HTMLElement ? Number(getComputedStyle(element).opacity) : 0;
+}
 
 export const DefaultCompound: { [key: string]: unknown } & import('@storybook/react-vite').StoryObj<PaginationStoryProperties> = {
 	name: 'Default',
@@ -276,7 +289,7 @@ interface PageResource {
 	read: () => void;
 }
 
-function createPageResource(): PageResource {
+function createPageResource(delay = 150): PageResource {
 	let ready = false;
 	let promise: Promise<void> | undefined;
 
@@ -287,7 +300,7 @@ function createPageResource(): PageResource {
 				setTimeout(() => {
 					ready = true;
 					resolve();
-				}, 150);
+				}, delay);
 			});
 			throw promise;
 		},
@@ -307,7 +320,7 @@ export const PreservesRevealedContentWhileSuspending = {
 	},
 	render: (args: PaginationStoryProperties) => {
 		const [page, setPage] = useState(args.initialPage);
-		const [resource] = useState(createPageResource);
+		const [resource] = useState(() => createPageResource());
 
 		return (
 			<div className="w-full max-w-xl">
@@ -323,9 +336,57 @@ export const PreservesRevealedContentWhileSuspending = {
 	},
 	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 		const canvas = within(canvasElement);
-		await userEvent.click(canvas.getByRole('button', { name: 'Next page' }));
+		const button = canvas.getByRole('button', { name: 'Next page' });
+		await userEvent.click(button);
+		await expect(button).toHaveAttribute('aria-busy', 'true');
+		await expect(getLoadingOpacity(button, 'content')).toBe(1);
+		await expect(getLoadingOpacity(button, 'spinner')).toBe(0);
 		await expect(canvas.getByText('Page 1 content')).toBeVisible();
 		await expect(canvas.queryByText('Replacing revealed content…')).not.toBeInTheDocument();
 		await waitFor(() => expect(canvas.getByText('Page 2 content')).toBeVisible());
+		await expect(button).toBeEnabled();
+		await waitFor(() => expect(button.querySelector('[data-slot="button-spinner"]')).not.toBeInTheDocument());
+	}),
+};
+
+export const DelayedSpinnerWhileSuspending = {
+	args: {
+		initialPage: 1,
+		initialPerPage: 10,
+		totalCount: 30,
+	},
+	render: (args: PaginationStoryProperties) => {
+		const [page, setPage] = useState(args.initialPage);
+		const [resource] = useState(() => createPageResource(600));
+
+		return (
+			<div className="w-full max-w-xl">
+				<Pagination page={page} action={setPage} perPage={args.initialPerPage} totalCount={args.totalCount}>
+					<Pagination.Info />
+					<Pagination.Controls controls="simple" />
+				</Pagination>
+				<Suspense fallback={<p>Replacing revealed content…</p>}>
+					<SuspendedPage page={page} resource={resource} />
+				</Suspense>
+			</div>
+		);
+	},
+	play: guardPlay(async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+		const canvas = within(canvasElement);
+		const button = canvas.getByRole('button', { name: 'Next page' });
+		await userEvent.click(button);
+		await expect(button).toBeDisabled();
+		await expect(button).toHaveAttribute('aria-busy', 'true');
+		await expect(getLoadingOpacity(button, 'content')).toBe(1);
+		await expect(getLoadingOpacity(button, 'spinner')).toBe(0);
+		await waitFor(() => expect(getLoadingOpacity(button, 'spinner')).toBe(1));
+		await expect(button).toBeDisabled();
+		await waitFor(() => expect(getLoadingOpacity(button, 'content')).toBe(0));
+		await expect(canvas.getByText('Page 1 content')).toBeVisible();
+		await expect(canvas.queryByText('Replacing revealed content…')).not.toBeInTheDocument();
+		await waitFor(() => expect(canvas.getByText('Page 2 content')).toBeVisible());
+		await expect(button).toBeEnabled();
+		await waitFor(() => expect(getLoadingOpacity(button, 'content')).toBe(1));
+		await waitFor(() => expect(button.querySelector('[data-slot="button-spinner"]')).not.toBeInTheDocument());
 	}),
 };

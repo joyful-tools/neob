@@ -1,5 +1,6 @@
 import { EnvelopeIcon, ArrowRightIcon, PlusIcon } from '@phosphor-icons/react';
-import { Component, ReactNode, useState } from 'react';
+import { MotionGlobalConfig } from 'motion/react';
+import { Component, ReactNode, useRef, useState } from 'react';
 import { action } from 'storybook/actions';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
@@ -30,6 +31,13 @@ const meta = {
 		layout: 'centered',
 	},
 	tags: ['autodocs'],
+	beforeEach: () => {
+		const skipAnimations = MotionGlobalConfig.skipAnimations;
+		MotionGlobalConfig.skipAnimations = false;
+		return () => {
+			MotionGlobalConfig.skipAnimations = skipAnimations;
+		};
+	},
 	argTypes: {
 		variant: {
 			control: 'select',
@@ -60,6 +68,63 @@ const getButtonDepth = (button: HTMLElement) => getComputedStyle(button).getProp
 const getButtonShadowColor = (button: HTMLElement) => getComputedStyle(button).getPropertyValue('--button-shadow-color').trim();
 const getCelDepth = (button: HTMLElement, size: 'sm' | 'md' | 'lg') =>
 	getComputedStyle(button).getPropertyValue(`--shadow-cel-depth-${size}`).trim();
+const getButtonContentOpacity = (button: HTMLElement) => {
+	const content = button.firstElementChild;
+	if (!(content instanceof HTMLElement)) throw new Error('Button content is missing');
+	return Number(getComputedStyle(content).opacity);
+};
+const getButtonSpinnerOpacity = (button: HTMLElement) => {
+	const spinner = button.querySelector('[data-slot="button-spinner"]');
+	return spinner instanceof HTMLElement ? Number(getComputedStyle(spinner).opacity) : 0;
+};
+
+async function expectDelayedSpinner(button: HTMLElement) {
+	const initialWidth = button.getBoundingClientRect().width;
+	await userEvent.click(button);
+	await expect(button).toBeDisabled();
+	await expect(button).toHaveAttribute('aria-busy', 'true');
+	await expect(button).toHaveAttribute('data-pending');
+	await expect(getButtonSpinnerOpacity(button)).toBe(0);
+	await expect(getButtonContentOpacity(button)).toBe(1);
+	await waitFor(() => expect(getButtonSpinnerOpacity(button)).toBe(1));
+	await expect(button).toBeDisabled();
+	await expect(button).toHaveAttribute('aria-busy', 'true');
+	await waitFor(() => expect(getButtonContentOpacity(button)).toBe(0));
+	await expect(button.getBoundingClientRect().width).toBe(initialWidth);
+	await waitFor(() => expect(button).toBeEnabled());
+	await expect(button).not.toHaveAttribute('aria-busy');
+	await expect(button).not.toHaveAttribute('data-pending');
+	await waitFor(() => expect(getButtonContentOpacity(button)).toBe(1));
+	await waitFor(() => expect(button.querySelector('[data-slot="button-spinner"]')).not.toBeInTheDocument());
+}
+
+async function expectNoSpinnerDuringQuickAction(button: HTMLElement) {
+	let spinnerVisible = false;
+	let contentHidden = false;
+	let animationFrame = 0;
+	const observeLoadingVisuals = () => {
+		spinnerVisible ||= getButtonSpinnerOpacity(button) > 0;
+		contentHidden ||= getButtonContentOpacity(button) < 1;
+		animationFrame = requestAnimationFrame(observeLoadingVisuals);
+	};
+	animationFrame = requestAnimationFrame(observeLoadingVisuals);
+
+	try {
+		await userEvent.click(button);
+		await expect(button).toBeDisabled();
+		await expect(button).toHaveAttribute('aria-busy', 'true');
+		await expect(button).toHaveAttribute('data-pending');
+		await expect(getButtonContentOpacity(button)).toBe(1);
+		await waitFor(() => expect(button).toBeEnabled());
+		await new Promise<void>((resolve) => setTimeout(resolve, 250));
+		await expect(spinnerVisible).toBe(false);
+		await expect(contentHidden).toBe(false);
+		await expect(button.querySelector('[data-slot="button-spinner"]')).not.toBeInTheDocument();
+		await expect(getButtonContentOpacity(button)).toBe(1);
+	} finally {
+		cancelAnimationFrame(animationFrame);
+	}
+}
 
 export const Default: Story = {
 	render: (args) => (
@@ -287,7 +352,7 @@ export const AsyncAction: Story = {
 	render: () => (
 		<Button
 			action={() => {
-				return new Promise<void>((resolve) => setTimeout(resolve, 150));
+				return new Promise<void>((resolve) => setTimeout(resolve, 600));
 			}}
 		>
 			Save changes
@@ -295,10 +360,60 @@ export const AsyncAction: Story = {
 	),
 	play: guardPlay(async ({ canvasElement }) => {
 		const button = within(canvasElement).getByRole('button', { name: 'Save changes' });
-		await userEvent.click(button);
-		await expect(button).toBeDisabled();
-		await expect(button).toHaveAttribute('aria-busy', 'true');
-		await waitFor(() => expect(button).toBeEnabled());
+		await expectDelayedSpinner(button);
+	}),
+};
+
+export const QuickActionDoesNotFlicker: Story = {
+	render: () => <Button action={() => new Promise<void>((resolve) => setTimeout(resolve, 50))}>Quick save</Button>,
+	play: guardPlay(async ({ canvasElement }) => {
+		const button = within(canvasElement).getByRole('button', { name: 'Quick save' });
+		await expectNoSpinnerDuringQuickAction(button);
+		await expectNoSpinnerDuringQuickAction(button);
+	}),
+};
+
+export const QuickActionWithMotionDoesNotFlicker: Story = {
+	...QuickActionDoesNotFlicker,
+	beforeEach: () => {
+		const matchMedia = globalThis.window.matchMedia;
+		globalThis.window.matchMedia = (query: string) => {
+			if (query !== '(prefers-reduced-motion: reduce)') return matchMedia.call(globalThis.window, query);
+			return {
+				matches: false,
+				media: query,
+				onchange: null,
+				addEventListener: () => {},
+				removeEventListener: () => {},
+				addListener: () => {},
+				removeListener: () => {},
+				dispatchEvent: () => false,
+			};
+		};
+		return () => {
+			globalThis.window.matchMedia = matchMedia;
+		};
+	},
+};
+
+export const RepeatedActionsResetSpinnerDelay: Story = {
+	render: () => {
+		const actionCount = useRef(0);
+		return (
+			<Button
+				action={() => {
+					actionCount.current += 1;
+					return new Promise<void>((resolve) => setTimeout(resolve, actionCount.current === 1 ? 600 : 50));
+				}}
+			>
+				Run action
+			</Button>
+		);
+	},
+	play: guardPlay(async ({ canvasElement }) => {
+		const button = within(canvasElement).getByRole('button', { name: 'Run action' });
+		await expectDelayedSpinner(button);
+		await expectNoSpinnerDuringQuickAction(button);
 	}),
 };
 
@@ -313,26 +428,33 @@ export const SynchronousActionDoesNotFlicker: Story = {
 
 		await userEvent.click(button);
 
+		await waitFor(() => expect(button).toBeEnabled());
 		await expect(canvas.getByRole('button', { name: 'Count 1' })).not.toHaveAttribute('aria-busy');
 		await expect(button).not.toHaveAttribute('data-pending');
+		await waitFor(() => expect(button.querySelector('[data-slot="button-spinner"]')).not.toBeInTheDocument());
 	}),
 };
 
 export const FormActionPending: Story = {
 	render: () => (
-		<form
-			action={() => {
-				return new Promise<void>((resolve) => setTimeout(resolve, 150));
-			}}
-		>
+		<form action={() => new Promise<void>((resolve) => setTimeout(resolve, 600))}>
 			<Button type="submit">Submit form</Button>
 		</form>
 	),
 	play: guardPlay(async ({ canvasElement }) => {
 		const button = within(canvasElement).getByRole('button', { name: 'Submit form' });
-		await userEvent.click(button);
-		await expect(button).toHaveAttribute('aria-busy', 'true');
-		await waitFor(() => expect(button).toBeEnabled());
+		await expectDelayedSpinner(button);
+	}),
+};
+
+export const QuickFormActionDoesNotFlicker: Story = {
+	render: () => (
+		<form action={() => new Promise<void>((resolve) => setTimeout(resolve, 50))}>
+			<Button type="submit">Quick submit</Button>
+		</form>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		await expectNoSpinnerDuringQuickAction(within(canvasElement).getByRole('button', { name: 'Quick submit' }));
 	}),
 };
 
