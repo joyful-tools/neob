@@ -1,5 +1,13 @@
 # @joyful.tools/neob
 
+## 2.3.6
+
+### Patch Changes
+
+- [`c285b47`](https://github.com/joyful-tools/neob/commit/c285b47585ccc6dfadeff187b97c82349f98b609) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Reduce toast padding and heading size so single-line notifications stay compact. Preserve the 40px dismiss target and allow longer content to wrap without a forced minimum width.
+
+- [`7417fab`](https://github.com/joyful-tools/neob/commit/7417fab47e72b25b3e35b8ba0f005bcebfcdb676) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Delay Button loading visuals by 200 ms so quick Actions, form submissions, and Suspense transitions do not flicker. Keep disabling and pending accessibility feedback immediate, preserve smooth crossfades, and retain the delay with reduced motion enabled.
+
 ## 2.3.5
 
 ### Patch Changes
