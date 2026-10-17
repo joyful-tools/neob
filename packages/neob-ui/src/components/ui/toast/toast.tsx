@@ -32,7 +32,7 @@ export const toast = {
 					</Button>
 				</div>
 				{options?.action && (
-					<Button variant="default" size="sm" action={options.action.action}>
+					<Button variant="default" size="sm" className="self-end" action={options.action.action}>
 						{options.action.label}
 					</Button>
 				)}
@@ -60,7 +60,7 @@ export const toast = {
 					</Button>
 				</div>
 				{options?.action && (
-					<Button variant="default" size="sm" action={options.action.action}>
+					<Button variant="default" size="sm" className="self-end" action={options.action.action}>
 						{options.action.label}
 					</Button>
 				)}
@@ -88,7 +88,7 @@ export const toast = {
 					</Button>
 				</div>
 				{options?.action && (
-					<Button variant="default" size="sm" action={options.action.action}>
+					<Button variant="default" size="sm" className="self-end" action={options.action.action}>
 						{options.action.label}
 					</Button>
 				)}
@@ -116,7 +116,7 @@ export const toast = {
 					</Button>
 				</div>
 				{options?.action && (
-					<Button variant="default" size="sm" action={options.action.action}>
+					<Button variant="default" size="sm" className="self-end" action={options.action.action}>
 						{options.action.label}
 					</Button>
 				)}
@@ -144,7 +144,7 @@ export const toast = {
 					</Button>
 				</div>
 				{options?.action && (
-					<Button variant="default" size="sm" action={options.action.action}>
+					<Button variant="default" size="sm" className="self-end" action={options.action.action}>
 						{options.action.label}
 					</Button>
 				)}
