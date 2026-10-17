@@ -1,0 +1,23 @@
+.changeset/seven-toes-shout.md
+  s_8fb9539f91b700::t_1be238839d12d3 5
+packages/neob-ui/src/components/ui/toast/toast.stories.tsx
+  s_8fb9539f91b700::t_40ebddb4334459 113-115,128,132-133,272-275
+packages/neob-ui/src/components/ui/toast/toast.tsx
+  s_8fb9539f91b700::t_9f3b69043013d2 2,32-41,43-78,81,92,96,107,109,113-119,122-127
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "4575808ececa91927bf5b02584864c38aaff140c",
+  "prompts": {},
+  "sessions": {
+    "s_8fb9539f91b700": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a147bf-63b2-7202-b0f9-92566ad32af8",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
