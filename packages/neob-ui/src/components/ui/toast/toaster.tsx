@@ -10,7 +10,7 @@ export function Toaster({ ...properties }: ToasterProperties) {
 			toastOptions={{
 				classNames: {
 					toast:
-						'group toast group-[.toaster]:bg-white dark:group-[.toaster]:bg-zinc group-[.toaster]:text-black dark:group-[.toaster]:text-white group-[.toaster]:border-2 group-[.toaster]:border-edge group-[.toaster]:shadow-cel group-[.toaster]:rounded-lg group-[.toaster]:p-5 group-[.toaster]:gap-4 group-[.toaster]:flex group-[.toaster]:items-start group-[.toaster]:w-full group-[.toaster]:font-sans',
+						'group toast w-full group-[.toaster]:bg-white dark:group-[.toaster]:bg-zinc group-[.toaster]:text-black dark:group-[.toaster]:text-white group-[.toaster]:border-2 group-[.toaster]:border-edge group-[.toaster]:shadow-cel group-[.toaster]:rounded-lg group-[.toaster]:p-5 group-[.toaster]:gap-4 group-[.toaster]:flex group-[.toaster]:items-start group-[.toaster]:w-full group-[.toaster]:font-sans',
 					title:
 						'group-[.toast]:font-bold group-[.toast]:text-lg group-[.toast]:text-black dark:group-[.toast]:text-white group-[.toast]:leading-tight',
 					description: 'group-[.toast]:text-muted-foreground group-[.toast]:text-sm group-[.toast]:leading-snug',

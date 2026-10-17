@@ -183,6 +183,78 @@ export const WithActions: Story = {
 	}),
 };
 
+export const InlineWithActions: Story = {
+	...WithActions,
+	parameters: {
+		docs: {
+			description: { story: 'Title-only notifications with compact inline actions, without a description.' },
+		},
+	},
+	args: {
+		buttons: [
+			{ label: 'Default + Action', variant: 'default', kind: 'custom', title: 'Archived', actionLabel: 'Undo' },
+			{ label: 'Success + Action', variant: 'default', color: 'green', kind: 'success', title: 'Saved', actionLabel: 'View' },
+			{ label: 'Error + Action', variant: 'danger', kind: 'error', title: 'Connection lost', actionLabel: 'Retry' },
+			{ label: 'Info + Action', variant: 'subtle', kind: 'info', title: 'Update ready', actionLabel: 'Install' },
+			{ label: 'Warning + Action', variant: 'default', kind: 'warning', title: 'Unsaved changes', actionLabel: 'Save' },
+		],
+	},
+	play: guardPlay(async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+		const body = within(document.body);
+
+		for (const button of args.buttons) {
+			if (!button.actionLabel) throw new Error('Expected a toast action label.');
+			await userEvent.click(canvas.getByRole('button', { name: button.label }));
+			const toastElement = body.getByRole('heading', { name: button.title }).closest('[data-sonner-toast]');
+			if (!(toastElement instanceof HTMLElement)) throw new Error('Expected a toast notification.');
+
+			const actionButton = within(toastElement).getByRole('button', { name: button.actionLabel });
+			await expect(toastElement.querySelector('p')).toBeNull();
+			await waitFor(() => expect(actionButton).toBeVisible());
+			await expect(actionButton.offsetWidth).toBeLessThan(toastElement.clientWidth);
+			await expect(toastElement.scrollWidth).toBeLessThanOrEqual(toastElement.clientWidth);
+			await userEvent.click(actionButton);
+			await userEvent.click(within(toastElement).getByRole('button', { name: 'Close notification' }));
+			await waitFor(() => expect(toastElement.isConnected).toBe(false));
+		}
+	}),
+};
+
+export const LongTitleWithActions: Story = {
+	...InlineWithActions,
+	parameters: {
+		docs: {
+			description: { story: 'Multiline titles and localized actions. Longer actions wrap onto a right-aligned row when space is tight.' },
+		},
+	},
+	args: {
+		buttons: [
+			{
+				label: 'Multiline + Action',
+				variant: 'danger',
+				kind: 'error',
+				title: 'Connection timed out. Showing limited messages.',
+				actionLabel: 'Retry',
+			},
+			{
+				label: 'Localized + Action',
+				variant: 'danger',
+				kind: 'error',
+				title: 'Anslutningen har avbrutits. Visar begränsade meddelanden.',
+				actionLabel: 'Försök igen',
+			},
+			{
+				label: 'Long Action Label',
+				variant: 'subtle',
+				kind: 'info',
+				title: 'Connection restored',
+				actionLabel: 'Reconnect to the messaging service',
+			},
+		],
+	},
+};
+
 export const Minimal: Story = {
 	args: {
 		buttons: [
