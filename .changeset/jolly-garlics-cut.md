@@ -2,4 +2,4 @@
 '@joyful.tools/neob': patch
 ---
 
-Keep toast action buttons sized to their labels and aligned to the right so they no longer stretch across mobile notifications.
+Refine responsive toast layouts with content-sized action buttons that stay inline with title-only messages when they fit and wrap into a right-aligned footer when needed. Keep dismiss buttons consistently in the top-right corner and add balanced spacing around multiline content and bottom actions. Add stories covering inline, multiline, and localized actions.

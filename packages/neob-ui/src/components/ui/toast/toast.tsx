@@ -1,4 +1,5 @@
 import { XIcon } from '@phosphor-icons/react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { toast as sonnerToast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -28,10 +29,56 @@ interface ToastContentProperties {
 	options?: ToastOptions;
 }
 
+function getIntrinsicWidth(element: HTMLElement) {
+	const { width, maxWidth } = element.style;
+	element.style.width = 'max-content';
+	element.style.maxWidth = 'none';
+	const intrinsicWidth = element.offsetWidth;
+	element.style.width = width;
+	element.style.maxWidth = maxWidth;
+	return intrinsicWidth;
+}
+
 function ToastContent({ id, title, variant, options }: ToastContentProperties) {
-	const inlineAction = Boolean(options?.action && !options.description);
+	const contentRef = useRef<HTMLDivElement>(null);
+	const titleRef = useRef<HTMLHeadingElement>(null);
+	const actionRef = useRef<HTMLButtonElement>(null);
+	const closeRef = useRef<HTMLButtonElement>(null);
+	const [actionFits, setActionFits] = useState(false);
+	const inlineAction = Boolean(actionFits && options?.action && !options.description);
+
+	useLayoutEffect(() => {
+		const content = contentRef.current;
+		const heading = titleRef.current;
+		const action = actionRef.current;
+		const close = closeRef.current;
+		if (!content || !heading || !action || !close || options?.description) return;
+
+		// Only the action changes rows; the close button always stays in the header.
+		const updateLayout = () => {
+			const contentStyles = getComputedStyle(content);
+			const closeStyles = getComputedStyle(close);
+			const availableWidth =
+				content.clientWidth - Number.parseFloat(contentStyles.paddingLeft) - Number.parseFloat(contentStyles.paddingRight);
+			const closeWidth = close.offsetWidth + Number.parseFloat(closeStyles.marginLeft) + Number.parseFloat(closeStyles.marginRight);
+			const requiredWidth =
+				getIntrinsicWidth(heading) + getIntrinsicWidth(action) + closeWidth + Number.parseFloat(contentStyles.columnGap) * 2;
+			setActionFits(requiredWidth <= availableWidth);
+		};
+		const observer = new ResizeObserver(updateLayout);
+		observer.observe(content);
+		observer.observe(action);
+		document.fonts.addEventListener('loadingdone', updateLayout);
+		updateLayout();
+		return () => {
+			observer.disconnect();
+			document.fonts.removeEventListener('loadingdone', updateLayout);
+		};
+	}, [title, options?.action?.label, options?.description]);
+
 	const actionButton = options?.action && (
 		<Button
+			ref={actionRef}
 			variant="default"
 			size="sm"
 			className="h-auto min-h-8 max-w-full wrap-anywhere whitespace-normal"
@@ -42,10 +89,11 @@ function ToastContent({ id, title, variant, options }: ToastContentProperties) {
 	);
 	const closeButton = (
 		<Button
+			ref={closeRef}
 			aria-label="Close notification"
 			variant="ghost"
 			size="icon"
-			className="-m-2 shrink-0"
+			className="col-start-3 row-start-1 -m-2 shrink-0 self-start"
 			action={() => {
 				sonnerToast.dismiss(id);
 			}}
@@ -56,28 +104,29 @@ function ToastContent({ id, title, variant, options }: ToastContentProperties) {
 
 	return (
 		<div
+			ref={contentRef}
 			className={cn(
-				'w-full rounded-lg border-2 border-edge p-4 font-sans shadow-sm select-none',
-				inlineAction ? 'flex flex-wrap items-center gap-3' : 'grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4',
+				'grid w-full grid-cols-[minmax(0,1fr)_auto_1.5rem] items-start gap-x-4 rounded-lg border-2 border-edge p-4 font-sans shadow-sm select-none',
 				toastStyles[variant].background,
 			)}
 		>
-			<h3 className={cn('min-w-0 text-base/snug font-bold wrap-anywhere text-black dark:text-white', inlineAction && 'flex-auto')}>
+			<h3
+				ref={titleRef}
+				className={cn(
+					'col-start-1 row-start-1 min-w-0 text-base/snug font-bold wrap-anywhere text-black dark:text-white',
+					!inlineAction && 'col-span-2',
+				)}
+			>
 				{title}
 			</h3>
-			{inlineAction ? (
-				<div className="ml-auto flex max-w-full items-center gap-4">
+			{closeButton}
+			{options?.description && (
+				<p className={cn('col-span-3 mt-1 text-sm/snug wrap-anywhere', toastStyles[variant].description)}>{options.description}</p>
+			)}
+			{actionButton && (
+				<div className={cn('flex min-w-0 justify-end', inlineAction ? 'col-start-2 row-start-1 -mt-1' : 'col-span-3 mt-3')}>
 					{actionButton}
-					{closeButton}
 				</div>
-			) : (
-				<>
-					{closeButton}
-					{options?.description && (
-						<p className={cn('col-span-2 mt-1 text-sm/snug wrap-anywhere', toastStyles[variant].description)}>{options.description}</p>
-					)}
-					{actionButton && <div className="col-span-2 mt-3 flex min-w-0 justify-end">{actionButton}</div>}
-				</>
 			)}
 		</div>
 	);

@@ -110,11 +110,9 @@ async function expectToastLayout(toastElement: HTMLElement) {
 	await expect(closeBounds.bottom).toBeLessThanOrEqual(contentBounds.bottom - 8);
 	await expect(toastElement.scrollWidth).toBeLessThanOrEqual(toastElement.clientWidth);
 
-	if (description || !actionButton) {
-		const firstLineCenter = headingBounds.top + Number.parseFloat(getComputedStyle(heading).lineHeight) / 2;
-		await expect(closeBounds.left).toBeGreaterThanOrEqual(headingBounds.right);
-		await expect(Math.abs(closeBounds.top + closeBounds.height / 2 - firstLineCenter)).toBeLessThanOrEqual(1);
-	}
+	const firstLineCenter = headingBounds.top + Number.parseFloat(getComputedStyle(heading).lineHeight) / 2;
+	await expect(closeBounds.left).toBeGreaterThanOrEqual(headingBounds.right);
+	await expect(Math.abs(closeBounds.top + closeBounds.height / 2 - firstLineCenter)).toBeLessThanOrEqual(1);
 	if (!actionButton) return;
 
 	const actionBounds = actionButton.getBoundingClientRect();
@@ -127,12 +125,12 @@ async function expectToastLayout(toastElement: HTMLElement) {
 		return;
 	}
 
-	await expect(actionBounds.right).toBeLessThanOrEqual(closeBounds.left);
-	await expect(Math.abs(actionBounds.top + actionBounds.height / 2 - closeBounds.top - closeBounds.height / 2)).toBeLessThanOrEqual(1);
-	if (actionBounds.left < headingBounds.right) {
+	if (actionBounds.top >= headingBounds.bottom) {
 		await expect(actionBounds.top - headingBounds.bottom).toBeGreaterThanOrEqual(12);
 		return;
 	}
+	await expect(actionBounds.right).toBeLessThanOrEqual(closeBounds.left);
+	await expect(Math.abs(actionBounds.top + actionBounds.height / 2 - closeBounds.top - closeBounds.height / 2)).toBeLessThanOrEqual(1);
 	await expect(Math.abs(actionBounds.top + actionBounds.height / 2 - headingBounds.top - headingBounds.height / 2)).toBeLessThanOrEqual(1);
 }
 
@@ -260,8 +258,6 @@ export const InlineWithActions: Story = {
 			await expect(actionButton.offsetWidth).toBeLessThan(toastElement.clientWidth);
 			await expect(toastElement.scrollWidth).toBeLessThanOrEqual(toastElement.clientWidth);
 			await expectToastLayout(toastElement);
-			const closeButton = within(toastElement).getByRole('button', { name: 'Close notification' });
-			await expect(actionButton.getBoundingClientRect().right).toBeLessThanOrEqual(closeButton.getBoundingClientRect().left);
 			await userEvent.click(actionButton);
 			await userEvent.click(within(toastElement).getByRole('button', { name: 'Close notification' }));
 			await waitFor(() => expect(toastElement.isConnected).toBe(false));
@@ -273,7 +269,10 @@ export const LongTitleWithActions: Story = {
 	...InlineWithActions,
 	parameters: {
 		docs: {
-			description: { story: 'Multiline titles and localized actions. Action and dismiss controls wrap together when space is tight.' },
+			description: {
+				story:
+					'Multiline titles and localized actions. Actions wrap below the message while the dismiss button stays in the top-right corner.',
+			},
 		},
 	},
 	args: {
