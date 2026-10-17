@@ -1,0 +1,21 @@
+.changeset/jolly-garlics-cut.md
+  s_8fb9539f91b700::t_844edd669a06b0 1-5
+packages/neob-ui/src/components/ui/toast/toast.tsx
+  s_8fb9539f91b700::t_2637826e474619 35,63,91,119,147
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "1d3d3c6da04d990fedf5d4850e9c410699894a30",
+  "prompts": {},
+  "sessions": {
+    "s_8fb9539f91b700": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a147bf-63b2-7202-b0f9-92566ad32af8",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
