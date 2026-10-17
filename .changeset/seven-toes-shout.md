@@ -2,4 +2,4 @@
 '@joyful.tools/neob': patch
 ---
 
-Align toast close buttons in a dedicated trailing column so they stay centered with single-line messages and aligned with the first line of multiline content. Keep inline and wrapped actions clear of the 40px dismiss target.
+Refine toast spacing with balanced padding and room above and below bottom actions. Keep action and dismiss controls together in title-only toasts, wrapping below long messages when needed. Notifications with descriptions keep a corner close button and a compact action aligned to the full-width footer.

@@ -30,40 +30,55 @@ interface ToastContentProperties {
 
 function ToastContent({ id, title, variant, options }: ToastContentProperties) {
 	const inlineAction = Boolean(options?.action && !options.description);
+	const actionButton = options?.action && (
+		<Button
+			variant="default"
+			size="sm"
+			className="h-auto min-h-8 max-w-full wrap-anywhere whitespace-normal"
+			action={options.action.action}
+		>
+			{options.action.label}
+		</Button>
+	);
+	const closeButton = (
+		<Button
+			aria-label="Close notification"
+			variant="ghost"
+			size="icon"
+			className="-m-2 shrink-0"
+			action={() => {
+				sonnerToast.dismiss(id);
+			}}
+		>
+			<XIcon className="size-4" />
+		</Button>
+	);
 
 	return (
 		<div
 			className={cn(
-				'grid min-h-12 w-full grid-cols-[minmax(0,1fr)_auto] items-start gap-x-2 rounded-lg border-2 border-edge px-3 py-1 font-sans shadow-sm select-none',
+				'w-full rounded-lg border-2 border-edge p-4 font-sans shadow-sm select-none',
+				inlineAction ? 'flex flex-wrap items-center gap-3' : 'grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4',
 				toastStyles[variant].background,
 			)}
 		>
-			<div className={cn('flex min-h-10 min-w-0 flex-col justify-center gap-2', inlineAction && 'flex-row flex-wrap items-center')}>
-				<div className={cn('flex min-w-0 flex-col gap-1 py-2 wrap-anywhere', inlineAction && 'flex-1 basis-2/3')}>
-					<h3 className="text-base/snug font-bold text-black dark:text-white">{title}</h3>
-					{options?.description && <p className={cn('text-sm/snug', toastStyles[variant].description)}>{options.description}</p>}
+			<h3 className={cn('min-w-0 text-base/snug font-bold wrap-anywhere text-black dark:text-white', inlineAction && 'flex-auto')}>
+				{title}
+			</h3>
+			{inlineAction ? (
+				<div className="ml-auto flex max-w-full items-center gap-4">
+					{actionButton}
+					{closeButton}
 				</div>
-				{options?.action && (
-					<Button
-						variant="default"
-						size="sm"
-						className={cn('self-end', inlineAction && 'ml-auto h-auto min-h-8 max-w-full self-center wrap-anywhere whitespace-normal')}
-						action={options.action.action}
-					>
-						{options.action.label}
-					</Button>
-				)}
-			</div>
-			<Button
-				aria-label="Close notification"
-				variant="ghost"
-				size="icon"
-				action={() => {
-					sonnerToast.dismiss(id);
-				}}
-			>
-				<XIcon className="size-4" />
-			</Button>
+			) : (
+				<>
+					{closeButton}
+					{options?.description && (
+						<p className={cn('col-span-2 mt-1 text-sm/snug wrap-anywhere', toastStyles[variant].description)}>{options.description}</p>
+					)}
+					{actionButton && <div className="col-span-2 mt-3 flex min-w-0 justify-end">{actionButton}</div>}
+				</>
+			)}
 		</div>
 	);
 }

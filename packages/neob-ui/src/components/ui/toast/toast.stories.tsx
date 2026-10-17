@@ -89,18 +89,51 @@ const showToast = (button: ToastButtonConfiguration) => {
 	}
 };
 
-async function expectCloseButtonAlignment(toastElement: HTMLElement) {
+async function expectToastLayout(toastElement: HTMLElement) {
 	const heading = within(toastElement).getByRole('heading');
 	const closeButton = within(toastElement).getByRole('button', { name: 'Close notification' });
+	const actionButton = within(toastElement)
+		.queryAllByRole('button')
+		.find((button) => button !== closeButton);
+	const description = toastElement.querySelector('p');
+	const content = heading.parentElement;
+	if (!content) throw new Error('Expected toast content.');
 	await waitFor(() => expect(closeButton).toBeVisible());
 	const headingBounds = heading.getBoundingClientRect();
 	const closeBounds = closeButton.getBoundingClientRect();
-	const firstLineCenter = headingBounds.top + Number.parseFloat(getComputedStyle(heading).lineHeight) / 2;
+	const contentBounds = content.getBoundingClientRect();
 
 	await expect(closeBounds.width).toBe(40);
 	await expect(closeBounds.height).toBe(40);
-	await expect(closeBounds.left).toBeGreaterThanOrEqual(headingBounds.right);
-	await expect(Math.abs(closeBounds.top + closeBounds.height / 2 - firstLineCenter)).toBeLessThanOrEqual(1);
+	await expect(closeBounds.right).toBeLessThanOrEqual(contentBounds.right - 8);
+	await expect(closeBounds.top).toBeGreaterThanOrEqual(contentBounds.top + 8);
+	await expect(closeBounds.bottom).toBeLessThanOrEqual(contentBounds.bottom - 8);
+	await expect(toastElement.scrollWidth).toBeLessThanOrEqual(toastElement.clientWidth);
+
+	if (description || !actionButton) {
+		const firstLineCenter = headingBounds.top + Number.parseFloat(getComputedStyle(heading).lineHeight) / 2;
+		await expect(closeBounds.left).toBeGreaterThanOrEqual(headingBounds.right);
+		await expect(Math.abs(closeBounds.top + closeBounds.height / 2 - firstLineCenter)).toBeLessThanOrEqual(1);
+	}
+	if (!actionButton) return;
+
+	const actionBounds = actionButton.getBoundingClientRect();
+	await expect(actionBounds.width).toBeLessThan(contentBounds.width);
+	await expect(contentBounds.bottom - actionBounds.bottom).toBeGreaterThanOrEqual(16);
+	await expect(contentBounds.right - actionBounds.right).toBeGreaterThanOrEqual(16);
+
+	if (description) {
+		await expect(actionBounds.top - description.getBoundingClientRect().bottom).toBeGreaterThanOrEqual(12);
+		return;
+	}
+
+	await expect(actionBounds.right).toBeLessThanOrEqual(closeBounds.left);
+	await expect(Math.abs(actionBounds.top + actionBounds.height / 2 - closeBounds.top - closeBounds.height / 2)).toBeLessThanOrEqual(1);
+	if (actionBounds.left < headingBounds.right) {
+		await expect(actionBounds.top - headingBounds.bottom).toBeGreaterThanOrEqual(12);
+		return;
+	}
+	await expect(Math.abs(actionBounds.top + actionBounds.height / 2 - headingBounds.top - headingBounds.height / 2)).toBeLessThanOrEqual(1);
 }
 
 export const AllVariants: Story = {
@@ -178,22 +211,20 @@ export const WithActions: Story = {
 			))}
 		</div>
 	),
-	play: guardPlay(async ({ canvasElement }) => {
+	play: guardPlay(async ({ canvasElement, args }) => {
 		const canvas = within(canvasElement);
 		const body = within(document.body);
 
-		await userEvent.click(canvas.getByRole('button', { name: 'Default + Action' }));
-		await expect(body.getByText('File uploaded')).toBeInTheDocument();
-		await expect(body.getByRole('button', { name: 'Open File' })).toBeInTheDocument();
-		await userEvent.click(body.getByRole('button', { name: 'Open File' }));
-
-		await userEvent.click(canvas.getByRole('button', { name: 'Success + Action' }));
-		await expect(body.getByText('Team created')).toBeInTheDocument();
-		await expect(body.getByRole('button', { name: 'Invite Team Members' })).toBeInTheDocument();
-
-		await userEvent.click(canvas.getByRole('button', { name: 'Error + Action' }));
-		await expect(body.getByText('Connection failed')).toBeInTheDocument();
-		await expect(body.getByRole('button', { name: 'Retry' })).toBeInTheDocument();
+		for (const button of args.buttons) {
+			if (!button.actionLabel) throw new Error('Expected a toast action label.');
+			await userEvent.click(canvas.getByRole('button', { name: button.label }));
+			const toastElement = body.getByRole('heading', { name: button.title }).closest('[data-sonner-toast]');
+			if (!(toastElement instanceof HTMLElement)) throw new Error('Expected a toast notification.');
+			await expectToastLayout(toastElement);
+			await userEvent.click(within(toastElement).getByRole('button', { name: button.actionLabel }));
+			await userEvent.click(within(toastElement).getByRole('button', { name: 'Close notification' }));
+			await waitFor(() => expect(toastElement.isConnected).toBe(false));
+		}
 	}),
 };
 
@@ -228,7 +259,7 @@ export const InlineWithActions: Story = {
 			await waitFor(() => expect(actionButton).toBeVisible());
 			await expect(actionButton.offsetWidth).toBeLessThan(toastElement.clientWidth);
 			await expect(toastElement.scrollWidth).toBeLessThanOrEqual(toastElement.clientWidth);
-			await expectCloseButtonAlignment(toastElement);
+			await expectToastLayout(toastElement);
 			const closeButton = within(toastElement).getByRole('button', { name: 'Close notification' });
 			await expect(actionButton.getBoundingClientRect().right).toBeLessThanOrEqual(closeButton.getBoundingClientRect().left);
 			await userEvent.click(actionButton);
@@ -242,7 +273,7 @@ export const LongTitleWithActions: Story = {
 	...InlineWithActions,
 	parameters: {
 		docs: {
-			description: { story: 'Multiline titles and localized actions. Longer actions wrap onto a right-aligned row when space is tight.' },
+			description: { story: 'Multiline titles and localized actions. Action and dismiss controls wrap together when space is tight.' },
 		},
 	},
 	args: {
@@ -302,11 +333,14 @@ export const Minimal: Story = {
 
 			const closeButton = within(toastElement).getByRole('button', { name: 'Close notification' });
 			await expect(toastElement.offsetHeight).toBeGreaterThan(0);
-			await expect(toastElement.offsetHeight).toBeLessThanOrEqual(52);
+			const heading = within(toastElement).getByRole('heading');
+			if (heading.offsetHeight <= Number.parseFloat(getComputedStyle(heading).lineHeight)) {
+				await expect(toastElement.offsetHeight).toBeLessThanOrEqual(60);
+			}
 			await expect(closeButton.offsetWidth).toBe(40);
 			await expect(closeButton.offsetHeight).toBe(40);
 			await expect(toastElement.querySelector('p')).toBeNull();
-			await expectCloseButtonAlignment(toastElement);
+			await expectToastLayout(toastElement);
 
 			await userEvent.click(closeButton);
 			await waitFor(() => expect(toastElement.isConnected).toBe(false));
@@ -343,7 +377,7 @@ export const LongContent: Story = {
 		await expect(toastElement.scrollWidth).toBeLessThanOrEqual(toastElement.clientWidth);
 		await expect(heading.getBoundingClientRect().right).toBeLessThanOrEqual(closeButton.getBoundingClientRect().left);
 		await expect(within(toastElement).getByRole('button', { name: 'View workspace' })).toBeInTheDocument();
-		await expectCloseButtonAlignment(toastElement);
+		await expectToastLayout(toastElement);
 
 		await userEvent.click(closeButton);
 		await waitFor(() => expect(toastElement.isConnected).toBe(false));
