@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 2.3.7
+
+### Patch Changes
+
+- [`1d3d3c6`](https://github.com/joyful-tools/neob/commit/1d3d3c6da04d990fedf5d4850e9c410699894a30) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Refine responsive toast layouts with content-sized action buttons that stay inline with title-only messages when they fit and wrap into a right-aligned footer when needed. Keep dismiss buttons consistently in the top-right corner and add balanced spacing around multiline content and bottom actions. Add stories covering inline, multiline, and localized actions.
+
 ## 2.3.6
 
 ### Patch Changes
