@@ -89,6 +89,20 @@ const showToast = (button: ToastButtonConfiguration) => {
 	}
 };
 
+async function expectCloseButtonAlignment(toastElement: HTMLElement) {
+	const heading = within(toastElement).getByRole('heading');
+	const closeButton = within(toastElement).getByRole('button', { name: 'Close notification' });
+	await waitFor(() => expect(closeButton).toBeVisible());
+	const headingBounds = heading.getBoundingClientRect();
+	const closeBounds = closeButton.getBoundingClientRect();
+	const firstLineCenter = headingBounds.top + Number.parseFloat(getComputedStyle(heading).lineHeight) / 2;
+
+	await expect(closeBounds.width).toBe(40);
+	await expect(closeBounds.height).toBe(40);
+	await expect(closeBounds.left).toBeGreaterThanOrEqual(headingBounds.right);
+	await expect(Math.abs(closeBounds.top + closeBounds.height / 2 - firstLineCenter)).toBeLessThanOrEqual(1);
+}
+
 export const AllVariants: Story = {
 	args: {
 		buttons: [
@@ -214,6 +228,9 @@ export const InlineWithActions: Story = {
 			await waitFor(() => expect(actionButton).toBeVisible());
 			await expect(actionButton.offsetWidth).toBeLessThan(toastElement.clientWidth);
 			await expect(toastElement.scrollWidth).toBeLessThanOrEqual(toastElement.clientWidth);
+			await expectCloseButtonAlignment(toastElement);
+			const closeButton = within(toastElement).getByRole('button', { name: 'Close notification' });
+			await expect(actionButton.getBoundingClientRect().right).toBeLessThanOrEqual(closeButton.getBoundingClientRect().left);
 			await userEvent.click(actionButton);
 			await userEvent.click(within(toastElement).getByRole('button', { name: 'Close notification' }));
 			await waitFor(() => expect(toastElement.isConnected).toBe(false));
@@ -289,6 +306,7 @@ export const Minimal: Story = {
 			await expect(closeButton.offsetWidth).toBe(40);
 			await expect(closeButton.offsetHeight).toBe(40);
 			await expect(toastElement.querySelector('p')).toBeNull();
+			await expectCloseButtonAlignment(toastElement);
 
 			await userEvent.click(closeButton);
 			await waitFor(() => expect(toastElement.isConnected).toBe(false));
@@ -325,6 +343,7 @@ export const LongContent: Story = {
 		await expect(toastElement.scrollWidth).toBeLessThanOrEqual(toastElement.clientWidth);
 		await expect(heading.getBoundingClientRect().right).toBeLessThanOrEqual(closeButton.getBoundingClientRect().left);
 		await expect(within(toastElement).getByRole('button', { name: 'View workspace' })).toBeInTheDocument();
+		await expectCloseButtonAlignment(toastElement);
 
 		await userEvent.click(closeButton);
 		await waitFor(() => expect(toastElement.isConnected).toBe(false));
