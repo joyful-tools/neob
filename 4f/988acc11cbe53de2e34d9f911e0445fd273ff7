@@ -1,0 +1,25 @@
+.changeset/floppy-bugs-crash.md
+  s_8fb9539f91b700::t_280a501331e1f9 1-5
+packages/neob-ui/src/components/ui/toast/toast.stories.tsx
+  s_8fb9539f91b700::t_edb332e48c903d 186-257
+packages/neob-ui/src/components/ui/toast/toast.tsx
+  s_8fb9539f91b700::t_43a2f9885c1cea 5,17-23,41-49,58-64,82-90,99-105,123-131,140-146,164-172,181-187,205-213
+packages/neob-ui/src/components/ui/toast/toaster.tsx
+  s_8fb9539f91b700::t_01ff598382012e 13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "4f988acc11cbe53de2e34d9f911e0445fd273ff7",
+  "prompts": {},
+  "sessions": {
+    "s_8fb9539f91b700": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a147bf-63b2-7202-b0f9-92566ad32af8",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
