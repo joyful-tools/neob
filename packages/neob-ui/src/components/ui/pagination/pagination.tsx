@@ -134,7 +134,7 @@ function PaginationPageSize({
 					action={(nextValue) => runAction(Number(nextValue))}
 					aria-label={labels.pageSize}
 					size="sm"
-					className="h-8 border-2 border-edge px-2.5 text-xs font-black dark:border-edge [&_svg]:size-3"
+					className="h-7 gap-1 border-2 border-edge px-2 text-xs font-black dark:border-edge [&_svg]:size-3 [&>span:last-child]:ml-0"
 					containerClassName="p-1"
 				>
 					{options.map((size) => (
@@ -188,11 +188,11 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							setEditingPage(1);
 						}}
 						className={cn(
-							'size-8 rounded-r-none p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100',
+							'size-7 rounded-r-none p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100',
 							maxPage <= 1 && 'opacity-100!',
 						)}
 					>
-						<CaretDoubleLeftIcon className={cn('size-4', isFirstPageDisabled && 'opacity-30')} />
+						<CaretDoubleLeftIcon className={cn('size-3.5', isFirstPageDisabled && 'opacity-30')} />
 					</Button>
 				)}
 				<Button
@@ -207,16 +207,16 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						setEditingPage(previousPage);
 					}}
 					className={cn(
-						'size-8 p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100',
+						'size-7 p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100',
 						controls === 'full' ? '-ml-0.5 rounded-none' : 'rounded-r-none',
 						maxPage <= 1 && 'opacity-100!',
 					)}
 				>
-					<CaretLeftIcon className={cn('size-4', isFirstPageDisabled && 'opacity-30')} />
+					<CaretLeftIcon className={cn('size-3.5', isFirstPageDisabled && 'opacity-30')} />
 				</Button>
 				{controls === 'full' &&
 					(pageSelector === 'dropdown' ? (
-						<div className="-ml-0.5 w-18 shadow-cel-sm focus-within:z-10">
+						<div className="-ml-0.5 w-16 shadow-cel-sm focus-within:z-10">
 							<Select
 								value={String(page)}
 								action={(value) => {
@@ -227,7 +227,10 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 								disabled={maxPage <= 1}
 								aria-label={labels.pageNumber}
 								size="sm"
-								className={cn('rounded-none', maxPage <= 1 && 'opacity-100! [&_svg]:opacity-30 [&>span]:opacity-30')}
+								className={cn(
+									'h-7 gap-1 rounded-none px-2 [&_svg]:size-3 [&>span:last-child]:ml-0',
+									maxPage <= 1 && 'opacity-100! [&_svg]:opacity-30 [&>span]:opacity-30',
+								)}
 							>
 								{Array.from({ length: maxPage }, (_, i) => i + 1).map((p) => (
 									<Select.Option key={p} value={String(p)} className="px-2 py-1 text-xs">
@@ -237,13 +240,13 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							</Select>
 						</div>
 					) : (
-						<div className="neo-focus-ring-focus isolate -ml-0.5 flex h-8 items-center justify-center rounded-none border-2 border-edge bg-white shadow-cel-sm outline-hidden transition-all duration-(--duration-control) ease-spring select-none focus-within:z-10 dark:border-edge dark:bg-zinc">
+						<div className="neo-focus-ring-focus isolate -ml-0.5 flex h-7 items-center justify-center rounded-none border-2 border-edge bg-white shadow-cel-sm outline-hidden transition-all duration-(--duration-control) ease-spring select-none focus-within:z-10 dark:border-edge dark:bg-zinc">
 							<input
 								type="number"
 								data-neo-number-input=""
 								disabled={maxPage <= 1}
 								className={cn(
-									'h-full w-12 border-0 bg-transparent p-0 text-center text-xs font-bold text-foreground outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed',
+									'h-full w-10 border-0 bg-transparent p-0 text-center text-xs font-bold text-foreground outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed',
 									maxPage <= 1 && 'opacity-30',
 								)}
 								aria-label={labels.pageNumber}
@@ -290,12 +293,12 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 						setEditingPage(nextPage);
 					}}
 					className={cn(
-						'-ml-0.5 size-8 p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100',
+						'-ml-0.5 size-7 p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100',
 						controls === 'full' ? 'rounded-none' : 'rounded-l-none',
 						maxPage <= 1 && 'opacity-100!',
 					)}
 				>
-					<CaretRightIcon className={cn('size-4', isLastPageDisabled && 'opacity-30')} />
+					<CaretRightIcon className={cn('size-3.5', isLastPageDisabled && 'opacity-30')} />
 				</Button>
 				{controls === 'full' && (
 					<Button
@@ -309,11 +312,11 @@ function PaginationControls({ controls = 'full', pageSelector = 'input', classNa
 							setEditingPage(maxPage);
 						}}
 						className={cn(
-							'-ml-0.5 size-8 rounded-l-none p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100',
+							'-ml-0.5 size-7 rounded-l-none p-0 [--button-disabled-shadow-color:var(--shadow-cel-color-default)] focus:z-10 disabled:opacity-100',
 							maxPage <= 1 && 'opacity-100!',
 						)}
 					>
-						<CaretDoubleRightIcon className={cn('size-4', isLastPageDisabled && 'opacity-30')} />
+						<CaretDoubleRightIcon className={cn('size-3.5', isLastPageDisabled && 'opacity-30')} />
 					</Button>
 				)}
 			</nav>
