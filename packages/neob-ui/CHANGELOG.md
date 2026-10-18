@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 2.3.8
+
+### Patch Changes
+
+- [`b913aab`](https://github.com/joyful-tools/neob/commit/b913aab6c048894e6d4142d315d1068a672b3f8b) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Make pagination more compact with 28px navigation buttons and selectors, smaller icons, and narrower page fields to reduce the space taken by pagination controls.
+
 ## 2.3.7
 
 ### Patch Changes
