@@ -59,6 +59,9 @@
 		"vitest": "^4.1.7",
 		"wrangler": "^4.134.0"
 	},
+	"overrides": {
+		"workerd": "1.20261027.1"
+	},
 	"scripts": {
 		"build": "bun --filter @joyful.tools/neob build",
 		"format": "prettier --write . && eslint --fix .",
