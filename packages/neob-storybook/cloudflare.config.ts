@@ -3,7 +3,7 @@ import { defineConfig } from 'cf/config';
 export default defineConfig({
 	worker: {
 		name: 'neob-storybook',
-		compatibilityDate: '2026-05-26',
+		compatibilityDate: '2026-10-27',
 		workersDev: false,
 		previewUrls: true,
 		observability: {
