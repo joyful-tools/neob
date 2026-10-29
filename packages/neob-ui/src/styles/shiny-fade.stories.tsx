@@ -1,9 +1,9 @@
-import { Button } from '../button/button';
+import { Button } from '@/components/ui/button';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
-	title: 'Experiments/ShinyFade',
+	title: 'Utility/ShinyFade',
 	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',

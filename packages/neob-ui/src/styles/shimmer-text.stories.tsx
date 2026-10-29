@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
-	title: 'Experiments/ShimmerText',
+	title: 'Utility/ShimmerText',
 	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',

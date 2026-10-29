@@ -2,7 +2,7 @@ import { CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utilities';
 
-import { Marquee } from '../marquee/marquee';
+import { Marquee } from './marquee';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
@@ -23,7 +23,7 @@ const marqueeStyle: CustomCSSProperties = { '--gap': `${GAP_REM}rem` };
  * container borders.
  */
 const meta = {
-	title: 'Experiments/ScrollingText',
+	title: 'Data Display/Marquee/Scrolling text',
 	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',
@@ -71,13 +71,9 @@ function ScrollingText({ text, className }: { readonly text: ReactNode; readonly
 			</span>
 
 			{hasOverflow ? (
-				<>
-					<div role="none" className="pointer-events-none absolute inset-y-0 left-2 z-10 w-2 bg-linear-to-r from-card to-transparent" />
-					<div role="none" className="pointer-events-none absolute inset-y-0 right-2 z-10 w-2 bg-linear-to-l from-card to-transparent" />
-					<Marquee duration={duration} style={marqueeStyle}>
-						<span className="font-mono font-bold whitespace-nowrap">{text}</span>
-					</Marquee>
-				</>
+				<Marquee duration={duration} style={marqueeStyle}>
+					<span className="font-mono font-bold whitespace-nowrap">{text}</span>
+				</Marquee>
 			) : (
 				<span className="block font-mono font-bold whitespace-nowrap">{text}</span>
 			)}

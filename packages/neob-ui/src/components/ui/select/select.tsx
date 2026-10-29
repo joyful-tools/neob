@@ -5,6 +5,7 @@ import { ReactNode, Ref, RefObject, useId } from 'react';
 import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useEdgeFade } from '@/hooks/use-edge-fade';
 import { useOptimisticAction } from '@/hooks/use-optimistic-action';
 import { cn } from '@/lib/utilities';
 
@@ -47,6 +48,8 @@ export interface SelectProps<T = unknown, Multiple extends boolean | undefined =
 	container?: HTMLElement | null | RefObject<HTMLElement | null>;
 	containerClassName?: string;
 	popupClassName?: string;
+	/** Fade popup edges with hidden options. Defaults to true. */
+	edgeFade?: boolean;
 	items?: Record<string, SelectItemValue> | ReadonlyArray<{ label: ReactNode; value: T }>;
 }
 
@@ -123,8 +126,10 @@ function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 	container,
 	containerClassName,
 	popupClassName,
+	edgeFade = true,
 	...props
 }: SelectProps<T, Multiple>) {
+	const edgeFadeRef = useEdgeFade<HTMLDivElement>({ enabled: edgeFade });
 	const normalizedItems = props.items ? normalizeItems(props.items) : undefined;
 	const renderedChildren = children || (props.items ? renderOptionsFromItems(props.items) : null);
 
@@ -203,8 +208,9 @@ function SelectRoot<T = unknown, Multiple extends boolean | undefined = false>({
 						)}
 					>
 						<BaseSelect.List
+							ref={edgeFadeRef}
 							aria-label={ariaLabel ?? 'Options'}
-							className="flex min-h-0 flex-1 scroll-py-2 flex-col gap-1 overflow-y-auto overscroll-none"
+							className={cn('flex min-h-0 flex-1 scroll-py-2 flex-col gap-1 overflow-y-auto overscroll-none', edgeFade && 'edge-fade-y')}
 						>
 							{renderedChildren}
 						</BaseSelect.List>

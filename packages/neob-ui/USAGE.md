@@ -146,6 +146,59 @@ The stylesheet provides parameterized utilities for common visual treatments:
 - `neo-shake`, `neo-skew`, `neo-wave`, `appear`, and
   `animate-typing-indicator` provide reusable motion effects.
 
+Marquee, VirtualizedViewport, Table, Select, Combobox.List, DropMenu, and
+DropdownMenu.Content fade clipped content at their scrolling edges by default.
+Scroll fades appear only where more content is hidden; Marquee fades both ends
+of its travel axis. Pass `edgeFade={false}` to the component to disable them.
+Set `--edge-fade-size` on the component or an ancestor to customize the default
+24px fade. Fades blend with the surrounding surface, respect reduced motion,
+and are disabled in forced colors mode.
+
+Use `EdgeFade` for your own scroll containers. Give it a constrained height for
+vertical scrolling or a constrained width for horizontal scrolling:
+
+```tsx
+import { EdgeFade } from '@joyful.tools/neob';
+// Also available from '@joyful.tools/neob/edge-fade'.
+
+<EdgeFade className="h-64" role="region" aria-label="Activity">
+  {items.map((item) => (
+    <div key={item.id}>{item.label}</div>
+  ))}
+</EdgeFade>;
+```
+
+`axis` accepts `"y"` (the default), `"x"`, or `"both"`. Set `size={32}` for a
+32px fade, `size="2rem"` for another CSS length, or `enabled={false}` to turn
+the fades off while retaining scrolling. The component defaults to `tabIndex={0}`
+for keyboard scrolling and forwards native attributes, events, styles, and `ref`.
+Keep decorative borders and shadows on a parent when they should stay unfaded.
+
+Use `render` to enhance an existing element or a custom component without adding
+another wrapper. Custom components must pass the supplied props and ref to the
+actual scrolling DOM element:
+
+```tsx
+<EdgeFade render={<section className="h-64" />} role="region" aria-label="Activity">
+  {children}
+</EdgeFade>
+```
+
+For integrations that already own the viewport's rendering, use the exported
+`useEdgeFade` callback ref with the matching `edge-fade-y`, `edge-fade-x`, or
+`edge-fade-both` class. The hook accepts `axis`, `enabled`, and an optional `ref`
+to preserve access to the element:
+
+```tsx
+import { useEdgeFade } from '@joyful.tools/neob/edge-fade';
+
+const fadeRef = useEdgeFade<HTMLDivElement>({ axis: 'y' });
+
+<div ref={fadeRef} className="h-64 edge-fade-y overflow-y-auto" tabIndex={0}>
+  {children}
+</div>;
+```
+
 ---
 
 ## §9 — Prefer granular imports for size-sensitive applications

@@ -1,6 +1,6 @@
 import { ComponentProps, ReactNode, useState } from 'react';
 import { action } from 'storybook/actions';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { guardPlay } from '@/lib/storybook-interactions';
 
@@ -75,6 +75,9 @@ export const Default: Story = {
 		const select = canvas.getByRole('combobox', { name: /fruit selection/i });
 		await userEvent.click(select);
 		const body = within(document.body);
+		const list = await body.findByRole('listbox');
+		await expect(list).not.toHaveAttribute('data-edge-fade-top');
+		await expect(list).not.toHaveAttribute('data-edge-fade-bottom');
 		await userEvent.click(await body.findByRole('option', { name: 'Banana' }));
 		await expect(select).toHaveTextContent(/banana/i);
 	}),
@@ -97,6 +100,31 @@ export const Disabled: Story = {
 			</div>
 		);
 	},
+};
+
+export const ScrollingOptions: StoryObj<typeof Select> = {
+	render: () => (
+		<div className="w-64">
+			<Select
+				aria-label="Scrolling options"
+				placeholder="Choose an option"
+				items={Array.from({ length: 40 }, (_, index) => ({ value: `option-${index}`, label: `Option ${index + 1}` }))}
+			/>
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const trigger = within(canvasElement).getByRole('combobox', { name: 'Scrolling options' });
+		await userEvent.click(trigger);
+		const list = await within(document.body).findByRole('listbox');
+		await waitFor(() => expect(list).toHaveAttribute('data-edge-fade-bottom'));
+		await expect(list).not.toHaveAttribute('data-edge-fade-top');
+		list.scrollTop = list.scrollHeight / 2;
+		await waitFor(() => expect(list).toHaveAttribute('data-edge-fade-top'));
+		list.scrollTop = list.scrollHeight;
+		await waitFor(() => expect(list).not.toHaveAttribute('data-edge-fade-bottom'));
+		await userEvent.click(within(list).getByRole('option', { name: 'Option 40' }));
+		await expect(trigger).toHaveTextContent('Option 40');
+	}),
 };
 
 export const ItemsProp: Story = {

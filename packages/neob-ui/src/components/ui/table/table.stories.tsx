@@ -1,3 +1,7 @@
+import { expect, waitFor } from 'storybook/test';
+
+import { guardPlay } from '@/lib/storybook-interactions';
+
 import { Table } from './table';
 
 import type { Meta } from '@storybook/react-vite';
@@ -120,4 +124,42 @@ export const WithFooter: import('@storybook/react-vite').StoryObj<TableStoryProp
 			</div>
 		);
 	},
+};
+
+export const HorizontalOverflow: import('@storybook/react-vite').StoryObj<typeof Table> = {
+	render: () => (
+		<div className="w-64">
+			<Table className="min-w-200">
+				<Table.Header>
+					<Table.Row>
+						{['Invoice', 'Status', 'Method', 'Amount'].map((label) => (
+							<Table.Head key={label}>{label}</Table.Head>
+						))}
+					</Table.Row>
+				</Table.Header>
+				<Table.Body>
+					{INVOICES.map((invoice) => (
+						<Table.Row key={invoice.id}>
+							<Table.Cell>{invoice.id}</Table.Cell>
+							<Table.Cell>{invoice.status}</Table.Cell>
+							<Table.Cell>{invoice.method}</Table.Cell>
+							<Table.Cell>{invoice.amount}</Table.Cell>
+						</Table.Row>
+					))}
+				</Table.Body>
+			</Table>
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const viewport = canvasElement.querySelector('.overflow-auto');
+		if (!viewport) throw new Error('Table viewport not found');
+		await waitFor(() => {
+			expect(viewport).not.toHaveAttribute('data-edge-fade-left');
+			expect(viewport).toHaveAttribute('data-edge-fade-right');
+		});
+		viewport.scrollLeft = 100;
+		await waitFor(() => expect(viewport).toHaveAttribute('data-edge-fade-left'));
+		viewport.scrollLeft = viewport.scrollWidth;
+		await waitFor(() => expect(viewport).not.toHaveAttribute('data-edge-fade-right'));
+	}),
 };

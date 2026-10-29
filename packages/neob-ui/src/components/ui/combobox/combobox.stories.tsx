@@ -383,6 +383,47 @@ export const Default: StoryObj<FruitComboboxStoryProperties> = {
 	}),
 };
 
+export const ScrollingOptions: StoryObj = {
+	render: () => (
+		<div className="w-75">
+			<Combobox items={Array.from({ length: 40 }, (_, index) => `Option ${index + 1}`)}>
+				<Combobox.TriggerInput aria-label="Scrolling options" placeholder="Search options" />
+				<Combobox.Content className="max-h-48">
+					<Combobox.Empty />
+					<Combobox.List>
+						{(item: string) => (
+							<Combobox.Item key={item} value={item}>
+								{item}
+							</Combobox.Item>
+						)}
+					</Combobox.List>
+				</Combobox.Content>
+			</Combobox>
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const input = within(canvasElement).getByRole('combobox', { name: 'Scrolling options' });
+		await userEvent.click(input);
+		const list = await within(document.body).findByRole('listbox');
+		await waitFor(() => expect(list).toHaveAttribute('data-edge-fade-bottom'));
+		list.scrollTop = list.scrollHeight / 2;
+		await waitFor(() => expect(list).toHaveAttribute('data-edge-fade-top'));
+		list.scrollTop = list.scrollHeight;
+		await waitFor(() => expect(list).not.toHaveAttribute('data-edge-fade-bottom'));
+		await userEvent.type(input, 'Option 40');
+		await waitFor(() => {
+			expect(list).not.toHaveAttribute('data-edge-fade-top');
+			expect(list).not.toHaveAttribute('data-edge-fade-bottom');
+		});
+		await userEvent.clear(input);
+		await waitFor(() => expect(list).toHaveAttribute('data-edge-fade-bottom'));
+		await userEvent.keyboard('{Escape}');
+		await userEvent.click(input);
+		const reopenedList = await within(document.body).findByRole('listbox');
+		await waitFor(() => expect(reopenedList).toHaveAttribute('data-edge-fade-bottom'));
+	}),
+};
+
 export const SearchableInside: StoryObj<LanguageComboboxStoryProperties> = {
 	args: {
 		initialValue: languages[0],

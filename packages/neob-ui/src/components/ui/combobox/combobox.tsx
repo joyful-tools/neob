@@ -16,6 +16,7 @@ import {
 } from 'react';
 
 import { Input as NeoInput } from '@/components/ui/input';
+import { useEdgeFade } from '@/hooks/use-edge-fade';
 import { useOptimisticAction } from '@/hooks/use-optimistic-action';
 import { cn } from '@/lib/utilities';
 
@@ -616,6 +617,8 @@ Input.displayName = 'Combobox.Input';
 
 export interface ComboboxListProps extends ComponentPropsWithoutRef<typeof BaseCombobox.List> {
 	readonly ref?: Ref<HTMLDivElement>;
+	/** Fade edges with hidden options. Defaults to true. */
+	readonly edgeFade?: boolean;
 	readonly 'aria-label'?: string;
 }
 
@@ -623,12 +626,17 @@ export interface ComboboxListProps extends ComponentPropsWithoutRef<typeof BaseC
  * List component.
  * Scrollable list container inside the dropdown popup.
  */
-function List({ className, children, ref, 'aria-label': ariaLabel = 'Options', ...props }: ComboboxListProps) {
+function List({ className, children, ref, edgeFade = true, 'aria-label': ariaLabel = 'Options', ...props }: ComboboxListProps) {
+	const edgeFadeRef = useEdgeFade({ enabled: edgeFade, ref });
 	return (
 		<BaseCombobox.List
-			ref={ref}
+			ref={edgeFadeRef}
 			aria-label={ariaLabel}
-			className={cn('flex min-h-0 flex-1 scroll-py-2 flex-col gap-1 overflow-y-auto overscroll-contain', className)}
+			className={cn(
+				'flex min-h-0 flex-1 scroll-py-2 flex-col gap-1 overflow-y-auto overscroll-contain',
+				edgeFade && 'edge-fade-y',
+				className,
+			)}
 			{...props}
 		>
 			{children}

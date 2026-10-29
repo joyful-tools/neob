@@ -11,9 +11,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * ### Usage
  * ```tsx
- * import { Marquee } from '@joyful-tools/neob';
+ * import { Marquee } from '@joyful.tools/neob';
  *
- * <Marquee speed={30}>
+ * <Marquee duration="30s">
  *   <span>Item 1</span>
  *   <span>Item 2</span>
  * </Marquee>
@@ -58,6 +58,11 @@ export const Horizontal: Story = {
 		const animator = items[0].parentElement;
 		await expect(animator).toHaveClass('animate-marquee');
 		await expect(animator).not.toHaveClass('animate-marquee-vertical');
+		const viewport = animator?.parentElement;
+		await expect(viewport).toHaveAttribute('data-edge-fade-left');
+		await expect(viewport).toHaveAttribute('data-edge-fade-right');
+		if (!viewport) throw new Error('Marquee viewport not found');
+		await expect(getComputedStyle(viewport).maskImage).toContain('to right');
 	}),
 };
 
@@ -79,6 +84,8 @@ export const Vertical: Story = {
 
 		const animator = items[0].parentElement;
 		await expect(animator).toHaveClass('animate-marquee-vertical');
+		await expect(animator?.parentElement).toHaveAttribute('data-edge-fade-top');
+		await expect(animator?.parentElement).toHaveAttribute('data-edge-fade-bottom');
 	}),
 };
 
@@ -99,5 +106,21 @@ export const PauseOnHover: Story = {
 		const animator = items[0].parentElement;
 
 		await expect(animator).toHaveClass('group-hover:[animation-play-state:paused]');
+	}),
+};
+
+export const WithoutEdgeFade: Story = {
+	render: () => (
+		<div className="w-125">
+			<Marquee edgeFade={false}>
+				<Item text="SHARP EDGES" />
+			</Marquee>
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const viewport = canvasElement.querySelector('.group');
+		if (!viewport) throw new Error('Marquee viewport not found');
+		await expect(getComputedStyle(viewport).maskImage).toBe('none');
+		await expect(viewport).not.toHaveAttribute('data-edge-fade-left');
 	}),
 };

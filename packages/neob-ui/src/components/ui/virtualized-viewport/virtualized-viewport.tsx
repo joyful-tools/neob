@@ -1,8 +1,11 @@
 import { CSSProperties, ReactNode, Ref, UIEvent, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
+import { useEdgeFade } from '@/hooks/use-edge-fade';
 import { cn } from '@/lib/utilities';
 
 export interface VirtualizedViewportProps<T> {
+	/** Fade edges with hidden content. Defaults to true. */
+	readonly edgeFade?: boolean;
 	/** Array of items to be virtualized. */
 	readonly items: T[];
 	/** Render function for each item in the viewport. */
@@ -146,6 +149,7 @@ function getItemKeyDefault<T>(item: T, index: number): string | number {
 
 export function VirtualizedViewport<T>({
 	items,
+	edgeFade = true,
 	renderItem,
 	estimatedItemHeight = 50,
 	overscan = 5,
@@ -177,6 +181,7 @@ export function VirtualizedViewport<T>({
 	);
 
 	const [sizeMap, setSizeMap] = useState<Map<string | number, number>>(() => new Map());
+	const edgeFadeRef = useEdgeFade({ enabled: edgeFade, ref: setViewportRef });
 	const [viewportHeight, setViewportHeight] = useState(0);
 	const [scrollTop, setScrollTop] = useState(0);
 	const scrollRafIdRef = useRef<number | null>(null);
@@ -457,8 +462,8 @@ export function VirtualizedViewport<T>({
 
 	return (
 		<div
-			ref={setViewportRef}
-			className={cn('relative size-full overflow-y-auto', className)}
+			ref={edgeFadeRef}
+			className={cn('relative size-full overflow-y-auto', edgeFade && 'edge-fade-y', className)}
 			style={style}
 			onScroll={handleScroll}
 			tabIndex={tabIndex}

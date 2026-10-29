@@ -5,6 +5,7 @@
 @import './styles/theme.css';
 @import './styles/base.css';
 @import './styles/utilities.css';
+@import './styles/edge-fade.css';
 @import './styles/border-beam.css';
 @import './styles/effects.css';
 

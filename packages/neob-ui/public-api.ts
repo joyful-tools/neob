@@ -19,6 +19,7 @@ export const publicComponentEntries = [
 	'drop-menu',
 	'drop-zone',
 	'dropdown-menu',
+	'edge-fade',
 	'external-link',
 	'freehand',
 	'grid-background',

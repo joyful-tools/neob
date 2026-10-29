@@ -1,9 +1,12 @@
 import { HTMLAttributes, Ref, TdHTMLAttributes, ThHTMLAttributes } from 'react';
 
+import { useEdgeFade } from '@/hooks/use-edge-fade';
 import { cn } from '@/lib/utilities';
 
 export interface TableProperties extends HTMLAttributes<HTMLTableElement> {
 	readonly ref?: Ref<HTMLTableElement>;
+	/** Fade horizontal edges with hidden columns. Defaults to true. */
+	readonly edgeFade?: boolean;
 }
 
 export interface TableHeaderProperties extends HTMLAttributes<HTMLTableSectionElement> {
@@ -33,12 +36,21 @@ export interface TableCellProperties extends TdHTMLAttributes<HTMLTableCellEleme
 /**
  * Responsive scroll container for Tables.
  */
-function TableRoot({ className, children, ...properties }: HTMLAttributes<HTMLDivElement>) {
+function TableRoot({ className, children, edgeFade = true, ref, ...properties }: TableProperties) {
+	const edgeFadeRef = useEdgeFade<HTMLDivElement>({ axis: 'x', enabled: edgeFade });
 	return (
-		<div className="w-full overflow-auto rounded-lg border-2 border-edge shadow-cel-sm">
-			<table className={cn('w-full border-collapse text-sm', className)} {...properties}>
-				{children}
-			</table>
+		<div className="w-full overflow-hidden rounded-lg border-2 border-edge shadow-cel-sm">
+			<div
+				ref={edgeFadeRef}
+				tabIndex={0}
+				role="region"
+				aria-label="Scrollable table"
+				className={cn('w-full overflow-auto', edgeFade && 'edge-fade-x')}
+			>
+				<table ref={ref} className={cn('w-full border-collapse text-sm', className)} {...properties}>
+					{children}
+				</table>
+			</div>
 		</div>
 	);
 }

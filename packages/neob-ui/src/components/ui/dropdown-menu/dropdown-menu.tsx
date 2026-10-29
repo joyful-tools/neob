@@ -12,6 +12,7 @@ import {
 	useState,
 } from 'react';
 
+import { useEdgeFade } from '@/hooks/use-edge-fade';
 import { useQueuedAction } from '@/hooks/use-queued-action';
 import { useTransformOrigin } from '@/hooks/use-transform-origin';
 import { cn } from '@/lib/utilities';
@@ -72,12 +73,23 @@ function DropdownMenuTrigger({ children, disabled }: DropdownMenuTriggerProperti
 DropdownMenuTrigger.displayName = 'DropdownMenuTrigger';
 
 interface DropdownMenuContentProperties extends HTMLAttributes<HTMLDivElement> {
+	/** Fade edges with hidden menu items. Defaults to true. */
+	readonly edgeFade?: boolean;
 	readonly align?: 'start' | 'center' | 'end';
 	readonly sideOffset?: number;
 	readonly ref?: Ref<HTMLDivElement>;
 }
 
-function DropdownMenuContent({ children, className, align = 'end', sideOffset, ref, ...properties }: DropdownMenuContentProperties) {
+function DropdownMenuContent({
+	children,
+	className,
+	align = 'end',
+	sideOffset,
+	ref,
+	edgeFade = true,
+	...properties
+}: DropdownMenuContentProperties) {
+	const edgeFadeRef = useEdgeFade<HTMLDivElement>({ enabled: edgeFade });
 	const context = useContext(DropdownMenuContext);
 	const transformOriginRef = useTransformOrigin(context?.anchorElement || null, ref);
 
@@ -97,7 +109,7 @@ function DropdownMenuContent({ children, className, align = 'end', sideOffset, r
 				<Menu.Popup
 					ref={transformOriginRef}
 					className={cn(
-						`z-50 min-w-40 origin-(--transform-origin) rounded-xl border-2 border-edge bg-popover p-1.5 text-popover-foreground shadow-md outline-hidden select-none`,
+						`z-50 flex max-h-(--available-height) min-h-[min(8rem,var(--available-height))] min-w-40 origin-(--transform-origin) flex-col overflow-hidden rounded-xl border-2 border-edge bg-popover p-1.5 text-popover-foreground shadow-md outline-hidden select-none`,
 						`data-closed:animate-popover-out data-open:animate-popover-in`,
 						`data-[side=bottom]:[--tw-enter-translate-y:-0.5rem] data-[side=left]:[--tw-enter-translate-x:0.5rem] data-[side=right]:[--tw-enter-translate-x:-0.5rem] data-[side=top]:[--tw-enter-translate-y:0.5rem]`,
 						className,
@@ -106,7 +118,9 @@ function DropdownMenuContent({ children, className, align = 'end', sideOffset, r
 					aria-busy={context?.isPending || undefined}
 					data-pending={context?.isPending ? '' : undefined}
 				>
-					{children}
+					<div ref={edgeFadeRef} className={cn('min-h-0 overflow-y-auto overscroll-contain', edgeFade && 'edge-fade-y')}>
+						{children}
+					</div>
 				</Menu.Popup>
 			</Menu.Positioner>
 		</Menu.Portal>

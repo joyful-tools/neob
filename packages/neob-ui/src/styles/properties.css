@@ -4,6 +4,36 @@
 	initial-value: 0;
 }
 
+@property --edge-fade-size {
+	syntax: '<length-percentage>';
+	inherits: true;
+	initial-value: 24px;
+}
+
+@property --edge-fade-top {
+	syntax: '<length-percentage>';
+	inherits: false;
+	initial-value: 0px;
+}
+
+@property --edge-fade-bottom {
+	syntax: '<length-percentage>';
+	inherits: false;
+	initial-value: 0px;
+}
+
+@property --edge-fade-left {
+	syntax: '<length-percentage>';
+	inherits: false;
+	initial-value: 0px;
+}
+
+@property --edge-fade-right {
+	syntax: '<length-percentage>';
+	inherits: false;
+	initial-value: 0px;
+}
+
 @property --contrast-green {
 	syntax: '<number>';
 	inherits: false;

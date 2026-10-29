@@ -7,6 +7,9 @@ import './index.css';
 export { cn, getThemeColor } from './lib/utilities';
 export type { Action } from './lib/actions';
 
+export { EdgeFade, useEdgeFade } from './components/ui/edge-fade';
+export type { EdgeFadeProperties, EdgeFadeAxis, UseEdgeFadeOptions } from './components/ui/edge-fade';
+
 // Components
 export { Button, buttonVariants } from './components/ui/button';
 export type { ButtonProperties } from './components/ui/button';

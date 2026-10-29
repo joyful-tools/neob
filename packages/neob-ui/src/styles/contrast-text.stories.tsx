@@ -23,7 +23,7 @@ function hexToRgb(hex: string): RgbColor {
 	};
 }
 
-function ContrastTextExperiment() {
+function ContrastTextDemo() {
 	const [color, setColor] = useState('#aabbcc');
 	const { red, green, blue } = hexToRgb(color);
 	const style: ContrastTextStyle = {
@@ -53,10 +53,10 @@ function ContrastTextExperiment() {
 	);
 }
 
-ContrastTextExperiment.displayName = 'ContrastTextExperiment';
+ContrastTextDemo.displayName = 'ContrastTextDemo';
 
 const meta = {
-	title: 'Experiments/ContrastText',
+	title: 'Utility/ContrastText',
 	parameters: {
 		layout: 'centered',
 		chromatic: { disableSnapshot: true },
@@ -67,5 +67,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-	render: () => <ContrastTextExperiment />,
+	render: () => <ContrastTextDemo />,
 };

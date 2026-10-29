@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { action } from 'storybook/actions';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { Temporal } from 'temporal-polyfill';
 
 import { Button } from '@/components/ui/button';
@@ -115,6 +115,10 @@ export const Basic: Story = {
 		const scrollContainer = canvasElement.querySelector('.overflow-y-auto');
 		await expect(scrollContainer).toBeInTheDocument();
 		if (!scrollContainer) throw new Error('Scroll container not found');
+		await waitFor(() => {
+			expect(scrollContainer).not.toHaveAttribute('data-edge-fade-top');
+			expect(scrollContainer).toHaveAttribute('data-edge-fade-bottom');
+		});
 
 		await expect(canvas.getByText('000')).toBeInTheDocument();
 		await expect(canvas.getByText('004')).toBeInTheDocument();
@@ -127,10 +131,24 @@ export const Basic: Story = {
 
 		await expect(canvas.getByText('015')).toBeInTheDocument();
 		await expect(canvas.queryByText('000')).not.toBeInTheDocument();
+		await waitFor(() => {
+			expect(scrollContainer).toHaveAttribute('data-edge-fade-top');
+			expect(scrollContainer).toHaveAttribute('data-edge-fade-bottom');
+		});
+
+		scrollContainer.scrollTop = scrollContainer.scrollHeight;
+		await waitFor(() => {
+			expect(scrollContainer).toHaveAttribute('data-edge-fade-top');
+			expect(scrollContainer).not.toHaveAttribute('data-edge-fade-bottom');
+		});
 
 		const clearButton = canvas.getByRole('button', { name: 'Clear' });
 		await userEvent.click(clearButton);
 		await expect(canvas.queryByText('015')).not.toBeInTheDocument();
+		await waitFor(() => {
+			expect(scrollContainer).not.toHaveAttribute('data-edge-fade-top');
+			expect(scrollContainer).not.toHaveAttribute('data-edge-fade-bottom');
+		});
 	}),
 };
 

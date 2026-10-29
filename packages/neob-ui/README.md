@@ -63,6 +63,23 @@ import { Button } from '@joyful.tools/neob/button';
 import { Card } from '@joyful.tools/neob/card';
 ```
 
+### Edge fades for custom scroll containers
+
+`EdgeFade` adds fades wherever scrolling hides content. It supports vertical,
+horizontal, and two dimensional scrolling, custom fade sizes, and composition
+with existing elements through `render`:
+
+```tsx
+import { EdgeFade } from '@joyful.tools/neob/edge-fade';
+
+<EdgeFade className="h-64" role="region" aria-label="Activity">
+  {children}
+</EdgeFade>;
+```
+
+See [USAGE.md](./USAGE.md) for configuration
+and the `useEdgeFade` hook for custom viewport integrations.
+
 ### React Actions and optimistic controls
 
 Mutation-capable components expose one `action` prop. Selection controls render the proposed value immediately, queue rapid Actions in order, and commit uncontrolled state only after success. Command buttons disable themselves and expose `data-pending` and `aria-busy` while their Action runs.

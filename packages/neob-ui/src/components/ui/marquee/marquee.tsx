@@ -8,6 +8,8 @@ export interface MarqueeProps extends HTMLAttributes<HTMLDivElement> {
 	readonly vertical?: boolean;
 	readonly reverse?: boolean;
 	readonly duration?: string;
+	/** Fade both ends of the moving content. Defaults to true. */
+	readonly edgeFade?: boolean;
 }
 
 /**
@@ -20,6 +22,7 @@ export function Marquee({
 	vertical = false,
 	reverse = false,
 	duration,
+	edgeFade = true,
 	className,
 	style,
 	...properties
@@ -73,7 +76,16 @@ export function Marquee({
 	return (
 		<div
 			ref={containerRef}
-			className={cn('group flex w-full overflow-hidden select-none', vertical ? 'h-full flex-col' : 'flex-row', className)}
+			className={cn(
+				'group flex w-full overflow-hidden select-none',
+				vertical ? 'h-full flex-col' : 'flex-row',
+				edgeFade && (vertical ? 'edge-fade-y' : 'edge-fade-x'),
+				className,
+			)}
+			data-edge-fade-top={edgeFade && vertical ? '' : undefined}
+			data-edge-fade-bottom={edgeFade && vertical ? '' : undefined}
+			data-edge-fade-left={edgeFade && !vertical ? '' : undefined}
+			data-edge-fade-right={edgeFade && !vertical ? '' : undefined}
 			style={customStyle}
 			{...properties}
 		>

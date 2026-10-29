@@ -13,6 +13,7 @@ import {
 } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { useEdgeFade } from '@/hooks/use-edge-fade';
 import { useQueuedAction } from '@/hooks/use-queued-action';
 import { afterAction } from '@/lib/actions';
 import { cn } from '@/lib/utilities';
@@ -27,6 +28,8 @@ interface DropMenuProperties {
 	}) => ReactElement;
 	readonly children: ReactNode;
 	readonly className?: string;
+	/** Fade edges with hidden menu items. Defaults to true. */
+	readonly edgeFade?: boolean;
 }
 
 export interface DropMenuItemProperties {
@@ -95,7 +98,8 @@ const itemVariants: Variants = {
  * DropMenu provides an animated dropdown with staggered item animations.
  * Built on Base UI Menu with custom staggered scale animations and centered overlay behavior.
  */
-export function DropMenu({ trigger, children, className }: DropMenuProperties) {
+export function DropMenu({ trigger, children, className, edgeFade = true }: DropMenuProperties) {
+	const edgeFadeRef = useEdgeFade<HTMLDivElement>({ enabled: edgeFade });
 	const [isOpen, setIsOpen] = useState(false);
 	const [anchorElement, setAnchorElement] = useState<HTMLButtonElement | null>(null);
 
@@ -119,9 +123,14 @@ export function DropMenu({ trigger, children, className }: DropMenuProperties) {
 				<Menu.Portal keepMounted>
 					<Menu.Positioner align="center" side="bottom" sideOffset={8} anchor={anchorElement} className="z-100">
 						<Menu.Popup
+							ref={edgeFadeRef}
 							role="menu"
 							render={<motion.div variants={containerVariants} initial="hidden" animate={isOpen ? 'show' : 'exit'} />}
-							className={cn('min-w-44 outline-hidden select-none data-closed:animate-[popover-out_350ms_ease-in_forwards]', className)}
+							className={cn(
+								'max-h-(--available-height) min-h-[min(8rem,var(--available-height))] min-w-44 scroll-py-2 overflow-y-auto overscroll-contain outline-hidden select-none data-closed:animate-[popover-out_350ms_ease-in_forwards]',
+								edgeFade && 'edge-fade-y',
+								className,
+							)}
 							aria-busy={isPending || undefined}
 							data-pending={isPending ? '' : undefined}
 						>

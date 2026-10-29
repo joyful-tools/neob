@@ -1,5 +1,5 @@
 import { action } from 'storybook/actions';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { Button } from '@/components/ui/button';
 import { guardPlay } from '@/lib/storybook-interactions';
@@ -77,5 +77,107 @@ export const Default: Story = {
 		await userEvent.click(canvas.getByRole('button', { name: 'Open Account Menu' }));
 		await expect(await body.findByText('Account Settings')).toBeInTheDocument();
 		await expect(await body.findByText('View Profile')).toBeInTheDocument();
+	}),
+};
+
+export const FlipsNearViewportEdge: Story = {
+	render: () => (
+		<div className="fixed inset-x-0 bottom-4 flex justify-center">
+			<DropdownMenu>
+				<DropdownMenu.Trigger>
+					<Button>Open Menu Near Edge</Button>
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content align="center">
+					{Array.from({ length: 6 }, (_, index) => (
+						<DropdownMenu.Item key={index}>Action {index + 1}</DropdownMenu.Item>
+					))}
+				</DropdownMenu.Content>
+			</DropdownMenu>
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const body = within(document.body);
+		await userEvent.click(canvas.getByRole('button', { name: 'Open Menu Near Edge' }));
+		const menu = await body.findByRole('menu');
+		const scrollArea = menu.querySelector<HTMLElement>('.overflow-y-auto') ?? menu;
+
+		await waitFor(() => {
+			expect(menu).toHaveAttribute('data-side', 'top');
+			expect(menu.getBoundingClientRect().top).toBeGreaterThanOrEqual(0);
+			expect(scrollArea.scrollHeight).toBe(scrollArea.clientHeight);
+		});
+	}),
+};
+
+export const ScrollsWithinViewport: Story = {
+	render: () => (
+		<div className="fixed inset-x-0 top-3/4 flex justify-center">
+			<DropdownMenu>
+				<DropdownMenu.Trigger>
+					<Button>Open Tall Menu</Button>
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content align="center">
+					{Array.from({ length: 40 }, (_, index) => (
+						<DropdownMenu.Item key={index}>Action {index + 1}</DropdownMenu.Item>
+					))}
+				</DropdownMenu.Content>
+			</DropdownMenu>
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const body = within(document.body);
+		await userEvent.click(canvas.getByRole('button', { name: 'Open Tall Menu' }));
+		const menu = await body.findByRole('menu');
+		const scrollArea = menu.querySelector<HTMLElement>('.overflow-y-auto') ?? menu;
+
+		await waitFor(() => {
+			expect(menu).toHaveAttribute('data-side', 'top');
+			expect(scrollArea.scrollHeight).toBeGreaterThan(scrollArea.clientHeight);
+			expect(scrollArea).toHaveAttribute('data-edge-fade-bottom');
+			expect(menu.getBoundingClientRect().top).toBeGreaterThanOrEqual(0);
+			expect(menu.getBoundingClientRect().bottom).toBeLessThanOrEqual(window.innerHeight);
+		});
+
+		await userEvent.keyboard('{End}');
+		const lastItem = body.getByRole('menuitem', { name: 'Action 40' });
+		await waitFor(() => {
+			expect(lastItem).toHaveFocus();
+			expect(scrollArea.scrollTop).toBeGreaterThan(0);
+			expect(scrollArea).toHaveAttribute('data-edge-fade-top');
+			expect(scrollArea).not.toHaveAttribute('data-edge-fade-bottom');
+			expect(lastItem.getBoundingClientRect().bottom).toBeLessThanOrEqual(menu.getBoundingClientRect().bottom);
+		});
+	}),
+};
+
+export const MinimumHeight: Story = {
+	render: () => (
+		<div className="fixed inset-x-0 top-4 flex justify-center">
+			<DropdownMenu>
+				<DropdownMenu.Trigger>
+					<Button>Open Short Menu</Button>
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content align="center">
+					<DropdownMenu.Item>Only Action</DropdownMenu.Item>
+				</DropdownMenu.Content>
+			</DropdownMenu>
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const body = within(document.body);
+		const trigger = canvas.getByRole('button', { name: 'Open Short Menu' });
+		await userEvent.click(trigger);
+		const menu = await body.findByRole('menu');
+		const availableHeight = window.innerHeight - trigger.getBoundingClientRect().bottom - 6 - 5;
+		const minimumHeight = Math.min(128, availableHeight);
+
+		await waitFor(() => {
+			expect(menu).toHaveAttribute('data-side', 'bottom');
+			expect(menu.getBoundingClientRect().height).toBeCloseTo(minimumHeight, 0);
+			expect(menu.getBoundingClientRect().bottom).toBeLessThanOrEqual(window.innerHeight);
+		});
 	}),
 };
