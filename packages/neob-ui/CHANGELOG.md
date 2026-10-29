@@ -1,5 +1,21 @@
 # @joyful.tools/neob
 
+## 2.4.0
+
+### Minor Changes
+
+- [`88badd5`](https://github.com/joyful-tools/neob/commit/88badd54bf6d3d4ee61713239da99fe09cdceb03) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Export EdgeFade and useEdgeFade for custom scroll containers, with both-axis fades, configurable sizes, ref support, and render composition without an extra wrapper.
+
+  Document custom scroll container integration, move supported scrolling text and CSS utility examples into their component documentation, and remove the obsolete duplicate loading-bar experiment.
+
+### Patch Changes
+
+- [`88badd5`](https://github.com/joyful-tools/neob/commit/88badd54bf6d3d4ee61713239da99fe09cdceb03) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Add theme-independent edge fades to Marquee, VirtualizedViewport, Table, Select, Combobox lists, and both menu variants so clipped content has a consistent visual cue. Scroll fades update only at hidden edges as content and viewport sizes change, support RTL, and can be disabled with edgeFade={false} or resized with --edge-fade-size.
+
+- [`b913aab`](https://github.com/joyful-tools/neob/commit/b913aab6c048894e6d4142d315d1068a672b3f8b) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Make pagination more compact with 28px navigation buttons and selectors, smaller icons, and narrower page fields to reduce the space taken by pagination controls.
+
+- [`88badd5`](https://github.com/joyful-tools/neob/commit/88badd54bf6d3d4ee61713239da99fe09cdceb03) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Keep DropdownMenu and DropMenu within the viewport by scrolling tall menus after trying the opposite placement, so every menu item remains reachable. Give both menus an 8rem minimum height, capped by the available viewport space.
+
 ## 2.3.7
 
 ### Patch Changes
