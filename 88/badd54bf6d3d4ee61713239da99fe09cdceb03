@@ -1,0 +1,105 @@
+.changeset/fair-radios-stand.md
+  s_be05486a809a26::t_d34ef4f9e77450 1-5
+.changeset/five-guests-taste.md
+  s_3213d3d8078f68::t_d461b9a31451c6 1-7
+.changeset/wise-teams-smash.md
+  s_be05486a809a26::t_53ede0c6778b9b 1-5
+packages/neob-ui/README.md
+  s_02ef5a751bbf5a::t_dbfec5dfce43ae 66-82
+packages/neob-ui/USAGE.md
+  s_be05486a809a26::t_dce1fba6606ee2 149-201
+packages/neob-ui/public-api.ts
+  s_be05486a809a26::t_3b38c20f313d47 22
+packages/neob-ui/src/components/ui/combobox/combobox.stories.tsx
+  s_be05486a809a26::t_19d808982711b1 386-426
+packages/neob-ui/src/components/ui/combobox/combobox.tsx
+  s_be05486a809a26::t_83c077eef58452 19,620-621,629-630,633,635-639
+packages/neob-ui/src/components/ui/drop-menu/drop-menu.stories.tsx
+  s_384270fbdef471::t_a1549578ce9976 61-163
+packages/neob-ui/src/components/ui/drop-menu/drop-menu.tsx
+  s_be05486a809a26::t_bc7fb0522e3ebe 16,31-32,101-102,126,129-133
+packages/neob-ui/src/components/ui/dropdown-menu/dropdown-menu.stories.tsx
+  s_384270fbdef471::t_ed29d31dfdece4 2,82-183
+packages/neob-ui/src/components/ui/dropdown-menu/dropdown-menu.tsx
+  s_be05486a809a26::t_9b2d9aeefc4e3c 15,76-77,83-92,112,121-123
+packages/neob-ui/src/components/ui/edge-fade/edge-fade.stories.tsx
+  s_be05486a809a26::t_5403d68b18dd3a 1-2,4-7,11-39,42-52,56,58-84,86-103,105-199
+packages/neob-ui/src/components/ui/edge-fade/edge-fade.tsx
+  s_be05486a809a26::t_2061085b837b24 1-55
+packages/neob-ui/src/components/ui/edge-fade/index.ts
+  s_be05486a809a26::t_e777217f2a858d 1-4
+packages/neob-ui/src/components/ui/marquee/marquee.stories.tsx
+  s_be05486a809a26::t_f476050e5dda9a 14,16,61-65,87-88,111-126
+packages/neob-ui/src/components/ui/marquee/marquee.tsx
+  s_be05486a809a26::t_e114781c17bfcd 11-12,25,79-88
+packages/neob-ui/src/components/ui/marquee/scrolling-text.stories.tsx
+  s_02ef5a751bbf5a::t_bf8968e4274757 5,26,74-76
+packages/neob-ui/src/components/ui/select/select.stories.tsx
+  s_be05486a809a26::t_22f462e2c54023 3,78-80,105-129
+packages/neob-ui/src/components/ui/select/select.tsx
+  s_be05486a809a26::t_b2d9c51f65973c 8,51-52,129,132,211,213
+packages/neob-ui/src/components/ui/table/table.stories.tsx
+  s_be05486a809a26::t_5342c3a982f443 1-4,128-165
+packages/neob-ui/src/components/ui/table/table.tsx
+  s_be05486a809a26::t_73f99b779bd5a3 3,8-9,39-40,42-53
+packages/neob-ui/src/components/ui/virtualized-viewport/virtualized-viewport.stories.tsx
+  s_be05486a809a26::t_e4c271a0353121 3,118-121,134-143,148-151
+packages/neob-ui/src/components/ui/virtualized-viewport/virtualized-viewport.tsx
+  s_be05486a809a26::t_b3ffb837972924 3,7-8,152,184,465-466
+packages/neob-ui/src/hooks/use-edge-fade.ts
+  s_be05486a809a26::t_77ee23c579705e 1-102
+packages/neob-ui/src/index.css
+  s_be05486a809a26::t_8cc671a884c314 8
+packages/neob-ui/src/index.ts
+  s_be05486a809a26::t_024e4d0e08718f 10-12
+packages/neob-ui/src/styles/contrast-text.stories.tsx
+  s_be05486a809a26::t_d796d45bc961ae 26,56,59,70
+packages/neob-ui/src/styles/edge-fade.css
+  s_be05486a809a26::t_14110532f47536 1-109
+packages/neob-ui/src/styles/properties.css
+  s_be05486a809a26::t_25728fcbb78013 7-36
+packages/neob-ui/src/styles/shimmer-text.stories.tsx
+  s_be05486a809a26::t_9963fce97a9642 4
+packages/neob-ui/src/styles/shiny-fade.stories.tsx
+  s_be05486a809a26::t_6c1c64d29e841d 1,6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "88badd54bf6d3d4ee61713239da99fe09cdceb03",
+  "prompts": {},
+  "sessions": {
+    "s_02ef5a751bbf5a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1899d-c4c6-7031-ae0f-74af58a88012",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    },
+    "s_3213d3d8078f68": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a189a6-5428-7d41-84a1-83084667a668",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    },
+    "s_384270fbdef471": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1899c-045b-7ed3-bf02-0678fd1bd0f7",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    },
+    "s_be05486a809a26": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18998-b600-7a22-bc92-59762ce43968",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
