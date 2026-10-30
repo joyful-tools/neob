@@ -1,0 +1,25 @@
+.changeset/breezy-chefs-doubt.md
+  s_be05486a809a26::t_114783ea4dacb1 1-5
+packages/neob-ui/USAGE.md
+  s_be05486a809a26::t_d13c0660d5e25e 154
+packages/neob-ui/src/components/ui/edge-fade/edge-fade.tsx
+  s_be05486a809a26::t_25ef158c5166a8 14
+packages/neob-ui/src/styles/properties.css
+  s_be05486a809a26::t_86917347247fdd 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "4977e5b230333d34691b2068d1936c52bdf8d417",
+  "prompts": {},
+  "sessions": {
+    "s_be05486a809a26": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18998-b600-7a22-bc92-59762ce43968",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
