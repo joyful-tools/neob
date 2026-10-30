@@ -151,7 +151,7 @@ DropdownMenu.Content fade clipped content at their scrolling edges by default.
 Scroll fades appear only where more content is hidden; Marquee fades both ends
 of its travel axis. Pass `edgeFade={false}` to the component to disable them.
 Set `--edge-fade-size` on the component or an ancestor to customize the default
-24px fade. Fades blend with the surrounding surface, respect reduced motion,
+16px fade. Fades blend with the surrounding surface, respect reduced motion,
 and are disabled in forced colors mode.
 
 Use `EdgeFade` for your own scroll containers. Give it a constrained height for

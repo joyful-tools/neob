@@ -7,7 +7,7 @@
 @property --edge-fade-size {
 	syntax: '<length-percentage>';
 	inherits: true;
-	initial-value: 24px;
+	initial-value: 16px;
 }
 
 @property --edge-fade-top {

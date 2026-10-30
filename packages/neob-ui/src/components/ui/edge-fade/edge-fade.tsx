@@ -11,7 +11,7 @@ export interface EdgeFadeProperties extends HTMLAttributes<HTMLElement> {
 	readonly axis?: EdgeFadeAxis;
 	/** Enable fades at edges with hidden content. Defaults to true. */
 	readonly enabled?: boolean;
-	/** Fade length in pixels, or a CSS length/percentage. Inherits 24px by default. */
+	/** Fade length in pixels, or a CSS length/percentage. Inherits 16px by default. */
 	readonly size?: number | string;
 	/** Replace the default div with an element or a component that forwards its props and ref. */
 	readonly render?: useRender.RenderProp;
