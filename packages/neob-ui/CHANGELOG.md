@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 2.4.1
+
+### Patch Changes
+
+- [`4977e5b`](https://github.com/joyful-tools/neob/commit/4977e5b230333d34691b2068d1936c52bdf8d417) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Reduce the shared default edge fade from 24px to 16px for a subtler overflow cue that obscures less content.
+
 ## 2.4.0
 
 ### Minor Changes
