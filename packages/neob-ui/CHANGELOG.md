@@ -1,5 +1,13 @@
 # @joyful.tools/neob
 
+## 2.4.1
+
+### Patch Changes
+
+- [`4977e5b`](https://github.com/joyful-tools/neob/commit/4977e5b230333d34691b2068d1936c52bdf8d417) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Reduce the shared default edge fade from 24px to 16px for a subtler overflow cue that obscures less content.
+
+- [`f2c7fb5`](https://github.com/joyful-tools/neob/commit/f2c7fb550b56163b71683ebb44394a92fb5355e0) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Make edge fades grow and shrink with scroll distance up to the configured maximum, providing immediate proportional feedback in scrollable components and custom containers.
+
 ## 2.4.0
 
 ### Minor Changes
