@@ -1,0 +1,33 @@
+.changeset/clean-buckets-stay.md
+  s_0e6793e80a10ad::t_de03b3648d2e7d 1-5
+packages/neob-ui/src/styles/shimmer-text.stories.tsx
+  s_0e6793e80a10ad::t_3e4a7223b13a11 17-28
+packages/neob-ui/src/styles/theme.css
+  s_0e6793e80a10ad::t_bf346f7f6215a1 294,299,303
+packages/neob-ui/src/styles/utilities.css
+  s_6e2b2e249bbe69::t_dcba8703be14f5 13,16,18-24,26-27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "8f5b67b71309af0ef585ad24cb2f4a742f33a0fd",
+  "prompts": {},
+  "sessions": {
+    "s_0e6793e80a10ad": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a19d81-1e5e-7b50-85a5-9151684a8166",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    },
+    "s_6e2b2e249bbe69": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a19e3b-8bbc-77f2-b019-8cdb84444172",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
