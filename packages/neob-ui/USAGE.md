@@ -148,10 +148,12 @@ The stylesheet provides parameterized utilities for common visual treatments:
 
 Marquee, VirtualizedViewport, Table, Select, Combobox.List, DropMenu, and
 DropdownMenu.Content fade clipped content at their scrolling edges by default.
-Scroll fades appear only where more content is hidden; Marquee fades both ends
-of its travel axis. Pass `edgeFade={false}` to the component to disable them.
+Scroll fades grow with the amount of content hidden at each edge and shrink as
+you scroll back, up to the configured maximum. They follow scrolling directly
+without a timed transition. Marquee fades both ends of its travel axis.
+Pass `edgeFade={false}` to the component to disable them.
 Set `--edge-fade-size` on the component or an ancestor to customize the default
-16px fade. Fades blend with the surrounding surface, respect reduced motion,
+16px maximum fade. Fades blend with the surrounding surface,
 and are disabled in forced colors mode.
 
 Use `EdgeFade` for your own scroll containers. Give it a constrained height for
@@ -169,7 +171,7 @@ import { EdgeFade } from '@joyful.tools/neob';
 ```
 
 `axis` accepts `"y"` (the default), `"x"`, or `"both"`. Set `size={32}` for a
-32px fade, `size="2rem"` for another CSS length, or `enabled={false}` to turn
+32px maximum fade, `size="2rem"` for another CSS length, or `enabled={false}` to turn
 the fades off while retaining scrolling. The component defaults to `tabIndex={0}`
 for keyboard scrolling and forwards native attributes, events, styles, and `ref`.
 Keep decorative borders and shadows on a parent when they should stay unfaded.

@@ -17,11 +17,6 @@
 			transparent
 		);
 	mask-composite: intersect;
-	transition:
-		--edge-fade-left 200ms ease-out,
-		--edge-fade-right 200ms ease-out,
-		--edge-fade-top 200ms ease-out,
-		--edge-fade-bottom 200ms ease-out;
 
 	&[data-edge-fade-left] {
 		--edge-fade-left: min(var(--edge-fade-size), 50%);
@@ -37,10 +32,6 @@
 
 	&[data-edge-fade-bottom] {
 		--edge-fade-bottom: min(var(--edge-fade-size), 50%);
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		transition: none;
 	}
 
 	@media (forced-colors: active) {
@@ -57,9 +48,6 @@
 		oklch(0% 0 0) calc(100% - var(--edge-fade-right)),
 		transparent
 	);
-	transition:
-		--edge-fade-left 200ms ease-out,
-		--edge-fade-right 200ms ease-out;
 
 	&[data-edge-fade-left] {
 		--edge-fade-left: min(var(--edge-fade-size), 50%);
@@ -67,10 +55,6 @@
 
 	&[data-edge-fade-right] {
 		--edge-fade-right: min(var(--edge-fade-size), 50%);
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		transition: none;
 	}
 
 	@media (forced-colors: active) {
@@ -87,9 +71,6 @@
 		oklch(0% 0 0) calc(100% - var(--edge-fade-bottom)),
 		transparent
 	);
-	transition:
-		--edge-fade-top 200ms ease-out,
-		--edge-fade-bottom 200ms ease-out;
 
 	&[data-edge-fade-top] {
 		--edge-fade-top: min(var(--edge-fade-size), 50%);
@@ -97,10 +78,6 @@
 
 	&[data-edge-fade-bottom] {
 		--edge-fade-bottom: min(var(--edge-fade-size), 50%);
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		transition: none;
 	}
 
 	@media (forced-colors: active) {

@@ -33,6 +33,64 @@ export const Default: Story = {
 	},
 };
 
+export const ScrollProgress: Story = {
+	render: () => (
+		<EdgeFade className="h-40 w-64" role="region" aria-label="Scroll progress">
+			<div className="h-120 bg-cyan p-4 text-black">Scroll slowly near either edge to see the fade grow and shrink.</div>
+		</EdgeFade>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const viewport = within(canvasElement).getByRole('region', { name: 'Scroll progress' });
+		await waitFor(() => {
+			expect(getComputedStyle(viewport).getPropertyValue('--edge-fade-top')).toContain('0px');
+			expect(getComputedStyle(viewport).getPropertyValue('--edge-fade-bottom')).toContain('16px');
+		});
+		expect(getComputedStyle(viewport).transitionDuration).toBe('0s');
+
+		for (const position of [1, 4, 8, 12, 32, 8, 0]) {
+			viewport.scrollTop = position;
+			await waitFor(() => {
+				expect(getComputedStyle(viewport).getPropertyValue('--edge-fade-top')).toContain(`${Math.min(position, 16)}px`);
+			});
+		}
+
+		viewport.scrollTop = viewport.scrollHeight - viewport.clientHeight - 6;
+		await waitFor(() => {
+			expect(getComputedStyle(viewport).getPropertyValue('--edge-fade-top')).toContain('16px');
+			expect(getComputedStyle(viewport).getPropertyValue('--edge-fade-bottom')).toContain('6px');
+		});
+		viewport.scrollTop = viewport.scrollHeight;
+		await waitFor(() => {
+			expect(viewport).not.toHaveAttribute('data-edge-fade-bottom');
+			expect(getComputedStyle(viewport).getPropertyValue('--edge-fade-bottom')).toContain('0px');
+		});
+	}),
+};
+
+export const SmallOverflow: Story = {
+	render: () => (
+		<EdgeFade className="h-40 w-64" role="region" aria-label="Small overflow">
+			<div style={{ height: 162 }} className="bg-gold p-4 text-black">
+				Even a small overflow gets a small fade.
+			</div>
+		</EdgeFade>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const viewport = within(canvasElement).getByRole('region', { name: 'Small overflow' });
+		await waitFor(() => expect(getComputedStyle(viewport).getPropertyValue('--edge-fade-bottom')).toContain('2px'));
+		viewport.scrollTop = 1;
+		await waitFor(() => {
+			expect(getComputedStyle(viewport).getPropertyValue('--edge-fade-top')).toContain('1px');
+			expect(getComputedStyle(viewport).getPropertyValue('--edge-fade-bottom')).toContain('1px');
+		});
+		viewport.scrollTop = 2;
+		await waitFor(() => {
+			expect(getComputedStyle(viewport).getPropertyValue('--edge-fade-top')).toContain('2px');
+			expect(viewport).not.toHaveAttribute('data-edge-fade-bottom');
+		});
+	}),
+};
+
 function ResizableContent() {
 	const [height, setHeight] = useState(320);
 	const [enabled, setEnabled] = useState(true);
@@ -68,6 +126,7 @@ export const ContentAndViewportChanges: Story = {
 			expect(viewport).not.toHaveAttribute('data-edge-fade-top');
 			expect(viewport).not.toHaveAttribute('data-edge-fade-bottom');
 			expect(getComputedStyle(viewport).maskImage).toBe('none');
+			expect(viewport.style.getPropertyValue('--edge-fade-top')).toBe('');
 		});
 		await userEvent.click(canvas.getByRole('button', { name: 'Toggle fade' }));
 		await waitFor(() => expect(viewport).toHaveAttribute('data-edge-fade-top'));
@@ -95,8 +154,11 @@ export const RightToLeft: Story = {
 			expect(viewport).toHaveAttribute('data-edge-fade-left');
 			expect(viewport).not.toHaveAttribute('data-edge-fade-right');
 		});
-		viewport.scrollLeft = -80;
-		await waitFor(() => expect(viewport).toHaveAttribute('data-edge-fade-right'));
+		viewport.scrollLeft = -4;
+		await waitFor(() => {
+			expect(viewport).toHaveAttribute('data-edge-fade-right');
+			expect(getComputedStyle(viewport).getPropertyValue('--edge-fade-right')).toContain('4px');
+		});
 		viewport.scrollLeft = -viewport.scrollWidth;
 		await waitFor(() => expect(viewport).not.toHaveAttribute('data-edge-fade-left'));
 	}),
@@ -104,7 +166,7 @@ export const RightToLeft: Story = {
 
 export const BothAxes: Story = {
 	render: () => (
-		<EdgeFade axis="both" size={40} className="h-40 w-64" role="region" aria-label="Two dimensional content">
+		<EdgeFade axis="both" className="h-40 w-64" role="region" aria-label="Two dimensional content">
 			<div className="h-120 w-200 bg-gold p-4 text-black">Scroll in either direction.</div>
 		</EdgeFade>
 	),
@@ -116,13 +178,20 @@ export const BothAxes: Story = {
 			expect(viewport).not.toHaveAttribute('data-edge-fade-top');
 			expect(viewport).not.toHaveAttribute('data-edge-fade-left');
 		});
-		expect(getComputedStyle(viewport).getPropertyValue('--edge-fade-size')).toBe('40px');
+		expect(getComputedStyle(viewport).getPropertyValue('--edge-fade-size')).toBe('16px');
 		expect(getComputedStyle(viewport).maskComposite).toContain('intersect');
+		viewport.scrollTop = 4;
+		viewport.scrollLeft = 12;
+		await waitFor(() => {
+			expect(getComputedStyle(viewport).getPropertyValue('--edge-fade-top')).toContain('4px');
+			expect(getComputedStyle(viewport).getPropertyValue('--edge-fade-left')).toContain('12px');
+		});
 		viewport.scrollTop = 80;
 		viewport.scrollLeft = 80;
 		await waitFor(() => {
 			for (const edge of ['top', 'bottom', 'left', 'right']) {
 				expect(viewport).toHaveAttribute(`data-edge-fade-${edge}`);
+				expect(getComputedStyle(viewport).getPropertyValue(`--edge-fade-${edge}`)).toContain('16px');
 			}
 		});
 		viewport.scrollTop = viewport.scrollHeight;
@@ -148,7 +217,6 @@ export const ExistingElement: Story = {
 					render={<section className="h-40 w-64" onScroll={() => setScrolled(true)} />}
 					role="region"
 					aria-label="Existing viewport"
-					size="2rem"
 				>
 					<div className="h-80 bg-cyan p-4 text-black">The section itself scrolls and fades.</div>
 				</EdgeFade>

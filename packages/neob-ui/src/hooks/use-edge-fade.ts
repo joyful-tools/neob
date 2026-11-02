@@ -8,8 +8,6 @@ export interface UseEdgeFadeOptions<T extends HTMLElement> {
 	readonly ref?: Ref<T>;
 }
 
-const EDGE_THRESHOLD = 4;
-
 /** Tracks hidden scroll edges without rerendering the scrolling content. */
 export function useEdgeFade<T extends HTMLElement>({ axis = 'y', enabled = true, ref }: UseEdgeFadeOptions<T> = {}): RefCallback<T> {
 	return useCallback(
@@ -30,23 +28,32 @@ export function useEdgeFade<T extends HTMLElement>({ axis = 'y', enabled = true,
 			};
 			if (!enabled) return releaseRef;
 
+			const edgeProperties = ['top', 'bottom', 'left', 'right'].map((edge) => {
+				const property = `--edge-fade-${edge}`;
+				return { property, value: element.style.getPropertyValue(property), priority: element.style.getPropertyPriority(property) };
+			});
+			const updateEdge = (edge: 'top' | 'bottom' | 'left' | 'right', distance: number) => {
+				const property = `--edge-fade-${edge}`;
+				const value = `min(var(--edge-fade-size), 50%, ${distance}px)`;
+				// The observer also watches consumer style changes, so avoid scheduling ourselves indefinitely.
+				if (element.style.getPropertyValue(property) !== value) {
+					element.style.setProperty(property, value);
+				}
+				element.toggleAttribute(`data-edge-fade-${edge}`, distance > 0);
+			};
 			let frame: number | undefined;
 			const update = () => {
 				frame = undefined;
-				const verticalOverflow = axis !== 'x' && element.clientHeight > 0 && element.scrollHeight - element.clientHeight > EDGE_THRESHOLD;
-				const horizontalOverflow = axis !== 'y' && element.clientWidth > 0 && element.scrollWidth - element.clientWidth > EDGE_THRESHOLD;
-				const rtl = horizontalOverflow && getComputedStyle(element).direction === 'rtl';
-				const leftOffset = Math.abs(element.scrollLeft);
-				const horizontalStart = leftOffset > EDGE_THRESHOLD;
-				const horizontalEnd = element.scrollWidth - element.clientWidth - leftOffset > EDGE_THRESHOLD;
+				const verticalOverflow = axis !== 'x' && element.clientHeight > 0 ? Math.max(0, element.scrollHeight - element.clientHeight) : 0;
+				const horizontalOverflow = axis !== 'y' && element.clientWidth > 0 ? Math.max(0, element.scrollWidth - element.clientWidth) : 0;
+				const rtl = horizontalOverflow > 0 && getComputedStyle(element).direction === 'rtl';
+				const topOffset = Math.min(verticalOverflow, Math.max(0, element.scrollTop));
+				const leftOffset = Math.min(horizontalOverflow, Math.max(0, rtl ? -element.scrollLeft : element.scrollLeft));
 
-				element.toggleAttribute('data-edge-fade-top', verticalOverflow && element.scrollTop > EDGE_THRESHOLD);
-				element.toggleAttribute(
-					'data-edge-fade-bottom',
-					verticalOverflow && element.scrollHeight - element.clientHeight - element.scrollTop > EDGE_THRESHOLD,
-				);
-				element.toggleAttribute('data-edge-fade-left', horizontalOverflow && (rtl ? horizontalEnd : horizontalStart));
-				element.toggleAttribute('data-edge-fade-right', horizontalOverflow && (rtl ? horizontalStart : horizontalEnd));
+				updateEdge('top', topOffset);
+				updateEdge('bottom', verticalOverflow - topOffset);
+				updateEdge('left', rtl ? horizontalOverflow - leftOffset : leftOffset);
+				updateEdge('right', rtl ? leftOffset : horizontalOverflow - leftOffset);
 			};
 			const scheduleUpdate = () => {
 				if (frame !== undefined) return;
@@ -77,7 +84,7 @@ export function useEdgeFade<T extends HTMLElement>({ axis = 'y', enabled = true,
 				subtree: true,
 				characterData: true,
 				attributes: true,
-				// Exclude our data attributes so edge updates cannot schedule themselves.
+				// Edge attributes do not affect scroll geometry.
 				attributeFilter: ['class', 'style', 'hidden', 'dir'],
 			});
 			element.addEventListener('scroll', scheduleUpdate, { passive: true });
@@ -93,6 +100,13 @@ export function useEdgeFade<T extends HTMLElement>({ axis = 'y', enabled = true,
 				if (frame !== undefined) cancelAnimationFrame(frame);
 				for (const edge of ['top', 'bottom', 'left', 'right']) {
 					element.removeAttribute(`data-edge-fade-${edge}`);
+				}
+				for (const { property, value, priority } of edgeProperties) {
+					if (value) {
+						element.style.setProperty(property, value, priority);
+					} else {
+						element.style.removeProperty(property);
+					}
 				}
 				releaseRef();
 			};
