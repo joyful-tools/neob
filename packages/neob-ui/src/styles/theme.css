@@ -291,16 +291,16 @@
 
 	--animate-marquee: marquee var(--duration, 20s) linear infinite;
 	--animate-marquee-vertical: marquee-vertical var(--duration, 20s) linear infinite;
-	--animate-shimmer-text: shimmer-text 3s infinite ease;
+	--animate-shimmer-text: shimmer-text 3s infinite linear;
 	--animate-shiny-fade: shiny-fade 8s 2s infinite ease;
 
 	@keyframes shimmer-text {
 		from {
-			background-position: -100% top;
+			background-position: 150% top;
 		}
 
 		to {
-			background-position: 250% top;
+			background-position: -50% top;
 		}
 	}
 
