@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 2.4.2
+
+### Patch Changes
+
+- [`2b9a722`](https://github.com/joyful-tools/neob/commit/2b9a722c791f93de1e7931a09cfb95e082db7bd9) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Make shimmer-text sweep smoothly across short labels such as JS and longer sentences. Scale the highlight to the text width with a cap for long lines, allow wrapping, and keep the effect clipped to letters using the active theme colors.
+
 ## 2.4.1
 
 ### Patch Changes
