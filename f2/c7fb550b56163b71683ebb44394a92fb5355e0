@@ -1,0 +1,29 @@
+.changeset/wise-parks-fail.md
+  s_9be1b58a705ce4::t_e89e7cd3ef8d07 1-5
+packages/neob-ui/src/hooks/use-edge-fade.ts
+  s_be05486a809a26::t_404e09be3c5b7b 31-43,47-51,53-56,87,104-110
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "f2c7fb550b56163b71683ebb44394a92fb5355e0",
+  "prompts": {},
+  "sessions": {
+    "s_9be1b58a705ce4": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18ea3-f3eb-7550-8187-6e4dacf1383c",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    },
+    "s_be05486a809a26": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18998-b600-7a22-bc92-59762ce43968",
+        "model": "unknown"
+      },
+      "human_author": "Timo Wilhelm <twilhelm@cloudflare.com>"
+    }
+  }
+}
