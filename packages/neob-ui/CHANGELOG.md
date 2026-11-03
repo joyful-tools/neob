@@ -1,5 +1,11 @@
 # @joyful.tools/neob
 
+## 2.4.3
+
+### Patch Changes
+
+- [`8f29636`](https://github.com/joyful-tools/neob/commit/8f29636c6687e3691a9f8b8533ead1f647e4898f) Thanks [@TimoWilhelm](https://github.com/TimoWilhelm)! - Improve mobile toast placement with safe-area spacing, correct asymmetric margins, and automatic clearance above the on-screen keyboard. Preserve configurable offsets and compact controls, add solid mobile shadows, and clarify description typography.
+
 ## 2.4.2
 
 ### Patch Changes
