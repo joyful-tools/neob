@@ -1,7 +1,9 @@
+import { toast as sonnerToast } from 'sonner';
 import { action } from 'storybook/actions';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { guardPlay } from '@/lib/storybook-interactions';
 
 import { toast } from './toast';
@@ -23,6 +25,7 @@ type ToastButtonConfiguration = {
 
 type ToastStoryProperties = {
 	buttons: ToastButtonConfiguration[];
+	toaster?: ComponentProps<typeof Toaster>;
 };
 
 /**
@@ -30,7 +33,7 @@ type ToastStoryProperties = {
  *
  * ### Usage
  * ```tsx
- * import { toast } from '@joyful-tools/neob';
+ * import { toast } from '@joyful.tools/neob';
  *
  * toast.success('Operation completed!');
  * toast.error('Something went wrong.');
@@ -42,18 +45,23 @@ const meta = {
 	parameters: {
 		layout: 'centered',
 	},
+	beforeEach: () => dismissAllToasts,
 	decorators: [
-		(Story) => (
+		(Story, { args }) => (
 			<>
-				<Toaster />
+				<Toaster {...args.toaster} />
 				<Story />
 			</>
 		),
 	],
-} satisfies Meta;
+} satisfies Meta<ToastStoryProperties>;
 
 export default meta;
 type Story = StoryObj<ToastStoryProperties>;
+
+function dismissAllToasts() {
+	sonnerToast.dismiss();
+}
 
 const showToast = (button: ToastButtonConfiguration) => {
 	const options = {
@@ -102,22 +110,27 @@ async function expectToastLayout(toastElement: HTMLElement) {
 	const headingBounds = heading.getBoundingClientRect();
 	const closeBounds = closeButton.getBoundingClientRect();
 	const contentBounds = content.getBoundingClientRect();
+	const rtl = getComputedStyle(content).direction === 'rtl';
 
-	await expect(closeBounds.width).toBe(40);
-	await expect(closeBounds.height).toBe(40);
-	await expect(closeBounds.right).toBeLessThanOrEqual(contentBounds.right - 8);
-	await expect(closeBounds.top).toBeGreaterThanOrEqual(contentBounds.top + 8);
-	await expect(closeBounds.bottom).toBeLessThanOrEqual(contentBounds.bottom - 8);
+	await expect(closeButton.offsetWidth).toBe(40);
+	await expect(closeButton.offsetHeight).toBe(40);
+	await expect(closeBounds.right).toBeLessThanOrEqual(contentBounds.right - 7.99);
+	await expect(closeBounds.top).toBeGreaterThanOrEqual(contentBounds.top + 7.99);
+	await expect(closeBounds.bottom).toBeLessThanOrEqual(contentBounds.bottom - 7.99);
 	await expect(toastElement.scrollWidth).toBeLessThanOrEqual(toastElement.clientWidth);
 
 	const firstLineCenter = headingBounds.top + Number.parseFloat(getComputedStyle(heading).lineHeight) / 2;
-	await expect(closeBounds.left).toBeGreaterThanOrEqual(headingBounds.right);
+	await (rtl
+		? expect(closeBounds.right).toBeLessThanOrEqual(headingBounds.left)
+		: expect(closeBounds.left).toBeGreaterThanOrEqual(headingBounds.right));
 	await expect(Math.abs(closeBounds.top + closeBounds.height / 2 - firstLineCenter)).toBeLessThanOrEqual(1);
 	if (!actionButton) return;
 
 	const actionBounds = actionButton.getBoundingClientRect();
 	await expect(actionBounds.width).toBeLessThan(contentBounds.width);
-	await expect(contentBounds.bottom - actionBounds.bottom).toBeGreaterThanOrEqual(16);
+	await expect(actionButton.offsetHeight).toBeGreaterThanOrEqual(32);
+	await expect(getComputedStyle(actionButton).fontSize).toBe('12px');
+	await expect(contentBounds.bottom - actionBounds.bottom).toBeGreaterThanOrEqual(15.99);
 	await expect(contentBounds.right - actionBounds.right).toBeGreaterThanOrEqual(16);
 
 	if (description) {
@@ -129,7 +142,9 @@ async function expectToastLayout(toastElement: HTMLElement) {
 		await expect(actionBounds.top - headingBounds.bottom).toBeGreaterThanOrEqual(12);
 		return;
 	}
-	await expect(actionBounds.right).toBeLessThanOrEqual(closeBounds.left);
+	await (rtl
+		? expect(actionBounds.left).toBeGreaterThanOrEqual(closeBounds.right)
+		: expect(actionBounds.right).toBeLessThanOrEqual(closeBounds.left));
 	await expect(Math.abs(actionBounds.top + actionBounds.height / 2 - closeBounds.top - closeBounds.height / 2)).toBeLessThanOrEqual(1);
 	await expect(Math.abs(actionBounds.top + actionBounds.height / 2 - headingBounds.top - headingBounds.height / 2)).toBeLessThanOrEqual(1);
 }
@@ -443,5 +458,346 @@ export const VariantDismissal: Story = {
 		await waitFor(() => {
 			expect(lastToast?.isConnected).toBe(false);
 		});
+	}),
+};
+
+async function resizeTestViewport(width: number, height: number) {
+	if (!('__vitest_browser__' in globalThis)) return;
+	const { page } = await import('vitest/browser');
+	await page.viewport(width, height);
+}
+
+async function getToast(title: string): Promise<HTMLElement> {
+	const heading = await within(document.body).findByRole('heading', { name: title });
+	const element = heading.closest('[data-sonner-toast]');
+	if (!(element instanceof HTMLElement)) throw new Error('Expected a toast notification.');
+	return element;
+}
+
+async function dismissToast(element: HTMLElement) {
+	await userEvent.click(within(element).getByRole('button', { name: 'Close notification' }));
+	await waitFor(() => expect(element.isConnected).toBe(false));
+}
+
+async function expectPlacement(
+	element: HTMLElement,
+	{ left, right, bottom, top }: { left?: number; right?: number; bottom?: number; top?: number } = {},
+) {
+	await waitFor(() => {
+		const bounds = element.getBoundingClientRect();
+		expect(bounds.left).toBeGreaterThanOrEqual(0);
+		expect(bounds.right).toBeLessThanOrEqual(window.innerWidth);
+		expect(bounds.top).toBeGreaterThanOrEqual(0);
+		expect(bounds.bottom).toBeLessThanOrEqual(window.innerHeight);
+		if (left !== undefined) expect(bounds.left).toBeCloseTo(left, 0);
+		if (right !== undefined) expect(window.innerWidth - bounds.right).toBeCloseTo(right, 0);
+		if (bottom !== undefined) expect(window.innerHeight - bounds.bottom).toBeCloseTo(bottom, 0);
+		if (top !== undefined) expect(bounds.top).toBeCloseTo(top, 0);
+	});
+}
+
+const mobileButtons: ToastButtonConfiguration[] = [
+	{ label: 'Compact action', variant: 'default', kind: 'success', title: 'Saved', actionLabel: 'View' },
+	{ label: 'Title only', variant: 'default', kind: 'custom', title: 'Copied to clipboard' },
+	{
+		label: 'Localized action',
+		variant: 'danger',
+		kind: 'error',
+		title: 'Anslutningen har avbrutits. Visar begränsade meddelanden.',
+		actionLabel: 'Anslut till meddelandetjänsten igen',
+	},
+	{
+		label: 'Description only',
+		variant: 'default',
+		kind: 'warning',
+		title: 'Unsaved changes',
+		description: 'Save your work before leaving this page.',
+	},
+	{
+		label: 'Long content',
+		variant: 'subtle',
+		kind: 'info',
+		title: 'Your workspace changes have been saved and are ready to share with your team',
+		description: 'Uploaded workspace-backup-with-a-very-long-unbroken-filename-2026-10-01-final.json successfully.',
+		actionLabel: 'View workspace',
+	},
+];
+
+function mobileLayoutPlay(width: number, height = 812) {
+	return guardPlay<Parameters<NonNullable<Story['play']>>[0]>(async ({ canvasElement, args }) => {
+		const originalSize = { width: window.innerWidth, height: window.innerHeight };
+		try {
+			await resizeTestViewport(width, height);
+			for (const button of args.buttons) {
+				const trigger = within(canvasElement).getByRole('button', { name: button.label });
+				await userEvent.click(trigger);
+				const element = await getToast(button.title);
+				await expectToastLayout(element);
+				await expectPlacement(element, width <= 600 ? { left: 16, right: 16, bottom: 16 } : { right: 24, bottom: 24 });
+				await expect(element.contains(document.activeElement)).toBe(false);
+				await expect(element.closest('section')).toHaveAttribute('aria-live', 'polite');
+				if (button.label === 'Compact action') {
+					await expect(element.querySelector('[data-slot="toast-action-row"]')).toHaveAttribute('data-inline', 'true');
+				}
+				const description = element.querySelector('p');
+				if (description) await expect(getComputedStyle(description).fontWeight).toBe('400');
+				await dismissToast(element);
+			}
+		} finally {
+			await resizeTestViewport(originalSize.width, originalSize.height);
+		}
+	});
+}
+
+export const MobileNarrow: Story = {
+	...AllVariants,
+	args: { buttons: mobileButtons },
+	parameters: { docs: { description: { story: '320px layout with compact controls, inline actions, and localized wrapping.' } } },
+	play: mobileLayoutPlay(320),
+};
+
+export const Mobile: Story = { ...MobileNarrow, play: mobileLayoutPlay(375) };
+export const MobileWide: Story = { ...MobileNarrow, play: mobileLayoutPlay(430) };
+export const MobileBreakpoint: Story = { ...MobileNarrow, play: mobileLayoutPlay(600) };
+export const DesktopBreakpoint: Story = { ...MobileNarrow, play: mobileLayoutPlay(601) };
+export const Landscape: Story = { ...MobileNarrow, play: mobileLayoutPlay(844, 390) };
+export const MobileDark: Story = { ...Mobile, globals: { theme: 'dark' } };
+
+export const MobileNavigation: Story = {
+	...Mobile,
+	args: {
+		buttons: mobileButtons.slice(0, 1),
+		toaster: { className: 'consumer-toaster', position: 'bottom-center', mobileOffset: { bottom: 80, left: 24, right: 40 } },
+	},
+	play: guardPlay(async ({ canvasElement, args }) => {
+		const originalSize = { width: window.innerWidth, height: window.innerHeight };
+		try {
+			await resizeTestViewport(375, 812);
+			await userEvent.click(within(canvasElement).getByRole('button', { name: 'Compact action' }));
+			const element = await getToast(args.buttons[0].title);
+			await expectToastLayout(element);
+			await expectPlacement(element, { left: 24, right: 40, bottom: 80 });
+			await expect(element.parentElement).toHaveClass('consumer-toaster', 'neob-toaster');
+			await dismissToast(element);
+		} finally {
+			await resizeTestViewport(originalSize.width, originalSize.height);
+		}
+	}),
+};
+
+export const MobileTop: Story = {
+	...MobileNavigation,
+	args: { buttons: mobileButtons.slice(0, 1), toaster: { position: 'top-left', mobileOffset: { top: 64 }, dir: 'rtl' } },
+	play: guardPlay(async ({ canvasElement, args }) => {
+		const originalSize = { width: window.innerWidth, height: window.innerHeight };
+		try {
+			await resizeTestViewport(375, 812);
+			await userEvent.click(within(canvasElement).getByRole('button', { name: 'Compact action' }));
+			const element = await getToast(args.buttons[0].title);
+			await expectToastLayout(element);
+			await expectPlacement(element, { left: 16, right: 16, top: 64 });
+			await expect(element.parentElement?.style.getPropertyValue('--mobile-offset-bottom')).toContain('safe-area-inset-bottom');
+			await dismissToast(element);
+		} finally {
+			await resizeTestViewport(originalSize.width, originalSize.height);
+		}
+	}),
+};
+
+export const MobileZeroOffset: Story = {
+	...MobileNavigation,
+	args: { buttons: mobileButtons.slice(0, 1), toaster: { mobileOffset: 0 } },
+	play: guardPlay(async ({ canvasElement, args }) => {
+		const originalSize = { width: window.innerWidth, height: window.innerHeight };
+		try {
+			await resizeTestViewport(375, 812);
+			await userEvent.click(within(canvasElement).getByRole('button', { name: 'Compact action' }));
+			const element = await getToast(args.buttons[0].title);
+			await expectPlacement(element, { left: 0, right: 0, bottom: 0 });
+			await dismissToast(element);
+		} finally {
+			await resizeTestViewport(originalSize.width, originalSize.height);
+		}
+	}),
+};
+
+class ToastViewportMock extends EventTarget {
+	height = window.innerHeight;
+	offsetTop = 0;
+	scale = 1;
+
+	update(values: Partial<Pick<VisualViewport, 'height' | 'offsetTop' | 'scale'>>, event: 'resize' | 'scroll' = 'resize') {
+		Object.assign(this, values);
+		this.dispatchEvent(new Event(event));
+	}
+}
+
+function mockVisualViewport(viewport: ToastViewportMock | null) {
+	const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'visualViewport');
+	Object.defineProperty(globalThis, 'visualViewport', { configurable: true, value: viewport });
+	return () => {
+		if (descriptor) {
+			Object.defineProperty(globalThis, 'visualViewport', descriptor);
+		} else {
+			Reflect.deleteProperty(globalThis, 'visualViewport');
+		}
+	};
+}
+
+export const KeyboardViewport: Story = {
+	...Mobile,
+	args: { buttons: mobileButtons.slice(0, 1), toaster: { duration: Infinity } },
+	beforeEach: () => mockVisualViewport(new ToastViewportMock()),
+	play: guardPlay(async ({ canvasElement, args }) => {
+		const originalSize = { width: window.innerWidth, height: window.innerHeight };
+		const viewport = window.visualViewport;
+		if (!(viewport instanceof ToastViewportMock)) throw new Error('Expected the viewport test fixture.');
+		try {
+			await resizeTestViewport(375, 812);
+			viewport.update({ height: window.innerHeight });
+			await userEvent.click(within(canvasElement).getByRole('button', { name: 'Compact action' }));
+			const element = await getToast(args.buttons[0].title);
+			await expectPlacement(element, { bottom: 16 });
+
+			viewport.update({ height: window.innerHeight - 300 });
+			await expectPlacement(element, { bottom: 316 });
+			viewport.update({ offsetTop: 50 }, 'scroll');
+			await expectPlacement(element, { bottom: 266 });
+			viewport.update({ scale: 2, height: 200 });
+			await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+			await expectPlacement(element, { bottom: 266 });
+			viewport.update({ scale: 1, height: window.innerHeight, offsetTop: 0 });
+			await expectPlacement(element, { bottom: 16 });
+
+			await resizeTestViewport(844, 390);
+			viewport.update({ height: window.innerHeight - 160 });
+			await expectPlacement(element, { right: 24, bottom: 176 });
+			// Some browsers resize both viewports; subtracting the visible height avoids lifting twice.
+			viewport.update({ height: window.innerHeight });
+			globalThis.dispatchEvent(new Event('resize'));
+			await expectPlacement(element, { bottom: 24 });
+			await dismissToast(element);
+		} finally {
+			viewport.update({ height: originalSize.height, offsetTop: 0, scale: 1 });
+			await resizeTestViewport(originalSize.width, originalSize.height);
+		}
+	}),
+};
+
+export const WithoutVisualViewport: Story = {
+	...Mobile,
+	beforeEach: () => mockVisualViewport(null),
+};
+
+export const KeyboardNavigation: Story = {
+	...KeyboardViewport,
+	args: { buttons: mobileButtons.slice(0, 1), toaster: { mobileOffset: { bottom: 80 }, duration: Infinity } },
+	play: guardPlay(async ({ canvasElement, args }) => {
+		const originalSize = { width: window.innerWidth, height: window.innerHeight };
+		const viewport = window.visualViewport;
+		if (!(viewport instanceof ToastViewportMock)) throw new Error('Expected the viewport test fixture.');
+		try {
+			await resizeTestViewport(375, 812);
+			viewport.update({ height: window.innerHeight });
+			await userEvent.click(within(canvasElement).getByRole('button', { name: 'Compact action' }));
+			const element = await getToast(args.buttons[0].title);
+			await expectPlacement(element, { bottom: 80 });
+			viewport.update({ height: window.innerHeight - 40 });
+			await expectPlacement(element, { bottom: 80 });
+			viewport.update({ height: window.innerHeight - 300 });
+			await expectPlacement(element, { bottom: 316 });
+			viewport.update({ height: window.innerHeight });
+			await expectPlacement(element, { bottom: 80 });
+			await dismissToast(element);
+		} finally {
+			viewport.update({ height: originalSize.height });
+			await resizeTestViewport(originalSize.width, originalSize.height);
+		}
+	}),
+};
+
+export const MobileStack: Story = {
+	...Mobile,
+	args: { buttons: mobileButtons.slice(0, 3), toaster: { duration: Infinity } },
+	play: guardPlay(async ({ canvasElement, args }) => {
+		const originalSize = { width: window.innerWidth, height: window.innerHeight };
+		try {
+			await resizeTestViewport(375, 812);
+			for (const button of args.buttons) {
+				await userEvent.click(within(canvasElement).getByRole('button', { name: button.label }));
+			}
+			await expect(document.querySelectorAll('[data-sonner-toast]')).toHaveLength(3);
+			for (let index = args.buttons.length - 1; index >= 0; index--) {
+				const button = args.buttons[index];
+				const element = await getToast(button.title);
+				await waitFor(() => expect(element).toHaveAttribute('data-front', 'true'));
+				await expectPlacement(element, { left: 16, right: 16, bottom: 16 });
+				await expectToastLayout(element);
+				await dismissToast(element);
+			}
+		} finally {
+			await resizeTestViewport(originalSize.width, originalSize.height);
+		}
+	}),
+};
+
+export const SafeAreasAndTouch: Story = {
+	...Mobile,
+	args: { buttons: mobileButtons.slice(0, 1), toaster: { duration: Infinity } },
+	play: guardPlay(async ({ canvasElement, args }) => {
+		if (!('__vitest_browser__' in globalThis)) return;
+		const { cdp } = await import('vitest/browser');
+		const session = cdp();
+		const originalSize = { width: window.innerWidth, height: window.innerHeight };
+		try {
+			await session.send('Emulation.setTouchEmulationEnabled', { enabled: true });
+			await session.send('Emulation.setSafeAreaInsetsOverride', { insets: { left: 21, right: 37, top: 47, bottom: 34 } });
+			await resizeTestViewport(375, 812);
+			await userEvent.click(within(canvasElement).getByRole('button', { name: 'Compact action' }));
+			const element = await getToast(args.buttons[0].title);
+			await expectPlacement(element, { left: 37, right: 53, bottom: 50 });
+			await expectToastLayout(element);
+			await resizeTestViewport(844, 390);
+			await expect(globalThis.matchMedia('(pointer: coarse)').matches).toBe(true);
+			await expectPlacement(element, { right: 61, bottom: 58 });
+			await expectToastLayout(element);
+			await dismissToast(element);
+		} finally {
+			await session.send('Emulation.setTouchEmulationEnabled', { enabled: false });
+			await session.send('Emulation.setSafeAreaInsetsOverride', { insets: {} });
+			await resizeTestViewport(originalSize.width, originalSize.height);
+		}
+	}),
+};
+
+export const MobileForm: Story = {
+	args: { buttons: [], toaster: { duration: Infinity } },
+	parameters: {
+		docs: {
+			description: { story: 'On a phone, focus the field to verify that feedback rises above the native keyboard without moving focus.' },
+		},
+	},
+	render: () => (
+		<div className="w-full max-w-sm p-4">
+			<Input
+				label="Message"
+				placeholder="Write a message"
+				onFocus={() => toast.info('Editing draft', { description: 'Your work is saved automatically.' })}
+			/>
+		</div>
+	),
+	play: guardPlay(async ({ canvasElement }) => {
+		const originalSize = { width: window.innerWidth, height: window.innerHeight };
+		try {
+			await resizeTestViewport(375, 812);
+			const input = within(canvasElement).getByRole('textbox', { name: 'Message' });
+			await userEvent.click(input);
+			const element = await getToast('Editing draft');
+			await expectPlacement(element, { left: 16, right: 16, bottom: 16 });
+			await expect(input).toHaveFocus();
+			await dismissToast(element);
+		} finally {
+			await resizeTestViewport(originalSize.width, originalSize.height);
+		}
 	}),
 };

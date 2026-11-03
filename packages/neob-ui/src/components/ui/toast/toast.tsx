@@ -105,8 +105,9 @@ function ToastContent({ id, title, variant, options }: ToastContentProperties) {
 	return (
 		<div
 			ref={contentRef}
+			data-slot="toast-content"
 			className={cn(
-				'grid w-full grid-cols-[minmax(0,1fr)_auto_1.5rem] items-start gap-x-4 rounded-lg border-2 border-edge p-4 font-sans shadow-sm select-none',
+				'grid w-full grid-cols-[minmax(0,1fr)_auto_1.5rem] items-start gap-x-4 rounded-xl border-2 border-edge p-4 font-sans shadow-sm select-none',
 				toastStyles[variant].background,
 			)}
 		>
@@ -121,10 +122,16 @@ function ToastContent({ id, title, variant, options }: ToastContentProperties) {
 			</h3>
 			{closeButton}
 			{options?.description && (
-				<p className={cn('col-span-3 mt-1 text-sm/snug wrap-anywhere', toastStyles[variant].description)}>{options.description}</p>
+				<p className={cn('col-span-3 mt-1 text-sm/snug font-normal wrap-anywhere', toastStyles[variant].description)}>
+					{options.description}
+				</p>
 			)}
 			{actionButton && (
-				<div className={cn('flex min-w-0 justify-end', inlineAction ? 'col-start-2 row-start-1 -mt-1' : 'col-span-3 mt-3')}>
+				<div
+					data-slot="toast-action-row"
+					data-inline={inlineAction || undefined}
+					className={cn('flex min-w-0 justify-end', inlineAction ? 'col-start-2 row-start-1 -mt-1' : 'col-span-3 mt-3')}
+				>
 					{actionButton}
 				</div>
 			)}

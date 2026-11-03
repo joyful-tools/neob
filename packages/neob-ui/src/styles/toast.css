@@ -1,0 +1,28 @@
+@utility neob-toaster {
+	font-family: var(--font-sans);
+}
+
+.neob-toaster[data-sonner-toaster][data-y-position='bottom'] {
+	bottom: max(var(--offset-bottom), var(--toast-viewport-bottom));
+}
+
+@media (max-width: 600px) {
+	.neob-toaster[data-sonner-toaster][data-x-position] {
+		left: var(--mobile-offset-left);
+		right: var(--mobile-offset-right);
+		width: calc(100% - var(--mobile-offset-left) - var(--mobile-offset-right));
+		transform: none;
+	}
+
+	.neob-toaster[data-sonner-toaster][data-y-position='bottom'] {
+		bottom: max(var(--mobile-offset-bottom), var(--toast-viewport-bottom));
+	}
+
+	.neob-toaster[data-sonner-toaster] [data-sonner-toast] {
+		width: 100%;
+	}
+
+	.neob-toaster [data-slot='toast-content'] {
+		@apply shadow-cel-sm;
+	}
+}

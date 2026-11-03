@@ -8,6 +8,7 @@
 @import './styles/edge-fade.css';
 @import './styles/border-beam.css';
 @import './styles/effects.css';
+@import './styles/toast.css';
 
 @source './**/*.{ts,tsx}';
 

@@ -1,12 +1,41 @@
-import { ComponentProps } from 'react';
 import { Toaster as Sonner } from 'sonner';
+
+import { cn } from '@/lib/utilities';
+
+import { useToastViewport } from './use-toast-viewport';
+
+import type { ComponentProps, CSSProperties } from 'react';
 
 type ToasterProperties = ComponentProps<typeof Sonner>;
 
-export function Toaster({ ...properties }: ToasterProperties) {
+function resolveOffset(offset: ToasterProperties['offset'], gap: number) {
+	const defaults = {
+		top: `calc(${gap}px + env(safe-area-inset-top, 0px))`,
+		right: `calc(${gap}px + env(safe-area-inset-right, 0px))`,
+		bottom: `calc(${gap}px + env(safe-area-inset-bottom, 0px))`,
+		left: `calc(${gap}px + env(safe-area-inset-left, 0px))`,
+	};
+	if (typeof offset !== 'object') return offset ?? defaults;
+	return {
+		top: offset.top ?? defaults.top,
+		right: offset.right ?? defaults.right,
+		bottom: offset.bottom ?? defaults.bottom,
+		left: offset.left ?? defaults.left,
+	};
+}
+
+export function Toaster({ className, offset, mobileOffset, style, ...properties }: ToasterProperties) {
+	const bottomInset = useToastViewport();
+	const toasterStyle: CSSProperties & { '--toast-viewport-bottom': string } = {
+		...style,
+		'--toast-viewport-bottom': `${bottomInset > 0 ? bottomInset + 16 : 0}px`,
+	};
 	return (
 		<Sonner
-			className="group"
+			className={cn('group neob-toaster', className)}
+			offset={resolveOffset(offset, 24)}
+			mobileOffset={resolveOffset(mobileOffset, 16)}
+			style={toasterStyle}
 			toastOptions={{
 				classNames: {
 					toast:

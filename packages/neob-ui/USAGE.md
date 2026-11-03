@@ -277,6 +277,42 @@ internal boundaries.
 
 ---
 
+## §11 — Place toasts above mobile navigation
+
+Mount one `Toaster` near the application root and create notifications with `toast`:
+
+```tsx
+import { toast, Toaster } from '@joyful.tools/neob';
+
+<Toaster />;
+
+toast.success('Changes saved', {
+  description: 'Your workspace is ready to share.',
+  action: { label: 'View workspace', action: () => openWorkspace() },
+});
+```
+
+At widths up to 600px, toasts fill the available width with 16px margins plus
+device safe-area insets. Bottom toasts rise above the on-screen keyboard when
+the browser exposes Visual Viewport geometry. Pinch zoom does not lift them;
+browsers without that API retain the configured position. Desktop placement
+defaults to bottom right.
+
+Use `mobileOffset.bottom` to clear fixed navigation. For example, a 64px bottom
+bar needs its height, a 16px gap, and the device inset:
+
+```tsx
+<Toaster mobileOffset={{ bottom: 'calc(80px + env(safe-area-inset-bottom, 0px))' }} />
+```
+
+Each explicit `mobileOffset` side replaces that side's default; unspecified
+sides keep their safe-area spacing. A string or number replaces all four sides.
+When the keyboard opens, bottom clearance is the greater of the configured
+offset and the obscured viewport height plus 16px. The library does not measure
+application navigation. `position` and desktop `offset` remain configurable.
+
+---
+
 ## Consumer checklist
 
 - [ ] Import `@joyful.tools/neob/dist/index.css` once.
